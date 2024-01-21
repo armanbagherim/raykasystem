@@ -1,0 +1,20 @@
+import Image from "next/image";
+import ProductCard from "../components/design/ProductCard";
+import fetcher from "../components/global/fetcher";
+import Slider from "../components/design/Slider";
+
+export default async function Home() {
+  const products = await fetcher("products");
+  return (
+    <>
+      <Slider>
+        <img className="w-full rounded-3xl" src="/images/slide.png" alt="" />
+        <img className="w-full rounded-3xl" src="/images/slide-2.png" alt="" />
+        <img className="w-full rounded-3xl" src="/images/slide.png" alt="" />
+      </Slider>
+      {products.data.map((value, key) => (
+        <ProductCard key={key} type="small" data={value} />
+      ))}
+    </>
+  );
+}
