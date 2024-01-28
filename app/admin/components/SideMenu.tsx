@@ -21,8 +21,7 @@ const SideMenu = () => {
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA1ODY4OTg1fQ.9bUirrrKJ99nhG7sbSK43Vpj8q1Xn2QXGUeVQV8AVS8",
         },
-      },
-      { cache: "force-cache" }
+      }
     )
       .then((response) => response.json())
       .then((data) => setMenus(data.result));

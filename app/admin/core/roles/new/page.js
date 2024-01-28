@@ -1,0 +1,104 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import fetcher from "@/app/components/global/fetcher";
+
+export default function page() {
+  const [permissions, setPermissions] = useState();
+  const [checkedPermissions, setCheckedPermissions] = useState([]);
+  const [roleName, setRoleName] = useState();
+  const router = useRouter();
+
+  const getPermissions = () => {
+    fetch(
+      `https://nest-jahizan.chbk.run/v1/api/core/admin/permissionGroups?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=true`,
+      {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA2MTQzMzE4fQ.p7S_aJ1DoRgCISsQMgmm0LLkxq7bD1N7FZr3poQNV7c",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => setPermissions(data.result));
+  };
+  const handleCheckboxChange = (event) => {
+    const permissionId = event.target.id;
+    if (event.target.checked) {
+      setCheckedPermissions((prevPermissions) => [
+        ...prevPermissions,
+        +permissionId,
+      ]);
+    } else {
+      setCheckedPermissions((prevPermissions) =>
+        prevPermissions.filter((id) => id !== +permissionId)
+      );
+    }
+  };
+  const saveRole = async () => {
+    const req = await fetcher({
+      url: "/v1/api/core/admin/roles",
+      method: "POST",
+      body: {
+        roleName,
+        permissions: checkedPermissions,
+      },
+    });
+    console.log(req);
+  };
+  useEffect(() => {
+    getPermissions();
+  }, []);
+  return (
+    <div>
+      <div>
+        <label
+          for="first_name"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          نام نقش
+        </label>
+        <input
+          type="text"
+          id="first_name"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="John"
+          required
+          onChange={(e) => setRoleName(e.target.value)}
+        />
+      </div>
+      {permissions && (
+        <div>
+          {permissions.map((group, key) => (
+            <div key={key}>
+              <div className="bg-gray-200 p-5 rounded-xl">
+                {group.permissionGroupName}
+              </div>
+              <div className="px-5 py-6">
+                {group.permissions.map((permission, key) => (
+                  <div key={key}>
+                    <input
+                      id={permission.id}
+                      className="ml-2"
+                      type="checkbox"
+                      onChange={handleCheckboxChange}
+                    />
+                    <label htmlFor={permission.id}>
+                      {permission.permissionName}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      <button
+        onClick={saveRole}
+        class="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
+      >
+        ساخت نقش
+      </button>
+    </div>
+  );
+}
