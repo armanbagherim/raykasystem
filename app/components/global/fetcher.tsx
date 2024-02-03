@@ -1,28 +1,51 @@
-interface FetcherProps {
+import { useQuery, UseQueryResult } from "react-query";
+import { getSession } from "next-auth/react";
+
+interface FetcherParams {
   url: string;
   method: "GET" | "POST" | "PUT" | "DELETE";
-  body?: object;
+  body?: Record<string, unknown>;
 }
 
-export default function fetcher({ url, method, body }: FetcherProps): any {
+interface FetcherReturn {
+  data: unknown;
+  isLoading: boolean;
+  error: Error | null;
+}
+
+export const fetcher = async ({
+  url,
+  method,
+  body,
+}: FetcherParams): Promise<unknown> => {
+  const session = await getSession();
   const requestOptions: RequestInit = {
     method: method,
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.token || ""}`,
     },
     body: body ? JSON.stringify(body) : undefined,
   };
-  return fetch(process.env.NEXT_PUBLIC_BASE_URL + url, requestOptions)
-    .then((response) => {
-      if (response.status >= 200 && response.status < 300) {
-        return response.json();
-      } else if (response.status >= 300 && response.status < 400) {
-        throw new Error("Redirection error");
-      } else {
-        throw new Error("Client or Server error");
-      }
-    })
-    .catch((error) => {
-      console.error("There was a problem with the fetch operation:", error);
-    });
-}
+  const response = await fetch(
+    process.env.NEXT_PUBLIC_BASE_URL + url,
+    requestOptions
+  );
+  if (response.ok) {
+    return response.json();
+  } else {
+    throw new Error("Network response was not ok.");
+  }
+};
+
+const useFetcher = (
+  url: string,
+  method: "GET" | "POST" | "PUT" | "DELETE",
+  body?: Record<string, unknown>
+): UseQueryResult<unknown, Error> => {
+  return useQuery([url, method, body], () => fetcher({ url, method, body }), {
+    staleTime: Infinity,
+  });
+};
+
+export { useFetcher };

@@ -1,35 +1,28 @@
 "use client";
 import { useFetcher } from "@/app/components/global/fetcher";
 import Loading from "@/app/components/global/loading";
-import { DataGrid, GridColDef, GridRowsProp, faIR } from "@mui/x-data-grid";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import React from "react";
 
 export default function page() {
   const {
-    data: roles,
-    isLoading: rolesIsLoading,
-    error: rolesError,
-  } = useFetcher(`/v1/api/core/admin/roles?igonePaging=true`, "GET");
+    data: categories,
+    isLoading: categoriesIsLoading,
+    error: categoriesError,
+  } = useFetcher(`/v1/api/eav/admin/entityTypes`, "GET");
 
   const columns: GridColDef[] = [
     {
       field: "id",
-      headerName: "شناسه نقش",
+      headerName: "شناسه",
       width: 150,
     },
     {
-      field: "roleName",
-      headerName: "نام نقش",
+      field: "name",
+      headerName: "نام ",
       width: 150,
     },
-    {
-      field: "createdAt",
-      headerName: "تاریخ ایجاد",
-      width: 150,
-      valueFormatter: ({ value }) =>
-        new Date(value).toLocaleDateString("fa-IR"),
-    },
+
     {
       field: "list",
       headerName: "ویرایش",
@@ -46,12 +39,12 @@ export default function page() {
       ),
     },
   ];
-  if (rolesIsLoading) {
+  if (categoriesIsLoading) {
     return <Loading />;
   }
   return (
     <div>
-      <DataGrid rows={roles.result} columns={columns} />
+      <DataGrid rows={categories.result} columns={columns} />
     </div>
   );
 }

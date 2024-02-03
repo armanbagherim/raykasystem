@@ -1,6 +1,11 @@
 import React from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import Link from "next/link";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const session = await getServerSession(authOptions);
+
   return (
     <div className="mb-8">
       <img
@@ -26,10 +31,16 @@ export default function Navbar() {
             </div>
           </div>
           <div className="flex w-1/2 justify-end">
-            <button className="flex border rounded-2xl p-4 ml-4">
-              <img src="/icons/user.svg" alt="" />
-              <span className="mr-2">ورود / ثبت نام</span>
-            </button>
+            <Link href={session?.result ? "/user/dashboard" : "/login"}>
+              <button className="flex border rounded-2xl p-4 ml-4">
+                <img src="/icons/user.svg" alt="" />
+                <span className="mr-2">
+                  {session?.result
+                    ? `${session.result.firstname} ${session.result.lastname}`
+                    : "ورود / ثبت نام"}
+                </span>
+              </button>
+            </Link>
             <button className="border rounded-2xl p-4">
               <img src="/icons/cart.svg" alt="" />
             </button>

@@ -2,16 +2,16 @@ import React from "react";
 
 interface ProductCardProps {
   type: String;
-  data: object;
+  // data: object;
 }
-export default function ProductCard({ type, data }: ProductCardProps) {
+export default function ProductCard({ type }: ProductCardProps) {
   if (type === "big") {
     return "big";
   } else if (type === "small") {
     return (
       <div>
-        {data.name}
-        <img src={data.thumb} alt="" />
+        <img alt="" />
+        asd
       </div>
     );
   }

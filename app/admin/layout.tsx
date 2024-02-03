@@ -1,5 +1,13 @@
+"use client";
 import { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 import localFont from "next/font/local";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { QueryClient, QueryClientProvider } from "react-query";
+const queryClient = new QueryClient();
+import { Provider, atom } from "jotai";
+import { useAtom } from "jotai";
 
 export const metadata: Metadata = {
   title: "پنل مدیریت",
@@ -51,14 +59,23 @@ const IRANSansX = localFont({
   ],
 });
 
+export const pageTitle = atom("داشبورد");
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" dir="rtl">
-      <body className={IRANSansX.className}>{children}</body>
-    </html>
+    <Provider initialValues={pageTitle}>
+      <html lang="en" dir="rtl">
+        <body suppressHydrationWarning={true} className={IRANSansX.className}>
+          <QueryClientProvider client={queryClient}>
+            <ToastContainer />
+            <SessionProvider>{children}</SessionProvider>
+          </QueryClientProvider>
+        </body>
+      </html>
+    </Provider>
   );
 }

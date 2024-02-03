@@ -2,9 +2,13 @@ import Image from "next/image";
 import ProductCard from "../components/design/ProductCard";
 import fetcher from "../components/global/fetcher";
 import Slider from "../components/design/Slider";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/authOptions";
 
 export default async function Home() {
-  const products = await fetcher("products");
+  const session = await getServerSession(authOptions);
+
+  // const products = await fetcher("products");
   return (
     <>
       <Slider>
@@ -12,9 +16,7 @@ export default async function Home() {
         <img className="w-full rounded-3xl" src="/images/slide-2.png" alt="" />
         <img className="w-full rounded-3xl" src="/images/slide.png" alt="" />
       </Slider>
-      {products.data.map((value, key) => (
-        <ProductCard key={key} type="small" data={value} />
-      ))}
+      <ProductCard type="small" />
     </>
   );
 }
