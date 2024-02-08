@@ -13,7 +13,7 @@ interface sliderProps {}
 export default function Slider({ children }: { children: [] }) {
   return (
     <Swiper
-      className="container mx-auto relative"
+      className="container mx-auto relative mb-20"
       spaceBetween={30}
       effect={"fade"}
       loop

@@ -4,6 +4,8 @@ import Loading from "@/app/components/global/loading";
 import { redirect, useRouter } from "next/navigation";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify"; // Import toast from react-toastify
+import { useAtom } from "jotai";
+import { pageTitle } from "@/app/admin/layout";
 
 interface User {
   firstname: string;
@@ -24,6 +26,16 @@ interface PageProps {
 }
 
 export default function Page({ params }: PageProps): JSX.Element {
+  const [title, setTitle] = useAtom(pageTitle);
+
+  useEffect(() => {
+    setTitle({
+      title: "ویرایش کاربر",
+      buttonTitle: "",
+      link: "",
+    });
+  }, []);
+
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [roles, setRoles] = useState<Role[] | null>(null);

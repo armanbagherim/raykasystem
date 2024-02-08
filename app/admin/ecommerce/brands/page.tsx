@@ -1,19 +1,40 @@
 "use client";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useEffect } from "react";
-import { useFetcher } from "../../../components/global/fetcher";
+import { fetcher, useFetcher } from "../../../components/global/fetcher";
 import Loading from "../../../components/global/loading";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
+import { toast } from "react-toastify";
 
 export default function page() {
   const [title, setTitle] = useAtom(pageTitle);
-  setTitle("برند ها");
 
+  useEffect(() => {
+    setTitle({
+      title: "برند ها",
+      buttonTitle: "افزودن برند",
+      link: "/admin/ecommerce/brands/new",
+    });
+  }, []);
+
+  const deleteBrand = async (id) => {
+    try {
+      const req = await fetcher({
+        url: `/v1/api/ecommerce/brands/${id}`,
+        method: "DELETE",
+      });
+      toast.success("موفق");
+      refetchBrands();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   const {
     data: brands,
     isLoading: brandsIsLoading,
     error: brandsError,
+    refetch: refetchBrands,
   } = useFetcher(
     `/v1/api/ecommerce/brands?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
     "GET"
@@ -31,16 +52,36 @@ export default function page() {
       width: 150,
     },
     {
+      field: "slug",
+      headerName: "اسلاگ",
+      width: 150,
+    },
+    {
       field: "list",
       headerName: "ویرایش",
       width: 150,
       renderCell: (row) => (
-        <a href={`/admin/core/roles/${row.id}`}>
+        <a href={`/admin/ecommerce/brands/${row.id}`}>
           <button
             type="button"
             className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
           >
             ویرایش
+          </button>
+        </a>
+      ),
+    },
+    {
+      field: "delete",
+      headerName: "حذف",
+      width: 150,
+      renderCell: ({ row }) => (
+        <a onClick={(e) => deleteBrand(row.id)}>
+          <button
+            type="button"
+            className="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+          >
+            حذف
           </button>
         </a>
       ),

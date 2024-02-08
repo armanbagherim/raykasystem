@@ -4,8 +4,20 @@ import Loading from "@/app/components/global/loading";
 import { DataGrid, GridColDef, GridRowsProp, faIR } from "@mui/x-data-grid";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { pageTitle } from "../../layout";
 
 export default function page() {
+  const [title, setTitle] = useAtom(pageTitle);
+
+  useEffect(() => {
+    setTitle({
+      title: "نقش های کاربری",
+      buttonTitle: "افزودن نقش",
+      link: "/admin/core/roles/new",
+    });
+  }, []);
+
   const {
     data: roles,
     isLoading: rolesIsLoading,

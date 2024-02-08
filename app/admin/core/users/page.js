@@ -9,7 +9,15 @@ import { pageTitle } from "../../layout";
 
 export default function page() {
   const [title, setTitle] = useAtom(pageTitle);
-  setTitle("کاربران");
+
+  useEffect(() => {
+    setTitle({
+      title: "کاربران",
+      buttonTitle: "افزودن کاربر",
+      link: "/admin/core/users/new",
+    });
+  }, []);
+
   const {
     data: users,
     isLoading: userIsLoading,

@@ -3,27 +3,31 @@ import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "@/app/components/global/loading";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useEffect } from "react";
-import { pageTitle } from "../../layout";
 import { useAtom } from "jotai";
 import { toast } from "react-toastify";
 import Image from "next/image";
+import { pageTitle } from "@/app/admin/layout";
 
-export default function page() {
+export default function page({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {
     setTitle({
       title: "دسته بندی ها",
       buttonTitle: "افزودن دسته بندی",
-      link: "/admin/eav/entityTypes/new",
+      link: `/admin/eav/entityTypes/fields/${params.id}/values/new`,
     });
   }, []);
+  console.log(params);
   const {
     data: categories,
     isLoading: categoriesIsLoading,
     error: categoriesError,
     refetch: categoriesRefetch,
-  } = useFetcher(`/v1/api/eav/admin/entityTypes?sortOrder=ASC`, "GET");
+  } = useFetcher(
+    `/v1/api/eav/admin/attributeValues?sortOrder=ASC&orderBy=id&ignorePaging=false&attributeId=${params.id}`,
+    "GET"
+  );
 
   const deleteEavType = async (id) => {
     try {
@@ -44,53 +48,19 @@ export default function page() {
       width: 150,
     },
     {
-      field: "name",
+      field: "value",
       headerName: "نام ",
       width: 150,
     },
-    {
-      field: "image",
-      headerName: "تصویر ",
-      width: 50,
-      renderCell({ row }) {
-        return row.attachment ? (
-          <Image
-            loading="eager"
-            src={`${
-              process.env.NEXT_PUBLIC_BASE_URL
-            }/v1/api/eav/admin/entityTypes/image/${
-              row.attachment?.fileName || ""
-            }`}
-            width={50}
-            height={50}
-            alt=""
-          />
-        ) : (
-          <img width={30} height={30} src="/images/no-photos.png" alt="" />
-        );
-      },
-    },
-    {
-      field: "slug",
-      headerName: "آدرس",
-      width: 150,
-    },
-
     {
       field: "Actions",
       headerName: "عملیات",
       width: 300,
       renderCell: (row) => (
         <>
-          <a href={`/admin/eav/entityTypes/fields/${row.id}`}>
-            <button
-              type="button"
-              className="ml-4 focus:outline-none text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-            >
-              فیلد ها
-            </button>
-          </a>
-          <a href={`/admin/eav/entityTypes/edit/${row.id}`}>
+          <a
+            href={`/admin/eav/entityTypes/fields/${params.id}/values/edit/${row.id}`}
+          >
             <button
               type="button"
               className="ml-4 focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"

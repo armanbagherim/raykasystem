@@ -31,10 +31,19 @@ export const fetcher = async ({
     process.env.NEXT_PUBLIC_BASE_URL + url,
     requestOptions
   );
+  let result = await response.json();
   if (response.ok) {
-    return response.json();
+    return result;
   } else {
-    throw new Error("Network response was not ok.");
+    let errorText;
+    if (typeof result.errors === "string") {
+      errorText = result.errors;
+    } else {
+      result.errors.map((value) => {
+        errorText += value + "\n";
+      });
+    }
+    throw new Error(errorText);
   }
 };
 
