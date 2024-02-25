@@ -4,7 +4,8 @@ import { getSession } from "next-auth/react";
 interface FetcherParams {
   url: string;
   method: "GET" | "POST" | "PUT" | "DELETE";
-  body?: Record<string, unknown>;
+  body?: Record<string, FormData>;
+  isFile?: boolean;
 }
 
 interface FetcherReturn {
@@ -17,15 +18,18 @@ export const fetcher = async ({
   url,
   method,
   body,
+  isFile,
 }: FetcherParams): Promise<unknown> => {
   const session = await getSession();
+  console.log(body?.file);
+  console.log("url", url);
   const requestOptions: RequestInit = {
     method: method,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": `${isFile ? "multipart/form-data" : "application/json"}`,
       Authorization: `Bearer ${session?.token || ""}`,
     },
-    body: body ? JSON.stringify(body) : undefined,
+    body: JSON.stringify(body),
   };
   const response = await fetch(
     process.env.NEXT_PUBLIC_BASE_URL + url,
@@ -47,13 +51,19 @@ export const fetcher = async ({
   }
 };
 
+interface UseFetcherOptions {
+  onSuccess?: (data: unknown) => void;
+}
+
 const useFetcher = (
   url: string,
   method: "GET" | "POST" | "PUT" | "DELETE",
-  body?: Record<string, unknown>
+  body?: Record<string, unknown>,
+  options: UseFetcherOptions = {}
 ): UseQueryResult<unknown, Error> => {
   return useQuery([url, method, body], () => fetcher({ url, method, body }), {
     staleTime: Infinity,
+    onSuccess: options.onSuccess,
   });
 };
 

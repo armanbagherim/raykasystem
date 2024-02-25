@@ -1,9 +1,10 @@
 import React from "react";
 
-export default function Title({ text }) {
+export default function Title({ text, color }) {
   return (
-    <div className="mb-9">
+    <div className="mb-9 relative">
       <svg
+        className="absolute right-0 -top-4"
         width="72"
         height="67"
         viewBox="0 0 72 67"
@@ -18,7 +19,7 @@ export default function Title({ text }) {
           fill-opacity="0.1"
         />
       </svg>
-      {text}
+      <h4 className={`text-3xl pr-4 font-bold text-${color}`}>{text}</h4>
     </div>
   );
 }

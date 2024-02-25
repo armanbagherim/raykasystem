@@ -84,7 +84,7 @@ export default function SignInForm({ session }) {
     }
   };
   return (
-    <div>
+    <div className="container mx-auto">
       <div className="login">
         <ToastContainer />
 

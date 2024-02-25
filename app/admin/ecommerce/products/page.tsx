@@ -14,9 +14,9 @@ export default function page() {
 
   useEffect(() => {
     setTitle({
-      title: "برند ها",
-      buttonTitle: "افزودن برند",
-      link: "/admin/ecommerce/brands/new",
+      title: "محصولات",
+      buttonTitle: "محصول جدید",
+      link: "/admin/ecommerce/products/new",
     });
   }, []);
 
@@ -38,7 +38,7 @@ export default function page() {
     error: brandsError,
     refetch: refetchBrands,
   } = useFetcher(
-    `/v1/api/ecommerce/brands?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
+    `/v1/api/ecommerce/admin/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
     "GET"
   );
 
@@ -49,7 +49,7 @@ export default function page() {
       width: 150,
     },
     {
-      field: "name",
+      field: "title",
       headerName: "نام ",
       width: 150,
     },
@@ -57,26 +57,6 @@ export default function page() {
       field: "slug",
       headerName: "اسلاگ",
       width: 150,
-    },
-    {
-      field: "image",
-      headerName: "تصویر ",
-      width: 50,
-      renderCell: ({ row }) => (
-        <Image
-          loading="eager"
-          src={`${
-            process.env.NEXT_PUBLIC_BASE_URL
-          }/v1/api/ecommerce/brands/image/${row.attachment?.fileName || ""}`}
-          width={50}
-          height={50}
-          onError={(e) => {
-            e.target.srcset = "/images/no-photos.png";
-            e.target.id = "/images/no-photos.png";
-          }}
-          alt=""
-        />
-      ),
     },
     {
       field: "list",
@@ -102,7 +82,7 @@ export default function page() {
           </a>
           <Uploader
             refetch={refetchBrands}
-            location="v1/api/ecommerce/brands/image"
+            location="v1/api/ecommerce/productphotos/image"
             id={row.id}
           />
         </>

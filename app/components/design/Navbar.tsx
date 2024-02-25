@@ -31,7 +31,7 @@ export default async function Navbar() {
             </div>
           </div>
           <div className="flex w-1/2 justify-end">
-            <Link href={session?.result ? "/user/dashboard" : "/login"}>
+            <Link href={session?.result ? "/user" : "/login"}>
               <button className="flex border rounded-2xl p-4 ml-4">
                 <img src="/icons/user.svg" alt="" />
                 <span className="mr-2">
