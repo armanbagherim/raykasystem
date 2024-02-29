@@ -9,11 +9,37 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 
-const Uploader = ({ id, location, refetch, setPhotos }) => {
+// Define the type for the file object in the selectedFiles state
+interface FileObject {
+  name: string;
+  size: number;
+  type: string;
+}
+
+// Define the type for the photo object in the setPhotos function
+interface Photo {
+  fileName: string;
+  id: string;
+}
+
+// Define the props for the Uploader component
+interface UploaderProps {
+  id?: string;
+  location: string;
+  refetch?: () => void;
+  setPhotos: React.Dispatch<React.SetStateAction<Photo[]>>;
+}
+
+const Uploader: React.FC<UploaderProps> = ({
+  id,
+  location,
+  refetch,
+  setPhotos,
+}) => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState([]);
-  const [previewUrls, setPreviewUrls] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState<FileObject[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false); // State for uploading status
   const [progress, setProgress] = useState(0); // State for upload progress
 

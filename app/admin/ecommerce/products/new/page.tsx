@@ -2,22 +2,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
-import Loading from "../../../../components/global/loading";
+import SelectSearch from "@/app/components/global/SearchSelect";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
-import { Editor } from "@tinymce/tinymce-react";
-import Uploader from "@/app/components/global/Uploader";
-import Image from "next/image";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
+  Switch,
   TextField,
 } from "@mui/material";
+import ProductUploader from "../_components/ProductUploader";
+import SeoBox from "../_components/SeoBox";
+import NestedSelect from "../_components/NestedSelect";
 
 export default function page() {
   const [open, setOpen] = React.useState(false);
@@ -30,46 +30,24 @@ export default function page() {
     setOpen(false);
   };
   const [title, setTitle] = useAtom(pageTitle);
+
   const [entityTypeId, setEntityTypeId] = useState();
   const [vendorId, setVendorId] = useState();
   const [vendorAddresses, setVendorAddresses] = useState();
   const [photos, setPhotos] = useState([]);
   const [isColoBased, setIsColoBased] = useState(false);
-  const editorRef = useRef(null);
   const [name, setName] = useState();
   const [slug, setSlug] = useState();
   const [attributes, setAttributes] = useState();
   const router = useRouter();
   const [openTab, setOpenTab] = useState(1);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
+
   const [seoAnalysis, setSeoAnalysis] = useState({
     charCount: 0,
     keywordCount: 0,
     keywordDensity: 0,
   });
-  const analyzeSEO = (content, keyword) => {
-    const charCount = content.length;
-    const keywordCount = (content.match(new RegExp(keyword, "gi")) || [])
-      .length;
-    const keywordDensity = (
-      keywordCount /
-      (charCount / keyword.length)
-    ).toFixed(2);
 
-    return {
-      charCount,
-      keywordCount,
-      keywordDensity,
-    };
-  };
-  const handleEditorChange = (content) => {
-    const analysis = analyzeSEO(content, "yourKeyword"); // Replace "yourKeyword" with the keyword you want to analyze
-    setSeoAnalysis(analysis);
-  };
   useEffect(() => {
     setTitle({
       title: "افزودن برند جدید",
@@ -201,212 +179,55 @@ export default function page() {
     <div className="grid grid-cols-4 gap-4">
       <div className="flex gap-4 col-span-3 flex-wrap">
         <div className="flex-1">
-          <label
-            htmlFor="first_name"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            نام محصول
-          </label>
-          <input
-            type="text"
-            id="first_name"
-            className="bg-gray-50 border mb-6 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="John"
-            required
+          <TextField
             onChange={(e) => setName(e.target.value)}
+            required
+            id="outlined-basic"
+            label="نام محصول"
+            variant="outlined"
           />
         </div>
         <div className="flex-1">
-          <label
-            htmlFor="first_name"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            لینک محصول
-          </label>
-          <input
-            type="text"
-            id="first_name"
-            className="bg-gray-50 border mb-6 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="John"
-            required
+          <TextField
             onChange={(e) => setSlug(e.target.value)}
+            required
+            id="outlined-basic"
+            label="لینک محصول"
+            variant="outlined"
           />
         </div>
-        {brandsIsLoading ? (
-          <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              برند
-            </label>
-            <select
-              disabled
-              name=""
-              id=""
-              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option value="">در حال بارگزاری</option>
-            </select>
-          </div>
-        ) : (
-          <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              برند
-            </label>
-            <select
-              name=""
-              id=""
-              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              {brands?.result.map((value) => (
-                <option value={value.id}>{value.name}</option>
-              ))}
-            </select>
-          </div>
-        )}
-        {publishStatusesIsLoading ? (
-          <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              وضعیت انتشار
-            </label>
-            <select
-              disabled
-              name=""
-              id=""
-              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option value="">در حال بارگزاری</option>
-            </select>
-          </div>
-        ) : (
-          <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              وضعیت انتشار
-            </label>
-            <select
-              name=""
-              id=""
-              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              {publishStatuses?.result.map((value) => (
-                <option value={value.id}>{value.name}</option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {parentEntityTypesIsLoading ? (
-          <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              دسته بندی
-            </label>
-            <select
-              disabled
-              name=""
+        <SelectSearch loadingState={brandsIsLoading} data={brands?.result} />
+        <SelectSearch
+          loadingState={publishStatusesIsLoading}
+          data={publishStatuses?.result}
+        />
+        <div className="flex-1">
+          {parentEntityTypesIsLoading ? (
+            "loading"
+          ) : (
+            <NestedSelect
+              data={parentEntityTypes?.result}
               onChange={(e) => setEntityTypeId(e.target.value)}
-              id=""
-              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option value="">در حال بارگزاری</option>
-            </select>
-          </div>
-        ) : (
-          <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              دسته بندی
-            </label>
-            <select
-              id="countries_multiple"
-              className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              onChange={(e) => setEntityTypeId(e.target.value)}
-            >
-              {parentEntityTypes.result.map((value, key) => {
-                return (
-                  <>
-                    <option key={key} value={value.id}>
-                      {value.name}
-                    </option>
+            />
+          )}
+        </div>
 
-                    {value.subEntityTypes.map((sub, subKey) => {
-                      return (
-                        <>
-                          <option key={subKey} value={sub.id}>
-                            -- {sub.name}
-                          </option>
-                          {sub.subEntityTypes.map((subs, subKeys) => {
-                            return (
-                              <>
-                                <option key={subKeys} value={subs.id}>
-                                  ---- {subs.name}
-                                </option>
-                              </>
-                            );
-                          })}
-                        </>
-                      );
-                    })}
-                  </>
-                );
-              })}
-            </select>
-          </div>
-        )}
         <div className="flex w-full">
           <div className="flex-1">
             <label className="inline-flex items-center cursor-pointer">
               <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
                 فروش بر اساس رنگ؟
               </span>
-              <input
-                type="checkbox"
-                value=""
-                className="sr-only peer"
+              <Switch
                 checked={isColoBased}
                 onChange={(e) => setIsColoBased(!isColoBased)}
+                inputProps={{ "aria-label": "controlled" }}
               />
-              <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
             </label>
           </div>
         </div>
 
         <div className="flex-shrink-0 flex-grow-0 mb-6 w-full">
-          <Editor
-            onInit={(evt, editor) => (editorRef.current = editor)}
-            apiKey="xd8f03g5flw9hewuembu8yofhsaq5ca5hkggdlg9qvmkmq64"
-            onEditorChange={handleEditorChange}
-            init={{
-              height: 500,
-              menubar: false,
-              plugins: [
-                "advlist autolink lists link image charmap print preview anchor",
-                "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table paste code help wordcount",
-              ],
-              toolbar:
-                "undo redo | formatselect | " +
-                "bold italic backcolor | alignleft aligncenter " +
-                "alignright alignjustify | bullist numlist outdent indent | " +
-                "removeformat | help",
-              content_style:
-                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-            }}
-          />
           <>
             <div className="flex flex-wrap">
               <div className="w-full">
@@ -468,7 +289,7 @@ export default function page() {
                       href="#link3"
                       role="tablist"
                     >
-                      Options
+                      موتور های جست و جو
                     </a>
                   </li>
                 </ul>
@@ -506,19 +327,13 @@ export default function page() {
                                 </div>
                               ) : (
                                 <div className="flex-1">
-                                  <label
-                                    htmlFor="first_name"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                  >
-                                    {value.name}
-                                  </label>
-                                  <input
-                                    type="text"
-                                    id="first_name"
-                                    className="bg-gray-50 border mb-6 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="John"
-                                    required
+                                  <TextField
                                     onChange={(e) => setName(e.target.value)}
+                                    required
+                                    id="outlined-basic"
+                                    label={value.name}
+                                    variant="outlined"
+                                    fullWidth
                                   />
                                 </div>
                               );
@@ -535,252 +350,67 @@ export default function page() {
                         <Dialog open={open} onClose={handleClose}>
                           <DialogTitle>ساخت موجودی</DialogTitle>
                           <DialogContent className="w-full">
-                            {userVendorsIsLoading ? (
-                              <div className="w-48">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  فروشگاه
-                                </label>
-                                <select
-                                  disabled
-                                  name=""
-                                  id=""
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                >
-                                  <option value="">در حال بارگزاری</option>
-                                </select>
-                              </div>
-                            ) : (
-                              <div className="w-96">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  فروشگاه
-                                </label>
-                                <select
-                                  name=""
-                                  id=""
-                                  onChange={(e) => setVendorId(e.target.value)}
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                >
-                                  {userVendors?.result.map((value) => (
-                                    <option value={value.id}>
-                                      {value.name}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-                            )}
+                            <SelectSearch
+                              loadingState={userVendorsIsLoading}
+                              data={userVendors?.result}
+                            />
+                            <SelectSearch
+                              loadingState={false}
+                              data={vendorAddresses}
+                              isDiff={true}
+                            />
 
-                            {vendorAddresses ? (
-                              <div className="w-96">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  فروشگاه
-                                </label>
-                                <select
-                                  name=""
-                                  id=""
-                                  // onChange={(e) => setVendorId(e.target.value)}
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                >
-                                  {vendorAddresses?.map((value) => (
-                                    <option value={value.addressId}>
-                                      {console.log(value)}
-                                      {value.address.name}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-                            ) : (
-                              "loading"
-                            )}
+                            <SelectSearch
+                              loadingState={colorsIsLoading}
+                              data={colors?.result}
+                            />
 
-                            {colorsIsLoading ? (
-                              <div className="w-48">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  رنگ
-                                </label>
-                                <select
-                                  disabled
-                                  name=""
-                                  id=""
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                >
-                                  <option value="">در حال بارگزاری</option>
-                                </select>
-                              </div>
-                            ) : (
-                              <div className="w-96">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  رنگ
-                                </label>
-                                <select
-                                  name=""
-                                  id=""
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                >
-                                  {colors?.result.map((value) => (
-                                    <option value={value.id}>
-                                      {value.name}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-                            )}
+                            <SelectSearch
+                              loadingState={guaranteesIsLoading}
+                              data={guarantees?.result}
+                            />
+                            <SelectSearch
+                              loadingState={guaranteeMonthIsLoading}
+                              data={guaranteeMonth?.result}
+                            />
 
-                            {guaranteesIsLoading ? (
-                              <div className="w-48">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  گارانتی
-                                </label>
-                                <select
-                                  disabled
-                                  name=""
-                                  id=""
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                >
-                                  <option value="">در حال بارگزاری</option>
-                                </select>
-                              </div>
-                            ) : (
-                              <div className="w-96">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  گارانتی
-                                </label>
-                                <select
-                                  name=""
-                                  id=""
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                >
-                                  {guarantees?.result.map((value) => (
-                                    <option value={value.id}>
-                                      {value.name}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-                            )}
-
-                            {guaranteeMonthIsLoading ? (
-                              <div className="w-48">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  ماه های گارانتی
-                                </label>
-                                <select
-                                  disabled
-                                  name=""
-                                  id=""
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                >
-                                  <option value="">در حال بارگزاری</option>
-                                </select>
-                              </div>
-                            ) : (
-                              <div className="w-96">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  ماه های گارانتی
-                                </label>
-                                <select
-                                  name=""
-                                  id=""
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                >
-                                  {guaranteeMonth?.result.map((value) => (
-                                    <option value={value.id}>
-                                      {value.name}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-                            )}
                             <div className="flex gap-4">
                               <div className="flex-1">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  تعداد
-                                </label>
-                                <input
-                                  type="text"
-                                  id="first_name"
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  placeholder="John"
-                                  required
+                                <TextField
                                   onChange={(e) => setSlug(e.target.value)}
+                                  required
+                                  id="outlined-basic"
+                                  label="تعداد"
+                                  variant="outlined"
                                 />
                               </div>
                               <div className="flex-1">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  قیمت خرید
-                                </label>
-                                <input
-                                  type="text"
-                                  id="first_name"
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  placeholder="John"
-                                  required
+                                <TextField
                                   onChange={(e) => setSlug(e.target.value)}
+                                  required
+                                  id="outlined-basic"
+                                  label="قیمت خرید"
+                                  variant="outlined"
                                 />
                               </div>
                             </div>
-                            <div className="flex gap-4">
+                            <div className="flex gap-4" dir="rtl">
                               <div className="flex-1">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  قیمت اول
-                                </label>
-                                <input
-                                  type="text"
-                                  id="first_name"
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  placeholder="John"
-                                  required
+                                <TextField
                                   onChange={(e) => setSlug(e.target.value)}
+                                  required
+                                  id="outlined-basic"
+                                  label="قیمت اول"
+                                  variant="outlined"
                                 />
                               </div>
                               <div className="flex-1">
-                                <label
-                                  htmlFor="first_name"
-                                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                  قیمت دوم
-                                </label>
-                                <input
-                                  type="text"
-                                  id="first_name"
-                                  className="bg-gray-50 border mb-6 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  placeholder="John"
+                                <TextField
+                                  onChange={(e) => setSlug(e.target.value)}
                                   required
+                                  id="outlined-basic"
+                                  label="قیمت دوم"
+                                  variant="outlined"
                                   onChange={(e) => setSlug(e.target.value)}
                                 />
                               </div>
@@ -808,14 +438,7 @@ export default function page() {
                         className={openTab === 3 ? "block" : "hidden"}
                         id="link3"
                       >
-                        <p>
-                          Efficiently unleash cross-media information without
-                          cross-media value. Quickly maximize timely
-                          deliverables for real-time schemas.
-                          <br />
-                          <br /> Dramatically maintain clicks-and-mortar
-                          solutions without functional solutions.
-                        </p>
+                        <SeoBox />
                       </div>
                     </div>
                   </div>
@@ -827,35 +450,7 @@ export default function page() {
       </div>
 
       <aside className="w-full bg-slate-100 rounded-xl p-4 col-span-1 flex items-center justify-start flex-col">
-        <div className="w-full mb-8">
-          <h4 className="w-full mb-4">اطلاعات سئو</h4>
-
-          <p className="w-full">تعداد کارکتر: {seoAnalysis.charCount}</p>
-          <p className="w-full">تعداد کلمه: {seoAnalysis.keywordCount}</p>
-          <p className="w-full">
-            چگالی کلمه کلیدی: {seoAnalysis.keywordDensity}
-          </p>
-        </div>
-        <div className="w-full p-4 border-2 border-dashed border-gray-400 rounded-2xl">
-          <Uploader
-            setPhotos={setPhotos}
-            location={"v1/api/ecommerce/productphotos/image"}
-          />
-          <div className="flex pt-4 gap-4 flex-wrap">
-            {photos.map((value) => {
-              return (
-                <Image
-                  width={50}
-                  height={50}
-                  crossOrigin="anonymous"
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
-                  alt=""
-                  className="rounded-2xl"
-                />
-              );
-            })}
-          </div>
-        </div>
+        <ProductUploader setPhotos={setPhotos} photos={photos} />
 
         <button
           onClick={(e) => console.log(entityTypeId)}

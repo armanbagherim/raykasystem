@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 .MuiDataGrid-root,
-.MuiButton-root {
+.MuiButton-root,
+.MuiFormControl-root * {
   font-family: inherit !important;
 }
 
