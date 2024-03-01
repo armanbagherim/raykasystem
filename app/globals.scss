@@ -3,7 +3,8 @@
 @tailwind utilities;
 .MuiDataGrid-root,
 .MuiButton-root,
-.MuiFormControl-root * {
+.MuiFormControl-root *,
+.base-Popper-root * {
   font-family: inherit !important;
 }
 

@@ -1,46 +1,66 @@
 import React from "react";
-import Select from "react-select";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 
 // Assuming data is an array of objects with id and name properties
-const formatOptions = (data, isDiff) => {
-  console.log(data, isDiff);
+// Helper function to safely access nested properties
+const getNestedProperty = (obj, path, defaultValue = undefined) => {
+  const parts = path.split(".");
+  let current = obj;
+  for (let i = 0; i < parts.length; i++) {
+    if (current[parts[i]] === undefined) {
+      return defaultValue;
+    }
+    current = current[parts[i]];
+  }
+  return current;
+};
+
+const formatOptions = (data, isDiff, diffName) => {
   return data.map((item) => ({
-    value: item.id,
-    label: isDiff ? item.address.name : item.name,
+    id: item.id,
+    name: isDiff ? getNestedProperty(item, diffName) : item.name,
   }));
 };
 
-export default function SearchSelect({ loadingState, data, isDiff }) {
+export default function SearchSelect({
+  loadingState,
+  data,
+  isDiff,
+  onChange,
+  label,
+  value,
+  diffName,
+}) {
   if (loadingState) {
     return (
       <div className="flex-1">
-        <label
-          htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          برند
-        </label>
-        <div className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          <p>در حال بارگزاری</p>
-        </div>
+        <TextField
+          disabled
+          id="first_name"
+          label={label}
+          variant="standard"
+          fullWidth
+        />
       </div>
     );
   }
 
-  const options = formatOptions(data, isDiff);
+  const options = formatOptions(data, isDiff, diffName);
 
   return (
     <div className="flex-1">
-      <label
-        htmlFor="first_name"
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-      >
-        برند
-      </label>
-      <Select
+      <Autocomplete
+        id="first_name"
         options={options}
-        className="react-select-container"
-        classNamePrefix="react-select"
+        getOptionLabel={(option) => option.name}
+        renderInput={(params) => (
+          <TextField {...params} label={label} variant="standard" fullWidth />
+        )}
+        onChange={(event, newValue) => {
+          onChange(newValue ? newValue.id : null);
+        }}
+        value={options.find((option) => option.id === value)}
       />
     </div>
   );

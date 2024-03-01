@@ -9,6 +9,7 @@ export default function SeoBox() {
     const analysis = analyzeSEO(content, "yourKeyword"); // Replace "yourKeyword" with the keyword you want to analyze
     setSeoAnalysis(analysis);
   };
+
   return (
     <div>
       <TextField
@@ -17,8 +18,8 @@ export default function SeoBox() {
         fullWidth
         id="outlined-basic"
         label="کلمه کلیدی"
-        variant="outlined"
-        className="mb-4"
+        variant="standard"
+        className="!mb-6"
       />
       <Editor
         onInit={(evt, editor) => (editorRef.current = editor)}
@@ -26,17 +27,18 @@ export default function SeoBox() {
         onEditorChange={handleEditorChange}
         init={{
           height: 500,
-          menubar: false,
+          menubar: true, // Enable the menubar
           plugins: [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
             "insertdatetime media table paste code help wordcount",
+            "emoticons template textpattern imagetools", // Additional plugins
           ],
           toolbar:
             "undo redo | formatselect | " +
             "bold italic backcolor | alignleft aligncenter " +
             "alignright alignjustify | bullist numlist outdent indent | " +
-            "removeformat | help",
+            "removeformat | help | link image | emoticons | template | textpattern | code", // Additional toolbar buttons
           content_style:
             "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
         }}

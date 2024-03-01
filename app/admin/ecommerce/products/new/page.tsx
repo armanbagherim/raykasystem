@@ -18,9 +18,11 @@ import {
 import ProductUploader from "../_components/ProductUploader";
 import SeoBox from "../_components/SeoBox";
 import NestedSelect from "../_components/NestedSelect";
+import GenericInput from "../_components/GenericInput";
+import DataGridLite from "../_components/inventories/Datagrid";
 
 export default function page() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,16 +38,55 @@ export default function page() {
   const [vendorAddresses, setVendorAddresses] = useState();
   const [photos, setPhotos] = useState([]);
   const [isColoBased, setIsColoBased] = useState(false);
-  const [name, setName] = useState();
-  const [slug, setSlug] = useState();
   const [attributes, setAttributes] = useState();
-  const router = useRouter();
   const [openTab, setOpenTab] = useState(1);
+  const [requestBody, setRequestBody] = useState({
+    title: "",
+    slug: "",
+    entityTypeId: "",
+    publishStatusId: "",
+    brandId: "",
+    description: "",
+    colorBased: true,
+    photos: [
+      {
+        id: "",
+      },
+    ],
+    attributes: [],
+    inventories: [
+      // {
+      //   id: "",
+      //   vendorId: "",
+      //   colorId: "",
+      //   guaranteeId: "",
+      //   guaranteeMonthId: "",
+      //   buyPrice: "",
+      //   onlyProvinceId: "",
+      //   qty: "",
+      //   vendorAddressId: "",
+      //   weight: "",
+      //   description: "",
+      //   firstPrice: "",
+      //   secondaryPrice: "",
+      // },
+    ],
+  });
 
-  const [seoAnalysis, setSeoAnalysis] = useState({
-    charCount: 0,
-    keywordCount: 0,
-    keywordDensity: 0,
+  const [tempInventory, setTempInventory] = useState({
+    id: 0,
+    vendorId: 0,
+    colorId: 0,
+    guaranteeId: 0,
+    guaranteeMonthId: 0,
+    buyPrice: 0,
+    onlyProvinceId: 0,
+    qty: 0,
+    vendorAddressId: 0,
+    weight: 0,
+    description: "string",
+    firstPrice: 0,
+    secondaryPrice: 0,
   });
 
   useEffect(() => {
@@ -126,6 +167,10 @@ export default function page() {
     if (!parentEntityTypesIsLoading) {
       setEntityTypeId(parentEntityTypes.result[0].id);
       fetchAttributes(parentEntityTypes.result[0].id);
+      setRequestBody({
+        ...requestBody,
+        entityTypeId: parentEntityTypes.result[0].id,
+      });
     }
   }, [parentEntityTypesIsLoading]);
 
@@ -157,6 +202,39 @@ export default function page() {
     });
   };
 
+  const handleAttributeChange = (id, value) => {
+    console.log(id, value);
+
+    // Convert both id and attribute.id to strings for comparison
+    const existingAttribute = requestBody.attributes.find(
+      (attr) => String(attr.id) === String(id)
+    );
+    console.log(existingAttribute);
+
+    if (existingAttribute) {
+      setRequestBody((prevState) => ({
+        ...prevState,
+        attributes: prevState.attributes.map((attr) =>
+          String(attr.id) === String(id) ? { ...attr, val: value } : attr
+        ),
+      }));
+    } else {
+      setRequestBody((prevState) => ({
+        ...prevState,
+        attributes: [...prevState.attributes, { id, val: value }],
+      }));
+    }
+  };
+
+  const handleInventoryCreate = () => {
+    setRequestBody((prevState) => ({
+      ...prevState,
+      inventories: [...prevState.inventories, tempInventory],
+    }));
+    setTempInventory({});
+    setOpen(false);
+  };
+
   // const saveBrand = async () => {
   //   try {
   //     const req = await fetcher({
@@ -180,26 +258,39 @@ export default function page() {
       <div className="flex gap-4 col-span-3 flex-wrap">
         <div className="flex-1">
           <TextField
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) =>
+              setRequestBody({ ...requestBody, title: e.target.value })
+            }
             required
-            id="outlined-basic"
+            id="standard-basic"
             label="نام محصول"
-            variant="outlined"
+            variant="standard"
           />
         </div>
         <div className="flex-1">
           <TextField
-            onChange={(e) => setSlug(e.target.value)}
+            onChange={(e) =>
+              setRequestBody({ ...requestBody, slug: e.target.value })
+            }
             required
-            id="outlined-basic"
+            id="standard-basic"
             label="لینک محصول"
-            variant="outlined"
+            variant="standard"
           />
         </div>
-        <SelectSearch loadingState={brandsIsLoading} data={brands?.result} />
+        <SelectSearch
+          loadingState={brandsIsLoading}
+          data={brands?.result}
+          label="برند"
+          onChange={(e) => setRequestBody({ ...requestBody, brandId: e })}
+        />
         <SelectSearch
           loadingState={publishStatusesIsLoading}
           data={publishStatuses?.result}
+          label="وضعیت انتشار"
+          onChange={(e) =>
+            setRequestBody({ ...requestBody, publishStatusId: e })
+          }
         />
         <div className="flex-1">
           {parentEntityTypesIsLoading ? (
@@ -207,7 +298,13 @@ export default function page() {
           ) : (
             <NestedSelect
               data={parentEntityTypes?.result}
-              onChange={(e) => setEntityTypeId(e.target.value)}
+              onChange={(e) => {
+                setEntityTypeId(e.target.value);
+                setRequestBody({
+                  ...requestBody,
+                  entityTypeId: +e.target.value,
+                });
+              }}
             />
           )}
         </div>
@@ -219,8 +316,13 @@ export default function page() {
                 فروش بر اساس رنگ؟
               </span>
               <Switch
-                checked={isColoBased}
-                onChange={(e) => setIsColoBased(!isColoBased)}
+                checked={requestBody.colorBased}
+                onChange={(e) =>
+                  setRequestBody({
+                    ...requestBody,
+                    colorBased: !requestBody.colorBased,
+                  })
+                }
                 inputProps={{ "aria-label": "controlled" }}
               />
             </label>
@@ -302,41 +404,30 @@ export default function page() {
                       >
                         {entityTypeId
                           ? attributes?.map((value, index) => {
-                              return value.attributeType.valueBased ? (
-                                <div className="flex-1">
-                                  <label
-                                    htmlFor="first_name"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                  >
-                                    {value.name}
-                                  </label>
-                                  <select
-                                    className="bg-gray-50 border mb-6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              const isValueBased =
+                                value.attributeType.valueBased;
+                              const label = value.name;
+                              const options = isValueBased
+                                ? value.attributeValues
+                                : [];
+                              const valueType = isValueBased
+                                ? "select"
+                                : "text";
+
+                              {
+                                return (
+                                  <GenericInput
                                     key={index}
-                                    name=""
-                                    id=""
-                                  >
-                                    {value.attributeValues.map(
-                                      (values, idx) => (
-                                        <option key={idx} value="">
-                                          {values.value}
-                                        </option>
-                                      )
-                                    )}
-                                  </select>
-                                </div>
-                              ) : (
-                                <div className="flex-1">
-                                  <TextField
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                    id="outlined-basic"
-                                    label={value.name}
-                                    variant="outlined"
-                                    fullWidth
+                                    type={valueType}
+                                    value={value.val}
+                                    onChange={(e) =>
+                                      handleAttributeChange(value.id, e)
+                                    }
+                                    options={options}
+                                    label={label}
                                   />
-                                </div>
-                              );
+                                );
+                              }
                             })
                           : "loading"}
                       </div>
@@ -344,92 +435,149 @@ export default function page() {
                         className={openTab === 2 ? "block" : "hidden"}
                         id="link2"
                       >
-                        <Button variant="outlined" onClick={handleClickOpen}>
+                        <Button
+                          className="!mb-6"
+                          fullWidth
+                          variant="contained"
+                          onClick={handleClickOpen}
+                        >
                           افزودن موجودی جدید
                         </Button>
+                        <DataGridLite data={requestBody.inventories} />
                         <Dialog open={open} onClose={handleClose}>
                           <DialogTitle>ساخت موجودی</DialogTitle>
                           <DialogContent className="w-full">
                             <SelectSearch
                               loadingState={userVendorsIsLoading}
                               data={userVendors?.result}
+                              onChange={(e) =>
+                                setTempInventory({
+                                  ...tempInventory,
+                                  vendorId: e,
+                                })
+                              }
                             />
                             <SelectSearch
                               loadingState={false}
                               data={vendorAddresses}
                               isDiff={true}
+                              diffName={"address.name"}
+                              onChange={(e) =>
+                                setTempInventory({
+                                  ...tempInventory,
+                                  vendorAddressId: e,
+                                })
+                              }
                             />
 
                             <SelectSearch
                               loadingState={colorsIsLoading}
                               data={colors?.result}
+                              onChange={(e) =>
+                                setTempInventory({
+                                  ...tempInventory,
+                                  colorId: e,
+                                })
+                              }
                             />
 
                             <SelectSearch
                               loadingState={guaranteesIsLoading}
                               data={guarantees?.result}
+                              onChange={(e) =>
+                                setTempInventory({
+                                  ...tempInventory,
+                                  guaranteeId: e,
+                                })
+                              }
                             />
                             <SelectSearch
                               loadingState={guaranteeMonthIsLoading}
                               data={guaranteeMonth?.result}
+                              onChange={(e) =>
+                                setTempInventory({
+                                  ...tempInventory,
+                                  guaranteeMonthId: e,
+                                })
+                              }
                             />
 
                             <div className="flex gap-4">
                               <div className="flex-1">
                                 <TextField
-                                  onChange={(e) => setSlug(e.target.value)}
                                   required
-                                  id="outlined-basic"
+                                  id="standard-basic"
                                   label="تعداد"
-                                  variant="outlined"
+                                  variant="standard"
+                                  onChange={(e) =>
+                                    setTempInventory({
+                                      ...tempInventory,
+                                      qty: e.target.value,
+                                    })
+                                  }
                                 />
                               </div>
                               <div className="flex-1">
                                 <TextField
-                                  onChange={(e) => setSlug(e.target.value)}
                                   required
-                                  id="outlined-basic"
+                                  id="standard-basic"
                                   label="قیمت خرید"
-                                  variant="outlined"
+                                  variant="standard"
+                                  onChange={(e) =>
+                                    setTempInventory({
+                                      ...tempInventory,
+                                      buyPrice: e.target.value,
+                                    })
+                                  }
                                 />
                               </div>
                             </div>
                             <div className="flex gap-4" dir="rtl">
                               <div className="flex-1">
                                 <TextField
-                                  onChange={(e) => setSlug(e.target.value)}
                                   required
-                                  id="outlined-basic"
+                                  id="standard-basic"
                                   label="قیمت اول"
-                                  variant="outlined"
+                                  variant="standard"
+                                  onChange={(e) =>
+                                    setTempInventory({
+                                      ...tempInventory,
+                                      firstPrice: e.target.value,
+                                    })
+                                  }
                                 />
                               </div>
                               <div className="flex-1">
                                 <TextField
-                                  onChange={(e) => setSlug(e.target.value)}
                                   required
-                                  id="outlined-basic"
+                                  id="standard-basic"
                                   label="قیمت دوم"
-                                  variant="outlined"
-                                  onChange={(e) => setSlug(e.target.value)}
+                                  variant="standard"
+                                  onChange={(e) =>
+                                    setTempInventory({
+                                      ...tempInventory,
+                                      secondaryPrice: e.target.value,
+                                    })
+                                  }
                                 />
                               </div>
                             </div>
                           </DialogContent>
                           <DialogActions className="flex w-full justify-between">
                             <Button
-                              variant="outlined"
+                              variant="standard"
                               color="error"
                               onClick={() => setOpen(false)}
                             >
                               لغو
                             </Button>
                             <Button
-                              variant="outlined"
+                              variant="standard"
                               color="success"
                               autoFocus
+                              onClick={(e) => handleInventoryCreate()}
                             >
-                              آپلود
+                              ثبت
                             </Button>
                           </DialogActions>
                         </Dialog>
@@ -453,7 +601,7 @@ export default function page() {
         <ProductUploader setPhotos={setPhotos} photos={photos} />
 
         <button
-          onClick={(e) => console.log(entityTypeId)}
+          onClick={(e) => console.log(requestBody)}
           className="bg-blue-700 w-full mt-6 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
         >
           ساخت محصول
