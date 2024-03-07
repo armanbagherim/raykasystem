@@ -4,7 +4,19 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useFetcher, fetcher } from "@/app/components/global/fetcher";
 import Loading from "./../../../../components/global/loading";
+import { useAtom } from "jotai";
+import { pageTitle } from "../../../layout";
+
 export default function Page({ params }) {
+  const [title, setTitle] = useAtom(pageTitle);
+
+  useEffect(() => {
+    setTitle({
+      title: "ویرایش نقش",
+      buttonTitle: "",
+      link: "",
+    });
+  }, []);
   const router = useRouter();
 
   const {

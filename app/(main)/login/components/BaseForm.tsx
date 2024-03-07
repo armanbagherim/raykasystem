@@ -84,11 +84,11 @@ export default function SignInForm({ session }) {
     }
   };
   return (
-    <div>
+    <div className="container mx-auto">
       <div className="login">
         <ToastContainer />
 
-        <div className="container mx-auto">
+        <div className="">
           <div className="h-full flex shadow-shadowCustom justify-center border border-[#F1F1F1] rounded-[25px]">
             <div className="flex-1 flex justify-center items-center py-40">
               <div className="text-center">

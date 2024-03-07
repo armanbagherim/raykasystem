@@ -2,10 +2,22 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
-import Loading from "./../../../../components/global/loading";
+import Loading from "../../../../components/global/loading";
 import { toast } from "react-toastify";
+import { useAtom } from "jotai";
+import { pageTitle } from "../../../layout";
 
 export default function page() {
+  const [title, setTitle] = useAtom(pageTitle);
+
+  useEffect(() => {
+    setTitle({
+      title: "افزودن نقش جدید",
+      buttonTitle: "",
+      link: "",
+    });
+  }, []);
+
   const [checkedPermissions, setCheckedPermissions] = useState([]);
   const [roleName, setRoleName] = useState();
   const router = useRouter();

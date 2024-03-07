@@ -1,12 +1,62 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-.MuiDataGrid-root {
+.MuiDataGrid-root,
+.MuiButton-root,
+.MuiFormControl-root *,
+.base-Popper-root *,
+.MuiPaper-root * {
   font-family: inherit !important;
 }
 
-.textGradiant{
+.textGradiant {
   background: -webkit-linear-gradient(#333, #eee);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.swiper-button-prev:after {
+  display: none;
+}
+
+.swiper-button-next:after {
+  display: none;
+}
+
+.gcd-gl-control.ol-control.gcd-gl-expanded {
+  width: 100% !important;
+  background: transparent;
+  padding: 1em;
+}
+
+input#gcd-input-query {
+  width: 100% !important;
+  padding: 13px;
+  border: 1px solid #eee;
+  border-radius: 15px;
+  outline: 0;
+}
+
+.gcd-gl-control.ol-control {
+  width: 100%;
+  padding: 6px 4em;
+  background: transparent;
+}
+
+.ol-full-screen.ol-unselectable.ol-control {
+  display: none;
+}
+
+button#gcd-button-control {
+  display: none;
+}
+
+ul.gcd-gl-result {
+  background: #fff;
+  padding: 6em 4em 0;
+  li {
+    background: #f7f7f7;
+    margin: 5px 0;
+    padding: 5px 10px;
+    border-radius: 7px;
+  }
 }
