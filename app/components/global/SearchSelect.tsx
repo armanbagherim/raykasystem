@@ -16,8 +16,12 @@ const getNestedProperty = (obj, path, defaultValue = undefined) => {
   return current;
 };
 
-const formatOptions = (data, isDiff, diffName) => {
-  return data.map((item) => ({
+const formatOptions = (data, isDiff, diffName, nullable) => {
+  if (nullable) {
+    // اضافه کردن آبجکت با آی دی null و اسم بدون انتخاب به ابتدای آرایه
+    data = [{ id: null, name: "بدون انتخاب" }, ...data]; // RESULT : [34,23, 45, 12, 67]
+  }
+  return data?.map((item) => ({
     id: item.id,
     name: isDiff ? getNestedProperty(item, diffName) : item.name,
   }));
@@ -31,6 +35,7 @@ export default function SearchSelect({
   label,
   value,
   diffName,
+  nullable,
 }) {
   if (loadingState) {
     return (
@@ -46,7 +51,14 @@ export default function SearchSelect({
     );
   }
 
-  const options = formatOptions(data, isDiff, diffName);
+  const options = formatOptions(data, isDiff, diffName, nullable);
+
+  // Determine the initial value to be the first item in the options array
+  // If the component is controlled and a value is provided, use that value
+
+  const initialValue = value
+    ? options.find((option) => option.id === value)
+    : options[0];
 
   return (
     <div className="flex-1">
@@ -58,9 +70,10 @@ export default function SearchSelect({
           <TextField {...params} label={label} variant="standard" fullWidth />
         )}
         onChange={(event, newValue) => {
-          onChange(newValue ? newValue.id : null);
+          onChange(newValue ? newValue : null);
         }}
-        value={options.find((option) => option.id === value)}
+        // Set the initial value to the first item in the options array
+        defaultValue={initialValue}
       />
     </div>
   );

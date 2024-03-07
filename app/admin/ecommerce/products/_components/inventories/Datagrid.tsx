@@ -5,20 +5,62 @@ import { toast } from "react-toastify";
 export default function DataGridLite({ data }) {
   const columns: GridColDef[] = [
     {
-      field: "id",
-      headerName: "شناسه",
-      width: 150,
+      field: "vendorName",
+      headerName: "نام فروشگاه",
+      width: 100,
     },
     {
-      field: "name",
-      headerName: "نام ",
-      width: 150,
+      field: "VendorAddressName",
+      headerName: "نام آدرس",
+      width: 100,
+    },
+    {
+      field: "colorName",
+      headerName: "رنگ",
+      width: 100,
+    },
+    {
+      field: "guaranteeName",
+      headerName: "نام گارانتی",
+      width: 100,
+    },
+    {
+      field: "guaranteeMonthName",
+      headerName: "تعداد ماه گارانتی",
+      width: 100,
+    },
+    {
+      field: "onlyProvinceName",
+      headerName: "استان فروش",
+      width: 100,
+    },
+
+    {
+      field: "qty",
+      headerName: "تعداد",
+      width: 100,
+    },
+
+    {
+      field: "firstPrice",
+      headerName: "قیمت نقدی",
+      width: 100,
+    },
+    {
+      field: "secondaryPrice",
+      headerName: "قیمت اقساط",
+      width: 100,
+    },
+    {
+      field: "buyPrice",
+      headerName: "قیمت خرید",
+      width: 100,
     },
 
     {
       field: "Actions",
       headerName: "عملیات",
-      width: 300,
+      width: 200,
       renderCell: (row) => (
         <>
           <a href={`/admin/eav/entityTypes/edit/${row.id}`}>

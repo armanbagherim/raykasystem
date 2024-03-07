@@ -20,6 +20,8 @@ import SeoBox from "../_components/SeoBox";
 import NestedSelect from "../_components/NestedSelect";
 import GenericInput from "../_components/GenericInput";
 import DataGridLite from "../_components/inventories/Datagrid";
+import InventoriesDialouge from "../_components/inventories/InventoriesDialouge";
+import Tab from "../_components/tabs/Tabs";
 
 export default function page() {
   const [open, setOpen] = useState(false);
@@ -48,41 +50,27 @@ export default function page() {
     brandId: "",
     description: "",
     colorBased: true,
-    photos: [
-      {
-        id: "",
-      },
-    ],
+    photos: [],
     attributes: [],
-    inventories: [
-      // {
-      //   id: "",
-      //   vendorId: "",
-      //   colorId: "",
-      //   guaranteeId: "",
-      //   guaranteeMonthId: "",
-      //   buyPrice: "",
-      //   onlyProvinceId: "",
-      //   qty: "",
-      //   vendorAddressId: "",
-      //   weight: "",
-      //   description: "",
-      //   firstPrice: "",
-      //   secondaryPrice: "",
-      // },
-    ],
+    inventories: [],
   });
-
+  const [inventories, setInventories] = useState([]);
   const [tempInventory, setTempInventory] = useState({
     id: 0,
     vendorId: 0,
+    vendorName: "",
     colorId: 0,
+    colorName: "",
     guaranteeId: 0,
+    guaranteeName: "",
     guaranteeMonthId: 0,
+    guaranteeMonthName: "",
     buyPrice: 0,
     onlyProvinceId: 0,
+    onlyProvinceName: "",
     qty: 0,
     vendorAddressId: 0,
+    VendorAddressName: "",
     weight: 0,
     description: "string",
     firstPrice: 0,
@@ -125,6 +113,12 @@ export default function page() {
       setVendorAddresses(res.result);
     });
   };
+
+  const {
+    data: proviences,
+    isLoading: proviencesIsLoading,
+    error: proviencesError,
+  } = useFetcher(`/v1/api/ecommerce/provinces`, "GET");
 
   useEffect(() => {
     if (!userVendorsIsLoading) {
@@ -195,7 +189,7 @@ export default function page() {
 
   const fetchAttributes = async (id) => {
     await fetcher({
-      url: `/v1/api/eav/admin/attributes?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=false&entityTypeId=${id}`,
+      url: `/v1/api/eav/admin/attributes?sortOrder=ASC&orderBy=id&ignorePaging=true&entityTypeId=${id}`,
       method: "GET",
     }).then((res) => {
       setAttributes(res.result);
@@ -227,10 +221,24 @@ export default function page() {
   };
 
   const handleInventoryCreate = () => {
+    setInventories((prevState) => [...prevState, tempInventory]);
+
+    const {
+      id,
+      vendorName,
+      VendorAddressName,
+      colorName,
+      guaranteeMonthName,
+      guaranteeName,
+      onlyProvinceName,
+      ...cleanedTempInventory
+    } = tempInventory;
+
     setRequestBody((prevState) => ({
       ...prevState,
-      inventories: [...prevState.inventories, tempInventory],
+      inventories: [...prevState.inventories, cleanedTempInventory],
     }));
+
     setTempInventory({});
     setOpen(false);
   };
@@ -282,14 +290,14 @@ export default function page() {
           loadingState={brandsIsLoading}
           data={brands?.result}
           label="برند"
-          onChange={(e) => setRequestBody({ ...requestBody, brandId: e })}
+          onChange={(e) => setRequestBody({ ...requestBody, brandId: e.id })}
         />
         <SelectSearch
           loadingState={publishStatusesIsLoading}
           data={publishStatuses?.result}
           label="وضعیت انتشار"
           onChange={(e) =>
-            setRequestBody({ ...requestBody, publishStatusId: e })
+            setRequestBody({ ...requestBody, publishStatusId: e.id })
           }
         />
         <div className="flex-1">
@@ -337,63 +345,24 @@ export default function page() {
                   className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
                   role="tablist"
                 >
-                  <li className="-mb-px mr-2 first:mr-0 flex-auto text-center">
-                    <a
-                      className={
-                        "text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal " +
-                        (openTab === 1
-                          ? "text-white bg-blue-600"
-                          : "text-blue-600 bg-white")
-                      }
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setOpenTab(1);
-                      }}
-                      data-toggle="tab"
-                      href="#link1"
-                      role="tablist"
-                    >
-                      ویژگی ها
-                    </a>
-                  </li>
-                  <li className="-mb-px mr-2 first:mr-0 flex-auto text-center">
-                    <a
-                      className={
-                        "text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal " +
-                        (openTab === 2
-                          ? "text-white bg-blue-600"
-                          : "text-blue-600 bg-white")
-                      }
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setOpenTab(2);
-                      }}
-                      data-toggle="tab"
-                      href="#link2"
-                      role="tablist"
-                    >
-                      موجودی ها
-                    </a>
-                  </li>
-                  <li className="-mb-px mr-2 first:mr-0 flex-auto text-center">
-                    <a
-                      className={
-                        "text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal " +
-                        (openTab === 3
-                          ? "text-white bg-blue-600"
-                          : "text-blue-600 bg-white")
-                      }
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setOpenTab(3);
-                      }}
-                      data-toggle="tab"
-                      href="#link3"
-                      role="tablist"
-                    >
-                      موتور های جست و جو
-                    </a>
-                  </li>
+                  <Tab
+                    activeTab={openTab}
+                    tabName="ویژگی ها"
+                    tabId={1}
+                    setActiveTab={setOpenTab}
+                  />
+                  <Tab
+                    activeTab={openTab}
+                    tabName="موجودی ها"
+                    tabId={2}
+                    setActiveTab={setOpenTab}
+                  />
+                  <Tab
+                    activeTab={openTab}
+                    tabName="موتور های جست و جو"
+                    tabId={3}
+                    setActiveTab={setOpenTab}
+                  />
                 </ul>
                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 border border-gray-200 rounded">
                   <div className="px-4 py-5 flex-auto">
@@ -439,148 +408,37 @@ export default function page() {
                           className="!mb-6"
                           fullWidth
                           variant="contained"
-                          onClick={handleClickOpen}
+                          onClick={(e) => {
+                            setTempInventory({
+                              ...tempInventory,
+                              id: Math.random(),
+                            });
+                            handleClickOpen();
+                          }}
                         >
                           افزودن موجودی جدید
                         </Button>
-                        <DataGridLite data={requestBody.inventories} />
-                        <Dialog open={open} onClose={handleClose}>
-                          <DialogTitle>ساخت موجودی</DialogTitle>
-                          <DialogContent className="w-full">
-                            <SelectSearch
-                              loadingState={userVendorsIsLoading}
-                              data={userVendors?.result}
-                              onChange={(e) =>
-                                setTempInventory({
-                                  ...tempInventory,
-                                  vendorId: e,
-                                })
-                              }
-                            />
-                            <SelectSearch
-                              loadingState={false}
-                              data={vendorAddresses}
-                              isDiff={true}
-                              diffName={"address.name"}
-                              onChange={(e) =>
-                                setTempInventory({
-                                  ...tempInventory,
-                                  vendorAddressId: e,
-                                })
-                              }
-                            />
-
-                            <SelectSearch
-                              loadingState={colorsIsLoading}
-                              data={colors?.result}
-                              onChange={(e) =>
-                                setTempInventory({
-                                  ...tempInventory,
-                                  colorId: e,
-                                })
-                              }
-                            />
-
-                            <SelectSearch
-                              loadingState={guaranteesIsLoading}
-                              data={guarantees?.result}
-                              onChange={(e) =>
-                                setTempInventory({
-                                  ...tempInventory,
-                                  guaranteeId: e,
-                                })
-                              }
-                            />
-                            <SelectSearch
-                              loadingState={guaranteeMonthIsLoading}
-                              data={guaranteeMonth?.result}
-                              onChange={(e) =>
-                                setTempInventory({
-                                  ...tempInventory,
-                                  guaranteeMonthId: e,
-                                })
-                              }
-                            />
-
-                            <div className="flex gap-4">
-                              <div className="flex-1">
-                                <TextField
-                                  required
-                                  id="standard-basic"
-                                  label="تعداد"
-                                  variant="standard"
-                                  onChange={(e) =>
-                                    setTempInventory({
-                                      ...tempInventory,
-                                      qty: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                              <div className="flex-1">
-                                <TextField
-                                  required
-                                  id="standard-basic"
-                                  label="قیمت خرید"
-                                  variant="standard"
-                                  onChange={(e) =>
-                                    setTempInventory({
-                                      ...tempInventory,
-                                      buyPrice: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                            </div>
-                            <div className="flex gap-4" dir="rtl">
-                              <div className="flex-1">
-                                <TextField
-                                  required
-                                  id="standard-basic"
-                                  label="قیمت اول"
-                                  variant="standard"
-                                  onChange={(e) =>
-                                    setTempInventory({
-                                      ...tempInventory,
-                                      firstPrice: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                              <div className="flex-1">
-                                <TextField
-                                  required
-                                  id="standard-basic"
-                                  label="قیمت دوم"
-                                  variant="standard"
-                                  onChange={(e) =>
-                                    setTempInventory({
-                                      ...tempInventory,
-                                      secondaryPrice: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                            </div>
-                          </DialogContent>
-                          <DialogActions className="flex w-full justify-between">
-                            <Button
-                              variant="standard"
-                              color="error"
-                              onClick={() => setOpen(false)}
-                            >
-                              لغو
-                            </Button>
-                            <Button
-                              variant="standard"
-                              color="success"
-                              autoFocus
-                              onClick={(e) => handleInventoryCreate()}
-                            >
-                              ثبت
-                            </Button>
-                          </DialogActions>
-                        </Dialog>
+                        <DataGridLite data={inventories} />
+                        <InventoriesDialouge
+                          colors={colors}
+                          colorsIsLoading={colorsIsLoading}
+                          handleClose={handleClose}
+                          setVendorId={setVendorId}
+                          setTempInventory={setTempInventory}
+                          guaranteeMonthIsLoading={guaranteeMonthIsLoading}
+                          vendorAddresses={vendorAddresses}
+                          tempInventory={tempInventory}
+                          userVendors={userVendors}
+                          userVendorsIsLoading={userVendorsIsLoading}
+                          guarantees={guarantees}
+                          guaranteesIsLoading={guaranteesIsLoading}
+                          handleInventoryCreate={handleInventoryCreate}
+                          proviences={proviences}
+                          proviencesIsLoading={proviencesIsLoading}
+                          setOpen={setOpen}
+                          guaranteeMonth={guaranteeMonth}
+                          open={open}
+                        />
                       </div>
                       <div
                         className={openTab === 3 ? "block" : "hidden"}
