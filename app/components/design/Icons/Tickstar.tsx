@@ -1,4 +1,4 @@
-const Linearverify = () => {
+const Tickstar = () => {
   return (
     <>
       <svg
@@ -29,4 +29,4 @@ const Linearverify = () => {
   );
 };
 
-export default Linearverify;
+export default Tickstar;
