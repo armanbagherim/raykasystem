@@ -27,6 +27,8 @@ import {
   Like,
   Unlike,
 } from "@/app/components/design/Icons";
+import ProductCard from "@/app/components/design/Cards/ProductCard/ProductCard";
+import Slider from "@/app/components/design/Slider";
 
 const SingleProduct = () => {
   return (
@@ -480,7 +482,7 @@ const SingleProduct = () => {
         </div>
       </div>
 
-      <div className="container mx-auto mt-8 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-8 pb-60">
+      <div className="container mx-auto mt-8 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-8">
         <div>مشخصات کامل محصول</div>
         <div className="mt-8 text-sm">
           <div className="flex gap-48 pt-3 pb-3">
@@ -904,233 +906,16 @@ const SingleProduct = () => {
           </div>
         </div>
 
-        <div className="p-3 flex">
-          <div className="w-fit p-5 rounded-xl">
-            <div className="ml-0 border-2 rounded-3xl">
-              <div className="pr-4 pt-0 mr-0 pb-6">
-                <div className="flex justify-end ml-0 mx-auto">
-                  <Espesial />
-                </div>
-                <div className="flex bg-customGray w-fit p-1 rounded-lg gap-2">
-                  <div>
-                    <Goldstart />
-                  </div>
-                  <div className="text-xs items-center my-1 pl-2">4.75</div>
-                </div>
-
-                <div className="flex mt-5 justify-center mx-auto">
-                  <img src="/images/01-3-824x1024.png" width={100} />
-                </div>
-                <div className="mt-1 flex items-end text-sm text-slate-700 p-1 text-center">
-                  محصول آزمایشی با حدود 2 خط متن یه کم طولانی
-                </div>
-
-                <div className="mt-9 flex gap-3">
-                  <div
-                    className="font-bold justify-start mx-auto ml-2 items-end my-auto"
-                    dir="ltr"
-                  >
-                    <div className="flex items-center my-auto gap-1">
-                      <div className="text-center bg-primary text-slate-100 rounded-xl p-1 w-10">
-                        14%
-                      </div>
-                      <div className="relative">
-                        <div className="absolute top-1 w-10 text-slate-950">
-                          <Lineonnum />
-                        </div>
-                        <div className="text-slate-400 text-sm">155000</div>
-                      </div>
-                    </div>
-
-                    <div dir="rtl">
-                      <span>125000</span> تومان
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="w-fit p-5 rounded-xl">
-            <div className="ml-0 border-2 rounded-3xl">
-              <div className="pr-4 pt-0 mr-0 pb-6">
-                <div className="flex justify-end ml-0 mx-auto">
-                  <Espesial />
-                </div>
-                <div className="flex bg-customGray w-fit p-1 rounded-lg gap-2">
-                  <div>
-                    <Goldstart />
-                  </div>
-                  <div className="text-xs items-center my-1 pl-2">4.75</div>
-                </div>
-
-                <div className="flex mt-5 justify-center mx-auto">
-                  <img src="/images/01-3-824x1f024.png" width={100} />
-                </div>
-                <div className="mt-1 flex items-end text-sm text-slate-700 p-1 text-center">
-                  محصول آزمایشی با حدود 2 خط متن یه کم طولانی
-                </div>
-
-                <div className="mt-9 flex gap-3">
-                  <div
-                    className="font-bold justify-start mx-auto ml-2 items-end my-auto"
-                    dir="ltr"
-                  >
-                    <div className="flex items-center my-auto gap-1">
-                      <div className="text-center bg-primary text-slate-100 rounded-xl p-1 w-10">
-                        14%
-                      </div>
-                      <div className="relative">
-                        <div className="absolute top-1 w-10 text-slate-950">
-                          <Lineonnum />
-                        </div>
-                        <div className="text-slate-400 text-sm">155000</div>
-                      </div>
-                    </div>
-
-                    <div dir="rtl">
-                      <span>125000</span> تومان
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="w-fit p-5 rounded-xl">
-            <div className="ml-0 border-2 rounded-3xl">
-              <div className="pr-4 pt-0 mr-0 pb-6">
-                <div className="flex justify-end ml-0 mx-auto">
-                  <Espesial />
-                </div>
-                <div className="flex bg-customGray w-fit p-1 rounded-lg gap-2">
-                  <div>
-                    <Goldstart />
-                  </div>
-                  <div className="text-xs items-center my-1 pl-2">4.75</div>
-                </div>
-
-                <div className="flex mt-5 justify-center mx-auto">
-                  <img src="/images/01-3-824x1024.png" width={100} />
-                </div>
-                <div className="mt-1 flex items-end text-sm text-slate-700 p-1 text-center">
-                  محصول آزمایشی با حدود 2 خط متن یه کم طولانی
-                </div>
-
-                <div className="mt-9 flex gap-3">
-                  <div
-                    className="font-bold justify-start mx-auto ml-2 items-end my-auto"
-                    dir="ltr"
-                  >
-                    <div className="flex items-center my-auto gap-1">
-                      <div className="text-center bg-primary text-slate-100 rounded-xl p-1 w-10">
-                        14%
-                      </div>
-                      <div className="relative">
-                        <div className="absolute top-1 w-10 text-slate-950">
-                          <Lineonnum />
-                        </div>
-                        <div className="text-slate-400 text-sm">155000</div>
-                      </div>
-                    </div>
-
-                    <div dir="rtl">
-                      <span>125000</span> تومان
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="w-fit p-5 rounded-xl">
-            <div className="ml-0 border-2 rounded-3xl">
-              <div className="pr-4 pt-0 mr-0 pb-6">
-                <div className="flex justify-end ml-0 mx-auto">
-                  <Espesial />
-                </div>
-                <div className="flex bg-customGray w-fit p-1 rounded-lg gap-2">
-                  <div>
-                    <Goldstart />
-                  </div>
-                  <div className="text-xs items-center my-1 pl-2">4.75</div>
-                </div>
-
-                <div className="flex mt-5 justify-center mx-auto">
-                  <img src="/images/01-3-824x1f024.png" width={100} />
-                </div>
-                <div className="mt-1 flex items-end text-sm text-slate-700 p-1 text-center">
-                  محصول آزمایشی با حدود 2 خط متن یه کم طولانی
-                </div>
-
-                <div className="mt-9 flex gap-3">
-                  <div
-                    className="font-bold justify-start mx-auto ml-2 items-end my-auto"
-                    dir="ltr"
-                  >
-                    <div className="flex items-center my-auto gap-1">
-                      <div className="text-center bg-primary text-slate-100 rounded-xl p-1 w-10">
-                        14%
-                      </div>
-                      <div className="relative">
-                        <div className="absolute top-1 w-10 text-slate-950">
-                          <Lineonnum />
-                        </div>
-                        <div className="text-slate-400 text-sm">155000</div>
-                      </div>
-                    </div>
-
-                    <div dir="rtl">
-                      <span>125000</span> تومان
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="w-fit p-5 rounded-xl">
-            <div className="ml-0 border-2 rounded-3xl">
-              <div className="pr-4 pt-0 mr-0 pb-6">
-                <div className="flex justify-end ml-0 mx-auto">
-                  <Espesial />
-                </div>
-                <div className="flex bg-customGray w-fit p-1 rounded-lg gap-2">
-                  <div>
-                    <Goldstart />
-                  </div>
-                  <div className="text-xs items-center my-1 pl-2">4.75</div>
-                </div>
-
-                <div className="flex mt-5 justify-center mx-auto">
-                  <img src="/images/01-3-824x1024.png" width={100} />
-                </div>
-                <div className="mt-1 flex items-end text-sm text-slate-700 p-1 text-center">
-                  محصول آزمایشی با حدود 2 خط متن یه کم طولانی
-                </div>
-
-                <div className="mt-9 flex gap-3">
-                  <div
-                    className="font-bold justify-start mx-auto ml-2 items-end my-auto"
-                    dir="ltr"
-                  >
-                    <div className="flex items-center my-auto gap-1">
-                      <div className="text-center bg-primary text-slate-100 rounded-xl p-1 w-10">
-                        14%
-                      </div>
-                      <div className="relative">
-                        <div className="absolute top-1 w-10 text-slate-950">
-                          <Lineonnum />
-                        </div>
-                        <div className="text-slate-400 text-sm">155000</div>
-                      </div>
-                    </div>
-
-                    <div dir="rtl">
-                      <span>125000</span> تومان
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Slider slidesPerView={5}>
+          <ProductCard type="main" />
+          <ProductCard type="main" />
+          <ProductCard type="main" />
+          <ProductCard type="main" />
+          <ProductCard type="main" />
+          <ProductCard type="main" />
+          <ProductCard type="main" />
+          <ProductCard type="main" />
+        </Slider>
       </div>
     </>
   );
