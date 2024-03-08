@@ -39,16 +39,13 @@ export default function InventoriesDialouge({
             data={userVendors?.result}
             label="فروشگاه"
             onChange={(e) => {
-              setTempInventory({
-                ...tempInventory,
-                vendorId: e.id,
-              });
-              setTempInventory({
-                ...tempInventory,
+              setTempInventory((prevInventory) => ({
+                ...prevInventory,
+                vendorId: e.id !== null ? +e.id : null,
                 vendorName: e.name,
-              });
+              }));
 
-              setVendorId(e.id);
+              setVendorId(e.id !== null ? +e.id : null);
             }}
           />
         </div>
@@ -62,10 +59,7 @@ export default function InventoriesDialouge({
             onChange={(e) => {
               setTempInventory({
                 ...tempInventory,
-                vendorAddressId: e,
-              });
-              setTempInventory({
-                ...tempInventory,
+                vendorAddressId: e.id !== null ? +e.id : null,
                 VendorAddressName: e.name,
               });
             }}
@@ -80,10 +74,7 @@ export default function InventoriesDialouge({
             onChange={(e) => {
               setTempInventory({
                 ...tempInventory,
-                colorId: e,
-              });
-              setTempInventory({
-                ...tempInventory,
+                colorId: e.id !== null ? +e.id : null,
                 colorName: e.name,
               });
             }}
@@ -98,10 +89,7 @@ export default function InventoriesDialouge({
             onChange={(e) => {
               setTempInventory({
                 ...tempInventory,
-                guaranteeId: e,
-              });
-              setTempInventory({
-                ...tempInventory,
+                guaranteeId: e.id !== null ? +e.id : null,
                 guaranteeName: e.name,
               });
             }}
@@ -117,12 +105,10 @@ export default function InventoriesDialouge({
             onChange={(e) => {
               setTempInventory({
                 ...tempInventory,
-                onlyProvinceId: e,
-              });
-              setTempInventory({
-                ...tempInventory,
+                onlyProvinceId: e.id !== null ? +e.id : null,
                 onlyProvinceName: e.name,
               });
+              console.log(e.id !== null ? +e.id : null);
             }}
           />
         </div>
@@ -135,10 +121,7 @@ export default function InventoriesDialouge({
             onChange={(e) => {
               setTempInventory({
                 ...tempInventory,
-                guaranteeMonthId: e,
-              });
-              setTempInventory({
-                ...tempInventory,
+                guaranteeMonthId: e.id !== null ? +e.id : null,
                 guaranteeMonthName: e.name,
               });
             }}
@@ -147,6 +130,7 @@ export default function InventoriesDialouge({
         <div className="flex gap-4 mb-4">
           <div className="flex-1">
             <TextField
+              autoComplete="off"
               required
               id="standard-basic"
               label="تعداد"
@@ -154,13 +138,14 @@ export default function InventoriesDialouge({
               onChange={(e) =>
                 setTempInventory({
                   ...tempInventory,
-                  qty: e.target.value,
+                  qty: +e.target.value,
                 })
               }
             />
           </div>
           <div className="flex-1">
             <TextField
+              autoComplete="off"
               required
               id="standard-basic"
               label="قیمت خرید"
@@ -168,7 +153,7 @@ export default function InventoriesDialouge({
               onChange={(e) =>
                 setTempInventory({
                   ...tempInventory,
-                  buyPrice: e.target.value,
+                  buyPrice: +e.target.value,
                 })
               }
             />
@@ -177,6 +162,7 @@ export default function InventoriesDialouge({
         <div className="flex gap-4 mb-4" dir="rtl">
           <div className="flex-1">
             <TextField
+              autoComplete="off"
               required
               id="standard-basic"
               label="قیمت اقساطی"
@@ -184,13 +170,14 @@ export default function InventoriesDialouge({
               onChange={(e) =>
                 setTempInventory({
                   ...tempInventory,
-                  firstPrice: e.target.value,
+                  firstPrice: +e.target.value,
                 })
               }
             />
           </div>
           <div className="flex-1">
             <TextField
+              autoComplete="off"
               required
               id="standard-basic"
               label="قیمت نقدی"
@@ -199,11 +186,28 @@ export default function InventoriesDialouge({
               onChange={(e) =>
                 setTempInventory({
                   ...tempInventory,
-                  secondaryPrice: e.target.value,
+                  secondaryPrice: +e.target.value,
                 })
               }
             />
           </div>
+        </div>
+        <div className="mb-6">
+          <TextField
+            autoComplete="off"
+            required
+            fullWidth
+            id="standard-basic"
+            label="وزن"
+            nullable={true}
+            variant="standard"
+            onChange={(e) =>
+              setTempInventory({
+                ...tempInventory,
+                weight: +e.target.value,
+              })
+            }
+          />
         </div>
         <label
           htmlFor="message"
@@ -215,7 +219,7 @@ export default function InventoriesDialouge({
           onChange={(e) => {
             setTempInventory({
               ...tempInventory,
-              description: e.target.value,
+              description: +e.target.value,
             });
           }}
           id="message"

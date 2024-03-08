@@ -25,6 +25,7 @@ import Tab from "../_components/tabs/Tabs";
 
 export default function page() {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,39 +43,40 @@ export default function page() {
   const [isColoBased, setIsColoBased] = useState(false);
   const [attributes, setAttributes] = useState();
   const [openTab, setOpenTab] = useState(1);
+  const [description, setDescription] = useState("");
   const [requestBody, setRequestBody] = useState({
     title: "",
     slug: "",
     entityTypeId: "",
     publishStatusId: "",
     brandId: "",
-    description: "",
+    description: description,
     colorBased: true,
-    photos: [],
+    photos: photos,
     attributes: [],
     inventories: [],
   });
   const [inventories, setInventories] = useState([]);
   const [tempInventory, setTempInventory] = useState({
-    id: 0,
-    vendorId: 0,
+    id: "",
+    vendorId: "",
     vendorName: "",
-    colorId: 0,
+    colorId: "",
     colorName: "",
-    guaranteeId: 0,
+    guaranteeId: "",
     guaranteeName: "",
-    guaranteeMonthId: 0,
+    guaranteeMonthId: "",
+    weight: "",
     guaranteeMonthName: "",
-    buyPrice: 0,
-    onlyProvinceId: 0,
+    buyPrice: "",
+    onlyProvinceId: "",
     onlyProvinceName: "",
-    qty: 0,
-    vendorAddressId: 0,
+    qty: "",
+    vendorAddressId: "",
     VendorAddressName: "",
-    weight: 0,
-    description: "string",
-    firstPrice: 0,
-    secondaryPrice: 0,
+    description: "",
+    firstPrice: "",
+    secondaryPrice: "",
   });
 
   useEffect(() => {
@@ -196,12 +198,19 @@ export default function page() {
     });
   };
 
+  useEffect(() => {
+    console.log(tempInventory);
+  }, [tempInventory]);
+
   const handleAttributeChange = (id, value) => {
-    console.log(id, value);
+    console.log(id, value.id);
+
+    // Determine the type of value
+    const actualValue = value.id !== undefined ? value.id : value;
 
     // Convert both id and attribute.id to strings for comparison
     const existingAttribute = requestBody.attributes.find(
-      (attr) => String(attr.id) === String(id)
+      (attr) => Number(attr.id) === Number(id)
     );
     console.log(existingAttribute);
 
@@ -209,13 +218,13 @@ export default function page() {
       setRequestBody((prevState) => ({
         ...prevState,
         attributes: prevState.attributes.map((attr) =>
-          String(attr.id) === String(id) ? { ...attr, val: value } : attr
+          Number(attr.id) === Number(id) ? { ...attr, val: actualValue } : attr
         ),
       }));
     } else {
       setRequestBody((prevState) => ({
         ...prevState,
-        attributes: [...prevState.attributes, { id, val: value }],
+        attributes: [...prevState.attributes, { id: +id, val: actualValue }],
       }));
     }
   };
@@ -233,7 +242,7 @@ export default function page() {
       onlyProvinceName,
       ...cleanedTempInventory
     } = tempInventory;
-
+    console.log(cleanedTempInventory);
     setRequestBody((prevState) => ({
       ...prevState,
       inventories: [...prevState.inventories, cleanedTempInventory],
@@ -242,25 +251,36 @@ export default function page() {
     setTempInventory({});
     setOpen(false);
   };
+  useEffect(() => {
+    setRequestBody((prevState) => ({
+      ...prevState,
+      photos: photos,
+    }));
+  }, [photos]);
 
-  // const saveBrand = async () => {
-  //   try {
-  //     const req = await fetcher({
-  //       url: "/v1/api/ecommerce/brands",
-  //       method: "POST",
-  //       body: {
-  //         name,
-  //         slug,
-  //       },
-  //     });
-  //     toast.success("موفق");
-  //     setTimeout(() => {
-  //       router.push("/admin/ecommerce/brands");
-  //     }, 2000);
-  //   } catch (error) {
-  //     toast.error(error.message);
-  //   }
-  // };
+  useEffect(() => {
+    setRequestBody((prevState) => ({
+      ...prevState,
+      description: description, // Update the description in requestBody
+    }));
+  }, [description]);
+
+  const saveProduct = async () => {
+    console.log(requestBody);
+    try {
+      const req = await fetcher({
+        url: "/v1/api/ecommerce/admin/products",
+        method: "POST",
+        body: requestBody,
+      });
+      toast.success("موفق");
+      setTimeout(() => {
+        router.push("/admin/ecommerce/products");
+      }, 2000);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div className="grid grid-cols-4 gap-4">
       <div className="flex gap-4 col-span-3 flex-wrap">
@@ -398,7 +418,7 @@ export default function page() {
                                 );
                               }
                             })
-                          : "loading"}
+                          : "در حال بارگزاری"}
                       </div>
                       <div
                         className={openTab === 2 ? "block" : "hidden"}
@@ -444,7 +464,10 @@ export default function page() {
                         className={openTab === 3 ? "block" : "hidden"}
                         id="link3"
                       >
-                        <SeoBox />
+                        <SeoBox
+                          setDescription={setDescription}
+                          description={description}
+                        />
                       </div>
                     </div>
                   </div>
@@ -459,7 +482,7 @@ export default function page() {
         <ProductUploader setPhotos={setPhotos} photos={photos} />
 
         <button
-          onClick={(e) => console.log(requestBody)}
+          onClick={saveProduct}
           className="bg-blue-700 w-full mt-6 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
         >
           ساخت محصول

@@ -84,7 +84,7 @@ const Uploader: React.FC<UploaderProps> = ({
             ...prev,
             {
               fileName: result.result.fileName,
-              id: result.result.id,
+              id: +result.result.id,
             },
           ]);
         } else {

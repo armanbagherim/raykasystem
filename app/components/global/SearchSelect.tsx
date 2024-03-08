@@ -56,10 +56,6 @@ export default function SearchSelect({
   // Determine the initial value to be the first item in the options array
   // If the component is controlled and a value is provided, use that value
 
-  const initialValue = value
-    ? options.find((option) => option.id === value)
-    : options[0];
-
   return (
     <div className="flex-1">
       <Autocomplete
@@ -73,7 +69,6 @@ export default function SearchSelect({
           onChange(newValue ? newValue : null);
         }}
         // Set the initial value to the first item in the options array
-        defaultValue={initialValue}
       />
     </div>
   );
