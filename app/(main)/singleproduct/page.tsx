@@ -29,6 +29,8 @@ import {
 } from "@/app/components/design/Icons";
 import ProductCard from "@/app/components/design/Cards/ProductCard/ProductCard";
 import Slider from "@/app/components/design/Slider";
+import { BigAddToCart } from "@/app/components/design/Cards/ProductCard/Button/BigAddToCart";
+import { SmallAddToCart } from "@/app/components/design/Cards/ProductCard/Button/SmallAddToCart";
 
 const SingleProduct = () => {
   return (
@@ -266,12 +268,7 @@ const SingleProduct = () => {
               </div>
             </div>
             <div className="text-center mx-auto">
-              <button className="bg-primary text-white p-4 w-full rounded-3xl items-center flex-row flex justify-center">
-                <span className="ml-4">
-                  <Cart />
-                </span>
-                افزودن به سبد خرید
-              </button>
+              <BigAddToCart />
             </div>
           </div>
         </div>
@@ -291,16 +288,10 @@ const SingleProduct = () => {
             </div>
             <div className="flex gap-10 text-center mx-auto ml-1">
               <div className="items-center my-auto">125000 تومان</div>
-              <button className="bg-primary text-slate-100 p-3 text-sm rounded-2xl items-center my-auto">
-                <div className="flex gap-3">
-                  <div>
-                    <Cart />
-                  </div>
-                  <div className="items-center my-auto justify-start ml-0 mx-auto">
-                    <div>افزودن به سبد خرید</div>
-                  </div>
-                </div>
-              </button>
+              <div>
+                <SmallAddToCart/>
+              </div>
+
             </div>
           </div>
         </div>
@@ -316,16 +307,9 @@ const SingleProduct = () => {
             </div> */}
             <div className="flex gap-10 text-center mx-auto ml-1">
               <div className="items-center my-auto">125000 تومان</div>
-              <button className="bg-primary text-slate-100 p-3 text-sm rounded-2xl items-center my-auto">
-                <div className="flex gap-3">
-                  <div>
-                    <Cart />
-                  </div>
-                  <div className="items-center my-auto justify-start ml-0 mx-auto">
-                    <div>افزودن به سبد خرید</div>
-                  </div>
-                </div>
-              </button>
+              <div>
+                <SmallAddToCart/>
+              </div>
             </div>
           </div>
         </div>
@@ -341,16 +325,9 @@ const SingleProduct = () => {
             </div>
             <div className="flex gap-10 text-center mx-auto ml-1">
               <div className="items-center my-auto">125000 تومان</div>
-              <button className="bg-primary text-slate-100 p-3 text-sm rounded-2xl items-center my-auto">
-                <div className="flex gap-3">
-                  <div>
-                    <Cart />
-                  </div>
-                  <div className="items-center my-auto justify-start ml-0 mx-auto">
-                    <div>افزودن به سبد خرید</div>
-                  </div>
-                </div>
-              </button>
+              <div>
+                <SmallAddToCart/>
+              </div>
             </div>
           </div>
         </div>
