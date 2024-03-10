@@ -21,6 +21,7 @@ import NestedSelect from "../_components/NestedSelect";
 import GenericInput from "../_components/GenericInput";
 import DataGridLite from "../_components/inventories/Datagrid";
 import InventoriesDialouge from "../_components/inventories/InventoriesDialouge";
+
 import Tab from "../_components/tabs/Tabs";
 
 export default function page() {
