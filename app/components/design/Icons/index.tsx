@@ -751,3 +751,49 @@ export const ChevronLeft = () => {
     </svg>
   );
 };
+
+export const PlusBig = () => {
+  return (
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 15H20" stroke="#20AC73" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M15 20V10" stroke="#20AC73" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M11.25 27.5H18.75C25 27.5 27.5 25 27.5 18.75V11.25C27.5 5 25 2.5 18.75 2.5H11.25C5 2.5 2.5 5 2.5 11.25V18.75C2.5 25 5 27.5 11.25 27.5Z" stroke="#20AC73" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  )
+}
+
+export const PlusSmall = () => {
+  return (
+    <>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 9H12" stroke="#20AC73" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M9 12V6" stroke="#20AC73" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M6.75 16.5H11.25C15 16.5 16.5 15 16.5 11.25V6.75C16.5 3 15 1.5 11.25 1.5H6.75C3 1.5 1.5 3 1.5 6.75V11.25C1.5 15 3 16.5 6.75 16.5Z" stroke="#20AC73" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </>
+  )
+}
+
+export const Minus = () => {
+  return (
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 15H20" stroke="#DC3545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M11.25 27.5H18.75C25 27.5 27.5 25 27.5 18.75V11.25C27.5 5 25 2.5 18.75 2.5H11.25C5 2.5 2.5 5 2.5 11.25V18.75C2.5 25 5 27.5 11.25 27.5Z" stroke="#DC3545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+
+  )
+}
+
+export const Trash = () => {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10.1041 27.0117H17.9076C24.4105 27.0117 27.0117 24.4105 27.0117 17.9076V10.1041C27.0117 3.60117 24.4105 1 17.9076 1H10.1041C3.60117 1 1 3.60117 1 10.1041V17.9076C1 24.4105 3.60117 27.0117 10.1041 27.0117Z" stroke="#DC3545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M20.2024 9.34427C17.9096 9.11705 15.6029 9 13.3032 9C11.9399 9 10.5765 9.06885 9.21323 9.20656L7.80859 9.34427" stroke="#DC3545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M11.5938 8.04466L11.7452 7.14281C11.8554 6.48879 11.938 6 13.1014 6H14.9051C16.0686 6 16.1581 6.51633 16.2614 7.14969L16.4128 8.04466" stroke="#DC3545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M18.7221 11.9163L18.2746 18.8499C18.1988 19.9309 18.1369 20.771 16.2158 20.771H11.7954C9.87433 20.771 9.81236 19.9309 9.73662 18.8499L9.28906 11.9163" stroke="#DC3545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M12.8555 16.9839H15.1483" stroke="#DC3545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M12.2812 14.2297H15.7234" stroke="#DC3545" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+
+  )
+}
