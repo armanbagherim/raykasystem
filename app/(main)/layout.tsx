@@ -16,42 +16,42 @@ export const metadata: Metadata = {
 const IRANSansX = localFont({
   src: [
     {
-      path: "./../assets/IRANSansX/IRANSansX-Thin.woff2",
+      path: "./../assets/IRANSansX/IRANSansXFaNum-Thin.woff2",
       weight: "100",
       style: "normal",
     },
     {
-      path: "./../assets/IRANSansX/IRANSansX-Light.woff2",
+      path: "./../assets/IRANSansX/IRANSansXFaNum-Light.woff2",
       weight: "200",
       style: "normal",
     },
     {
-      path: "./../assets/IRANSansX/IRANSansX-UltraLight.woff2",
+      path: "./../assets/IRANSansX/IRANSansXFaNum-UltraLight.woff2",
       weight: "300",
       style: "normal",
     },
     {
-      path: "./../assets/IRANSansX/IRANSansX-Medium.woff2",
+      path: "./../assets/IRANSansX/IRANSansXFaNum-Medium.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./../assets/IRANSansX/IRANSansX-Light.woff2",
+      path: "./../assets/IRANSansX/IRANSansXFaNum-Light.woff2",
       weight: "500",
       style: "normal",
     },
     {
-      path: "./../assets/IRANSansX/IRANSansX-Bold.woff2",
+      path: "./../assets/IRANSansX/IRANSansXFaNum-Bold.woff2",
       weight: "600",
       style: "normal",
     },
     {
-      path: "./../assets/IRANSansX/IRANSansX-ExtraBold.woff2",
+      path: "./../assets/IRANSansX/IRANSansXFaNum-ExtraBold.woff2",
       weight: "700",
       style: "normal",
     },
     {
-      path: "./../assets/IRANSansX/IRANSansX-Black.woff2",
+      path: "./../assets/IRANSansX/IRANSansXFaNum-Black.woff2",
       weight: "800",
       style: "normal",
     },

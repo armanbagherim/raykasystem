@@ -10,9 +10,9 @@ export default function MainCard() {
         <div className="flex flex-col justify-between w-full">
           <h3 className="mb-2">محصول آزمایشی با حدود 2 خط متن یه کم طولانی</h3>
           <div className="flex mt-2 mb-6">
-            <VariantsCard isSelected={false} color="#753e1a" name="قرمز" />
-            <VariantsCard isSelected={false} color="#30739a" name="زرد" />
-            <VariantsCard isSelected={false} color="#b6b6b6" name="سبز" />
+            <VariantsCard isSelected={false} color="#753e1a"   name="قرمز" />
+            <VariantsCard isSelected={false} color="#30739a"   name="زرد" />
+            <VariantsCard isSelected={false} color="#b6b6b6"   name="سبز" />
             <VariantsCard isSelected={false} color="#ffeb9ce2" name="کرم" />
           </div>
           <div className="flex flex-row justify-between items-center">
