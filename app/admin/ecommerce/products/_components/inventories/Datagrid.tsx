@@ -8,31 +8,55 @@ export default function DataGridLite({ data }) {
       field: "vendorName",
       headerName: "نام فروشگاه",
       width: 100,
+      valueGetter({ row }) {
+        return !row.vendorName ? row.vendor.name : row.vendorName;
+      },
     },
     {
       field: "VendorAddressName",
       headerName: "نام آدرس",
       width: 100,
+      valueGetter({ row }) {
+        return !row.VendorAddressName
+          ? row.vendorAddress.address.name
+          : row.VendorAddressName;
+      },
     },
     {
       field: "colorName",
       headerName: "رنگ",
       width: 100,
+      valueGetter({ row }) {
+        return !row.colorName ? row.color.name : row.colorName;
+      },
     },
     {
       field: "guaranteeName",
       headerName: "نام گارانتی",
       width: 100,
+      valueGetter({ row }) {
+        return !row.guaranteeName ? row.guarantee.name : row.guaranteeName;
+      },
     },
     {
       field: "guaranteeMonthName",
       headerName: "تعداد ماه گارانتی",
       width: 100,
+      valueGetter({ row }) {
+        return !row.guaranteeMonthName
+          ? row.guaranteeMonth.name
+          : row.guaranteeMonthName;
+      },
     },
     {
       field: "onlyProvinceName",
       headerName: "استان فروش",
       width: 100,
+      valueGetter({ row }) {
+        return !row.onlyProvinceName
+          ? row.onlyProvince.name
+          : row.onlyProvinceName;
+      },
     },
 
     {
@@ -43,18 +67,29 @@ export default function DataGridLite({ data }) {
 
     {
       field: "firstPrice",
-      headerName: "قیمت نقدی",
+      headerName: "قیمت اقساطی",
       width: 100,
+      valueGetter({ row }) {
+        return row.firstPrice.price ? row.firstPrice.price : row.firstPrice;
+      },
     },
     {
       field: "secondaryPrice",
-      headerName: "قیمت اقساط",
+      headerName: "قیمت نقدی",
       width: 100,
+      valueGetter({ row }) {
+        return row.secondaryPrice.price
+          ? row.secondaryPrice.price
+          : row.secondaryPrice;
+      },
     },
     {
       field: "buyPrice",
       headerName: "قیمت خرید",
       width: 100,
+      valueGetter({ row }) {
+        return !row.buyPrice ? row.buyPrice : row.buyPrice;
+      },
     },
 
     {

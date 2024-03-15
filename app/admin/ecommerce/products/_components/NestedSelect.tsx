@@ -1,12 +1,16 @@
 import React from "react";
 
-const NestedSelect = ({ data, onChange, depth = 0 }) => {
+const NestedSelect = ({ data, selected, onChange, depth = 0 }) => {
   const renderOptions = (items, depth) => {
     return items.map((item, index) => {
       const prefix = "--".repeat(depth);
       return (
         <>
-          <option key={item.id} value={item.id}>
+          <option
+            selected={selected === item.id ? "selected" : ""}
+            key={item.id}
+            value={item.id}
+          >
             {prefix + item.name}
           </option>
           {item.subEntityTypes && renderOptions(item.subEntityTypes, depth + 1)}
