@@ -4,10 +4,16 @@
 .MuiDataGrid-root,
 .MuiButton-root,
 .MuiFormControl-root *,
-.base-Popper-root * {
+.base-Popper-root *,
+.MuiPaper-root * {
   font-family: inherit !important;
 }
 
+.textGradiant {
+  background: -webkit-linear-gradient(#333, #eee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .swiper-button-prev:after {
   display: none;
 }

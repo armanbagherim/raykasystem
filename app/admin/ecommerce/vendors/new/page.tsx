@@ -14,7 +14,7 @@ export default function page() {
     slug: "",
     address: "",
     description: "",
-    priorityOrder: 0,
+    priorityOrder: 1,
     user: {
       firstname: "",
       lastname: "",
