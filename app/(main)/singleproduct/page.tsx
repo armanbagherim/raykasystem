@@ -31,6 +31,7 @@ import ProductCard from "@/app/components/design/Cards/ProductCard/ProductCard";
 import Slider from "@/app/components/design/Slider";
 import { BigAddToCart } from "@/app/components/design/Cards/ProductCard/Button/BigAddToCart";
 import { SmallAddToCart } from "@/app/components/design/Cards/ProductCard/Button/SmallAddToCart";
+import Numberpaginate from "@/app/components/design/Slider/Numberpaginate";
 
 const SingleProduct = () => {
   return (
@@ -855,22 +856,8 @@ const SingleProduct = () => {
             </div>
           </div>
         </div>
-        <div className="flex mt-3 justify-start mx-auto gap-2" dir="ltr">
-          <div>
-            <button className="bg-[#B8B8B8] p-2 text-white pl-5 pr-5 rounded-lg hover:bg-slate-600 text-2xl">
-              1
-            </button>
-          </div>
-          <div>
-            <button className="bg-[#B8B8B8] p-2 text-white pl-5 pr-5 rounded-lg hover:bg-slate-600 text-2xl">
-              2
-            </button>
-          </div>
-          <div>
-            <button className="bg-primary p-2 text-white pl-5 pr-5 rounded-lg hover:bg-slate-600 text-2xl">
-              3
-            </button>
-          </div>
+        <div>
+          <Numberpaginate></Numberpaginate>
         </div>
       </div>
       <div className="relative container mx-auto mt-8 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-8">
