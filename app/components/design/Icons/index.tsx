@@ -1040,26 +1040,105 @@ export const Minussquare = () => {
 export const Addsquare = () => {
   return (
     <>
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6.66602 10H13.3327" stroke="black" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M10 13.3334V6.66675" stroke="black" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M7.49935 18.3334H12.4993C16.666 18.3334 18.3327 16.6667 18.3327 12.5001V7.50008C18.3327 3.33341 16.666 1.66675 12.4993 1.66675H7.49935C3.33268 1.66675 1.66602 3.33341 1.66602 7.50008V12.5001C1.66602 16.6667 3.33268 18.3334 7.49935 18.3334Z" stroke="black" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M6.66602 10H13.3327"
+          stroke="black"
+          stroke-opacity="0.7"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M10 13.3334V6.66675"
+          stroke="black"
+          stroke-opacity="0.7"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M7.49935 18.3334H12.4993C16.666 18.3334 18.3327 16.6667 18.3327 12.5001V7.50008C18.3327 3.33341 16.666 1.66675 12.4993 1.66675H7.49935C3.33268 1.66675 1.66602 3.33341 1.66602 7.50008V12.5001C1.66602 16.6667 3.33268 18.3334 7.49935 18.3334Z"
+          stroke="black"
+          stroke-opacity="0.7"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
       </svg>
-
     </>
-  )
-}
+  );
+};
 
 export const Sorticon = () => {
   return (
     <>
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 7H21" stroke="black" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round" />
-        <path d="M6 12H18" stroke="black" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round" />
-        <path d="M10 17H14" stroke="black" stroke-opacity="0.7" stroke-width="1.5" stroke-linecap="round" />
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M3 7H21"
+          stroke="black"
+          stroke-opacity="0.7"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        />
+        <path
+          d="M6 12H18"
+          stroke="black"
+          stroke-opacity="0.7"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        />
+        <path
+          d="M10 17H14"
+          stroke="black"
+          stroke-opacity="0.7"
+          stroke-width="1.5"
+          stroke-linecap="round"
+        />
       </svg>
-
     </>
-  )
-}
+  );
+};
 
+export const Searchicon = () => {
+  return (
+    <>
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M9.16601 16.6665C13.3082 16.6665 16.666 13.3086 16.666 9.1665C16.666 5.02437 13.3082 1.6665 9.16601 1.6665C5.02388 1.6665 1.66602 5.02437 1.66602 9.1665C1.66602 13.3086 5.02388 16.6665 9.16601 16.6665Z"
+          stroke="black"
+          stroke-opacity="0.7"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M15.775 17.2413C16.2167 18.5747 17.225 18.708 18 17.5413C18.7083 16.4747 18.2417 15.5997 16.9583 15.5997C16.0084 15.5913 15.475 16.333 15.775 17.2413Z"
+          stroke="black"
+          stroke-opacity="0.7"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </>
+  );
+};
