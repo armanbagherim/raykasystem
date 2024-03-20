@@ -10,29 +10,17 @@
 }
 
 ::-webkit-scrollbar {
-  width: 5px; /* عرض نوار اسکرول */
+  width: 5px; 
 }
 
 ::-webkit-scrollbar-track {
-  background: #ECECEC; /* رنگ پس زمینه نوار اسکرول */
+  background: #ECECEC;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #20AC73; /* رنگ نوار اسکرول */
+  background: #20AC73;
   border-radius: 25px;
 }
-
-// #range::-webkit-slider-thumb {
-//   background: #20AC73; /* رنگ اسلایدر */
-// }
-
-// #range::-webkit-slider-runnable-track {
-//   background: #f1f1f1; /* رنگ پس زمینه اسلایدر */
-// }
-
-
-
-
 
 .textGradiant {
   background: -webkit-linear-gradient(#333, #eee);
