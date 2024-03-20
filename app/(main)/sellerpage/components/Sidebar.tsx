@@ -43,7 +43,7 @@ const Sidebar = () => {
             </span>
           </div>
           {IsBrandOpen && (
-            <div className="pl-5 overflow-y-scroll max-h-52 mt-5 font-normal text-md">
+            <div className="pl-5 overflow-y-scroll max-h-52 mt-5 ml-4 font-normal text-md">
               <div className="p-4 grid grid-cols-2">
                 <span className="col-span-1">نسپرسو</span>
                 <span className="col-span-1 flex justify-end">
@@ -105,13 +105,13 @@ const Sidebar = () => {
                     </span>
                   </div>
                 </div>
-                <input
+                <input id="range"
                   dir="ltr"
                   className="w-full"
                   type="range"
                   min="2550000"
                   max="2850000"
-                ></input>
+                />
                 <div className="grid grid-cols-2 text-xs text-slate-500">
                   <div className="flex justify-start">ارزان ترین</div>
                   <div className="flex justify-end">گران ترین</div>

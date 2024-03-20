@@ -9,6 +9,31 @@
   font-family: inherit !important;
 }
 
+::-webkit-scrollbar {
+  width: 5px; /* عرض نوار اسکرول */
+}
+
+::-webkit-scrollbar-track {
+  background: #ECECEC; /* رنگ پس زمینه نوار اسکرول */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #20AC73; /* رنگ نوار اسکرول */
+  border-radius: 25px;
+}
+
+// #range::-webkit-slider-thumb {
+//   background: #20AC73; /* رنگ اسلایدر */
+// }
+
+// #range::-webkit-slider-runnable-track {
+//   background: #f1f1f1; /* رنگ پس زمینه اسلایدر */
+// }
+
+
+
+
+
 .textGradiant {
   background: -webkit-linear-gradient(#333, #eee);
   -webkit-background-clip: text;
