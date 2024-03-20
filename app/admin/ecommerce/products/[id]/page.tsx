@@ -23,14 +23,16 @@ import DataGridLite from "../_components/inventories/Datagrid";
 import InventoriesDialouge from "../_components/inventories/InventoriesDialouge";
 
 import Tab from "../_components/tabs/Tabs";
+import Loading from "@/app/components/global/loading";
 
 export default function page({ params }) {
   const { id } = params;
   const [open, setOpen] = useState(false);
   const router = useRouter();
-
-  const handleClickOpen = () => {
+  const [activeSpace, setActiveSpace] = useState();
+  const handleClickOpen = (id) => {
     setOpen(true);
+    setActiveSpace(id);
   };
 
   const handleClose = () => {
@@ -60,27 +62,6 @@ export default function page({ params }) {
     inventories: [],
   });
   const [inventories, setInventories] = useState([]);
-  const [tempInventory, setTempInventory] = useState({
-    id: "",
-    vendorId: "",
-    vendorName: "",
-    colorId: "",
-    colorName: "",
-    guaranteeId: "",
-    guaranteeName: "",
-    guaranteeMonthId: "",
-    weight: "",
-    guaranteeMonthName: "",
-    buyPrice: "",
-    onlyProvinceId: "",
-    onlyProvinceName: "",
-    qty: "",
-    vendorAddressId: "",
-    VendorAddressName: "",
-    description: "",
-    firstPrice: "",
-    secondaryPrice: "",
-  });
 
   useEffect(() => {
     setTitle({
@@ -101,6 +82,23 @@ export default function page({ params }) {
       setInventories(product.result.inventories);
       setEntityTypeId(product.result.entityTypeId);
       setSelectedEav(product.result.entityType.id);
+      setRequestBody({
+        ...requestBody,
+        brandId: product.result.brandId,
+        publishStatusId: product.result.publishStatus.id,
+      });
+      const attrs = product.result.productAttributeValues.map((attrValues) => {
+        let id = attrValues.attributeId;
+        let value = {
+          id: attrValues.attributeValue
+            ? attrValues.attributeValue.id
+            : attrValues.val,
+        };
+
+        handleAttributeChange(id, value);
+      });
+
+      defaultInventories(product.result.inventories);
     }
   }, [product]);
 
@@ -176,21 +174,6 @@ export default function page({ params }) {
     error: guaranteeMonthError,
   } = useFetcher(`/v1/api/ecommerce/guaranteeMonths`, "GET");
 
-  useEffect(() => {
-    if (!parentEntityTypesIsLoading) {
-      setEntityTypeId(parentEntityTypes.result[0].id);
-      fetchAttributes(parentEntityTypes.result[0].id);
-      setRequestBody({
-        ...requestBody,
-        entityTypeId: parentEntityTypes.result[0].id,
-      });
-    }
-  }, [parentEntityTypesIsLoading]);
-
-  useEffect(() => {
-    if (entityTypeId) fetchAttributes(entityTypeId);
-  }, [entityTypeId]);
-
   const {
     data: publishStatuses,
     isLoading: publishStatusesIsLoading,
@@ -216,8 +199,8 @@ export default function page({ params }) {
   };
 
   useEffect(() => {
-    console.log(tempInventory);
-  }, [tempInventory]);
+    if (entityTypeId) fetchAttributes(entityTypeId);
+  }, [entityTypeId]);
 
   const handleAttributeChange = (id, value) => {
     console.log(id, value.id);
@@ -246,8 +229,9 @@ export default function page({ params }) {
     }
   };
 
-  const handleInventoryCreate = () => {
-    setInventories((prevState) => [...prevState, tempInventory]);
+  const handleInventoryCreate = (data) => {
+    console.log(data);
+    setInventories((prevState) => [...prevState, data]);
 
     const {
       id,
@@ -258,16 +242,46 @@ export default function page({ params }) {
       guaranteeName,
       onlyProvinceName,
       ...cleanedTempInventory
-    } = tempInventory;
-    console.log(cleanedTempInventory);
+    } = data;
+
     setRequestBody((prevState) => ({
       ...prevState,
       inventories: [...prevState.inventories, cleanedTempInventory],
     }));
 
-    setTempInventory({});
     setOpen(false);
   };
+
+  const removeInventory = (id) => {};
+
+  const inventoryEdit = (id, data) => {};
+
+  const defaultInventories = (data) => {
+    if (data) {
+      const dataArray = data.map((value) => ({
+        id: value.id,
+        vendorId: value.vendorId,
+        colorId: value.colorId,
+        guaranteeId: value.guaranteeId,
+        guaranteeMonthId: value.guaranteeMonthId,
+        weight: value.weight,
+        buyPrice: value.buyPrice,
+        onlyProvinceId: value.onlyProvinceId,
+        qty: value.qty,
+        vendorAddressId: value.vendorAddressId,
+        description: value.description,
+        firstPrice: value.firstPrice.price,
+        secondaryPrice: value.secondaryPrice.price,
+      }));
+      console.log("dataArray: ", dataArray);
+      // Assuming you want to add all items from dataArray to inventories
+      setRequestBody((prevState) => ({
+        ...prevState,
+        inventories: [...prevState.inventories, ...dataArray],
+      }));
+    }
+  };
+
   useEffect(() => {
     setRequestBody((prevState) => ({
       ...prevState,
@@ -298,6 +312,14 @@ export default function page({ params }) {
       toast.error(error.message);
     }
   };
+  const defaultValueChecker = (value) => {
+    let items = requestBody.attributes.filter((item) => item.id === +value.id);
+    return items[0]?.val;
+  };
+
+  if (!attributes) {
+    return <Loading />;
+  }
   return (
     <div className="grid grid-cols-4 gap-4">
       <div className="flex gap-4 col-span-3 flex-wrap">
@@ -327,12 +349,14 @@ export default function page({ params }) {
           loadingState={brandsIsLoading}
           data={brands?.result}
           label="برند"
+          defaultValue={requestBody.brandId}
           onChange={(e) => setRequestBody({ ...requestBody, brandId: e.id })}
         />
         <SelectSearch
           loadingState={publishStatusesIsLoading}
           data={publishStatuses?.result}
           label="وضعیت انتشار"
+          defaultValue={requestBody.publishStatusId}
           onChange={(e) =>
             setRequestBody({ ...requestBody, publishStatusId: e.id })
           }
@@ -426,10 +450,12 @@ export default function page({ params }) {
                                   <GenericInput
                                     key={index}
                                     type={valueType}
+                                    defaultValue={defaultValueChecker(value)}
                                     value={value.val}
-                                    onChange={(e) =>
-                                      handleAttributeChange(value.id, e)
-                                    }
+                                    onChange={(e) => {
+                                      handleAttributeChange(value.id, e);
+                                      console.log(value.id, e);
+                                    }}
                                     options={options}
                                     label={label}
                                   />
@@ -447,25 +473,23 @@ export default function page({ params }) {
                           fullWidth
                           variant="contained"
                           onClick={(e) => {
-                            setTempInventory({
-                              ...tempInventory,
-                              id: Math.random(),
-                            });
                             handleClickOpen();
                           }}
                         >
                           افزودن موجودی جدید
                         </Button>
-                        <DataGridLite data={inventories} />
+                        <DataGridLite
+                          handleClickOpen={handleClickOpen}
+                          data={inventories}
+                          removeInventory={removeInventory}
+                        />
                         <InventoriesDialouge
                           colors={colors}
                           colorsIsLoading={colorsIsLoading}
                           handleClose={handleClose}
                           setVendorId={setVendorId}
-                          setTempInventory={setTempInventory}
                           guaranteeMonthIsLoading={guaranteeMonthIsLoading}
                           vendorAddresses={vendorAddresses}
-                          tempInventory={tempInventory}
                           userVendors={userVendors}
                           userVendorsIsLoading={userVendorsIsLoading}
                           guarantees={guarantees}
@@ -476,6 +500,8 @@ export default function page({ params }) {
                           setOpen={setOpen}
                           guaranteeMonth={guaranteeMonth}
                           open={open}
+                          product={product.result}
+                          activeSpace={activeSpace}
                         />
                       </div>
                       <div
@@ -500,7 +526,7 @@ export default function page({ params }) {
         <ProductUploader setPhotos={setPhotos} photos={photos} />
 
         <button
-          onClick={saveProduct}
+          onClick={(e) => console.log(requestBody)}
           className="bg-blue-700 w-full mt-6 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
         >
           ساخت محصول

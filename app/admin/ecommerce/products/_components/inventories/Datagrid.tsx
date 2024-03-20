@@ -2,14 +2,22 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
-export default function DataGridLite({ data }) {
+export default function DataGridLite({
+  data,
+  handleClickOpen,
+  removeInventory,
+}) {
   const columns: GridColDef[] = [
+    {
+      field: "id",
+      headerName: "id",
+    },
     {
       field: "vendorName",
       headerName: "نام فروشگاه",
       width: 100,
       valueGetter({ row }) {
-        return !row.vendorName ? row.vendor.name : row.vendorName;
+        console.log(row);
       },
     },
     {
@@ -96,24 +104,23 @@ export default function DataGridLite({ data }) {
       field: "Actions",
       headerName: "عملیات",
       width: 200,
-      renderCell: (row) => (
+      renderCell: ({ row }) => (
         <>
-          <a href={`/admin/eav/entityTypes/edit/${row.id}`}>
-            <button
-              type="button"
-              className="ml-4 focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-            >
-              ویرایش
-            </button>
-          </a>
-          <a onClick={(e) => console.log(row.id)}>
-            <button
-              type="button"
-              className="ml-4 focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-            >
-              حذف
-            </button>
-          </a>
+          <button
+            type="button"
+            className="ml-4 focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+            onClick={(e) => handleClickOpen(row.id)}
+          >
+            ویرایش
+          </button>
+
+          <button
+            type="button"
+            className="ml-4 focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+            onClick={(e) => removeInventory(row.id)}
+          >
+            حذف
+          </button>
         </>
       ),
     },

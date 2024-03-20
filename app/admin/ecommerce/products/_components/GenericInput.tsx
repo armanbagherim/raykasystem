@@ -1,7 +1,14 @@
 import { TextField } from "@mui/material";
 import SelectSearch from "@/app/components/global/SearchSelect";
 
-const GenericInput = ({ type, value, onChange, options, label }) => {
+const GenericInput = ({
+  type,
+  value,
+  onChange,
+  options,
+  label,
+  defaultValue,
+}) => {
   if (type === "select") {
     return (
       <SelectSearch
@@ -10,6 +17,7 @@ const GenericInput = ({ type, value, onChange, options, label }) => {
         data={options}
         onChange={onChange}
         label={label}
+        defaultValue={defaultValue}
       />
     );
   } else if (type === "text") {
@@ -24,7 +32,7 @@ const GenericInput = ({ type, value, onChange, options, label }) => {
           label={label}
           variant="standard"
           fullWidth
-          value={value}
+          value={defaultValue}
         />
       </div>
     );
