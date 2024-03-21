@@ -74,7 +74,6 @@ export default function page() {
     onlyProvinceName: "",
     qty: "",
     vendorAddressId: "",
-    VendorAddressName: "",
     description: "",
     firstPrice: "",
     secondaryPrice: "",
@@ -236,7 +235,7 @@ export default function page() {
     const {
       id,
       vendorName,
-      VendorAddressName,
+      vendorAddressName,
       colorName,
       guaranteeMonthName,
       guaranteeName,

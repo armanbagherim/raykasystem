@@ -32,7 +32,7 @@ export default function page({ params }) {
   const [activeSpace, setActiveSpace] = useState();
   const handleClickOpen = (id) => {
     setOpen(true);
-    setActiveSpace(id);
+    setActiveSpace(id ? id : null);
   };
 
   const handleClose = () => {
@@ -62,6 +62,7 @@ export default function page({ params }) {
     inventories: [],
   });
   const [inventories, setInventories] = useState([]);
+  const [tempInventories, setTempInventories] = useState([]);
 
   useEffect(() => {
     setTitle({
@@ -80,6 +81,34 @@ export default function page({ params }) {
   useEffect(() => {
     if (!productIsLoading) {
       setInventories(product.result.inventories);
+
+      const inventories = product.result.inventories.map((value) => {
+        return {
+          id: value ? +value?.id : Math.random(),
+          vendorId: value?.vendor?.id,
+          vendorName: value?.vendor?.name,
+          colorId: value?.color?.id,
+          colorName: value?.color?.name,
+          guaranteeId: value?.guarantee?.id,
+          guaranteeName: value?.guarantee?.name,
+          guaranteeMonthId: value?.guaranteeMonth?.id,
+          guaranteeMonthName: value?.guaranteeMonth?.name,
+          weight: value?.weight,
+          buyPrice: value?.buyPrice,
+          onlyProvinceId: value?.onlyProvince?.id,
+          onlyProvinceName: value?.onlyProvince?.name,
+          qty: value?.qty,
+          vendorAddressId: value?.vendorAddress?.id,
+          vendorAddressName: value?.vendorAddress?.address?.name,
+          description: value?.description,
+          firstPrice: value?.firstPrice?.price,
+          secondaryPrice: value?.secondaryPrice?.price,
+        };
+      });
+      setTempInventories(inventories);
+
+      // console.log("armiiiiiiiiiiiiiiiiin", );
+
       setEntityTypeId(product.result.entityTypeId);
       setSelectedEav(product.result.entityType.id);
       setRequestBody({
@@ -97,8 +126,6 @@ export default function page({ params }) {
 
         handleAttributeChange(id, value);
       });
-
-      defaultInventories(product.result.inventories);
     }
   }, [product]);
 
@@ -230,11 +257,24 @@ export default function page({ params }) {
   };
 
   const handleInventoryCreate = (data) => {
-    console.log(data);
-    setInventories((prevState) => [...prevState, data]);
+    // Find the index of the inventory with the given id
+    const inventoryIndex = inventories.findIndex(
+      (inventory) => +inventory.id === +data.id
+    );
+
+    if (inventoryIndex > -1) {
+      // If the inventory exists, update it
+      setTempInventories((prevState) =>
+        prevState.map((inventory, index) =>
+          index === inventoryIndex ? { ...inventory, ...data } : inventory
+        )
+      );
+    } else {
+      // If the inventory does not exist, add it
+      setTempInventories((prevState) => [...prevState, data]);
+    }
 
     const {
-      id,
       vendorName,
       VendorAddressName,
       colorName,
@@ -248,39 +288,12 @@ export default function page({ params }) {
       ...prevState,
       inventories: [...prevState.inventories, cleanedTempInventory],
     }));
+    console.log("data for edit", inventories, tempInventories);
 
     setOpen(false);
   };
 
   const removeInventory = (id) => {};
-
-  const inventoryEdit = (id, data) => {};
-
-  const defaultInventories = (data) => {
-    if (data) {
-      const dataArray = data.map((value) => ({
-        id: value.id,
-        vendorId: value.vendorId,
-        colorId: value.colorId,
-        guaranteeId: value.guaranteeId,
-        guaranteeMonthId: value.guaranteeMonthId,
-        weight: value.weight,
-        buyPrice: value.buyPrice,
-        onlyProvinceId: value.onlyProvinceId,
-        qty: value.qty,
-        vendorAddressId: value.vendorAddressId,
-        description: value.description,
-        firstPrice: value.firstPrice.price,
-        secondaryPrice: value.secondaryPrice.price,
-      }));
-      console.log("dataArray: ", dataArray);
-      // Assuming you want to add all items from dataArray to inventories
-      setRequestBody((prevState) => ({
-        ...prevState,
-        inventories: [...prevState.inventories, ...dataArray],
-      }));
-    }
-  };
 
   useEffect(() => {
     setRequestBody((prevState) => ({
@@ -473,15 +486,16 @@ export default function page({ params }) {
                           fullWidth
                           variant="contained"
                           onClick={(e) => {
-                            handleClickOpen();
+                            handleClickOpen(null);
                           }}
                         >
                           افزودن موجودی جدید
                         </Button>
                         <DataGridLite
                           handleClickOpen={handleClickOpen}
-                          data={inventories}
+                          data={tempInventories}
                           removeInventory={removeInventory}
+                          key={tempInventories}
                         />
                         <InventoriesDialouge
                           colors={colors}
@@ -500,7 +514,7 @@ export default function page({ params }) {
                           setOpen={setOpen}
                           guaranteeMonth={guaranteeMonth}
                           open={open}
-                          product={product.result}
+                          product={tempInventories}
                           activeSpace={activeSpace}
                         />
                       </div>

@@ -6,6 +6,7 @@ export default function DataGridLite({
   data,
   handleClickOpen,
   removeInventory,
+  key,
 }) {
   const columns: GridColDef[] = [
     {
@@ -17,17 +18,17 @@ export default function DataGridLite({
       headerName: "نام فروشگاه",
       width: 100,
       valueGetter({ row }) {
-        console.log(row);
+        return !row.vendorName ? row.vendor.name : row.vendorName;
       },
     },
     {
-      field: "VendorAddressName",
+      field: "vendorAddressName",
       headerName: "نام آدرس",
       width: 100,
       valueGetter({ row }) {
-        return !row.VendorAddressName
+        return !row.vendorAddressName
           ? row.vendorAddress.address.name
-          : row.VendorAddressName;
+          : row.vendorAddressName;
       },
     },
     {
@@ -70,6 +71,11 @@ export default function DataGridLite({
     {
       field: "qty",
       headerName: "تعداد",
+      width: 100,
+    },
+    {
+      field: "weight",
+      headerName: "وزن",
       width: 100,
     },
 
@@ -128,7 +134,7 @@ export default function DataGridLite({
 
   return (
     <div>
-      <DataGrid rows={data} columns={columns} />
+      <DataGrid key={key} rows={data} columns={columns} />
     </div>
   );
 }

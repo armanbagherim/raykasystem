@@ -30,7 +30,30 @@ export default function InventoriesDialouge({
   product,
   activeSpace,
 }) {
-  const activeSpaceProducts = product?.inventories.filter(
+  console.log("product", product);
+  const [localTempInventory, setLocalTempInventory] = useState({
+    id: Math.random(),
+    vendorId: "",
+    vendorName: "",
+    colorId: "",
+    colorName: "",
+    guaranteeId: "",
+    guaranteeName: "",
+    guaranteeMonthId: "",
+    weight: "",
+    guaranteeMonthName: "",
+    buyPrice: "",
+    onlyProvinceId: "",
+    onlyProvinceName: "",
+    qty: "",
+    vendorAddressId: "",
+    description: "",
+    firstPrice: "",
+    secondaryPrice: "",
+    vendorAddressName: "",
+  });
+
+  const activeSpaceProducts = product?.filter(
     (value) => +value.id === +activeSpace
   );
 
@@ -38,8 +61,10 @@ export default function InventoriesDialouge({
     (acc, curr) => ({ ...acc, ...curr }),
     {}
   );
-
   const defaultObj = {
+    id: activeSpaceProductsObject
+      ? +activeSpaceProductsObject?.id
+      : Math.random(),
     vendorId: activeSpaceProductsObject?.vendor?.id,
     vendorName: activeSpaceProductsObject?.vendor?.name,
     colorId: activeSpaceProductsObject?.color?.id,
@@ -54,42 +79,19 @@ export default function InventoriesDialouge({
     onlyProvinceName: activeSpaceProductsObject?.onlyProvince?.name,
     qty: activeSpaceProductsObject?.qty,
     vendorAddressId: activeSpaceProductsObject?.vendorAddress?.id,
-    VendorAddressName: activeSpaceProductsObject?.vendorAddress?.name,
+    vendorAddressName: activeSpaceProductsObject?.vendorAddress?.address?.name,
     description: activeSpaceProductsObject?.description,
     firstPrice: activeSpaceProductsObject?.firstPrice?.price,
     secondaryPrice: activeSpaceProductsObject?.secondaryPrice?.price,
   };
-  const [localTempInventory, setLocalTempInventory] = useState(
+  console.log(
+    "new logggggggggggggggggggggggggggggggggggg",
     activeSpaceProductsObject
-      ? defaultObj
-      : {
-          id: Math.random(),
-          vendorId: "",
-          vendorName: "",
-          colorId: "",
-          colorName: "",
-          guaranteeId: "",
-          guaranteeName: "",
-          guaranteeMonthId: "",
-          weight: "",
-          guaranteeMonthName: "",
-          buyPrice: "",
-          onlyProvinceId: "",
-          onlyProvinceName: "",
-          qty: "",
-          vendorAddressId: "",
-          VendorAddressName: "",
-          description: "",
-          firstPrice: "",
-          secondaryPrice: "",
-        }
   );
 
-  // State and other hooks remain the same
-
-  console.log(defaultObj);
-
-  // setLocalTempInventory(defaultObj);
+  useEffect(() => {
+    setLocalTempInventory(defaultObj);
+  }, [activeSpace]);
 
   useEffect(() => {
     setVendorId(+activeSpaceProductsObject.vendorId);
@@ -164,7 +166,7 @@ export default function InventoriesDialouge({
             label="آدرس"
             diffName={"address.name"}
             onChange={(e) =>
-              handleSelectChange(e, "vendorAddressId", "vendorAddressesName")
+              handleSelectChange(e, "vendorAddressId", "vendorAddressName")
             }
           />
         </div>
@@ -313,6 +315,8 @@ export default function InventoriesDialouge({
             //   return;
             // }
             console.log(localTempInventory);
+
+            handleInventoryCreate(localTempInventory);
           }}
         >
           ثبت
