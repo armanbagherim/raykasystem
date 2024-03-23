@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import SelectSearch from "@/app/components/global/SearchSelect";
 import {
   Button,
@@ -29,10 +29,10 @@ export default function InventoriesDialouge({
   guaranteeMonth,
   product,
   activeSpace,
+  setActiveSpace,
 }) {
-  console.log("product", product);
   const [localTempInventory, setLocalTempInventory] = useState({
-    id: Math.random(),
+    id: activeSpace === null && Math.random(),
     vendorId: "",
     vendorName: "",
     colorId: "",
@@ -53,49 +53,52 @@ export default function InventoriesDialouge({
     vendorAddressName: "",
   });
 
-  const activeSpaceProducts = product?.filter(
-    (value) => +value.id === +activeSpace
-  );
-
-  const activeSpaceProductsObject = activeSpaceProducts?.reduce(
-    (acc, curr) => ({ ...acc, ...curr }),
-    {}
-  );
-  const defaultObj = {
-    id: activeSpaceProductsObject
-      ? +activeSpaceProductsObject?.id
-      : Math.random(),
-    vendorId: activeSpaceProductsObject?.vendor?.id,
-    vendorName: activeSpaceProductsObject?.vendor?.name,
-    colorId: activeSpaceProductsObject?.color?.id,
-    colorName: activeSpaceProductsObject?.color?.name,
-    guaranteeId: activeSpaceProductsObject?.guarantee?.id,
-    guaranteeName: activeSpaceProductsObject?.guarantee?.name,
-    guaranteeMonthId: activeSpaceProductsObject?.guaranteeMonth?.id,
-    guaranteeMonthName: activeSpaceProductsObject?.guaranteeMonth?.name,
-    weight: activeSpaceProductsObject?.weight,
-    buyPrice: activeSpaceProductsObject?.buyPrice,
-    onlyProvinceId: activeSpaceProductsObject?.onlyProvince?.id,
-    onlyProvinceName: activeSpaceProductsObject?.onlyProvince?.name,
-    qty: activeSpaceProductsObject?.qty,
-    vendorAddressId: activeSpaceProductsObject?.vendorAddress?.id,
-    vendorAddressName: activeSpaceProductsObject?.vendorAddress?.address?.name,
-    description: activeSpaceProductsObject?.description,
-    firstPrice: activeSpaceProductsObject?.firstPrice?.price,
-    secondaryPrice: activeSpaceProductsObject?.secondaryPrice?.price,
-  };
-  console.log(
-    "new logggggggggggggggggggggggggggggggggggg",
-    activeSpaceProductsObject
-  );
+  const activeSpaceProductsObject = useMemo(() => {
+    const activeSpaceProducts = product?.filter(
+      (value) =>
+        (typeof value.id === "string" ? value.id : +value.id) ===
+        (typeof value.id === "string" ? activeSpace : +activeSpace)
+    );
+    return activeSpaceProducts?.reduce(
+      (acc, curr) => ({ ...acc, ...curr }),
+      {}
+    );
+  }, [product, activeSpace]);
+  function generateRandomId() {
+    return `new_${Math.floor(Math.random() * 1000000)}`; // Generates a random number between 0 and 999999 and prefixes it with 'new_'
+  }
+  useEffect(() => {
+    if (activeSpaceProductsObject) {
+      // Check if activeSpace is null
+      if (!activeSpace) {
+        // Check if the object already has an ID without the 'new_' prefix
+        if (
+          !activeSpaceProductsObject.id ||
+          !activeSpaceProductsObject.id.startsWith("new_")
+        ) {
+          // Generate a random ID and add it to the activeSpaceProductsObject
+          const updatedObject = {
+            ...activeSpaceProductsObject,
+            id: generateRandomId(), // Add the random ID to the object
+          };
+          setLocalTempInventory(updatedObject);
+        } else {
+          // If the object already has an ID with the 'new_' prefix, handle accordingly
+          // For example, you might want to skip adding a new ID or handle this case differently
+          console.log("Object already has an ID with the new_ prefix.");
+        }
+      } else {
+        // If activeSpace is not null, just set the activeSpaceProductsObject as is
+        setLocalTempInventory(activeSpaceProductsObject);
+      }
+    }
+  }, [activeSpaceProductsObject, activeSpace]);
 
   useEffect(() => {
-    setLocalTempInventory(defaultObj);
-  }, [activeSpace]);
-
-  useEffect(() => {
-    setVendorId(+activeSpaceProductsObject.vendorId);
-  }, [product, activeSpaceProductsObject]);
+    if (activeSpaceProductsObject) {
+      setVendorId(+activeSpaceProductsObject.vendorId);
+    }
+  }, [activeSpaceProductsObject]);
 
   const isFormValid = () => {
     const requiredFields = [
@@ -115,30 +118,36 @@ export default function InventoriesDialouge({
     ];
 
     return requiredFields.every(
-      (field) =>
-        localTempInventory[field] !== null && localTempInventory[field] !== ""
+      (field) => localTempInventory[field] !== undefined
     );
   };
 
   const handleSelectChange = (value, key, label) => {
-    // Check if the first argument is an event object (for text fields)
-    if (typeof value === "object" && value !== null && value.target) {
-      // Extract the value from the event object
-      const inputValue = value.target.value;
-      // Update the local state with the input value
-      setLocalTempInventory((prevInventory) => ({
-        ...prevInventory,
-        [key]: +inputValue,
-      }));
-    } else {
-      // If the first argument is not an event object, it's an object with id and name (for select options)
-      // Update the local state with the id and name
-      setLocalTempInventory((prevInventory) => ({
-        ...prevInventory,
-        [key]: value.id !== null ? +value.id : null,
-        [label]: value.name,
-      }));
-    }
+    console.log(value, key, label);
+
+    setLocalTempInventory((prevInventory) => {
+      // Check if the key is 'description' to ensure it's treated as a string
+      if (key === "description") {
+        return {
+          ...prevInventory,
+          [key]: value.target.value, // Directly use the value as it's already a string
+        };
+      } else {
+        return {
+          ...prevInventory,
+          [key]:
+            typeof value === "object" && value !== null && value.target
+              ? +value.target.value
+              : value.id !== null
+              ? value.id
+              : null,
+          [label]:
+            typeof value === "object" && value !== null && value.target
+              ? value.target.value
+              : value.name,
+        };
+      }
+    });
   };
 
   return (
@@ -150,7 +159,7 @@ export default function InventoriesDialouge({
             loadingState={userVendorsIsLoading}
             data={userVendors?.result}
             label="فروشگاه"
-            defaultValue={activeSpaceProductsObject?.vendorId}
+            defaultValue={localTempInventory?.vendorId}
             onChange={(e) => {
               setVendorId(e.id);
               handleSelectChange(e, "vendorId", "vendorName");
@@ -162,7 +171,7 @@ export default function InventoriesDialouge({
             loadingState={false}
             data={vendorAddresses}
             isDiff={true}
-            defaultValue={activeSpaceProductsObject?.vendorAddressId}
+            defaultValue={localTempInventory?.vendorAddressId}
             label="آدرس"
             diffName={"address.name"}
             onChange={(e) =>
@@ -175,7 +184,7 @@ export default function InventoriesDialouge({
             loadingState={colorsIsLoading}
             data={colors?.result}
             label="رنگ"
-            defaultValue={activeSpaceProductsObject?.colorId}
+            defaultValue={localTempInventory?.colorId}
             nullable={true}
             onChange={(e) => handleSelectChange(e, "colorId", "colorName")}
           />
@@ -185,7 +194,7 @@ export default function InventoriesDialouge({
             loadingState={guaranteesIsLoading}
             data={guarantees?.result}
             label="گارانتی"
-            defaultValue={activeSpaceProductsObject?.guaranteeId}
+            defaultValue={localTempInventory?.guaranteeId}
             nullable={true}
             onChange={(e) =>
               handleSelectChange(e, "guaranteeId", "guaranteeName")
@@ -197,7 +206,7 @@ export default function InventoriesDialouge({
             loadingState={proviencesIsLoading}
             data={proviences?.result}
             label="فروش فقط در شهر"
-            defaultValue={activeSpaceProductsObject?.onlyProvinceId}
+            defaultValue={localTempInventory?.onlyProvinceId}
             nullable={true}
             onChange={(e) =>
               handleSelectChange(e, "onlyProvinceId", "onlyProvinceName")
@@ -209,7 +218,7 @@ export default function InventoriesDialouge({
             loadingState={guaranteeMonthIsLoading}
             data={guaranteeMonth?.result}
             label="ماه های گارانتی"
-            defaultValue={activeSpaceProductsObject?.guaranteeMonthId}
+            defaultValue={localTempInventory?.guaranteeMonthId}
             nullable={true}
             onChange={(e) =>
               handleSelectChange(e, "guaranteeMonthId", "guaranteeMonthName")
@@ -223,7 +232,7 @@ export default function InventoriesDialouge({
               required
               id="standard-basic"
               label="تعداد"
-              defaultValue={activeSpaceProductsObject?.qty}
+              defaultValue={localTempInventory?.qty}
               variant="standard"
               onChange={(e) => handleSelectChange(e, "qty")}
             />
@@ -235,7 +244,7 @@ export default function InventoriesDialouge({
               id="standard-basic"
               label="قیمت خرید"
               variant="standard"
-              defaultValue={activeSpaceProductsObject?.buyPrice}
+              defaultValue={localTempInventory?.buyPrice}
               onChange={(e) => handleSelectChange(e, "buyPrice")}
             />
           </div>
@@ -248,7 +257,7 @@ export default function InventoriesDialouge({
               id="standard-basic"
               label="قیمت اقساطی"
               variant="standard"
-              defaultValue={activeSpaceProductsObject?.firstPrice?.price}
+              defaultValue={localTempInventory?.firstPrice}
               onChange={(e) => handleSelectChange(e, "firstPrice")}
             />
           </div>
@@ -260,7 +269,7 @@ export default function InventoriesDialouge({
               label="قیمت نقدی"
               nullable={true}
               variant="standard"
-              defaultValue={activeSpaceProductsObject?.secondaryPrice?.price}
+              defaultValue={localTempInventory?.secondaryPrice}
               onChange={(e) => handleSelectChange(e, "secondaryPrice")}
             />
           </div>
@@ -271,7 +280,7 @@ export default function InventoriesDialouge({
             required
             fullWidth
             id="standard-basic"
-            defaultValue={activeSpaceProductsObject?.weight}
+            defaultValue={localTempInventory?.weight}
             label="وزن"
             nullable={true}
             variant="standard"
@@ -285,7 +294,7 @@ export default function InventoriesDialouge({
           توضیحات
         </label>
         <textarea
-          defaultValue={activeSpaceProductsObject?.description}
+          defaultValue={localTempInventory?.description}
           onChange={(e) => handleSelectChange(e, "description")}
           id="message"
           rows="4"
@@ -299,7 +308,8 @@ export default function InventoriesDialouge({
           color="error"
           onClick={() => {
             setOpen(false);
-            setTempInventory({});
+            setActiveSpace(null);
+            setLocalTempInventory({});
           }}
         >
           لغو
@@ -309,12 +319,13 @@ export default function InventoriesDialouge({
           color="success"
           autoFocus
           onClick={(e) => {
-            // if (!isFormValid()) {
-            //   // Optionally display an error message
-            //   toast.error("لطفا تمام فیلد ها را پر نمایید");
-            //   return;
-            // }
             console.log(localTempInventory);
+
+            if (!isFormValid()) {
+              // Optionally display an error message
+              toast.error("لطفا تمام فیلد ها را پر نمایید");
+              return;
+            }
 
             handleInventoryCreate(localTempInventory);
           }}

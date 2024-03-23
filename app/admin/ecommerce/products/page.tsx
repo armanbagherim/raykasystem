@@ -23,20 +23,20 @@ export default function page() {
   const deleteBrand = async (id) => {
     try {
       const req = await fetcher({
-        url: `/v1/api/ecommerce/brands/${id}`,
+        url: `/v1/api/ecommerce/admin/products/${id}`,
         method: "DELETE",
       });
       toast.success("موفق");
-      refetchBrands();
+      refetchProducts();
     } catch (error) {
       toast.error(error.message);
     }
   };
   const {
-    data: brands,
-    isLoading: brandsIsLoading,
-    error: brandsError,
-    refetch: refetchBrands,
+    data: products,
+    isLoading: productsIsLoading,
+    error: productsError,
+    refetch: refetchProducts,
   } = useFetcher(
     `/v1/api/ecommerce/admin/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
     "GET"
@@ -84,12 +84,12 @@ export default function page() {
       ),
     },
   ];
-  if (brandsIsLoading) {
+  if (productsIsLoading) {
     return <Loading />;
   }
   return (
     <div>
-      <DataGrid rows={brands.result} columns={columns} />
+      <DataGrid rows={products.result} columns={columns} />
     </div>
   );
 }

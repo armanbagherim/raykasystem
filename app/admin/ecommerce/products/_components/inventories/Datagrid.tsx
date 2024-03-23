@@ -134,7 +134,12 @@ export default function DataGridLite({
 
   return (
     <div>
-      <DataGrid key={key} rows={data} columns={columns} />
+      <DataGrid
+        getRowId={(row) => Math.random()}
+        key={key}
+        rows={data}
+        columns={columns}
+      />
     </div>
   );
 }

@@ -27,6 +27,7 @@ import Tab from "../_components/tabs/Tabs";
 export default function page() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const [activeSpace, setActiveSpace] = useState<null | number>();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -45,7 +46,7 @@ export default function page() {
   const [attributes, setAttributes] = useState();
   const [openTab, setOpenTab] = useState(1);
   const [description, setDescription] = useState("");
-  const [requestBody, setRequestBody] = useState({
+  const [requestBody, setRequestBody] = useState<RequestBody>({
     title: "",
     slug: "",
     entityTypeId: "",
@@ -58,26 +59,7 @@ export default function page() {
     inventories: [],
   });
   const [inventories, setInventories] = useState([]);
-  const [tempInventory, setTempInventory] = useState({
-    id: "",
-    vendorId: "",
-    vendorName: "",
-    colorId: "",
-    colorName: "",
-    guaranteeId: "",
-    guaranteeName: "",
-    guaranteeMonthId: "",
-    weight: "",
-    guaranteeMonthName: "",
-    buyPrice: "",
-    onlyProvinceId: "",
-    onlyProvinceName: "",
-    qty: "",
-    vendorAddressId: "",
-    description: "",
-    firstPrice: "",
-    secondaryPrice: "",
-  });
+  const [tempInventories, setTempInventories] = useState([]);
 
   useEffect(() => {
     setTitle({
@@ -198,10 +180,6 @@ export default function page() {
     });
   };
 
-  useEffect(() => {
-    console.log(tempInventory);
-  }, [tempInventory]);
-
   const handleAttributeChange = (id, value) => {
     console.log(id, value.id);
 
@@ -229,28 +207,56 @@ export default function page() {
     }
   };
 
-  const handleInventoryCreate = () => {
-    setInventories((prevState) => [...prevState, tempInventory]);
+  const handleInventoryCreate = (data: object) => {
+    // Find the index of the inventory with the given id
+    const inventoryIndex = inventories.findIndex(
+      (inventory) => +inventory.id === +data.id
+    );
 
-    const {
-      id,
-      vendorName,
-      vendorAddressName,
-      colorName,
-      guaranteeMonthName,
-      guaranteeName,
-      onlyProvinceName,
-      ...cleanedTempInventory
-    } = tempInventory;
-    console.log(cleanedTempInventory);
-    setRequestBody((prevState) => ({
-      ...prevState,
-      inventories: [...prevState.inventories, cleanedTempInventory],
-    }));
+    setTempInventories((prevState) => {
+      if (inventoryIndex > -1) {
+        return prevState.map((inventory, index) =>
+          index === inventoryIndex ? { ...inventory, ...data } : inventory
+        );
+      } else {
+        return [...prevState, data];
+      }
+    });
 
-    setTempInventory({});
+    setActiveSpace(null);
     setOpen(false);
   };
+
+  const removeInventory = (id: number) => {
+    console.log(id);
+    setTempInventories((prevInventories) =>
+      prevInventories.filter((inventory) => inventory.id !== id)
+    );
+  };
+
+  useEffect(() => {
+    // Map over tempInventories to conditionally modify each object
+    const updatedInventories = tempInventories.map((inventory) => {
+      // Ensure inventory.id is a string before calling .startsWith()
+      if (typeof inventory.id === "string") {
+        // Check if the inventory has an id with the 'new_' prefix
+        if (inventory.id.startsWith("new_")) {
+          // Remove the id key from the object
+          const { id, ...rest } = inventory;
+          return rest; // Return the object without the id key
+        }
+      }
+      // If the inventory does not have an id with the 'new_' prefix, or if id is not a string, return it as is
+      return inventory;
+    });
+
+    // Update the state with the modified inventories
+    setRequestBody((prevState) => ({
+      ...prevState,
+      inventories: updatedInventories, // Use the updated inventories
+    }));
+  }, [tempInventories]); // Depend on tempInventories to trigger the effect
+
   useEffect(() => {
     setRequestBody((prevState) => ({
       ...prevState,
@@ -429,25 +435,24 @@ export default function page() {
                           fullWidth
                           variant="contained"
                           onClick={(e) => {
-                            setTempInventory({
-                              ...tempInventory,
-                              id: Math.random(),
-                            });
-                            handleClickOpen();
+                            handleClickOpen(null);
                           }}
                         >
                           افزودن موجودی جدید
                         </Button>
-                        <DataGridLite data={inventories} />
+                        <DataGridLite
+                          handleClickOpen={handleClickOpen}
+                          data={tempInventories}
+                          removeInventory={removeInventory}
+                          key={tempInventories}
+                        />
                         <InventoriesDialouge
                           colors={colors}
                           colorsIsLoading={colorsIsLoading}
                           handleClose={handleClose}
                           setVendorId={setVendorId}
-                          setTempInventory={setTempInventory}
                           guaranteeMonthIsLoading={guaranteeMonthIsLoading}
                           vendorAddresses={vendorAddresses}
-                          tempInventory={tempInventory}
                           userVendors={userVendors}
                           userVendorsIsLoading={userVendorsIsLoading}
                           guarantees={guarantees}
@@ -458,6 +463,9 @@ export default function page() {
                           setOpen={setOpen}
                           guaranteeMonth={guaranteeMonth}
                           open={open}
+                          product={tempInventories}
+                          activeSpace={activeSpace}
+                          setActiveSpace={setActiveSpace}
                         />
                       </div>
                       <div
