@@ -10,7 +10,6 @@ import {
 import Numberpaginate from "@/app/components/design/Slider/Numberpaginate";
 import Sidebar from "../components/Sidebar";
 
-
 const Sellerpage = () => {
   return (
     <>
@@ -20,7 +19,7 @@ const Sellerpage = () => {
         </div>
         <div className="mt-7">
           <div className="grid grid-cols-12">
-            <Sidebar/>
+            <Sidebar />
             <div className="col-span-9 p-4">
               <div>
                 <div className="p-2 grid grid-cols-4">
@@ -53,42 +52,42 @@ const Sellerpage = () => {
                 <div>
                   <div className="grid grid-cols-4 p-3 mt-5 gap-2">
                     <div className="col-span-1">
-                      <MainCard></MainCard>
+                      <MainCard />
                     </div>
                     <div className="col-span-1">
-                      <MainCard></MainCard>
+                      <MainCard />
                     </div>
                     <div className="col-span-1">
-                      <MainCard></MainCard>
+                      <MainCard />
                     </div>
                     <div className="col-span-1">
-                      <MainCard></MainCard>
-                    </div>
-
-                    <div className="col-span-1">
-                      <MainCard></MainCard>
-                    </div>
-                    <div className="col-span-1">
-                      <MainCard></MainCard>
-                    </div>
-                    <div className="col-span-1">
-                      <MainCard></MainCard>
-                    </div>
-                    <div className="col-span-1">
-                      <MainCard></MainCard>
+                      <MainCard />
                     </div>
 
                     <div className="col-span-1">
-                      <MainCard></MainCard>
+                      <MainCard />
                     </div>
                     <div className="col-span-1">
-                      <MainCard></MainCard>
+                      <MainCard />
                     </div>
                     <div className="col-span-1">
-                      <MainCard></MainCard>
+                      <MainCard />
                     </div>
                     <div className="col-span-1">
-                      <MainCard></MainCard>
+                      <MainCard />
+                    </div>
+
+                    <div className="col-span-1">
+                      <MainCard />
+                    </div>
+                    <div className="col-span-1">
+                      <MainCard />
+                    </div>
+                    <div className="col-span-1">
+                      <MainCard />
+                    </div>
+                    <div className="col-span-1">
+                      <MainCard />
                     </div>
                   </div>
                 </div>
