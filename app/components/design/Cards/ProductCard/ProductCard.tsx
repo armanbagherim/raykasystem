@@ -5,11 +5,13 @@ import LongCard from "./LongCard";
 import MainCard from "./MainCard";
 interface ProductCardProps {
   type: String;
-  // data: object;
+  border?: String;
+  data: object;
 }
-export default function ProductCard({ type, border }: ProductCardProps) {
+export default function ProductCard({ type, border, data }: ProductCardProps) {
+  console.log(data);
   if (type === "main") {
-    return <MainCard />;
+    return <MainCard data={data} />;
   } else if (type === "long") {
     return <LongCard border={border} />;
   }

@@ -6,10 +6,25 @@ import { authOptions } from "../api/auth/[...nextauth]/authOptions";
 import ProductCard from "../components/design/Cards/ProductCard/ProductCard";
 import Title from "../components/design/Title";
 
+async function getProducts() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`
+  );
+  // The return value is *not* serialized
+  // You can return Date, Map, Set, etc.
+
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
 export default async function Home() {
   const session = await getServerSession(authOptions);
-
-  // const products = await fetcher("products");
+  const { result: products } = await getProducts();
+  console.log(products);
   return (
     <>
       <Slider slidesPerView={1}>
@@ -29,14 +44,9 @@ export default async function Home() {
           <Title text="سه شنبه های تخفیفی" color="white" />
           <div className="flex gap-5">
             <Slider slidesPerView={5}>
-              <ProductCard type="main" />
-              <ProductCard type="main" />
-              <ProductCard type="main" />
-              <ProductCard type="main" />
-              <ProductCard type="main" />
-              <ProductCard type="main" />
-              <ProductCard type="main" />
-              <ProductCard type="main" />
+              {products.map((value) => (
+                <ProductCard data={value} type="main" />
+              ))}
             </Slider>
           </div>
         </div>
