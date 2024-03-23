@@ -1,7 +1,7 @@
 import Slider from "@/app/components/design/Slider";
 import React from "react";
 
-const getProduct = async (slug) => {
+const getProduct = async (slug:number) => {
   const res = await fetch(`https://json.xstack.ir/api/v1/product/${slug}`);
   const response = await res.json();
   return response;
