@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
@@ -18,8 +18,7 @@ const getNestedProperty = (obj, path, defaultValue = undefined) => {
 
 const formatOptions = (data, isDiff, diffName, nullable) => {
   if (nullable) {
-    // اضافه کردن آبجکت با آی دی null و اسم بدون انتخاب به ابتدای آرایه
-    data = [{ id: null, name: "بدون انتخاب" }, ...data]; // RESULT : [34,23, 45, 12, 67]
+    data = [{ id: null, name: "بدون انتخاب" }, ...data];
   }
   return data?.map((item) => ({
     id: item.id,
@@ -36,7 +35,14 @@ export default function SearchSelect({
   value,
   diffName,
   nullable,
+  defaultValue,
 }) {
+  const [currentValue, setCurrentValue] = useState(defaultValue);
+
+  useEffect(() => {
+    setCurrentValue(defaultValue);
+  }, [defaultValue]);
+
   if (loadingState) {
     return (
       <div className="flex-1">
@@ -53,8 +59,9 @@ export default function SearchSelect({
 
   const options = formatOptions(data, isDiff, diffName, nullable);
 
-  // Determine the initial value to be the first item in the options array
-  // If the component is controlled and a value is provided, use that value
+  // Ensure the currentValue matches one of the options
+  const currentValueObject =
+    options.find((option) => option.id === currentValue) || null;
 
   return (
     <div className="flex-1">
@@ -66,9 +73,10 @@ export default function SearchSelect({
           <TextField {...params} label={label} variant="standard" fullWidth />
         )}
         onChange={(event, newValue) => {
+          setCurrentValue(newValue ? newValue.id : null);
           onChange(newValue ? newValue : null);
         }}
-        // Set the initial value to the first item in the options array
+        value={currentValueObject} // Ensure this matches one of the options
       />
     </div>
   );

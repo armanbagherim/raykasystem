@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import SelectSearch from "@/app/components/global/SearchSelect";
 import {
   Button,
@@ -8,13 +8,12 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import { toast } from "react-toastify";
 
 export default function InventoriesDialouge({
   handleClose,
   vendorAddresses,
-  setTempInventory,
   setVendorId,
-  tempInventory,
   colorsIsLoading,
   guaranteeMonthIsLoading,
   userVendorsIsLoading,
@@ -28,7 +27,129 @@ export default function InventoriesDialouge({
   setOpen,
   open,
   guaranteeMonth,
+  product,
+  activeSpace,
+  setActiveSpace,
 }) {
+  const [localTempInventory, setLocalTempInventory] = useState({
+    id: activeSpace === null && Math.random(),
+    vendorId: "",
+    vendorName: "",
+    colorId: "",
+    colorName: "",
+    guaranteeId: "",
+    guaranteeName: "",
+    guaranteeMonthId: "",
+    weight: "",
+    guaranteeMonthName: "",
+    buyPrice: "",
+    onlyProvinceId: "",
+    onlyProvinceName: "",
+    qty: "",
+    vendorAddressId: "",
+    description: "",
+    firstPrice: "",
+    secondaryPrice: "",
+    vendorAddressName: "",
+  });
+
+  const activeSpaceProductsObject = useMemo(() => {
+    const activeSpaceProducts = product?.filter(
+      (value) =>
+        (typeof value.id === "string" ? value.id : +value.id) ===
+        (typeof value.id === "string" ? activeSpace : +activeSpace)
+    );
+    return activeSpaceProducts?.reduce(
+      (acc, curr) => ({ ...acc, ...curr }),
+      {}
+    );
+  }, [product, activeSpace]);
+  function generateRandomId() {
+    return `new_${Math.floor(Math.random() * 1000000)}`; // Generates a random number between 0 and 999999 and prefixes it with 'new_'
+  }
+  useEffect(() => {
+    if (activeSpaceProductsObject) {
+      // Check if activeSpace is null
+      if (!activeSpace) {
+        // Check if the object already has an ID without the 'new_' prefix
+        if (
+          !activeSpaceProductsObject.id ||
+          !activeSpaceProductsObject.id.startsWith("new_")
+        ) {
+          // Generate a random ID and add it to the activeSpaceProductsObject
+          const updatedObject = {
+            ...activeSpaceProductsObject,
+            id: generateRandomId(), // Add the random ID to the object
+          };
+          setLocalTempInventory(updatedObject);
+        } else {
+          // If the object already has an ID with the 'new_' prefix, handle accordingly
+          // For example, you might want to skip adding a new ID or handle this case differently
+          console.log("Object already has an ID with the new_ prefix.");
+        }
+      } else {
+        // If activeSpace is not null, just set the activeSpaceProductsObject as is
+        setLocalTempInventory(activeSpaceProductsObject);
+      }
+    }
+  }, [activeSpaceProductsObject, activeSpace]);
+
+  useEffect(() => {
+    if (activeSpaceProductsObject) {
+      setVendorId(+activeSpaceProductsObject.vendorId);
+    }
+  }, [activeSpaceProductsObject]);
+
+  const isFormValid = () => {
+    const requiredFields = [
+      "vendorId",
+      "vendorName",
+      "colorId",
+      "colorName",
+      "guaranteeId",
+      "guaranteeName",
+      "guaranteeMonthId",
+      "guaranteeMonthName",
+      "weight",
+      "qty",
+      "buyPrice",
+      "firstPrice",
+      "secondaryPrice",
+    ];
+
+    return requiredFields.every(
+      (field) => localTempInventory[field] !== undefined
+    );
+  };
+
+  const handleSelectChange = (value, key, label) => {
+    console.log(value, key, label);
+
+    setLocalTempInventory((prevInventory) => {
+      // Check if the key is 'description' to ensure it's treated as a string
+      if (key === "description") {
+        return {
+          ...prevInventory,
+          [key]: value.target.value, // Directly use the value as it's already a string
+        };
+      } else {
+        return {
+          ...prevInventory,
+          [key]:
+            typeof value === "object" && value !== null && value.target
+              ? +value.target.value
+              : value.id !== null
+              ? value.id
+              : null,
+          [label]:
+            typeof value === "object" && value !== null && value.target
+              ? value.target.value
+              : value.name,
+        };
+      }
+    });
+  };
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>ساخت موجودی</DialogTitle>
@@ -38,14 +159,10 @@ export default function InventoriesDialouge({
             loadingState={userVendorsIsLoading}
             data={userVendors?.result}
             label="فروشگاه"
+            defaultValue={localTempInventory?.vendorId}
             onChange={(e) => {
-              setTempInventory((prevInventory) => ({
-                ...prevInventory,
-                vendorId: e.id !== null ? +e.id : null,
-                vendorName: e.name,
-              }));
-
-              setVendorId(e.id !== null ? +e.id : null);
+              setVendorId(e.id);
+              handleSelectChange(e, "vendorId", "vendorName");
             }}
           />
         </div>
@@ -54,15 +171,12 @@ export default function InventoriesDialouge({
             loadingState={false}
             data={vendorAddresses}
             isDiff={true}
+            defaultValue={localTempInventory?.vendorAddressId}
             label="آدرس"
             diffName={"address.name"}
-            onChange={(e) => {
-              setTempInventory({
-                ...tempInventory,
-                vendorAddressId: e.id !== null ? +e.id : null,
-                VendorAddressName: e.name,
-              });
-            }}
+            onChange={(e) =>
+              handleSelectChange(e, "vendorAddressId", "vendorAddressName")
+            }
           />
         </div>
         <div className="mb-4">
@@ -70,14 +184,9 @@ export default function InventoriesDialouge({
             loadingState={colorsIsLoading}
             data={colors?.result}
             label="رنگ"
+            defaultValue={localTempInventory?.colorId}
             nullable={true}
-            onChange={(e) => {
-              setTempInventory({
-                ...tempInventory,
-                colorId: e.id !== null ? +e.id : null,
-                colorName: e.name,
-              });
-            }}
+            onChange={(e) => handleSelectChange(e, "colorId", "colorName")}
           />
         </div>
         <div className="mb-4">
@@ -85,31 +194,23 @@ export default function InventoriesDialouge({
             loadingState={guaranteesIsLoading}
             data={guarantees?.result}
             label="گارانتی"
+            defaultValue={localTempInventory?.guaranteeId}
             nullable={true}
-            onChange={(e) => {
-              setTempInventory({
-                ...tempInventory,
-                guaranteeId: e.id !== null ? +e.id : null,
-                guaranteeName: e.name,
-              });
-            }}
+            onChange={(e) =>
+              handleSelectChange(e, "guaranteeId", "guaranteeName")
+            }
           />
         </div>
-
         <div className="mb-4">
           <SelectSearch
             loadingState={proviencesIsLoading}
             data={proviences?.result}
             label="فروش فقط در شهر"
+            defaultValue={localTempInventory?.onlyProvinceId}
             nullable={true}
-            onChange={(e) => {
-              setTempInventory({
-                ...tempInventory,
-                onlyProvinceId: e.id !== null ? +e.id : null,
-                onlyProvinceName: e.name,
-              });
-              console.log(e.id !== null ? +e.id : null);
-            }}
+            onChange={(e) =>
+              handleSelectChange(e, "onlyProvinceId", "onlyProvinceName")
+            }
           />
         </div>
         <div className="mb-4">
@@ -117,14 +218,11 @@ export default function InventoriesDialouge({
             loadingState={guaranteeMonthIsLoading}
             data={guaranteeMonth?.result}
             label="ماه های گارانتی"
+            defaultValue={localTempInventory?.guaranteeMonthId}
             nullable={true}
-            onChange={(e) => {
-              setTempInventory({
-                ...tempInventory,
-                guaranteeMonthId: e.id !== null ? +e.id : null,
-                guaranteeMonthName: e.name,
-              });
-            }}
+            onChange={(e) =>
+              handleSelectChange(e, "guaranteeMonthId", "guaranteeMonthName")
+            }
           />
         </div>
         <div className="flex gap-4 mb-4">
@@ -134,13 +232,9 @@ export default function InventoriesDialouge({
               required
               id="standard-basic"
               label="تعداد"
+              defaultValue={localTempInventory?.qty}
               variant="standard"
-              onChange={(e) =>
-                setTempInventory({
-                  ...tempInventory,
-                  qty: +e.target.value,
-                })
-              }
+              onChange={(e) => handleSelectChange(e, "qty")}
             />
           </div>
           <div className="flex-1">
@@ -150,12 +244,8 @@ export default function InventoriesDialouge({
               id="standard-basic"
               label="قیمت خرید"
               variant="standard"
-              onChange={(e) =>
-                setTempInventory({
-                  ...tempInventory,
-                  buyPrice: +e.target.value,
-                })
-              }
+              defaultValue={localTempInventory?.buyPrice}
+              onChange={(e) => handleSelectChange(e, "buyPrice")}
             />
           </div>
         </div>
@@ -167,12 +257,8 @@ export default function InventoriesDialouge({
               id="standard-basic"
               label="قیمت اقساطی"
               variant="standard"
-              onChange={(e) =>
-                setTempInventory({
-                  ...tempInventory,
-                  firstPrice: +e.target.value,
-                })
-              }
+              defaultValue={localTempInventory?.firstPrice}
+              onChange={(e) => handleSelectChange(e, "firstPrice")}
             />
           </div>
           <div className="flex-1">
@@ -183,12 +269,8 @@ export default function InventoriesDialouge({
               label="قیمت نقدی"
               nullable={true}
               variant="standard"
-              onChange={(e) =>
-                setTempInventory({
-                  ...tempInventory,
-                  secondaryPrice: +e.target.value,
-                })
-              }
+              defaultValue={localTempInventory?.secondaryPrice}
+              onChange={(e) => handleSelectChange(e, "secondaryPrice")}
             />
           </div>
         </div>
@@ -198,15 +280,11 @@ export default function InventoriesDialouge({
             required
             fullWidth
             id="standard-basic"
+            defaultValue={localTempInventory?.weight}
             label="وزن"
             nullable={true}
             variant="standard"
-            onChange={(e) =>
-              setTempInventory({
-                ...tempInventory,
-                weight: +e.target.value,
-              })
-            }
+            onChange={(e) => handleSelectChange(e, "weight")}
           />
         </div>
         <label
@@ -216,12 +294,8 @@ export default function InventoriesDialouge({
           توضیحات
         </label>
         <textarea
-          onChange={(e) => {
-            setTempInventory({
-              ...tempInventory,
-              description: +e.target.value,
-            });
-          }}
+          defaultValue={localTempInventory?.description}
+          onChange={(e) => handleSelectChange(e, "description")}
           id="message"
           rows="4"
           className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -234,7 +308,8 @@ export default function InventoriesDialouge({
           color="error"
           onClick={() => {
             setOpen(false);
-            setTempInventory({});
+            setActiveSpace(null);
+            setLocalTempInventory({});
           }}
         >
           لغو
@@ -244,7 +319,15 @@ export default function InventoriesDialouge({
           color="success"
           autoFocus
           onClick={(e) => {
-            handleInventoryCreate();
+            console.log(localTempInventory);
+
+            if (!isFormValid()) {
+              // Optionally display an error message
+              toast.error("لطفا تمام فیلد ها را پر نمایید");
+              return;
+            }
+
+            handleInventoryCreate(localTempInventory);
           }}
         >
           ثبت

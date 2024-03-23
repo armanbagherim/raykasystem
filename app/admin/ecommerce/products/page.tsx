@@ -23,20 +23,20 @@ export default function page() {
   const deleteBrand = async (id) => {
     try {
       const req = await fetcher({
-        url: `/v1/api/ecommerce/brands/${id}`,
+        url: `/v1/api/ecommerce/admin/products/${id}`,
         method: "DELETE",
       });
       toast.success("موفق");
-      refetchBrands();
+      refetchProducts();
     } catch (error) {
       toast.error(error.message);
     }
   };
   const {
-    data: brands,
-    isLoading: brandsIsLoading,
-    error: brandsError,
-    refetch: refetchBrands,
+    data: products,
+    isLoading: productsIsLoading,
+    error: productsError,
+    refetch: refetchProducts,
   } = useFetcher(
     `/v1/api/ecommerce/admin/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
     "GET"
@@ -64,7 +64,7 @@ export default function page() {
       width: 400,
       renderCell: (row) => (
         <>
-          <a className="ml-4" href={`/admin/ecommerce/brands/${row.id}`}>
+          <a className="ml-4" href={`/admin/ecommerce/products/${row.id}`}>
             <button
               type="button"
               className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
@@ -80,21 +80,16 @@ export default function page() {
               حذف
             </button>
           </a>
-          <Uploader
-            refetch={refetchBrands}
-            location="v1/api/ecommerce/productphotos/image"
-            id={row.id}
-          />
         </>
       ),
     },
   ];
-  if (brandsIsLoading) {
+  if (productsIsLoading) {
     return <Loading />;
   }
   return (
     <div>
-      <DataGrid rows={brands.result} columns={columns} />
+      <DataGrid rows={products.result} columns={columns} />
     </div>
   );
 }
