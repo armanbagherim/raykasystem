@@ -7,7 +7,7 @@ import { useAtom } from "jotai";
 import { pageTitle } from "@/app/admin/layout";
 import Loading from "@/app/components/global/loading";
 
-export default function page({ params }) {
+export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
   useEffect(() => {
     setTitle({

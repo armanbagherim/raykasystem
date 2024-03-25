@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 import { HexColorPicker } from "react-colorful";
-export default function page() {
+export default function Vendors() {
   const [title, setTitle] = useAtom(pageTitle);
   const [formBody, setFormBody] = useState({
     name: "",

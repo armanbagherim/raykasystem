@@ -8,7 +8,10 @@ import Title from "../components/design/Title";
 
 async function getProducts() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
+    {
+      cache: "no-store",
+    }
   );
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
@@ -24,7 +27,6 @@ async function getProducts() {
 export default async function Home() {
   const session = await getServerSession(authOptions);
   const { result: products } = await getProducts();
-  console.log(products);
   return (
     <>
       <Slider slidesPerView={1}>
@@ -35,8 +37,14 @@ export default async function Home() {
       <div className="container mx-auto mb-24">
         <Title text="سه شنبه های تخفیفی" color={"primary"} />
         <div className="flex flex-wrap gap-5">
-          <ProductCard border={"primary"} type="long" />
-          <ProductCard border={"primary"} type="long" />
+          {products.map((value) => (
+            <ProductCard
+              key={value}
+              data={value}
+              type="long"
+              className="w-full sm:w-1/2 md:w-1/3"
+            />
+          ))}
         </div>
       </div>
       <div className="bg-primary py-10 mb-20">
@@ -44,8 +52,8 @@ export default async function Home() {
           <Title text="سه شنبه های تخفیفی" color="white" />
           <div className="flex gap-5">
             <Slider slidesPerView={5}>
-              {products.map((value) => (
-                <ProductCard data={value} type="main" />
+              {products.map((value, key) => (
+                <ProductCard key={key} data={value} type="main" />
               ))}
             </Slider>
           </div>
@@ -54,15 +62,14 @@ export default async function Home() {
       <div className="container mx-auto mb-24">
         <Title text="پرفروش ترین ها" color={"primary"} />
         <div className="flex flex-wrap gap-5">
-          <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-          <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-          <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-          <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-          <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-          <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-          <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-          <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-          <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
+          {products.map((value, key) => (
+            <ProductCard
+              key={key}
+              data={value}
+              type="long"
+              className="w-full sm:w-1/2 md:w-1/3"
+            />
+          ))}
         </div>
       </div>
       <div className="container mx-auto mb-20">
@@ -74,14 +81,14 @@ export default async function Home() {
       <div className="container mx-auto mb-24">
         <Title text="پرفروش ترین ها" color={"primary"} />
         <Slider slidesPerView={5}>
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
+          {products.map((value, key) => (
+            <ProductCard
+              key={key}
+              data={value}
+              type="main"
+              className="w-full sm:w-1/2 md:w-1/3"
+            />
+          ))}
         </Slider>
       </div>
       <div className="container mx-auto mb-24">
@@ -91,12 +98,14 @@ export default async function Home() {
           </div>
           <div className="w-2/3">
             <div className="flex flex-wrap gap-5">
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
+              {products.map((value, key) => (
+                <ProductCard
+                  key={key}
+                  data={value}
+                  type="long"
+                  className="w-full sm:w-1/2 md:w-1/3"
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -104,14 +113,14 @@ export default async function Home() {
       <div className="container mx-auto mb-24">
         <Title text=" محبوب ترین  محصولات" color={"primary"} />
         <Slider slidesPerView={5}>
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
-          <ProductCard border={"none"} type="main" />
+          {products.map((value, key) => (
+            <ProductCard
+              key={key}
+              data={value}
+              type="main"
+              className="w-full sm:w-1/2 md:w-1/3"
+            />
+          ))}
         </Slider>
       </div>
 
@@ -125,12 +134,14 @@ export default async function Home() {
           </div>
           <div className="w-2/3">
             <div className="flex flex-wrap gap-5">
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
-              <ProductCard type="long" className="w-full sm:w-1/2 md:w-1/3" />
+              {products.map((value, key) => (
+                <ProductCard
+                  key={key}
+                  data={value}
+                  type="long"
+                  className="w-full sm:w-1/2 md:w-1/3"
+                />
+              ))}
             </div>
           </div>
         </div>
