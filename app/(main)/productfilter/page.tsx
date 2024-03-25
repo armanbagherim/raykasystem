@@ -10,17 +10,13 @@ import {
 import Numberpaginate from "@/app/components/design/Slider/Numberpaginate";
 import Sidebar from "../components/Sidebar";
 
-
-const Sellerpage = () => {
+const Productfilter = () => {
   return (
     <>
       <div className="container justify-center mx-auto mt-20 mb-64">
-        <div className="text-3xl p-5 pr-7">
-          <h1>محصولات فروشگاه تقوی</h1>
-        </div>
         <div className="mt-7">
           <div className="grid grid-cols-12">
-            <Sidebar/>
+            <Sidebar />
             <div className="col-span-9 p-4">
               <div>
                 <div className="p-2 grid grid-cols-4">
@@ -104,4 +100,4 @@ const Sellerpage = () => {
   );
 };
 
-export default Sellerpage;
+export default Productfilter;
