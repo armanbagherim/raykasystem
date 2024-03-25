@@ -9,6 +9,19 @@
   font-family: inherit !important;
 }
 
+::-webkit-scrollbar {
+  width: 5px; 
+}
+
+::-webkit-scrollbar-track {
+  background: #ECECEC;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #20AC73;
+  border-radius: 25px;
+}
+
 .textGradiant {
   background: -webkit-linear-gradient(#333, #eee);
   -webkit-background-clip: text;
