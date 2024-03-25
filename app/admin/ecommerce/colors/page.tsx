@@ -6,7 +6,7 @@ import Loading from "../../../components/global/loading";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
 
-export default function page() {
+export default function Colors() {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {

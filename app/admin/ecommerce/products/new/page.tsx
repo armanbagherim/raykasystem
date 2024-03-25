@@ -24,7 +24,7 @@ import InventoriesDialouge from "../_components/inventories/InventoriesDialouge"
 
 import Tab from "../_components/tabs/Tabs";
 
-export default function page() {
+export default function Products() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const [activeSpace, setActiveSpace] = useState<null | number>();

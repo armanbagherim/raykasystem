@@ -8,7 +8,7 @@ import { useAtom } from "jotai";
 import { toast } from "react-toastify";
 import Image from "next/image";
 
-export default function page() {
+export default function Eav() {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {

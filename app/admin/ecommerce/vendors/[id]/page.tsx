@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 
-export default function page({ params }) {
+export default function Vendors({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
   const [formBody, setFormBody] = useState({
     name: "",

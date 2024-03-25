@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 
-export default function page() {
+export default function Roles() {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {

@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import Image from "next/image";
 import { pageTitle } from "@/app/admin/layout";
 
-export default function page({ params }) {
+export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {

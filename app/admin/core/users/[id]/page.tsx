@@ -25,7 +25,7 @@ interface PageProps {
   params: { id: string };
 }
 
-export default function Page({ params }: PageProps): JSX.Element {
+export default function Users({ params }: PageProps): JSX.Element {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {

@@ -8,7 +8,7 @@ import { useAtom } from "jotai";
 import { HexColorPicker } from "react-colorful";
 import { pageTitle } from "@/app/admin/layout";
 
-export default function page({ params }) {
+export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
   useEffect(() => {
     setTitle({
