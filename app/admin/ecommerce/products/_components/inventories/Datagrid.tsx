@@ -63,8 +63,8 @@ export default function DataGridLite({
       width: 100,
       valueGetter({ row }) {
         return !row.onlyProvinceName
-          ? row.onlyProvince.name
-          : row.onlyProvinceName;
+          ? row.onlyProvince?.name || "-"
+          : row.onlyProvinceName || "-";
       },
     },
 

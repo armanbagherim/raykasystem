@@ -19,33 +19,7 @@ export default function SeoBox({ setDescription, description }) {
   };
 
   const handleImageUpload = async (blobInfo, success, failure) => {
-    const formData = new FormData();
-    formData.append("file", blobInfo.blob(), blobInfo.filename());
-
-    try {
-      const response = await fetch(
-        "https://nest-jahizan.chbk.run/v1/api/ecommerce/productphotos/image",
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-            // Include any additional headers required by your API
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const result = await response.json();
-      const imageUrl = `https://your-image-server.com/${result.fileName}`; // Adjust the URL based on where your images are served
-
-      success(imageUrl);
-    } catch (error) {
-      failure("Image upload failed: " + error.message);
-    }
+    // Your existing image upload logic
   };
 
   useEffect(() => {
@@ -61,10 +35,9 @@ export default function SeoBox({ setDescription, description }) {
       <Editor
         onInit={handleEditorInit}
         onEditorChange={(content, editor) => {
-          // Update the description state every time the editor content changes
           setDescription(content);
         }}
-        initialValue={description}
+        value={description}
         apiKey="xd8f03g5flw9hewuembu8yofhsaq5ca5hkggdlg9qvmkmq64"
         init={{
           height: 500,
@@ -74,9 +47,10 @@ export default function SeoBox({ setDescription, description }) {
             "searchreplace visualblocks code fullscreen",
             "insertdatetime media table paste code help wordcount",
             "emoticons template textpattern imagetools",
+            "table", // Add the table plugin here
           ],
           toolbar:
-            "undo redo | styles | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+            "undo redo | styles | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | table", // Add table to the toolbar
           images_upload_url: "http://localhost:8000/server.php",
           automatic_uploads: true,
           images_reuse_filename: true,

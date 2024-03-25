@@ -30,7 +30,7 @@ import Image from "next/image";
 
 export default function SingleProductModule({ product, related }) {
   const [localInventories, setLocalInventories] = useState(product.inventories);
-
+  console.log(product);
   const handleVariantChange = (colorId: number) => {
     console.log("handleVariantChange", colorId);
     const filtered = product.inventories.filter(
@@ -164,7 +164,10 @@ export default function SingleProductModule({ product, related }) {
             </div>
           </div>
         </div>
-        <LeftSide product={localInventories} />
+        <LeftSide
+          product={localInventories}
+          status={product.inventoryStatus.id}
+        />
       </div>
 
       <Inventories product={localInventories} />
@@ -177,227 +180,23 @@ export default function SingleProductModule({ product, related }) {
 
       <div className="container mx-auto mt-5 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-8 w-auto">
         <div className="flex gap-7">
-          <div>
-            <img src="/images/makup1.png" className="object-none rounded-3xl" />
-          </div>
-          <div className="w-5/6 mt-7">
-            <div className="text-2xl font-bold text-slate-900">
-              عنوان نقد و بررسی قالب1
-            </div>
-            <div className="text-sm text-slate-400 mt-5 text-justify">
-              <p>
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-                در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد
-                نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را
-                برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در
-                زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و
-                دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات
-                پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-              </p>
-              <p>
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-                در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد
-                نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را
-                برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در
-                زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و
-                دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات
-                پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex gap-5 mt-14">
-          <div>
-            <div className="text-2xl font-bold text-slate-900">
-              عنوان نقد و بررسی قالب2
-            </div>
-            <div className="text-sm text-slate-400 mt-5 text-justify">
-              <p>
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-                در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد
-                نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را
-                برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در
-                زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و
-                دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات
-                پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-              </p>
-              <p>
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-                در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد
-                نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را
-                برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در
-                زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و
-                دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات
-                پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex gap-7 mt-14">
-          <div className="w-5/6">
-            <div className="text-2xl font-bold text-slate-900">
-              عنوان نقد و بررسی قالب1
-            </div>
-            <div className="text-sm text-slate-400 mt-5 text-justify">
-              <p>
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-                در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد
-                نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را
-                برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در
-                زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و
-                دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات
-                پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-              </p>
-              <p>
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با
-                استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله
-                در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد
-                نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد،
-                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را
-                برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در
-                زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و
-                دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
-                زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات
-                پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-              </p>
-            </div>
-          </div>
-          <div className="mt-5">
-            <img src="/images/makup2.png" className="object-none rounded-3xl" />
-          </div>
-        </div>
-
-        <div className="mt-12">
-          <img src="/images/Frame 8.png" className="w-full" />
+          <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
         </div>
       </div>
 
       <div className="container mx-auto mt-8 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-8">
         <div>مشخصات کامل محصول</div>
         <div className="mt-8 text-sm">
-          <div className="flex gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28">توان مصرفی</div>
-            <div className="mr-10 text-slate-600">1500 وات</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28">ظرفیت</div>
-            <div className="mr-10 text-slate-600">3.5 لیتر</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28 gap-1 flex items-center my-auto">
-              <div>صفحه نمایش</div>
-              <div>
-                <Infocircle />
+          {product.productAttributeValues.map((value) => {
+            return (
+              <div className="flex gap-48 pt-3 pb-3 border-b">
+                <div className="text-green-500 w-28">
+                  {value.attribute.name}
+                </div>
+                <div className="mr-10 text-slate-600">{value.val}</div>
               </div>
-            </div>
-            <div className="mr-10 text-slate-600">لمسی دیجیتال</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28 gap-1 flex items-center my-auto">
-              <div>تایمر</div>
-            </div>
-            <div className="mr-10 text-slate-600">تا 30 دقیقه</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28 gap-1 flex items-center my-auto">
-              <div>انتخابگر دما</div>
-            </div>
-            <div className="mr-10 text-slate-600">تا 200 درجه سانتیگراد</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28 gap-1 flex items-center my-auto">
-              <div>رنگ ها</div>
-            </div>
-            <div className="mr-10 text-slate-600">سفید، مشکی</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28 gap-1 flex items-center my-auto">
-              <div>ضد آب</div>
-            </div>
-            <div className="mr-10 text-slate-600">
-              <Tickcircle />
-            </div>
-          </div>
-          <hr />
-          <div className="flex gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28">توان مصرفی</div>
-            <div className="mr-10 text-slate-600">1500 وات</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28">ظرفیت</div>
-            <div className="mr-10 text-slate-600">3.5 لیتر</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28 gap-1 flex items-center my-auto">
-              <div>صفحه نمایش</div>
-              <div>
-                <Infocircle />
-              </div>
-            </div>
-            <div className="mr-10 text-slate-600">لمسی دیجیتال</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28 gap-1 flex items-center my-auto">
-              <div>تایمر</div>
-            </div>
-            <div className="mr-10 text-slate-600">تا 30 دقیقه</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28 gap-1 flex items-center my-auto">
-              <div>انتخابگر دما</div>
-            </div>
-            <div className="mr-10 text-slate-600">تا 200 درجه سانتیگراد</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28 gap-1 flex items-center my-auto">
-              <div>رنگ ها</div>
-            </div>
-            <div className="mr-10 text-slate-600">سفید، مشکی</div>
-          </div>
-          <hr />
-          <div className="flex flex-shrink gap-48 pt-3 pb-3">
-            <div className="text-green-500 w-28 gap-1 flex items-center my-auto">
-              <div>ضد آب</div>
-            </div>
-            <div className="mr-10 text-slate-600">
-              <Tickcircle />
-            </div>
-          </div>
-          <hr />
+            );
+          })}
         </div>
       </div>
 
