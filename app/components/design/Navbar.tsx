@@ -16,7 +16,9 @@ export default async function Navbar() {
       <div className="container mx-auto">
         <div className="flex items-center justify-between mb-10">
           <div className="flex items-center w-1/2">
-            <img className="h-full ml-10" src="/images/logo.png" alt="" />
+            <Link href="/">
+              <img className="h-full ml-10" src="/images/logo.png" alt="" />
+            </Link>
             <div className="relative w-full">
               <img
                 className="absolute right-3 top-4"

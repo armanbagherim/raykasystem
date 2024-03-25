@@ -1,8 +1,5 @@
-import Breadcrumb from "@/app/components/design/Breadcrumb";
-import product from "../../../public/images/product-1.png";
-import { url } from "inspector";
-import Link from "next/link";
-
+"use client";
+import React, { useEffect, useState } from "react";
 import {
   Cart,
   Backtitle,
@@ -13,13 +10,6 @@ import {
   Category2,
   Smallcat,
   Toogle,
-  Espesial,
-  Tickstar,
-  Exclamation,
-  Exclamationitalic,
-  Trucktick,
-  Locationicon,
-  Lineonnum,
   Infocircle,
   Tickcircle,
   Tickstarwhite,
@@ -27,18 +17,42 @@ import {
   Like,
   Unlike,
 } from "@/app/components/design/Icons";
+
 import ProductCard from "@/app/components/design/Cards/ProductCard/ProductCard";
 import Slider from "@/app/components/design/Slider";
-import { BigAddToCart } from "@/app/components/design/Cards/ProductCard/Button/BigAddToCart";
-import { SmallAddToCart } from "@/app/components/design/Cards/ProductCard/Button/SmallAddToCart";
 
-const SingleProduct = () => {
+import Variants from "./variants";
+import Inventories from "./inventories";
+import LeftSide from "./LeftSide";
+import Breadcrumb from "@/app/components/design/Breadcrumb";
+import Link from "next/link";
+import Image from "next/image";
+
+export default function SingleProductModule({ product, related }) {
+  const [localInventories, setLocalInventories] = useState(product.inventories);
+
+  const handleVariantChange = (colorId: number) => {
+    console.log("handleVariantChange", colorId);
+    const filtered = product.inventories.filter(
+      (inventory) => inventory.colorId === colorId
+    );
+    console.log(filtered);
+    setLocalInventories([...filtered]); // Ensure immutability
+  };
+
+  useEffect(() => {
+    console.log(localInventories);
+  }, [localInventories]);
+
+  useEffect(() => {
+    setLocalInventories([...product.inventories]); // Ensure immutability
+  }, [product.inventories]);
   return (
     <>
       <Breadcrumb />
       <div className="container justify-center mx-auto mt-3 grid grid-cols-12 gap-8">
         <div className="col-span-4 border-0 rounded-lg relative">
-          <div className="w-10 h-32 absolute r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray">
+          <div className="w-10 h-32 absolute r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-20">
             <div className="pt-3.5 mr-3">
               <Link href="#">
                 <Zoomin />
@@ -56,20 +70,25 @@ const SingleProduct = () => {
             </div>
           </div>
           <div className="p-3 pr-9 pt-0 mr-0 pb-6">
-            <img
-              className="w-full"
-              src="/images/product-single.png"
-              width="250"
-            />
+            <Slider slidesPerView={1}>
+              {product?.attachments.map((value) => (
+                <Image
+                  className="w-full"
+                  height={"250"}
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
+                  width="250"
+                />
+              ))}
+            </Slider>
           </div>
         </div>
 
         <div className="col-span-5 rounded-lg">
           <div className="text-center font-normal text-2xl text-slate-500">
-            اتو بخار فیلیپس مدل 7040 (2800 وات)
+            {product.title}
           </div>
           <div className="text-center font-normal text-sm mt-2 text-slate-400">
-            Huda beauty fauxfilter foundation
+            {product.slug.replace(/-/g, " ")}
           </div>
 
           <div>
@@ -89,7 +108,7 @@ const SingleProduct = () => {
                   </div>
                   <div className="flex gap-1">
                     <div className="font-bold">برند: </div>
-                    <div>تارورس</div>
+                    <div>{product.brand.name}</div>
                   </div>
                   <div className="justify-start mx-auto ml-2">
                     <div className="pt-0.5 justify-center flex mx-auto w-12 bg-slate-50 rounded-xl">
@@ -107,26 +126,20 @@ const SingleProduct = () => {
                 </div>
                 <div className="flex gap-1">
                   <div className="font-bold">دسته: </div>
-                  <div>لوازم آشپزخانه، لوازم برقی، لوازم تستی</div>
+                  <div>
+                    <Link href={product.entityType.slug}>
+                      {product.entityType.name}
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="mt-7 mb-7 font-bold text-lg">انتخاب رنگ</div>
-          <div className="flex gap-6">
-            <div className="flex items-center my-auto gap-2">
-              <div className="bg-[#E65B7C] w-8 h-8 rounded-full inline"></div>
-              <div>قرمز</div>
-            </div>
-            <div className="flex items-center my-auto gap-2">
-              <div className="bg-[#E65B7C] w-8 h-8 rounded-full inline"></div>
-              <div>آبی</div>
-            </div>
-            <div className="flex items-center my-auto gap-2">
-              <div className="bg-[#E65B7C] w-8 h-8 rounded-full inline"></div>
-              <div>سبز</div>
-            </div>
-          </div>
+
+          <Variants
+            handleVariantChange={handleVariantChange}
+            product={product}
+          />
 
           <div className="mt-10 justify-center mx-auto p-5 flex gap-72">
             <ul className="list-disc text-sm leading-7">
@@ -151,187 +164,10 @@ const SingleProduct = () => {
             </div>
           </div>
         </div>
-
-        <div className="col-span-3  rounded-3xl bg-customGray">
-          <div className="px-4 pt-0 mr-0">
-            <div className="flex justify-end ml-0 mx-auto">
-              <Espesial />
-            </div>
-            <div className="text-primary">چرا از جهیزان خرید کنم؟</div>
-            <div className="mt-5">
-              <div className="flex gap-1 mt-3">
-                <div>
-                  <Tickstar />
-                </div>
-                <div>
-                  گارانتی{" "}
-                  <span className="font-bold text-primary">
-                    12 ماهه مادیران
-                  </span>
-                </div>
-                <div className="my-auto justify-start mx-auto ml-4">
-                  <Exclamation />
-                </div>
-              </div>
-              <div className="flex gap-1 mt-3">
-                <div>
-                  <Exclamationitalic />
-                </div>
-                <div>
-                  امکان خرید در{" "}
-                  <span className="font-bold text-primary">4 قسط</span>
-                </div>
-                <div className="my-auto justify-start mx-auto ml-4">
-                  <Exclamation />
-                </div>
-              </div>
-              <div className="flex gap-1 mt-3">
-                <div>
-                  <Trucktick />
-                </div>
-                <div>
-                  ارسال تا <span className="font-bold text-primary">3</span> روز
-                  آینده
-                </div>
-                <div className="my-auto justify-start mx-auto ml-4">
-                  <Exclamation />
-                </div>
-              </div>
-              <div className="flex gap-1 mt-3">
-                <div>
-                  <Locationicon />
-                </div>
-                <div>
-                  گارانتی{" "}
-                  <span className="font-bold text-primary">
-                    12 ماهه مادیران
-                  </span>
-                </div>
-                <div className="my-auto justify-start mx-auto ml-4">
-                  <Exclamation />
-                </div>
-              </div>
-            </div>
-            <div className="mt-20 flex items-end">
-              <div className="pb-0.5">
-                فروشنده: <span className="font-bold text-primary">جهیزان</span>
-              </div>
-              <div
-                className="font-bold justify-start mx-auto ml-2 items-end my-auto"
-                dir="ltr"
-              >
-                <div className="text-center bg-[#E2F0EB] text-primary text-xs rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
-                  قیمت نقدی
-                </div>
-                <div dir="rtl">125000 تومان</div>
-              </div>
-            </div>
-
-            <div className="mt-9 flex gap-3 mb-4">
-              <div>
-                <div className="bg-primary text-slate-100 font-bold text-xl p-1 w-9 rounded-lg text-center items-center">
-                  23
-                </div>
-                <div>ثانیه</div>
-              </div>
-              <div>
-                <div className="bg-primary text-slate-100 font-bold text-xl p-1 w-9 rounded-lg text-center items-center">
-                  23
-                </div>
-                <div>دقیقه</div>
-              </div>
-              <div>
-                <div className="bg-primary text-slate-100 font-bold text-xl p-1 w-9 rounded-lg text-center items-center">
-                  23
-                </div>
-                <div>ساعت</div>
-              </div>
-              <div
-                className="font-bold justify-start mx-auto ml-2 items-end my-auto"
-                dir="ltr"
-              >
-                <div className="flex items-center my-auto gap-1">
-                  <div className="text-center bg-primary text-slate-100 rounded-xl p-1 w-10">
-                    14%
-                  </div>
-                  <div className="relative">
-                    <div className="absolute top-1 w-10 text-slate-950">
-                      <Lineonnum />
-                    </div>
-                    <div className="text-slate-400 text-sm">155000</div>
-                  </div>
-                </div>
-
-                <div dir="rtl">
-                  <span>125000</span> تومان
-                </div>
-              </div>
-            </div>
-            <div className="text-center mx-auto">
-              <BigAddToCart />
-            </div>
-          </div>
-        </div>
+        <LeftSide product={localInventories} />
       </div>
 
-      <div className="container mx-auto mt-5 gap-10 bg-customGray rounded-3xl p-5">
-        <div className="font-bold">فروشندگان این رنگ</div>
-
-        <div className="mt-5 text-xl">
-          <div className="bg-white flex rounded-xl p-2 gap-14 items-center">
-            <div className="text-primary text-base">
-              پردازش گستر برتر خلیج فارس
-            </div>
-            <div className="text-base">گارانتی 18 ماهه مادیران</div>
-            <div className="bg-[#E6F3FF] p-4 rounded-3xl text-sm text-[#008AFA]">
-              ارسال فقط به شهر تهران
-            </div>
-            <div className="flex gap-10 text-center mx-auto ml-1">
-              <div className="items-center my-auto">125000 تومان</div>
-              <div>
-                <SmallAddToCart/>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-5 text-xl">
-          <div className="bg-white flex rounded-xl p-2 gap-14 items-center">
-            <div className="text-green-700 text-base">
-              پردازش گستر برتر خلیج فارس
-            </div>
-            <div className="text-base">گارانتی 18 ماهه مادیران</div>
-            {/* <div className="bg-[#E6F3FF] p-4 rounded-3xl text-sm text-[#008AFA]">
-              ارسال فقط به شهر تهران
-            </div> */}
-            <div className="flex gap-10 text-center mx-auto ml-1">
-              <div className="items-center my-auto">125000 تومان</div>
-              <div>
-                <SmallAddToCart/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-5 text-xl">
-          <div className="bg-white flex rounded-xl p-2 gap-14 items-center">
-            <div className="text-green-700 text-base">
-              پردازش گستر برتر خلیج فارس
-            </div>
-            <div className="text-base">گارانتی 18 ماهه مادیران</div>
-            <div className="bg-[#E6F3FF] p-4 rounded-3xl text-sm text-[#008AFA]">
-              ارسال فقط به شهر تهران
-            </div>
-            <div className="flex gap-10 text-center mx-auto ml-1">
-              <div className="items-center my-auto">125000 تومان</div>
-              <div>
-                <SmallAddToCart/>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Inventories product={localInventories} />
 
       <div className="container mx-auto mt-5 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-5 flex">
         <div className="mr-3 text-green-700">نقد و بررسی محصول</div>
@@ -884,18 +720,15 @@ const SingleProduct = () => {
         </div>
 
         <Slider slidesPerView={5}>
-          <ProductCard type="main" />
-          <ProductCard type="main" />
-          <ProductCard type="main" />
-          <ProductCard type="main" />
-          <ProductCard type="main" />
-          <ProductCard type="main" />
-          <ProductCard type="main" />
-          <ProductCard type="main" />
+          {related.map((value) => (
+            <ProductCard
+              data={value}
+              type="main"
+              className="w-full sm:w-1/2 md:w-1/3"
+            />
+          ))}
         </Slider>
       </div>
     </>
   );
-};
-
-export default SingleProduct;
+}

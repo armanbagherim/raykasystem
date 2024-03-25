@@ -1,25 +1,45 @@
-import Slider from "@/app/components/design/Slider";
 import React from "react";
+import { Metadata } from "next";
+import SingleProductModule from "./_components/SingleProductModule";
 
-const getProduct = async (slug:number) => {
-  const res = await fetch(`https://json.xstack.ir/api/v1/product/${slug}`);
+const getProduct = async (slug: number) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/${slug}`
+  );
   const response = await res.json();
   return response;
 };
 
-export default async function page({ params }) {
-  const product = await getProduct(params.slug);
-  console.log(product);
-  return (
-    <div className="container mx-auto">
-      <Slider slidesPerView={1}>
-        <img src={product.images[0]} alt={product.name} />
-        <img src={product.images[1]} alt={product.name} />
-        <img src={product.images[2]} alt={product.name} />
-        <img src={product.images[0]} alt={product.name} />
-        <img src={product.images[1]} alt={product.name} />
-        <h1>{product.name}</h1>
-      </Slider>
-    </div>
+async function getRelated() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
+    {
+      cache: "no-store",
+    }
   );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const slug = params.slug;
+
+  const product = await getProduct(slug);
+  return {
+    title: product.result.result.title,
+  };
+}
+
+export default async function page({ params }) {
+  const {
+    result: { result: product },
+  } = await getProduct(params.slug);
+
+  const { result: related } = await getRelated();
+
+  return <SingleProductModule product={product} related={related} />;
 }

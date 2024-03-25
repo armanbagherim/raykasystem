@@ -1,12 +1,19 @@
 import React from "react";
 import VariantsCard from "./VariantsCard";
 import CountDown from "../../CountDown";
+import Price from "./Price";
+import Image from "next/image";
 
 export default function MainCard({ data }) {
   return (
-    <div className="flex-auto">
+    <a href={`/product/${data?.slug}`} className="flex-auto">
       <div className="flex w-full flex-col gap-5 border bg-white rounded-3xl p-4">
-        <img className="w-1/2 mx-auto" src="/images/product-1.png" />
+        <Image
+          width={200}
+          height={400}
+          className="h-full mx-auto"
+          src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${data?.attachments[0].fileName}`}
+        />
         <div className="flex flex-col justify-between w-full">
           <h3 className="mb-2">{data?.title}</h3>
           <div className="flex mt-2 mb-6">
@@ -22,23 +29,11 @@ export default function MainCard({ data }) {
             <div>
               <CountDown />
             </div>
-            <div className="text-left text-base">
-              {/* <span className="mb-1 block">
-                <span className="text-xs mr-2  bg-primary text-white rounded-full px-2 py-1">
-                  14%
-                </span>
-                <span className="opacity-75 text-xs line-through">
-                  {Number(value.firstPrice.price).toLocaleString()}
-                </span>
-              </span> */}
-              <p className="text-sm">
-                {Number(data?.inventories[0].firstPrice.price).toLocaleString()}{" "}
-                تومان
-              </p>
-            </div>
+
+            <Price data={data} />
           </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 }
