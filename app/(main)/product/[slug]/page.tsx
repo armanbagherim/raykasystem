@@ -34,7 +34,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   };
 }
 
-export default async function page({ params }) {
+export default async function SingleProduct({ params }) {
   const {
     result: { result: product },
   } = await getProduct(params.slug);

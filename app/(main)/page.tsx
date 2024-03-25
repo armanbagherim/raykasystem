@@ -39,6 +39,7 @@ export default async function Home() {
         <div className="flex flex-wrap gap-5">
           {products.map((value) => (
             <ProductCard
+              key={value}
               data={value}
               type="long"
               className="w-full sm:w-1/2 md:w-1/3"
@@ -51,8 +52,8 @@ export default async function Home() {
           <Title text="سه شنبه های تخفیفی" color="white" />
           <div className="flex gap-5">
             <Slider slidesPerView={5}>
-              {products.map((value) => (
-                <ProductCard data={value} type="main" />
+              {products.map((value, key) => (
+                <ProductCard key={key} data={value} type="main" />
               ))}
             </Slider>
           </div>
@@ -61,8 +62,9 @@ export default async function Home() {
       <div className="container mx-auto mb-24">
         <Title text="پرفروش ترین ها" color={"primary"} />
         <div className="flex flex-wrap gap-5">
-          {products.map((value) => (
+          {products.map((value, key) => (
             <ProductCard
+              key={key}
               data={value}
               type="long"
               className="w-full sm:w-1/2 md:w-1/3"
@@ -79,8 +81,9 @@ export default async function Home() {
       <div className="container mx-auto mb-24">
         <Title text="پرفروش ترین ها" color={"primary"} />
         <Slider slidesPerView={5}>
-          {products.map((value) => (
+          {products.map((value, key) => (
             <ProductCard
+              key={key}
               data={value}
               type="main"
               className="w-full sm:w-1/2 md:w-1/3"
@@ -95,8 +98,9 @@ export default async function Home() {
           </div>
           <div className="w-2/3">
             <div className="flex flex-wrap gap-5">
-              {products.map((value) => (
+              {products.map((value, key) => (
                 <ProductCard
+                  key={key}
                   data={value}
                   type="long"
                   className="w-full sm:w-1/2 md:w-1/3"
@@ -109,8 +113,9 @@ export default async function Home() {
       <div className="container mx-auto mb-24">
         <Title text=" محبوب ترین  محصولات" color={"primary"} />
         <Slider slidesPerView={5}>
-          {products.map((value) => (
+          {products.map((value, key) => (
             <ProductCard
+              key={key}
               data={value}
               type="main"
               className="w-full sm:w-1/2 md:w-1/3"
@@ -129,8 +134,9 @@ export default async function Home() {
           </div>
           <div className="w-2/3">
             <div className="flex flex-wrap gap-5">
-              {products.map((value) => (
+              {products.map((value, key) => (
                 <ProductCard
+                  key={key}
                   data={value}
                   type="long"
                   className="w-full sm:w-1/2 md:w-1/3"

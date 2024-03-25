@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import Image from "next/image";
 import Uploader from "@/app/components/global/Uploader";
 
-export default function page() {
+export default function Brands() {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {

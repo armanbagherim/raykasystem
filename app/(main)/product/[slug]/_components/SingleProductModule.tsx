@@ -71,8 +71,9 @@ export default function SingleProductModule({ product, related }) {
           </div>
           <div className="p-3 pr-9 pt-0 mr-0 pb-6">
             <Slider slidesPerView={1}>
-              {product?.attachments.map((value) => (
+              {product?.attachments.map((value, key) => (
                 <Image
+                  key={key}
                   className="w-full"
                   height={"250"}
                   src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
@@ -187,9 +188,9 @@ export default function SingleProductModule({ product, related }) {
       <div className="container mx-auto mt-8 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-8">
         <div>مشخصات کامل محصول</div>
         <div className="mt-8 text-sm">
-          {product.productAttributeValues.map((value) => {
+          {product.productAttributeValues.map((value, key) => {
             return (
-              <div className="flex gap-48 pt-3 pb-3 border-b">
+              <div className="flex gap-48 pt-3 pb-3 border-b" key={key}>
                 <div className="text-green-500 w-28">
                   {value.attribute.name}
                 </div>
@@ -519,8 +520,9 @@ export default function SingleProductModule({ product, related }) {
         </div>
 
         <Slider slidesPerView={5}>
-          {related.map((value) => (
+          {related.map((value, key) => (
             <ProductCard
+              key={key}
               data={value}
               type="main"
               className="w-full sm:w-1/2 md:w-1/3"

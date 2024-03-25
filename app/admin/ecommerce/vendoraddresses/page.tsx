@@ -7,7 +7,7 @@ import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
 import { toast } from "react-toastify";
 
-export default function page() {
+export default function VendorAddress() {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {

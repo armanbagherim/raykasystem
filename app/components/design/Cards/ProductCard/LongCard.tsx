@@ -19,8 +19,9 @@ export default function LongCard({ border, data }) {
         <div className="flex flex-col justify-between w-full">
           <h3 className="mb-2">{data?.title}</h3>
           <div className="flex mt-2 mb-6">
-            {data?.inventories.map((value) => (
+            {data?.inventories.map((value, key) => (
               <VariantsCard
+                key={key}
                 isSelected={false}
                 color={value.color.hexCode}
                 name={value.color.name}

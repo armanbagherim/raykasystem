@@ -10,9 +10,9 @@ export default function Inventories({ product }) {
       {product.length >= 1 ? (
         <>
           <h4 className="font-bold  mb-4">فروشندگان این کالا</h4>
-          {product.map((value) => {
+          {product.map((value, key) => {
             return (
-              <div className="mb-5 text-xl">
+              <div key={key} className="mb-5 text-xl">
                 <div className="bg-white flex rounded-xl p-2 px-6 gap-14 items-center justify-between">
                   <div className="text-base">
                     گارانتی {value.guaranteeMonth.name} {value.guarantee.name}

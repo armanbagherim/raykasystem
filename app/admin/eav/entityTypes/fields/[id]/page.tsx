@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import { useAtom } from "jotai";
 import { pageTitle } from "@/app/admin/layout";
 
-export default function page({ params }) {
+export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {

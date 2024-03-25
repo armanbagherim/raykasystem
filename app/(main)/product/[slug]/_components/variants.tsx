@@ -22,8 +22,9 @@ export default function Variants({ product, handleVariantChange }) {
     <>
       <h4 className="mt-7 mb-7 font-bold text-lg">انتخاب رنگ</h4>
       <div className="flex gap-6">
-        {uniqueColors.map((value) => (
+        {uniqueColors.map((value, key) => (
           <div
+            key={key}
             onClick={(e) => {
               handleVariantChange(value.color.id);
               setActiveColorId(value.color.id); // Update the active color

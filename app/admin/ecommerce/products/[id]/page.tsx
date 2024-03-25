@@ -50,7 +50,7 @@ interface RequestBody {
   inventories: Inventory[];
 }
 
-export default function page({ params }) {
+export default function Products({ params }) {
   const { id } = params;
   const [open, setOpen] = useState(false);
   const router = useRouter();

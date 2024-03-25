@@ -27,7 +27,7 @@ export default function ProductUploader({
       <div className="flex pt-4 gap-4 flex-wrap my-4">
         {photos.map((value, index) => {
           return (
-            <div className="relative group ">
+            <div className="relative group " key={index}>
               <button
                 onClick={(e) => removePhoto(value.id)}
                 className="bg-red-700 p-1 rounded-md absolute -right-4 -top-2 invisible group-hover:visible transition duration-600"

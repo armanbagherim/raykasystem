@@ -8,7 +8,7 @@ import { useAtom } from "jotai";
 import { pageTitle } from "../../../../layout";
 import MapComponent from "@/app/components/global/Map";
 
-export default function page({ params }) {
+export default function VendorAddress({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
   const [coordinates, setCoordinates] = useState({
     latitude: null,
@@ -151,8 +151,10 @@ export default function page({ params }) {
               onChange={(e) => setprovinceId(e.target.value)}
               id=""
             >
-              {provinces.result.map((value) => (
-                <option value={value.id}>{value.name}</option>
+              {provinces.result.map((value, key) => (
+                <option key={key} value={value.id}>
+                  {value.name}
+                </option>
               ))}
             </select>
           </div>
@@ -171,8 +173,10 @@ export default function page({ params }) {
                 setCityId(e.target.value);
               }}
             >
-              {cities?.map((value) => (
-                <option value={value.id}>{value.name}</option>
+              {cities?.map((value, key) => (
+                <option key={key} value={value.id}>
+                  {value.name}
+                </option>
               ))}
             </select>
           </div>
@@ -193,8 +197,10 @@ export default function page({ params }) {
                 }}
                 id=""
               >
-                {neghberhoods?.map((value) => (
-                  <option value={value.id}>{value.name}</option>
+                {neghberhoods?.map((value, key) => (
+                  <option key={key} value={value.id}>
+                    {value.name}
+                  </option>
                 ))}
               </select>
             </div>
