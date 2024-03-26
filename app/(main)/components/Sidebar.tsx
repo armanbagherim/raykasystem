@@ -31,7 +31,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="col-span-3 p-4">
+      <div className="col-span-3 p-4"> 
         <div>
           {/* برند */}
           <div className="bg-customGray p-4 rounded-2xl grid grid-cols-2">
@@ -43,7 +43,7 @@ const Sidebar = () => {
             </span>
           </div>
           {IsBrandOpen && (
-            <div className="pl-5 overflow-y-scroll max-h-52 mt-5 ml-4 font-normal text-md">
+            <div className="scrollItems pl-5 overflow-y-scroll max-h-52 mt-5 ml-4 font-normal text-md">
               <div className="p-4 grid grid-cols-2">
                 <span className="col-span-1">نسپرسو</span>
                 <span className="col-span-1 flex justify-end">

@@ -9,15 +9,15 @@
   font-family: inherit !important;
 }
 
-::-webkit-scrollbar {
+.scrollItems::-webkit-scrollbar {
   width: 5px; 
 }
 
-::-webkit-scrollbar-track {
+.scrollItems::-webkit-scrollbar-track {
   background: #ECECEC;
 }
 
-::-webkit-scrollbar-thumb {
+.scrollItems::-webkit-scrollbar-thumb {
   background: #20AC73;
   border-radius: 25px;
 }
