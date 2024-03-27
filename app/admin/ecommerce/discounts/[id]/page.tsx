@@ -3,18 +3,20 @@ import SaveBar from "@/app/components/global/SaveBar";
 import SearchSelect from "@/app/components/global/SearchSelect";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import { Switch, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Loading from "@/app/components/global/loading";
 
-export default function NewDiscount() {
+export default function NewDiscount({ params }) {
   const router = useRouter();
 
   const [requestBody, setRequestBody] = useState({
+    id: null,
     name: "",
     description: "",
     discountTypeId: 0,
@@ -30,6 +32,36 @@ export default function NewDiscount() {
     endDate: "2024-03-26T01:49:58.489Z",
     vendorId: 0,
   });
+
+  const {
+    data: discount,
+    isLoading: discountIsLoading,
+    error: discountError,
+  } = useFetcher(`/v1/api/ecommerce/admin/discounts/${params.id}`, "GET");
+
+  useEffect(() => {
+    if (!discountIsLoading) {
+      setRequestBody((prevState) => ({
+        ...prevState,
+        id: discount.result.id,
+        name: discount.result.name,
+        description: discount.result.description,
+        discountTypeId: discount.result.discountTypeId,
+        discountActionTypeId: discount.result.discountActionTypeId,
+        discountValue: discount.result.discountValue,
+        maxValue: discount.result.maxValue,
+        discountActionRuleId: discount.result.discountActionRuleId,
+        couponCode: discount.result.couponCode,
+        priority: discount.result.priority,
+        priority: discount.result.priority,
+        limit: discount.result.limit,
+        startDate: discount.result.startDate,
+        endDate: discount.result.endDate,
+        // vendorId: discount.result.
+      }));
+    }
+  }, [discountIsLoading]);
+
   const {
     data: discountTypes,
     isLoading: discountTypesIsLoading,
@@ -60,8 +92,8 @@ export default function NewDiscount() {
   const save = async () => {
     try {
       const req = await fetcher({
-        url: "/v1/api/ecommerce/admin/discounts",
-        method: "POST",
+        url: `/v1/api/ecommerce/admin/discounts/${params.id}`,
+        method: "PUT",
         body: requestBody,
       });
       toast.success("موفق");
@@ -72,7 +104,9 @@ export default function NewDiscount() {
       toast.error(error.message);
     }
   };
-
+  if (discountIsLoading) {
+    return <Loading />;
+  }
   return (
     <div>
       <div className="mb-6">
@@ -88,6 +122,7 @@ export default function NewDiscount() {
           variant="standard"
           fullWidth
           required
+          value={requestBody.name}
           onChange={(e) =>
             setRequestBody((prevState) => ({
               ...prevState,
@@ -104,6 +139,7 @@ export default function NewDiscount() {
           توضیحات
         </label>
         <TextField
+          value={requestBody.description}
           type="text"
           id="first_name"
           variant="standard"
@@ -119,6 +155,7 @@ export default function NewDiscount() {
       </div>
       <div className="mb-6">
         <SearchSelect
+          defaultValue={requestBody.discountTypeId}
           loadingState={discountTypesIsLoading}
           data={discountTypes?.result}
           label="نوع تخفیف"
@@ -136,6 +173,7 @@ export default function NewDiscount() {
             locale={persian_fa}
             inputClass="w-full border-b outline-none py-4 border-gray-500"
             containerClassName="w-full"
+            value={new Date(requestBody.startDate)}
             onChange={(e) =>
               setRequestBody({
                 ...requestBody,
@@ -151,6 +189,7 @@ export default function NewDiscount() {
             containerClassName="w-full"
             plugins={[<TimePicker position="bottom" />]}
             calendar={persian}
+            value={new Date(requestBody.endDate)}
             locale={persian_fa}
             onChange={(e) =>
               setRequestBody({
@@ -163,6 +202,7 @@ export default function NewDiscount() {
       </div>
       <div className="mb-6">
         <SearchSelect
+          defaultValue={requestBody.discountActionTypeId}
           loadingState={discountActionTypesIsLoading}
           data={discountActionTypes?.result}
           label="مدل تخفیف"
@@ -174,6 +214,7 @@ export default function NewDiscount() {
       {requestBody.discountTypeId === 3 ? (
         <div className="mb-6">
           <TextField
+            value={requestBody.couponCode}
             onChange={(e) => {
               // Check if the input value is empty
               const couponCode =
@@ -193,6 +234,7 @@ export default function NewDiscount() {
       <div className="flex gap-4">
         <div className="mb-6 flex-1">
           <TextField
+            value={requestBody.discountValue}
             onChange={(e) =>
               setRequestBody({ ...requestBody, discountValue: +e.target.value })
             }
@@ -203,6 +245,7 @@ export default function NewDiscount() {
         </div>
         <div className="mb-6 flex-1">
           <TextField
+            value={requestBody.maxValue}
             onChange={(e) =>
               setRequestBody({ ...requestBody, maxValue: +e.target.value })
             }
@@ -214,6 +257,7 @@ export default function NewDiscount() {
         <div className="mb-6 flex-1">
           <TextField
             type="number"
+            value={requestBody.limit}
             onChange={(e) =>
               setRequestBody({ ...requestBody, limit: +e.target.value })
             }
@@ -225,6 +269,7 @@ export default function NewDiscount() {
       </div>
       <div className="mb-6">
         <SearchSelect
+          defaultValue={requestBody.discountActionRuleId}
           loadingState={discountActionRulesIsLoading}
           data={discountActionRules?.result}
           label="شرط اعمالی"
@@ -237,6 +282,7 @@ export default function NewDiscount() {
         <SearchSelect
           loadingState={vendorsIsLoading}
           data={vendors?.result}
+          defaultValue={requestBody.vendorId}
           // isDiff={true}
           // diffName={"name"}
           label="فروشگاه"
@@ -268,6 +314,7 @@ export default function NewDiscount() {
               setRequestBody({ ...requestBody, priority: +e.target.value })
             }
             label="اولویت"
+            value={requestBody.priority}
             variant="standard"
             fullWidth
           />

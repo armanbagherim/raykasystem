@@ -1,13 +1,13 @@
 "use client";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useEffect } from "react";
-import { fetcher, useFetcher } from "../../../components/global/fetcher";
-import Loading from "../../../components/global/loading";
 import { useAtom } from "jotai";
-import { pageTitle } from "../../layout";
 import { toast } from "react-toastify";
+import { fetcher, useFetcher } from "@/app/components/global/fetcher";
+import Loading from "@/app/components/global/loading";
+import { pageTitle } from "@/app/admin/layout";
 
-export default function Discount() {
+export default function DiscountConditions({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {
@@ -36,7 +36,10 @@ export default function Discount() {
     isLoading: discountsIsLoading,
     error: discountsError,
     refetch: refetch,
-  } = useFetcher(`/v1/api/ecommerce/admin/discounts`, "GET");
+  } = useFetcher(
+    `/v1/api/ecommerce/admin/discountConditions?sortOrder=DESC&discountId=${params.id}&offset=0&limit=10&orderBy=id`,
+    "GET"
+  );
 
   const columns: GridColDef[] = [
     {
