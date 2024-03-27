@@ -2,7 +2,7 @@ import React from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import Link from "next/link";
-import Megamenu from "@/app/(main)/megamenu/page";
+import Megamenu from "@/app/(main)/components/Megamenu";
 
 export default async function Navbar() {
   const session = await getServerSession(authOptions);
@@ -55,7 +55,7 @@ export default async function Navbar() {
               <li className="flex ml-3 relative group">
                 <img src="/icons/menu.svg" alt="" />
                 <span className="mx-3"><a href="#">دسته بندی ها</a></span>
-                <img src="/icons/down.svg" alt="" />
+                <img src="/icons/down.svg" width={12} alt="" />
                 
               </li>
               <li className="flex ml-3">
@@ -72,11 +72,15 @@ export default async function Navbar() {
               </li>
             </ul>
           </nav>
+          
           <button className="flex border border-primary text-primary rounded-2xl py-4 px-8">
             <img src="/icons/discount.svg" alt="" />
             <span className="mr-2">تخفیفات ویژه</span>
           </button>
         </div>
+        <Megamenu></Megamenu>
+        {/* <div className="absolute bg-slate-500 justify-between rounded rounded-3xl text-lg text-slate-500 p-4 mt-10 w-full h-10 group-hover:block">
+        </div> */}
       </div>
     </div>
   );
