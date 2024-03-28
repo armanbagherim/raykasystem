@@ -18,12 +18,39 @@ interface SliderProps {
 export default function Slider({
   children,
   slideProps,
-  slidesPerView = 4, // Default to  4 if not provided
+  slidesPerView = 4, // Default to 4 if not provided
 }: SliderProps) {
   const swiperOptions: SwiperOptions = {
-    slidesPerView, // Use the prop value here
+    slidesPerView: 1, // Default to 1 for mobile
     spaceBetween: 25,
     navigation: true,
+    breakpoints: {
+      // Mobile
+      640: {
+        slidesPerView: 1,
+        spaceBetween: 60,
+      },
+      // Tablet
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 30,
+      },
+      // Medium (md)
+      1024: {
+        slidesPerView: 3,
+        spaceBetween: 40,
+      },
+      // Large (lg)
+      1280: {
+        slidesPerView: 4,
+        spaceBetween: 50,
+      },
+      // Extra-large (xl) and 2xl
+      1536: {
+        slidesPerView: 5,
+        spaceBetween: 30,
+      },
+    },
   };
 
   return (
