@@ -21,7 +21,7 @@ export default function DiscountConditions({ params }) {
   const deleteItem = async (id) => {
     try {
       const req = await fetcher({
-        url: `/v1/api/ecommerce/admin/discounts/${id}`,
+        url: `/v1/api/ecommerce/admin/discountConditions/${id}`,
         method: "DELETE",
       });
       toast.success("موفق");
@@ -32,9 +32,9 @@ export default function DiscountConditions({ params }) {
   };
 
   const {
-    data: discounts,
-    isLoading: discountsIsLoading,
-    error: discountsError,
+    data: conditions,
+    isLoading: conditionsIsLoading,
+    error: conditionsError,
     refetch: refetch,
   } = useFetcher(
     `/v1/api/ecommerce/admin/discountConditions?sortOrder=DESC&discountId=${params.id}&offset=0&limit=10&orderBy=id`,
@@ -72,14 +72,6 @@ export default function DiscountConditions({ params }) {
       width: 450,
       renderCell: (row) => (
         <>
-          <a href={`/admin/ecommerce/discounts/${row.id}`}>
-            <button
-              type="button"
-              className="focus:outline-none mx-4 text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-            >
-              ویرایش
-            </button>
-          </a>
           <a onClick={(e) => deleteItem(row.id)}>
             <button
               type="button"
@@ -88,24 +80,16 @@ export default function DiscountConditions({ params }) {
               حذف
             </button>
           </a>
-          <a href={`/admin/ecommerce/discounts/conditions/${row.id}`}>
-            <button
-              type="button"
-              className="focus:outline-none mx-4 text-white bg-emerald-700 hover:bg-emerald-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-            >
-              شرط ها
-            </button>
-          </a>
         </>
       ),
     },
   ];
-  if (discountsIsLoading) {
+  if (conditionsIsLoading) {
     return <Loading />;
   }
   return (
     <div>
-      <DataGrid rows={discounts.result} columns={columns} />
+      <DataGrid rows={conditions.result} columns={columns} />
     </div>
   );
 }
