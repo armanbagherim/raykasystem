@@ -25,10 +25,7 @@ export default function Price({ data }) {
         </>
       ) : (
         <p className="text-sm">
-          {Number(
-            data?.inventories[0].firstPrice.price.newPrice
-          ).toLocaleString()}{" "}
-          تومان
+          {Number(data?.inventories[0].firstPrice.price).toLocaleString()} تومان
         </p>
       )}
     </div>

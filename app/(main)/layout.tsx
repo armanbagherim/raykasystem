@@ -5,6 +5,7 @@ import Navbar from "../components/design/Navbar";
 import Footer from "../components/design/Footer";
 import localFont from "next/font/local";
 import "react-toastify/dist/ReactToastify.css";
+import BottomNav from "../components/design/BottomNav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -66,6 +67,7 @@ export default function RootLayout({
     <html lang="en" dir="rtl">
       <body className={IRANSansX.className}>
         <Navbar />
+        <BottomNav />
         {children}
         <Footer />
       </body>
