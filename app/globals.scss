@@ -88,3 +88,9 @@ ul.gcd-gl-result {
 .Toastify__close-button {
   align-self: center !important;
 }
+
+.no-before {
+  &::before {
+    display: none !important;
+  }
+}

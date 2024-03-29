@@ -3,233 +3,272 @@
 import {
   Addsquare,
   Minussquare,
+  PlusSmall,
   Searchicon,
   Sorticon,
 } from "@/app/components/design/Icons";
-import { useState } from "react";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Slider,
+  Typography,
+} from "@mui/material";
+import { GridArrowDownwardIcon } from "@mui/x-data-grid";
+import React, { useState, useTransition } from "react";
+import RangeSlider from "react-range-slider-input";
+import "react-range-slider-input/dist/style.css";
+import type { ChangeEvent } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+function valuetext(value) {
+  return `${value}°C`;
+}
+const Sidebar = ({ brands, colors, attributes, guarantees }) => {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const minDistance = 10;
+  const [isPending, startTransition] = useTransition();
 
-const Sidebar = () => {
-  const [IsBrandOpen, SetIsBrandOpen] = useState(false);
-  const brandFiltersShow = () => {
-    SetIsBrandOpen(!IsBrandOpen);
+  const [value1, setValue1] = useState([20, 37]);
+
+  const handleChange1 = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (activeThumb === 0) {
+      setValue1([Math.min(newValue[0], value1[1] - minDistance), value1[1]]);
+    } else {
+      setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
+    }
   };
 
-  const [IsPriceOpen, SetIsPriceOpen] = useState(false);
-  const priceFiltersShow = () => {
-    SetIsPriceOpen(!IsPriceOpen);
+  const [value2, setValue2] = useState([20, 37]);
+
+  const handleChange2 = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (newValue[1] - newValue[0] < minDistance) {
+      if (activeThumb === 0) {
+        const clamped = Math.min(newValue[0], 100 - minDistance);
+        setValue2([clamped, clamped + minDistance]);
+      } else {
+        const clamped = Math.max(newValue[1], minDistance);
+        setValue2([clamped - minDistance, clamped]);
+      }
+    } else {
+      setValue2(newValue);
+    }
   };
 
-  const [IsColorOpen, SetIsColorOpen] = useState(false);
-  const colorFiltersShow = () => {
-    SetIsColorOpen(!IsColorOpen);
-  };
+  const onSelect = (
+    event: ChangeEvent<HTMLSelectElement>,
+    type: string,
+    items: object // Assuming items is an object
+  ) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+    // const value = event.target.value.trim();
 
-  const [IsGeneralFiltersOpen, SetIsGeneralFilterOpen] = useState(false);
-  const generalFiltersShow = () => {
-    SetIsGeneralFilterOpen(!IsGeneralFiltersOpen);
+    // const currentBrands = current.getAll(type);
+    // const brandIndex = currentBrands.indexOf(value);
+
+    // if (brandIndex > -1) {
+    //   currentBrands.splice(brandIndex, 1);
+    //   current.delete(type);
+    //   currentBrands.forEach((brand) => current.append(type, brand));
+    // } else if (value) {
+    //   current.append(type, value);
+    // }
+
+    // Define the object with attributes based on the items object
+    const obj = [
+      {
+        attributeId: +items.attributeId,
+        attributeValues: [+items.id],
+      },
+    ];
+
+    // Convert the object to a JSON string and then encode it for URL
+    const attributesQuery = encodeURIComponent(JSON.stringify(obj));
+    console.log(attributesQuery);
+    console.log(decodeURIComponent(JSON.stringify(obj)));
+    // Append the encoded string to the URL query parameters
+    current.append("attributes", attributesQuery);
+    console.log(current.toString());
+
+    const query = current.toString() ? `?${current.toString()}` : "";
+    startTransition(() => {
+      router.push(`${pathname}${query}`);
+    });
   };
 
   return (
     <>
+      {isPending && (
+        <div className="bg-[#ffffffad] fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="rounded-md h-12 w-12 border-4 border-t-4 border-blue-500 animate-spin absolute"></div>
+        </div>
+      )}
+
       <div className="col-span-3 p-4">
-        <div>
-          {/* برند */}
-          <div className="bg-customGray p-4 rounded-2xl grid grid-cols-2">
-            <span className="col-span-1 text-md font-bold">برندها</span>
-            <span className="col-span-1 flex justify-end">
-              <button onClick={brandFiltersShow}>
-                {IsBrandOpen ? <Minussquare /> : <Addsquare />}
-              </button>
-            </span>
-          </div>
-          {IsBrandOpen && (
-            <div className="pl-5 overflow-y-scroll max-h-52 mt-5 ml-4 font-normal text-md">
-              <div className="p-4 grid grid-cols-2">
-                <span className="col-span-1">نسپرسو</span>
-                <span className="col-span-1 flex justify-end">
-                  <input type="radio" />
-                </span>
-              </div>
-              <div className="p-4 grid grid-cols-2">
-                <span className="col-span-1">برند تست</span>
-                <span className="col-span-1 flex justify-end">
-                  <input type="radio" />
-                </span>
-              </div>
-              <div className="p-4 grid grid-cols-2">
-                <span className="col-span-1">برند تست2</span>
-                <span className="col-span-1 flex justify-end">
-                  <input type="radio" />
-                </span>
-              </div>
-              <div className="p-4 grid grid-cols-2">
-                <span className="col-span-1">برندتست3</span>
-                <span className="col-span-1 flex justify-end">
-                  <input type="radio" />
-                </span>
-              </div>
-              <div className="p-4 grid grid-cols-2">
-                <span className="col-span-1">برند تست4</span>
-                <span className="col-span-1 flex justify-end">
-                  <input type="radio" />
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div>
-          {/* قیمت */}
-          <div className="bg-customGray p-4 mt-5 rounded-2xl grid grid-cols-2">
-            <span className="col-span-1 text-md font-bold">قیمت</span>
-            <span className="col-span-1 flex justify-end">
-              <button onClick={priceFiltersShow}>
-                {IsPriceOpen ? <Minussquare /> : <Addsquare />}
-              </button>
-            </span>
-          </div>
-          {IsPriceOpen && (
-            <div className="mt-4 pr-4 pl-4">
-              <form action="#">
-                <div className="grid grid-cols-2 text-sm gap-1">
-                  <div className="flex gap-1 justify-start">
-                    <span className="text-slate-500">از</span>
-                    <span className="text-primary">
-                      {Number(2550000).toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="flex gap-1 justify-end">
-                    <span className="text-slate-500">تا</span>
-                    <span className="text-primary">
-                      {Number(2580000).toLocaleString()}
-                    </span>
-                  </div>
+        <Accordion
+          defaultExpanded
+          className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2"
+        >
+          <AccordionSummary
+            expandIcon={<PlusSmall />}
+            aria-controls="panel1-content"
+            id="panel1-header"
+          >
+            <Typography>برند</Typography>
+          </AccordionSummary>
+          <AccordionDetails className="bg-white border-0">
+            <div className=" overflow-y-scroll max-h-52 font-normal text-md">
+              {brands.map((value) => (
+                <div className="p-2 grid grid-cols-2">
+                  <label htmlFor={value.name + value.id} className="col-span-1">
+                    {value.name}
+                  </label>
+                  <span className="col-span-1 flex justify-end">
+                    <input
+                      onChange={(e) => onSelect(e, "brands")}
+                      id={value.name + value.id}
+                      value={value.id}
+                      type="checkbox"
+                    />
+                  </span>
                 </div>
-                <input id="range"
-                  dir="ltr"
-                  className="w-full"
-                  type="range"
-                  min="2550000"
-                  max="2850000"
-                />
-                <div className="grid grid-cols-2 text-xs text-slate-500">
-                  <div className="flex justify-start">ارزان ترین</div>
-                  <div className="flex justify-end">گران ترین</div>
-                </div>
-              </form>
+              ))}
             </div>
-          )}
-        </div>
+          </AccordionDetails>
+        </Accordion>
 
-        <div>
-          {" "}
-          {/* توان مضرفی */}
-          <div className="bg-customGray p-4 mt-5 rounded-2xl grid grid-cols-2">
-            <span className="col-span-1 text-md font-bold">توان مصرفی</span>
-            <span className="col-span-1 flex justify-end">
-              <button>
-                <Addsquare />
-              </button>
-            </span>
-          </div>
-        </div>
+        <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
+          <AccordionSummary
+            expandIcon={<GridArrowDownwardIcon />}
+            aria-controls="panel1-content"
+            id="panel1-header"
+          >
+            <Typography>گارانتی</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {guarantees.map((value) => (
+              <div className="p-2 grid grid-cols-2">
+                <label htmlFor={value.name + value.id} className="col-span-1">
+                  {value.name}
+                </label>
+                <span className="col-span-1 flex justify-end">
+                  <input id={value.name + value.id} type="checkbox" />
+                </span>
+              </div>
+            ))}
+          </AccordionDetails>
+        </Accordion>
 
-        <div>
-          {/* رنگ */}
-          <div className="mt-5">
-            <div className="bg-customGray p-4  grid grid-cols-2 rounded-2xl">
-              <span className="col-span-1 text-md font-bold">رنگ</span>
-              <span className="col-span-1 flex justify-end">
-                <button onClick={colorFiltersShow}>
-                  {IsColorOpen ? <Minussquare /> : <Addsquare />}
-                </button>
-              </span>
-            </div>
-            {IsColorOpen && (
+        <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
+          <AccordionSummary
+            expandIcon={<GridArrowDownwardIcon />}
+            aria-controls="panel1-content"
+            id="panel1-header"
+          >
+            <Typography>قیمت</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Slider
+              getAriaLabel={() => "Minimum distance"}
+              value={value1}
+              onChange={handleChange1}
+              valueLabelDisplay="auto"
+              getAriaValueText={valuetext}
+              disableSwap
+              color="success"
+            />
+          </AccordionDetails>
+        </Accordion>
+        {attributes.map((value) => (
+          <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
+            <AccordionSummary
+              expandIcon={<GridArrowDownwardIcon />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+            >
+              <Typography>{value.name}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
               <>
-                <div className="p-4">
-                  <div className="bg-customGray p-2 rounded-2xl flex gap-1">
-                    <div className="items-center my-auto">
-                      <Searchicon />
-                    </div>
-                    <div>
+                {value.attributeValues.map((values) => (
+                  <div className="grid grid-cols-4 pr-5 mt-3 font-normal text-md">
+                    <label
+                      htmlFor={values.id + values.value}
+                      className="col-span-3 flex gap-2 items-center my-auto"
+                    >
+                      {console.log(values)}
+                      <span>{values.value}</span>
+                    </label>
+                    <div className="col-span-1 flex items-center my-auto justify-end">
                       <input
-                        className="items-center my-auto border-none focus:outline-none bg-transparent text-gray-700 px-3 py-2 placeholder-gray-500"
-                        type="text"
-                        placeholder="جستجو"
+                        id={values.id + values.value}
+                        className="flex justify-end mx-auto"
+                        type="checkbox"
+                        onChange={(e) => onSelect(e, attributes, values)}
                       />
                     </div>
                   </div>
-                </div>
-                <div className="grid grid-cols-4 pr-5 mt-3 font-normal text-md">
-                  <div className="col-span-3 flex gap-2 items-center my-auto">
-                    <span className="w-7 h-7 bg-purple-600 rounded-lg"></span>
-                    <span>lieln آمریکا</span>
-                  </div>
-                  <div className="col-span-1 flex items-center my-auto justify-end">
-                    <input className="flex justify-end mx-auto" type="radio" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-4 pr-5 mt-3">
-                  <div className="col-span-3 flex gap-2 items-center my-auto">
-                    <span className="w-7 h-7 bg-purple-300 rounded-lg"></span>
-                    <span>گلبهی استرالیا</span>
-                  </div>
-                  <div className="col-span-1 flex items-center my-auto justify-end">
-                    <input className="flex justify-end mx-auto" type="radio" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-4 pr-5 mt-3">
-                  <div className="col-span-3 flex gap-2 items-center my-auto">
-                    <span className="w-7 h-7 bg-purple-600 rounded-lg"></span>
-                    <span>lieln آلمان</span>
-                  </div>
-                  <div className="col-span-1 flex items-center my-auto justify-end">
-                    <input className="flex justify-end mx-auto" type="radio" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-4 pr-5 mt-3">
-                  <div className="col-span-3 flex gap-2 items-center my-auto">
-                    <span className="w-7 h-7 bg-purple-300 rounded-lg"></span>
-                    <span>Calina ایران </span>
-                  </div>
-                  <div className="col-span-1 flex items-center my-auto justify-end">
-                    <input className="flex justify-end mx-auto" type="radio" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-4 pr-5 mt-3">
-                  <div className="col-span-3 flex gap-2 items-center my-auto">
-                    <span className="w-7 h-7 bg-purple-600 rounded-lg"></span>
-                    <span>lieln آمریکا</span>
-                  </div>
-                  <div className="col-span-1 flex items-center my-auto justify-end">
-                    <input className="flex justify-end mx-auto" type="radio" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-4 pr-5 mt-3">
-                  <div className="col-span-3 flex gap-2 items-center my-auto">
-                    <span className="w-7 h-7 bg-purple-300 rounded-lg"></span>
-                    <span>lieln سوئد</span>
-                  </div>
-                  <div className="col-span-1 flex items-center my-auto justify-end">
-                    <input className="flex justify-end mx-auto" type="radio" />
-                  </div>
-                </div>
+                ))}
               </>
-            )}
-          </div>
-        </div>
-        <div>
-          {/* فیلترهای کلی */}
-          <div className="bg-customGray p-4 mt-5 rounded-2xl grid grid-cols-2">
-            <span className="col-span-1 text-md font-bold">فیلترهای کلی</span>
-            <span className="col-span-1 flex justify-end">
-              <button onClick={generalFiltersShow}>
-                {IsGeneralFiltersOpen ? <Minussquare /> : <Addsquare />}
-              </button>
-            </span>
-          </div>
-          {IsGeneralFiltersOpen && (
+            </AccordionDetails>
+          </Accordion>
+        ))}
+
+        <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
+          <AccordionSummary
+            expandIcon={<GridArrowDownwardIcon />}
+            aria-controls="panel1-content"
+            id="panel1-header"
+          >
+            <Typography>Accordion 1</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <>
+              {colors.map((value) => (
+                <div className="grid grid-cols-4 pr-5 mt-3 font-normal text-md">
+                  <label
+                    htmlFor={value.name + value.hexCode}
+                    className="col-span-3 flex gap-2 items-center my-auto"
+                  >
+                    <span
+                      style={{ background: value.hexCode }}
+                      className="w-7 h-7 rounded-lg"
+                    ></span>
+                    <span>{value.name}</span>
+                  </label>
+                  <div className="col-span-1 flex items-center my-auto justify-end">
+                    <input
+                      id={value.name + value.hexCode}
+                      onChange={(e) => onSelect(e, "colors")}
+                      className="flex justify-end mx-auto"
+                      value={value.id}
+                      type="checkbox"
+                    />
+                  </div>
+                </div>
+              ))}
+            </>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
+          <AccordionSummary
+            expandIcon={<GridArrowDownwardIcon />}
+            aria-controls="panel1-content"
+            id="panel1-header"
+          >
+            <Typography>Accordion 1</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
             <>
               <div className="font-normal text-md">
                 <div className="p-4 pt-0 mt-4 justify-center mx-auto">
@@ -265,8 +304,8 @@ const Sidebar = () => {
                 </div>
               </div>
             </>
-          )}
-        </div>
+          </AccordionDetails>
+        </Accordion>
       </div>
     </>
   );

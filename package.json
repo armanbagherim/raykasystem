@@ -44,6 +44,7 @@
     "react-leaflet": "^4.2.1",
     "react-multi-date-picker": "^4.4.1",
     "react-query": "^3.39.3",
+    "react-range-slider-input": "^3.0.7",
     "react-select": "^5.8.0",
     "react-toastify": "^10.0.4",
     "react-verification-input": "^4.1.0",
