@@ -14,7 +14,7 @@ export default async function Navbar() {
         className="w-full h-auto mb-8"
         src={"/images/header.png"}
       />
-      <div className="container mx-auto">
+      <div className="container mx-auto relative group">
         <div className="flex items-center justify-between mb-10">
           <div className="flex items-center w-1/2">
             <Link href="/">
@@ -52,15 +52,16 @@ export default async function Navbar() {
         <div className="flex justify-between items-center">
           <nav>
             <ul className="flex">
-              <li className="flex ml-3 relative group">
-                <img src="/icons/menu.svg" alt="" />
-                <span className="mx-3"><a href="#">دسته بندی ها</a></span>
+              <li className="flex ml-3 ">
+              
+                <img src="/icons/menu.svg" alt=""/>
+                <span className="mx-3"><a href="#">دسته بندی ها</a><Megamenu></Megamenu></span>
                 <img src="/icons/down.svg" width={12} alt="" />
                 
               </li>
               <li className="flex ml-3">
                 <img src="/icons/news.svg" alt="" />
-                <span className="mx-3">اخبار و مقالات</span>
+                <span className="mx-3"><a href="#">اخبار و مقالات</a></span>
               </li>
               <li className="flex ml-3">
                 <img src="/icons/pack.svg" alt="" />
@@ -77,8 +78,9 @@ export default async function Navbar() {
             <img src="/icons/discount.svg" alt="" />
             <span className="mr-2">تخفیفات ویژه</span>
           </button>
+          
         </div>
-        <Megamenu></Megamenu>
+        
         {/* <div className="absolute bg-slate-500 justify-between rounded rounded-3xl text-lg text-slate-500 p-4 mt-10 w-full h-10 group-hover:block">
         </div> */}
       </div>

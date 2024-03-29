@@ -7,28 +7,50 @@ const Megamenu = () => {
     //     <ul className="flex space-x-4">
     //       <li className="relative group">
     //         <a href="#" className="hover:text-gray-300">دسته بندی</a>
-            <div className="absolute grid grid-cols-2 bg-customGray rounded rounded-3xl text-lg text-slate-500 p-4 w-full hidden group-hover:block">
-                <div className='col-span-1'>
-                  <p className='p-4 border-l'>آشپزخانه</p>
-                  <p className='p-4 border-t border-l'>سرو و پذیرایی</p>
-                  <p className='p-4 border-t border-l'>لوازم برقی</p>
-                  <p className='p-4 border-t border-l'>لوازم خانه</p>
-                  <p className='p-4 border-t border-l'>لوازم دکوری</p>
-                  <p className='p-4 border-t border-l'>محصولات استوک</p>
-                  <p className='p-4 border-t border-l'>تخفیفات ویژه</p>
-                  <p className='p-4 border-t border-l'>سه شنبه های تخفیفی</p>
-                  <p className='p-4 border-t border-l'>مقالات</p>
-                </div>
-                <div className='col-span-1'>
-                  <p className='p-4 border-l'>آشپزخانه</p>
-                  <p className='p-4 border-t border-l'>سرو و پذیرایی</p>
-                  <p className='p-4 border-t border-l'>لوازم برقی</p>
-                  <p className='p-4 border-t border-l'>لوازم خانه</p>
-                  <p className='p-4 border-t border-l'>لوازم دکوری</p>
-                  <p className='p-4 border-t border-l'>محصولات استوک</p>
-                  <p className='p-4 border-t border-l'>تخفیفات ویژه</p>
-                  <p className='p-4 border-t border-l'>سه شنبه های تخفیفی</p>
-                  <p className='p-4 border-t border-l'>مقالات</p>
+            <div className="absolute z-50 bg-customGray rounded rounded-3xl text-lg w-full hidden group-hover:lg:block group-hover:md:block group-hover:xl:block group-hover:2xl:block">
+                <div className='grid grid-cols-5 p-2'>
+                  <div className='col-span-1 p-4 pb-0 text-slate-500'>
+                    <p className='p-4 border-l hover:border-l-primary hover:border-l-4 hover:text-black'>آشپزخانه</p>
+                    <p className='p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black'>سرو و پذیرایی</p>
+                    <p className='p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black'>لوازم برقی</p>
+                    <p className='p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black'>لوازم خانه</p>
+                    <p className='p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black'>لوازم دکوری</p>
+                    <p className='p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black'>محصولات استوک</p>
+                    <p className='p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black'>تخفیفات ویژه</p>
+                    <p className='p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black'>سه شنبه های تخفیفی</p>
+                    <p className='p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black'>مقالات</p>
+                  </div>
+                  <div className='col-span-2 p-2 pb-0'>
+                    <div className='p-4 border-b text-primary'>همه لوازم برقی آشپزخانه</div>
+                    <div className='grid grid-cols-2 text-slate-700'>
+                      <div className='col-span-1'>
+                        <p className='p-4 hover:text-black text-primary'>وسایل آشپزخانه</p>
+                        <p className='p-4 hover:text-black'>کلمن و فلاسک</p>
+                        <p className='p-4'>جاادویه و پاسماوری</p>
+                        <p className='p-4 hover:text-black'>ترازو , کفگیرملاقه و ابزار</p>
+                        <p className='p-4 hover:text-black'>آبکش و لگن</p>
+                        <p className='p-4 hover:text-black'>سماور</p>
+                        <p className='p-4 hover:text-black'>کتری و قوری</p>
+                        <p className='p-4 pb-0 hover:text-black'>جا ظرفی و آب چکان</p>
+                      </div>
+                      <div className='col-span-1'>
+                        <p className='p-4 hover:text-black text-primary'>وسایل آشپزخانه</p>
+                        <p className='p-4 hover:text-black'>کلمن و فلاسک</p>
+                        <p className='p-4 hover:text-black'>جاادویه و پاسماوری</p>
+                        <p className='p-4 hover:text-black'>ترازو , کفگیرملاقه و ابزار</p>
+                        <p className='p-4 hover:text-black'>آبکش و لگن</p>
+                        <p className='p-4 hover:text-black'>سماور</p>
+                        <p className='p-4 hover:text-black'>کتری و قوری</p>
+                        <p className='p-4 pb-0 hover:text-black'>جا ظرفی و آب چکان</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='col-span-1'>
+
+                  </div>
+                  <div className='col-span-1 p-2 pb-0 items-center my-auto rounded rounded-3xl'>
+                    <img src="/images/ghahvesaz.png" alt="" />
+                  </div>
                 </div>
             </div>
     //       </li>
