@@ -7,10 +7,10 @@ const FaildPay=()=>{
             <div className="container justify-center mx-auto">
                 <div className="mt-20">
                     <img className="justify-center mx-auto" src="/images/close-circle.png" alt="" />
-                    <div className="text-center font-bold text-3xl mt-7">پرداختِ شما با موفقیت انجام نشد :)</div>
-                    <div className="text-center text-sm mt-3 font-normal"><span>شماره پیگیری:</span><span>&nbsp;</span><span className="text-red-600">465498X4SF654W</span></div>
+                    <div className="text-center font-bold sm:text-sm lg:text-3xl mt-7">پرداختِ شما با موفقیت انجام نشد :)</div>
+                    <div className="text-center sm:text-xs text-sm mt-3 font-normal"><span>شماره پیگیری:</span><span>&nbsp;</span><span className="text-red-600">465498X4SF654W</span></div>
                     <div className="text-center mt-8">
-                        <button className="bg-primary hover:bg-green-700 text-slate-100 p-3 w-64 rounded-2xl">پرداخت مجدد</button>
+                        <button className="bg-primary hover:bg-green-700 text-customGray p-3 sm:w-56 md:w-60 lg:w-64 rounded-2xl">پرداخت مجدد</button>
                     </div>
                 </div>
             </div>
