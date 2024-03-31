@@ -15,55 +15,27 @@ import {
   Typography,
 } from "@mui/material";
 import { GridArrowDownwardIcon } from "@mui/x-data-grid";
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
 import type { ChangeEvent } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { flatten } from "q-flat";
+
 function valuetext(value) {
-  return `${value}°C`;
+  return `${value}`;
 }
-const Sidebar = ({ brands, colors, attributes, guarantees }) => {
+
+const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const minDistance = 10;
   const [isPending, startTransition] = useTransition();
-
-  const [value1, setValue1] = useState([20, 37]);
-
-  const handleChange1 = (event, newValue, activeThumb) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
-
-    if (activeThumb === 0) {
-      setValue1([Math.min(newValue[0], value1[1] - minDistance), value1[1]]);
-    } else {
-      setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
-    }
-  };
-
-  const [value2, setValue2] = useState([20, 37]);
-
-  const handleChange2 = (event, newValue, activeThumb) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
-
-    if (newValue[1] - newValue[0] < minDistance) {
-      if (activeThumb === 0) {
-        const clamped = Math.min(newValue[0], 100 - minDistance);
-        setValue2([clamped, clamped + minDistance]);
-      } else {
-        const clamped = Math.max(newValue[1], minDistance);
-        setValue2([clamped - minDistance, clamped]);
-      }
-    } else {
-      setValue2(newValue);
-    }
-  };
+  const [selectedAttributes, setSelectedAttributes] = useState([]);
+  const [firstLoad, setfirstLoad] = useState(true);
+  const [value, setValue] = useState([0, range.maxPrice]);
 
   const onSelect = (
     event: ChangeEvent<HTMLSelectElement>,
@@ -71,39 +43,185 @@ const Sidebar = ({ brands, colors, attributes, guarantees }) => {
     items: object // Assuming items is an object
   ) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
-    // const value = event.target.value.trim();
+    let value = event.target ? event.target.value.trim() : event;
 
-    // const currentBrands = current.getAll(type);
-    // const brandIndex = currentBrands.indexOf(value);
+    // Check if the type is related to price parameters
+    if (type === "minPrice" || type === "maxPrice") {
+      // Directly set the value for the specified type
+      current.set(type, value);
+    } else {
+      // Existing logic to handle brands and other types
+      const currentItems = current.getAll(type);
+      const itemIndex = currentItems.indexOf(value);
 
-    // if (brandIndex > -1) {
-    //   currentBrands.splice(brandIndex, 1);
-    //   current.delete(type);
-    //   currentBrands.forEach((brand) => current.append(type, brand));
-    // } else if (value) {
-    //   current.append(type, value);
+      if (itemIndex > -1) {
+        currentItems.splice(itemIndex, 1);
+        current.delete(type);
+        currentItems.forEach((item) => current.append(type, item));
+      } else if (value) {
+        current.append(type, value);
+      }
+    }
+
+    // Check if &attributes exists in the URL
+    const attributesIndex = current.toString().indexOf("&attributes");
+    let query = current.toString();
+    console.log(attributesIndex);
+    // if (attributesIndex !== -1) {
+    //   // Insert the new parameters before &attributes
+    //   query =
+    //     query.slice(0, attributesIndex) +
+    //     `&${type}=${value}` +
+    //     query.slice(attributesIndex);
+    // } else {
+    //   // Append the new parameters to the end of the URL
+    //   query += `&${type}=${value}`;
     // }
 
-    // Define the object with attributes based on the items object
-    const obj = [
-      {
-        attributeId: +items.attributeId,
-        attributeValues: [+items.id],
-      },
-    ];
+    query = query ? `?${query}` : "";
 
-    // Convert the object to a JSON string and then encode it for URL
-    const attributesQuery = encodeURIComponent(JSON.stringify(obj));
-    console.log(attributesQuery);
-    console.log(decodeURIComponent(JSON.stringify(obj)));
-    // Append the encoded string to the URL query parameters
-    current.append("attributes", attributesQuery);
-    console.log(current.toString());
-
-    const query = current.toString() ? `?${current.toString()}` : "";
     startTransition(() => {
       router.push(`${pathname}${query}`);
     });
+  };
+  const updateAttrSlug = (obj) => {
+    console.log(obj);
+    var objs = {
+      attributes: obj,
+    };
+
+    const createQueryString = (data) => {
+      return Object.keys(data)
+        .map((key) => {
+          let val = data[key];
+          if (val !== null && typeof val === "object")
+            val = createQueryString(val);
+          return `${encodeURIComponent(key)}=${encodeURIComponent(val)}`;
+        })
+        .join("&");
+    };
+
+    // Get the current URL and its search parameters
+    const currentUrl = new URL(window.location.href);
+    const currentParams = new URLSearchParams(currentUrl.search);
+
+    // Remove all existing attributes
+    Array.from(currentParams.keys()).forEach((key) => {
+      if (key.startsWith("attributes")) {
+        currentParams.delete(key);
+      }
+    });
+
+    // Create new parameters from the attributes object
+    const newParams = new URLSearchParams(createQueryString(flatten(objs)));
+
+    // Append new parameters to the current ones
+    newParams.forEach((value, key) => {
+      currentParams.append(key, value);
+    });
+
+    // Update the URL's search string with the new parameters
+    const query = currentParams.toString()
+      ? `?${currentParams.toString()}`
+      : "";
+    startTransition(() => {
+      router.push(`${pathname}${query}`);
+    });
+
+    console.log(createQueryString(flatten(objs)));
+  };
+
+  // const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    if (!firstLoad) {
+      console.log(selectedAttributes);
+      updateAttrSlug(selectedAttributes);
+    }
+  }, [selectedAttributes]); // Keep selectedAttributesVersion in the dependency array
+
+  const attrChange = (event, attributes, values) => {
+    setfirstLoad(false);
+    const { checked } = event.target;
+    const attributeId = attributes.id;
+    const valueId = values.id;
+
+    // Find the index of the existing attribute in the selectedAttributes array
+    const existingIndex = selectedAttributes.findIndex(
+      (attr) => attr.attributeId === attributeId
+    );
+
+    if (checked) {
+      // If the attribute is not already in the array, add it
+      if (existingIndex === -1) {
+        setSelectedAttributes([
+          ...selectedAttributes,
+          { attributeId: attributeId, attributeValues: [valueId] },
+        ]);
+      } else {
+        // If the attribute is already in the array, add the value to its values array
+        const updatedAttributes = [...selectedAttributes];
+        updatedAttributes[existingIndex] = {
+          ...updatedAttributes[existingIndex],
+          attributeValues: [
+            ...updatedAttributes[existingIndex].attributeValues,
+            valueId,
+          ],
+        };
+        setSelectedAttributes(updatedAttributes);
+      }
+    } else {
+      // If the checkbox is unchecked, remove the value from the attribute's values array
+      if (existingIndex !== -1) {
+        const updatedAttributes = [...selectedAttributes];
+        updatedAttributes[existingIndex] = {
+          ...updatedAttributes[existingIndex],
+          attributeValues: updatedAttributes[
+            existingIndex
+          ].attributeValues.filter((val) => val !== valueId),
+        };
+
+        // Check if the attributeValues array is now empty
+        if (updatedAttributes[existingIndex].attributeValues.length === 0) {
+          // Remove the entire object from the selectedAttributes array
+          // Create a new array without the item to be removed
+          const newAttributes = updatedAttributes.filter(
+            (_, index) => index !== existingIndex
+          );
+          setSelectedAttributes(newAttributes);
+        } else {
+          setSelectedAttributes([]);
+        }
+      }
+    }
+  };
+
+  const debounce = (func, timeout = 1000) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, timeout);
+    };
+  };
+  const debouncedOnSelect = debounce(onSelect, 1000);
+
+  const handleChange = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (activeThumb === 0) {
+      let min = [Math.min(newValue[0], value[1] - minDistance), value[1]];
+      setValue(min);
+      debouncedOnSelect(min[0], "minPrice");
+      console.log(min);
+    } else {
+      let max = [value[0], Math.max(newValue[1], value[0] + minDistance)];
+      setValue(max);
+      debouncedOnSelect(max[1], "maxPrice");
+    }
   };
 
   return (
@@ -113,7 +231,6 @@ const Sidebar = ({ brands, colors, attributes, guarantees }) => {
           <div className="rounded-md h-12 w-12 border-4 border-t-4 border-blue-500 animate-spin absolute"></div>
         </div>
       )}
-
       <div className="col-span-3 p-4">
         <Accordion
           defaultExpanded
@@ -177,16 +294,28 @@ const Sidebar = ({ brands, colors, attributes, guarantees }) => {
           >
             <Typography>قیمت</Typography>
           </AccordionSummary>
-          <AccordionDetails>
+          <AccordionDetails className="px-8">
             <Slider
               getAriaLabel={() => "Minimum distance"}
-              value={value1}
-              onChange={handleChange1}
+              value={value}
+              min={0}
+              max={range.maxPrice}
+              onChange={handleChange}
               valueLabelDisplay="auto"
               getAriaValueText={valuetext}
-              disableSwap
+              disableSwap={true}
               color="success"
+              step={Math.round(range.maxPrice / 10)}
+              mark={true}
+              valueLabelFormat={(value) => value.toLocaleString()}
             />
+            <div className="w-full flex justify-between">
+              <span className="max">
+                {Number(value[1]).toLocaleString() ||
+                  Number(range.maxPrice).toLocaleString()}
+              </span>
+              <span className="min">0</span>
+            </div>
           </AccordionDetails>
         </Accordion>
         {attributes.map((value) => (
@@ -206,7 +335,6 @@ const Sidebar = ({ brands, colors, attributes, guarantees }) => {
                       htmlFor={values.id + values.value}
                       className="col-span-3 flex gap-2 items-center my-auto"
                     >
-                      {console.log(values)}
                       <span>{values.value}</span>
                     </label>
                     <div className="col-span-1 flex items-center my-auto justify-end">
@@ -214,7 +342,7 @@ const Sidebar = ({ brands, colors, attributes, guarantees }) => {
                         id={values.id + values.value}
                         className="flex justify-end mx-auto"
                         type="checkbox"
-                        onChange={(e) => onSelect(e, attributes, values)}
+                        onChange={(e) => attrChange(e, value, values)}
                       />
                     </div>
                   </div>
@@ -230,7 +358,7 @@ const Sidebar = ({ brands, colors, attributes, guarantees }) => {
             aria-controls="panel1-content"
             id="panel1-header"
           >
-            <Typography>Accordion 1</Typography>
+            <Typography>رنگ</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <>
@@ -257,52 +385,6 @@ const Sidebar = ({ brands, colors, attributes, guarantees }) => {
                   </div>
                 </div>
               ))}
-            </>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
-          <AccordionSummary
-            expandIcon={<GridArrowDownwardIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-          >
-            <Typography>Accordion 1</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <>
-              <div className="font-normal text-md">
-                <div className="p-4 pt-0 mt-4 justify-center mx-auto">
-                  <label className="grid grid-cols-3 inline-flex items-center cursor-pointer">
-                    <span className="col-span-2 ms-3  text-gray-900 dark:text-gray-300">
-                      فقط کالاهای موجود
-                    </span>
-                    <div className="col-span-1 justify-end mx-auto">
-                      <input
-                        type="checkbox"
-                        value=""
-                        className="sr-only peer"
-                      />
-                      <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                    </div>
-                  </label>
-                </div>
-
-                <div className="p-4 pt-0 mt-4 justify-center mx-auto">
-                  <label className="grid grid-cols-3 inline-flex items-center cursor-pointer">
-                    <span className="col-span-2 ms-3 text-gray-900 dark:text-gray-300">
-                      آپشن تستی
-                    </span>
-                    <div className="col-span-1 justify-end mx-auto">
-                      <input
-                        type="checkbox"
-                        value=""
-                        className="sr-only peer"
-                      />
-                      <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                    </div>
-                  </label>
-                </div>
-              </div>
             </>
           </AccordionDetails>
         </Accordion>

@@ -21,11 +21,6 @@ async function getEntity(params) {
       cache: "no-store",
     }
   );
-  console.log("asdasdasd", res);
-
-  if (!res.ok) {
-    notFound();
-  }
 
   return res.json();
 }
@@ -37,7 +32,6 @@ async function getBrands(entity) {
       cache: "no-store",
     }
   );
-  console.log("asdasdasd", res);
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -68,7 +62,22 @@ async function getAttributes(entity) {
       cache: "no-store",
     }
   );
-  console.log("asdasdasd", res);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+async function getPriceRange(entity) {
+  console.log("armanEntity", entity);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/priceRange?entityTypeId=${entity.id}`,
+    {
+      cache: "no-store",
+    }
+  );
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -81,10 +90,9 @@ async function getGuarantees() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/guarantees?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=true`,
     {
-      cache: "no-store",
+      cache: "force-cache",
     }
   );
-  console.log("asdasdasd", res);
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -103,35 +111,42 @@ async function getProducts(searchParams, entity) {
     .join("&");
 
   // Construct the full URL with the query string
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?${queryString}&entityTypeId=${entity}`;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?${queryString}&entityTypeId=${entity}&limit=12`;
 
   const res = await fetch(url, {
     cache: "no-store",
   });
 
-  console.log("asdasdasd", res);
-
   if (!res.ok) {
-    notFound();
+    // notFound();
   }
 
   return res.json();
 }
 
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const { result: entity } = await getEntity(params);
+  console.log("arman", entity);
+  return {
+    title: `جهیزان | ${entity.name}`,
+  };
+}
+
 const Sellerpage = async ({ params, searchParams }) => {
   const { result: entity } = await getEntity(params);
-  const { result: products } = await getProducts(searchParams, entity.id);
+  const products = await getProducts(searchParams, entity.id);
   const { result: brands } = await getBrands(entity.id);
   const { result: colors } = await getColors(entity.id);
   const { result: attributes } = await getAttributes(entity.id);
   const { result: guarantees } = await getGuarantees();
+  const { result: range } = await getPriceRange(entity);
 
-  console.log(params);
+  console.log(entity);
   return (
     <>
-      <div className="container justify-center mx-auto mt-20 mb-64">
+      <div className="container justify-center mx-auto mt-10 mb-64">
         <div className="text-3xl p-5 pr-7">
-          <h1>محصولات فروشگاه تقوی</h1>
+          <h1>{entity.name}</h1>
         </div>
         <div className="mt-7">
           <div className="grid grid-cols-12">
@@ -140,6 +155,7 @@ const Sellerpage = async ({ params, searchParams }) => {
               colors={colors}
               attributes={attributes}
               guarantees={guarantees}
+              range={range}
             />
             <div className="col-span-9 p-4">
               <div>
@@ -168,13 +184,13 @@ const Sellerpage = async ({ params, searchParams }) => {
                   </div>
                   <div className="col-span-1 items-center flex justify-end">
                     <div className="text-xs text-slate-500">
-                      {products.length} کالا
+                      {products?.total} کالا
                     </div>
                   </div>
                 </div>
                 <div>
-                  <div className="grid grid-cols-4 p-3 gap-6">
-                    {products.map((value, key) => (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 gap-6">
+                    {products?.result?.map((value, key) => (
                       <Suspense fallback={<p>Loading feed...</p>}>
                         <ProductCard
                           key={key}
@@ -187,7 +203,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                   </div>
                 </div>
                 <div>
-                  <Numberpaginate></Numberpaginate>
+                  <Numberpaginate items={products} />
                 </div>
               </div>
             </div>

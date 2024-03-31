@@ -8,7 +8,7 @@ export default async function BottomNav() {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="fixed z-50 bottom-0 left-0 right-0 bg-[#FAFAFA] w-full h-20 px-8">
+    <div className="fixed z-50 bottom-0 left-0 right-0 bg-[#FAFAFA] w-full h-20 px-8 block md:hidden lg:hidden xl:hidden">
       <div className="flex items-center justify-between h-full">
         <div className="flex flex-col text-center items-center">
           <Home />
