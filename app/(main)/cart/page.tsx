@@ -334,7 +334,7 @@ const Cart = () => {
                 </div>
 
                 <div className="col-span-1 text-sm bg-customGray p-2 rounded-xl">
-                  <div className="grid grid-cols-3 items-center my-auto mt-2">
+                  <div className="grid grid-cols-3 items-center my-auto mt-2 items-center my-auto">
                     <div className="flex col-span-2 gap-2 items-center my-auto">
                       <div>
                         <ZarinPal />
@@ -344,7 +344,7 @@ const Cart = () => {
                       </div>
                     </div>
 
-                    <div className="flex col-span-1 gap-5 items-center my-auto justify-end">
+                    <div className="flex col-span-1 gap-5 justify-end">
                       <div>
                         <input
                           id="zarinPal-radio"
