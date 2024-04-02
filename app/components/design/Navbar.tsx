@@ -68,11 +68,11 @@ export default async function NavbarModule() {
                 </li>
                 <li className="flex ml-3">
                   <img src="/icons/pack.svg" alt="" />
-                  <span className="mx-3">پک های هدیه</span>
+                  <span className="mx-3"><a href="#">پک های هدیه</a></span>
                 </li>
                 <li className="flex ml-3">
                   <img src="/icons/brands.svg" alt="" />
-                  <span className="mx-3">برند ها</span>
+                  <span className="mx-3"><a href="#">برند ها</a></span>
                 </li>
               </ul>
             </nav>

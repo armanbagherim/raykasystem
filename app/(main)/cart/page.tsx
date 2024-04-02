@@ -15,15 +15,15 @@ const Cart = () => {
       <div className="container justify-center mx-auto">
         <div className="grid grid-cols-3 gap-4">
           <div className="col-span-2">
-            <div className="grid grid-cols-5 gap-2 text-sm font-bold p-2">
+            <div className="grid grid-cols-5 gap-2 text-[12px] font-bold p-2">
               <div className="p-1">محصول</div>
               <div className="p-1">تعداد</div>
               <div className="p-1">قیمت محصول</div>
               <div className="p-1">فروشنده</div>
-              <div className="p-1">مبلغ کل</div>
+              <div className="p-1">جمع کل</div>
             </div>
 
-            <div className="grid grid-cols-5 shadow-lg bg-slate-50 text-xs rounded-3xl mt-2 p-2">
+            <div className="grid grid-cols-5 shadow-lg bg-customGray text-xs rounded-3xl mt-2 p-2">
               <div className="flex">
                 <div>
                   <img src="/images/product-2.png" />
@@ -67,7 +67,7 @@ const Cart = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-5 gap-2 shadow-lg bg-slate-50 text-xs rounded-3xl mt-4 p-2">
+            <div className="grid grid-cols-5 gap-2 shadow-lg bg-customGray text-xs rounded-3xl mt-4 p-2">
               <div className="flex">
                 <div>
                   <img src="/images/product-2.png" />
@@ -110,7 +110,7 @@ const Cart = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-5 gap-2 shadow-lg bg-slate-50 text-xs rounded-3xl mt-4 p-2">
+            <div className="grid grid-cols-5 gap-2 shadow-md bg-customGray text-xs rounded-3xl mt-4 p-2">
               <div className="flex">
                 <div>
                   <img src="/images/product-2.png" />
@@ -153,7 +153,7 @@ const Cart = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-5 gap-2 shadow-lg bg-slate-50 text-xs rounded-3xl mt-4 p-2">
+            <div className="grid grid-cols-5 gap-2 shadow-lg bg-customGray text-xs rounded-3xl mt-4 p-2">
               <div className="flex">
                 <div>
                   <img src="/images/product-2.png" />
@@ -197,7 +197,7 @@ const Cart = () => {
             </div>
           </div>
 
-          <div className="col-span-1 shadow-lg bg-slate-50 text-xs rounded-3xl mt-8 p-4 pb-10">
+          <div className="col-span-1 shadow-md border border-customGray bg-white text-xs rounded-3xl mt-8 p-4 pb-10">
             <div className="text-sm mt-4">
               <div className="grid grid-cols-2">
                 <div className="col-span-1">نام</div>
@@ -206,7 +206,7 @@ const Cart = () => {
               <div className="grid grid-cols-2 p-3">
                 <div className="col-span-1">
                   <input
-                    className="bg-gray-100 text-gray-700 rounded py-3 px-4 mb-3 focus:outline-none focus:bg-white"
+                    className="bg-[#F8F8F8] text-gray-700 rounded rounded-2xl py-3 px-4 mb-3 focus:outline-none focus:bg-white"
                     type="text"
                     value="مهراد"
                     readOnly
@@ -214,7 +214,7 @@ const Cart = () => {
                 </div>
                 <div className="col-span-1">
                   <input
-                    className="bg-gray-100 text-gray-700 rounded py-3 px-4 mb-3 focus:outline-none focus:bg-white"
+                    className="bg-[#F8F8F8] text-gray-700 rounded rounded-2xl py-3 px-4 mb-3 focus:outline-none focus:bg-white"
                     type="text"
                     value="مهراد"
                     readOnly
@@ -230,9 +230,9 @@ const Cart = () => {
                   <span>افزودن آدرس</span>
                 </div>
 
-                <div className="inline-block col-span-2 relative w-full mt-4">
-                  <div className="relative">
-                    <div className="pointer-events-none rounded-2xl justify-center mx-auto w-10 absolute inset-y-0 left-0 flex items-center text-gray-700">
+                <div className="inline-block col-span-2 rounded-2xl relative w-full mt-4 bg-customGray">
+                  <div className="">
+                    <div className="pointer-events-none justify-center mx-auto w-10 absolute inset-y-0 left-0 flex items-center text-gray-700">
                       <svg
                         className="fill-current h-4 w-4"
                         xmlns="http://www.w3.org/2000/svg"
@@ -241,7 +241,10 @@ const Cart = () => {
                         <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                       </svg>
                     </div>
-                    <select className="appearance-none rounded-2xl h-20 w-full bg-slate-100 hover:border-gray-500 pl-8 pr-4 py-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <div className="pr-4 pt-4 font-bold text-md text-primary">
+                      خونه
+                    </div>
+                    <select className="appearance-none text-sm h-[63px] w-full rounded-2xl bg-customGray hover:border-gray-500 pr-4 shadow focus:outline-none focus:shadow-outline">
                       <option>
                         شوش، خیابان مولوی، خیابان امیر المومنین پلاک 14 طبقه 2
                       </option>
@@ -250,8 +253,14 @@ const Cart = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-5 mt-4 text-sm bg-slate-100 p-2 rounded-xl">
-                <div className="col-span-1 items-center my-auto">کد تخفیف</div>
+              <div className="grid grid-cols-5 mt-4 text-sm bg-customGray p-2 rounded-xl">
+                <div className="col-span-1 items-center my-auto">
+                  <input
+                    className="p-2 outline-none bg-customGray"
+                    type="text"
+                    placeholder="کد تخفیف"
+                  />
+                </div>
                 <div className="col-span-3 items-center my-auto">
                   <input
                     hidden
@@ -261,7 +270,7 @@ const Cart = () => {
                   />
                 </div>
                 <div className="col-span-1 justify-end mx-auto">
-                  <button className="bg-primary hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-slate-100">
+                  <button className="bg-primary hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-white">
                     بررسی کد
                   </button>
                 </div>
@@ -270,48 +279,120 @@ const Cart = () => {
               <div className="mt-5 text-sm">روش پرداخت</div>
 
               <div className="grid grid-cols-3 mt-3 gap-2">
-                <div className="col-span-2 flex gap-2 items-center my-auto bg-gray-100 p-4 rounded-xl">
-                  <div>
+                {/* <div className="col-span-2 flex gap-2 my-auto bg-customGray p-3 rounded-xl">
+                  <div className="items-center my-auto">
                     <SnapPay />
                   </div>
                   <div className="-mt-1">
-                    <div className="font-bold text-md">اسنپ پی</div>
-                    <div className="text-xs text-blue-500">
-                      ۴ قسط ماهیانه {Number(333500).toLocaleString()} تومان
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="col-span-2">
+                      <div className="font-bold text-md">
+                        <label htmlFor="snapPay-radio" >
+                          اسنپ پی
+                        </label>
+                      </div>
+                      <div className="text-xs text-blue-500">
+                        <label htmlFor="snapPay-radio">
+                          ۴ قسط ماهیانه {Number(333500).toLocaleString()} تومان
+                        </label>
+                      </div>
+                    </div>
+                    <div className="col-span-1 text-left justify-end mx-auto ml-0 items-center my-auto">
+                      <input id="snapPay-radio" type="radio" name="paymentMethod" />
                     </div>
                   </div>
-                  <div>
-                    <input type="radio" />
+                </div> */}
+                <div className="col-span-2 text-sm bg-customGray p-2 rounded-xl">
+                  <div className="grid grid-cols-3 items-center my-auto mt-2">
+                    <div className="flex col-span-2 gap-2 items-center my-auto">
+                      <div className="items-center my-auto">
+                        <SnapPay />
+                      </div>
+                      <div>
+                        <div className="font-bold text-md">
+                          <label htmlFor="snapPay-radio">اسنپ پی</label>
+                        </div>
+                        <div className="text-xs text-blue-500">
+                          <label htmlFor="snapPay-radio">
+                            ۴ قسط ماهیانه {Number(333500).toLocaleString()}{" "}
+                            تومان
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex col-span-1 gap-5 items-center my-auto justify-end">
+                      <div>
+                        <input
+                          id="snapPay-radio"
+                          type="radio"
+                          name="paymentMethod"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="col-span-1 flex gap-2 bg-gray-100 p-4 rounded-xl">
-                  <div>
-                    <ZarinPal />
-                  </div>
-                  <div>
-                    <div className="font-bold text-md">اسنپ پی</div>
-                  </div>
-                  <div>
-                    <input type="radio" />
+
+                <div className="col-span-1 text-sm bg-customGray p-2 rounded-xl">
+                  <div className="grid grid-cols-3 items-center my-auto mt-2">
+                    <div className="flex col-span-2 gap-2 items-center my-auto">
+                      <div>
+                        <ZarinPal />
+                      </div>
+                      <div className="text-sm">
+                        <label htmlFor="zarinPal-radio">زرین پال</label>
+                      </div>
+                    </div>
+
+                    <div className="flex col-span-1 gap-5 items-center my-auto justify-end">
+                      <div>
+                        <input
+                          id="zarinPal-radio"
+                          type="radio"
+                          name="paymentMethod"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
+                {/* <div className="col-span-1 flex gap-5 bg-customGray p-4 rounded-xl">
+                  <div className="flex">
+                    <div>
+                      <ZarinPal />
+                    </div>
+                    <div className="font-bold text-md">
+                      <label htmlFor="zarinPal-radio">زرین پال</label>
+                    </div>
+                  </div>
+                  <div className="justify-end mx-auto">
+                    <input id="zarinPal-radio" type="radio" name="paymentMethod"/>
+                  </div>
+                </div> */}
               </div>
 
-              <div className="mt-4 text-sm bg-slate-100 p-2 rounded-xl">
+              <div className="mt-4 text-sm bg-customGray p-2 rounded-xl">
                 <div className="grid grid-cols-2">
                   <div className="flex col-span-1 gap-2 items-center my-auto">
                     <div>
-                      <Walet></Walet>
+                      <Walet />
                     </div>
-                    <div className="text-sm">کیف پول</div>
+                    <div className="text-sm w-full">
+                      <label htmlFor="wallet-radio">کیف پول</label>
+                    </div>
                   </div>
 
                   <div className="flex col-span-1 gap-5 items-center my-auto justify-end">
                     <div className="text-sm font-bold text-primary">
-                      موجودی: {Number(350000).toLocaleString()}
+                      <label htmlFor="wallet-radio">
+                        موجودی: {Number(350000).toLocaleString()}
+                      </label>
                     </div>
                     <div>
-                      <input type="radio" />
+                      <input
+                        id="wallet-radio"
+                        type="radio"
+                        name="paymentMethod"
+                      />
                     </div>
                   </div>
                 </div>
@@ -322,13 +403,17 @@ const Cart = () => {
                     سود شما از این خرید:
                   </div>
                   <div className="col-span-1 flex gap-1 justify-end  mt-2">
-                    <div className="text-primary">{Number(59000).toLocaleString()}</div>
+                    <div className="text-primary">
+                      {Number(59000).toLocaleString()}
+                    </div>
                     <div>تومان</div>
                   </div>
 
                   <div className="col-span-1 font-bold  mt-2">ارسال:</div>
                   <div className="col-span-1 flex gap-1 justify-end  mt-2">
-                    <div className="text-primary">{Number(59000).toLocaleString()}</div>
+                    <div className="text-primary">
+                      {Number(59000).toLocaleString()}
+                    </div>
                     <div>تومان</div>
                   </div>
 
@@ -336,14 +421,18 @@ const Cart = () => {
                     مبلغ تمام شده جمع خرید:
                   </div>
                   <div className="col-span-1 flex gap-1 justify-end  mt-2">
-                    <div className="text-primary">{Number(1275000).toLocaleString()}</div>
+                    <div className="text-primary">
+                      {Number(1275000).toLocaleString()}
+                    </div>
                     <div>تومان</div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="mt-4 text-lg text-center">
-                <button className="bg-primary p-3 w-full rounded-2xl text-slate-50 hover:bg-green-700">پرداخت سفارش</button>
+              <button className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700">
+                پرداخت سفارش
+              </button>
             </div>
           </div>
         </div>
