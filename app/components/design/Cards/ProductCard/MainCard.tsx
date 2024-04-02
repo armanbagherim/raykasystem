@@ -15,9 +15,10 @@ export default function MainCard({ data }) {
     <a href={`/product/${data?.slug}`} className="flex-auto">
       <div className="flex w-full flex-col gap-5 border bg-white rounded-3xl p-4">
         <Image
-          width={200}
-          height={400}
-          className="h-full mx-auto"
+          width="200"
+          height="400"
+          className="mx-auto"
+          priority
           src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${data?.attachments[0].fileName}`}
         />
         <div className="flex flex-col justify-between w-full">

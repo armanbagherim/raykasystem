@@ -11,7 +11,7 @@ import React from "react";
 
 export default function LeftSide({ product, status }) {
   return (
-    <div className="col-span-3  rounded-3xl bg-customGray">
+    <div className="col-span-12 md:col-span-3  rounded-3xl bg-customGray">
       <div className="px-4 py-8 mr-0 relative flex h-full flex-col justify-between ">
         <div>
           <div className="flex justify-end ml-0 mx-auto absolute left-0 top-0">

@@ -7,7 +7,6 @@ const Numberpaginate = ({ items }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  console.log(items);
 
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
@@ -17,16 +16,15 @@ const Numberpaginate = ({ items }) => {
   // (This could be items from props; or items loaded in a local state
   // from an API endpoint with useEffect and useState)
   const endOffset = itemOffset + 12;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+
   const currentItems = items?.result?.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(items.total / 12);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
     const newOffset = (event.selected * 12) % items.total;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
+
+    `User requested page number ${event.selected}, which is offset ${newOffset}`;
 
     // Use startTransition for state updates that you want to transition smoothly
     startTransition(() => {

@@ -10,7 +10,6 @@ interface ProductCardProps {
   data: object;
 }
 export default function ProductCard({ type, border, data }: ProductCardProps) {
-  console.log(data);
   if (type === "main") {
     return <MainCard data={data} />;
   } else if (type === "long") {

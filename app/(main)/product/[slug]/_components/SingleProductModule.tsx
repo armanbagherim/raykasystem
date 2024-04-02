@@ -28,30 +28,44 @@ import Breadcrumb from "@/app/components/design/Breadcrumb";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function SingleProductModule({ product, related }) {
+export default function SingleProductModule({ product, related, cook }) {
   const [localInventories, setLocalInventories] = useState(product.inventories);
-  console.log(product);
+
   const handleVariantChange = (colorId: number) => {
-    console.log("handleVariantChange", colorId);
     const filtered = product.inventories.filter(
       (inventory) => inventory.colorId === colorId
     );
-    console.log(filtered);
+
     setLocalInventories([...filtered]); // Ensure immutability
   };
 
-  useEffect(() => {
-    console.log(localInventories);
-  }, [localInventories]);
+  useEffect(() => {}, [localInventories]);
 
   useEffect(() => {
     setLocalInventories([...product.inventories]); // Ensure immutability
   }, [product.inventories]);
+
+  const addToCart = (inventoryId) => {
+    console.log(inventoryId);
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks`, {
+      method: "POST",
+      headers: {
+        "x-session-id": cook.value,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        inventoryId: +inventoryId,
+        qty: 1,
+      }),
+    }).then((res) => {
+      console.log(res);
+    });
+  };
   return (
     <>
       <Breadcrumb />
       <div className="container justify-center mx-auto mt-3 grid grid-cols-12 gap-8">
-        <div className="col-span-4 border-0 rounded-lg relative">
+        <div className="col-span-12 md:col-span-4 border-0 rounded-lg relative">
           <div className="w-10 h-32 absolute r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-20">
             <div className="pt-3.5 mr-3">
               <Link href="#">
@@ -75,16 +89,16 @@ export default function SingleProductModule({ product, related }) {
                 <Image
                   key={key}
                   className="w-full"
-                  height={"250"}
+                  height={"500"}
                   src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
-                  width="250"
+                  width="500"
                 />
               ))}
             </Slider>
           </div>
         </div>
 
-        <div className="col-span-5 rounded-lg">
+        <div className="col-span-12 md:col-span-5 rounded-lg">
           <div className="text-center font-normal text-2xl text-slate-500">
             {product.title}
           </div>
@@ -127,6 +141,7 @@ export default function SingleProductModule({ product, related }) {
                 </div>
                 <div className="flex gap-1">
                   <div className="font-bold">دسته: </div>
+                  <button onClick={addToCart}>hi</button>
                   <div>
                     <Link href={product.entityType.slug}>
                       {product.entityType.name}
@@ -171,7 +186,7 @@ export default function SingleProductModule({ product, related }) {
         />
       </div>
 
-      <Inventories product={localInventories} />
+      <Inventories addToCart={addToCart} product={localInventories} />
 
       <div className="container mx-auto mt-5 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-5 flex">
         <div className="mr-3 text-green-700">نقد و بررسی محصول</div>
@@ -203,8 +218,8 @@ export default function SingleProductModule({ product, related }) {
 
       <div className="container mx-auto mt-8 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-8">
         <div className="w-full">امتیاز و دیدگاه کاربران</div>
-        <div className="mt-8 flex gap-5">
-          <div className="border-0 rounded-xl p-3 w-96">
+        <div className="mt-8 grid grid-cols-12">
+          <div className="border-0 rounded-xl p-3 w-full col-span-12 md:col-span-3">
             <div className="flex gap-6">
               <div className="p-4  bg-slate-100 rounded-xl">
                 <div className="flex gap-1">
@@ -354,7 +369,7 @@ export default function SingleProductModule({ product, related }) {
               </div>
             </div>
           </div>
-          <div>
+          <div className="col-span-12 md:col-span-9">
             <div className="border-0 w-full rounded-xl mt-5">
               <div className="border w-full rounded-3xl m-2 p-3">
                 <div className="flex gap-4">
@@ -519,7 +534,7 @@ export default function SingleProductModule({ product, related }) {
           </div>
         </div>
 
-        <Slider slidesPerView={5}>
+        <Slider>
           {related.map((value, key) => (
             <ProductCard
               key={key}

@@ -14,7 +14,6 @@ import ProductCard from "@/app/components/design/Cards/ProductCard/ProductCard";
 import { Suspense } from "react";
 
 async function getEntity(params) {
-  console.log("parammmmmmmmmmmmmmmmms", params);
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes/slug/${params.slug}`,
     {
@@ -71,7 +70,6 @@ async function getAttributes(entity) {
 }
 
 async function getPriceRange(entity) {
-  console.log("armanEntity", entity);
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/priceRange?entityTypeId=${entity.id}`,
     {
@@ -126,7 +124,6 @@ async function getProducts(searchParams, entity) {
 
 export async function generateMetadata({ params }): Promise<Metadata> {
   const { result: entity } = await getEntity(params);
-  console.log("arman", entity);
   return {
     title: `جهیزان | ${entity.name}`,
   };
@@ -141,12 +138,11 @@ const Sellerpage = async ({ params, searchParams }) => {
   const { result: guarantees } = await getGuarantees();
   const { result: range } = await getPriceRange(entity);
 
-  console.log(entity);
   return (
     <>
       <div className="container justify-center mx-auto mt-10 mb-64">
         <div className="text-3xl p-5 pr-7">
-          <h1>{entity.name}</h1>
+          <h1 className="peyda text-[26px]">{entity.name}</h1>
         </div>
         <div className="mt-7">
           <div className="grid grid-cols-12">

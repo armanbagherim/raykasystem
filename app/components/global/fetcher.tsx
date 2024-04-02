@@ -21,8 +21,7 @@ export const fetcher = async ({
   isFile,
 }: FetcherParams): Promise<unknown> => {
   const session = await getSession();
-  console.log(body?.file);
-  console.log("url", url);
+
   const requestOptions: RequestInit = {
     method: method,
     headers: {

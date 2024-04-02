@@ -128,11 +128,10 @@ export default function Products({ params }) {
           secondaryPrice: +value?.secondaryPrice?.price,
         };
       });
-      console.log("Data product", product.result.inventories);
 
       setTempInventories(inventory);
       setInventories(inventory);
-      // console.log("armiiiiiiiiiiiiiiiiin", );
+      //
 
       setEntityTypeId(product.result.entityTypeId);
       setSelectedEav(product.result.entityType.id);
@@ -331,7 +330,6 @@ export default function Products({ params }) {
   };
 
   const removeInventory = (id: number) => {
-    console.log(id);
     setTempInventories((prevInventories) =>
       prevInventories.filter((inventory) => inventory.id !== id)
     );

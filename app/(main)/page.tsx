@@ -5,34 +5,53 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/authOptions";
 import ProductCard from "../components/design/Cards/ProductCard/ProductCard";
 import Title from "../components/design/Title";
+import Interseptor from "../components/global/Interseptor";
 
 async function getProducts() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=5&orderBy=id`,
-    {
-      cache: "no-store",
-    }
+  const res = await Interseptor(
+    "/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id"
   );
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
-  }
+  return res.json();
+}
 
+async function getCart() {
+  const res = await Interseptor("/v1/api/ecommerce/user/stocks");
   return res.json();
 }
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
   const { result: products } = await getProducts();
+  const cart = await getCart();
+  console.log("cartsssssssssssssss", cart);
   return (
     <>
       <Slider slidesPerView={1}>
-        <img className="w-full rounded-3xl" src="/images/slide.png" alt="" />
-        <img className="w-full rounded-3xl" src="/images/slide-2.png" alt="" />
-        <img className="w-full rounded-3xl" src="/images/slide.png" alt="" />
+        <Image
+          src={"/images/slide.png"}
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{ width: "100%", height: "auto" }} // optional
+          property=""
+        />
+        <Image
+          src={"/images/slide-2.png"}
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{ width: "100%", height: "auto" }} // optional
+          property=""
+        />
+        <Image
+          src={"/images/slide.png"}
+          width={0}
+          height={0}
+          sizes="100vw"
+          style={{ width: "100%", height: "auto" }} // optional
+          property=""
+        />
       </Slider>
       <div className="container mx-auto mb-24 px-4">
         <Title text="سه شنبه های تخفیفی" color={"primary"} />
@@ -51,7 +70,7 @@ export default async function Home() {
         <div className="container mx-auto">
           <Title text="سه شنبه های تخفیفی" color="white" />
           <div className="flex gap-5 px-4">
-            <Slider slidesPerView={5}>
+            <Slider>
               {products.map((value, key) => (
                 <ProductCard key={key} data={value} type="main" />
               ))}
@@ -61,7 +80,7 @@ export default async function Home() {
       </div>
       <div className="container mx-auto mb-24 px-4">
         <Title text="پرفروش ترین ها" color={"primary"} />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
           {products.map((value, key) => (
             <ProductCard
               key={key}
@@ -84,7 +103,7 @@ export default async function Home() {
       </div>
       <div className="container mx-auto mb-24 px-4">
         <Title text="پرفروش ترین ها" color={"primary"} />
-        <Slider slidesPerView={5}>
+        <Slider>
           {products.map((value, key) => (
             <ProductCard
               key={key}
@@ -100,9 +119,9 @@ export default async function Home() {
           <div className="w-1/3 hidden md:block lg:block xl:block 2xl:block">
             <img className="h-full" src="/images/banner.png" alt="" />
           </div>
-          <div className="w-3/3 xl:w-2/3">
+          <div className="w-full xl:w-2/3">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
-              {products.map((value, key) => (
+              {products.slice(0, 6).map((value, key) => (
                 <ProductCard
                   key={key}
                   data={value}
@@ -116,7 +135,7 @@ export default async function Home() {
       </div>
       <div className="container mx-auto mb-24 px-4">
         <Title text=" محبوب ترین  محصولات" color={"primary"} />
-        <Slider slidesPerView={5}>
+        <Slider>
           {products.map((value, key) => (
             <ProductCard
               key={key}
@@ -136,9 +155,9 @@ export default async function Home() {
           <div className="w-1/3 hidden lg:block xl:block 2xl:block">
             <img className="h-full" src="/images/banner.png" alt="" />
           </div>
-          <div className="w-3/3 xl:w-2/3">
+          <div className="w-full md:w-2/3">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
-              {products.map((value, key) => (
+              {products.slice(0, 6).map((value, key) => (
                 <ProductCard
                   key={key}
                   data={value}

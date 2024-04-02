@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import SingleProductModule from "./_components/SingleProductModule";
-
+import { cookies } from "next/headers";
 const getProduct = async (slug: number) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/${slug}`
@@ -35,11 +35,19 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 }
 
 export default async function SingleProduct({ params }) {
+  const coo = cookies();
+
   const {
     result: { result: product },
   } = await getProduct(params.slug);
 
   const { result: related } = await getRelated();
 
-  return <SingleProductModule product={product} related={related} />;
+  return (
+    <SingleProductModule
+      cook={coo.get("SessionName")}
+      product={product}
+      related={related}
+    />
+  );
 }

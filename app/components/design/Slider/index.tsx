@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 
-import { EffectFade, Navigation } from "swiper/modules";
+import { EffectFade, Navigation, FreeMode } from "swiper/modules";
 import SwiperNavigations from "./SwiperNavigation";
 
 interface SliderProps {
@@ -18,37 +18,45 @@ interface SliderProps {
 export default function Slider({
   children,
   slideProps,
-  slidesPerView = 4, // Default to 4 if not provided
+  slidesPerView, // Default to 4 if not provided
 }: SliderProps) {
   const swiperOptions: SwiperOptions = {
-    slidesPerView: 1, // Default to 1 for mobile
     spaceBetween: 25,
     navigation: true,
+    freeMode: {
+      enabled: slidesPerView === 1 ? false : true,
+      sticky: false,
+    },
+
     breakpoints: {
+      320: {
+        slidesPerView: slidesPerView ? slidesPerView : 1.5,
+        spaceBetween: 10,
+      },
       // Mobile
       640: {
-        slidesPerView: 1,
-        spaceBetween: 60,
+        slidesPerView: slidesPerView ? slidesPerView : 2.5,
+        spaceBetween: 10,
       },
       // Tablet
       768: {
-        slidesPerView: 2,
-        spaceBetween: 30,
+        slidesPerView: slidesPerView ? slidesPerView : 3.5,
+        spaceBetween: 10,
       },
       // Medium (md)
       1024: {
-        slidesPerView: 3,
-        spaceBetween: 40,
+        slidesPerView: slidesPerView ? slidesPerView : 4,
+        spaceBetween: 10,
       },
       // Large (lg)
       1280: {
-        slidesPerView: 4,
-        spaceBetween: 50,
+        slidesPerView: slidesPerView ? slidesPerView : 4.5,
+        spaceBetween: 10,
       },
       // Extra-large (xl) and 2xl
       1536: {
-        slidesPerView: 5,
-        spaceBetween: 30,
+        slidesPerView: slidesPerView ? slidesPerView : 5,
+        spaceBetween: 20,
       },
     },
   };
@@ -57,7 +65,7 @@ export default function Slider({
     <Swiper
       className="container mx-auto relative mb-20"
       {...swiperOptions}
-      modules={[EffectFade, Navigation]}
+      modules={[EffectFade, Navigation, FreeMode]}
     >
       {children.map((child: ReactNode, index: Key) => (
         <SwiperSlide key={index} {...slideProps}>

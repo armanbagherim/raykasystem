@@ -76,7 +76,7 @@ const Submitcomment = () => {
                         <div className="text-xs text-slate-500">دیدگاهم را به صورت ناشناس منتشر کن</div>
                       </div>
                   </div>
-                  <div className="col-span-2">
+                  <div className="col-span-2 mb-5">
                     <textarea className="bg-customGray w-full text-xs p-4 rounded rounded-3xl" placeholder="دیدگاه خود را بنویسید" rows="12"></textarea>
                   </div>
                   <div className="col-span-2 justify-end flex">
