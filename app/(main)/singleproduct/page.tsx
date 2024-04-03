@@ -36,9 +36,9 @@ import Numberpaginate from "@/app/components/design/Slider/Numberpaginate";
 const SingleProduct = () => {
   return (
     <>
-      <Breadcrumb />
-      <div className="container justify-center mx-auto mt-3 grid grid-cols-12 gap-8">
-        <div className="col-span-4 border-0 rounded-lg relative">
+      <div className="hidden lg:block xl:block 2xl:block"><Breadcrumb /></div>
+      <div className="container justify-center mx-auto mt-3 grid lg:grid-cols-12 xl:grid-cols-12 2xl:grid-cols-12 gap-8">
+        <div className="lg:col-span-4 xl:col-span-4 2xl:col-span-4 sm:w-full md:w-full border-0 rounded-lg relative">
           <div className="w-10 h-32 absolute r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray">
             <div className="pt-3.5 mr-3">
               <Link href="#">
@@ -65,7 +65,7 @@ const SingleProduct = () => {
           </div>
         </div>
 
-        <div className="col-span-5 rounded-lg">
+        <div className="col-span-5 rounded-lg lg:col-span-4 xl:col-span-4 2xl:col-span-4 sm:w-full md:w-full">
           <div className="text-center font-normal text-2xl text-slate-500">
             اتو بخار فیلیپس مدل 7040 (2800 وات)
           </div>
@@ -153,7 +153,7 @@ const SingleProduct = () => {
           </div>
         </div>
 
-        <div className="col-span-3  rounded-3xl bg-customGray">
+        <div className="col-span-3 rounded-3xl bg-customGray lg:col-span-4 xl:col-span-4 2xl:col-span-4 sm:w-full md:w-full">
           <div className="px-4 pt-0 mr-0">
             <div className="flex justify-end ml-0 mx-auto">
               <Espesial />
@@ -342,7 +342,7 @@ const SingleProduct = () => {
 
       <div className="container mx-auto mt-5 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-8 w-auto">
         <div className="flex gap-7">
-          <div>
+          <div className="hidden md:block lg:block xl:block 2xl:block">
             <img src="/images/makup1.png" className="object-none rounded-3xl" />
           </div>
           <div className="w-5/6 mt-7">
@@ -450,7 +450,7 @@ const SingleProduct = () => {
               </p>
             </div>
           </div>
-          <div className="mt-5">
+          <div className="mt-5 hidden md:block lg:block xl:block 2xl:block">
             <img src="/images/makup2.png" className="object-none rounded-3xl" />
           </div>
         </div>
@@ -568,7 +568,7 @@ const SingleProduct = () => {
 
       <div className="container mx-auto mt-8 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-8">
         <div className="w-full">امتیاز و دیدگاه کاربران</div>
-        <div className="mt-8 flex gap-5">
+        <div className="mt-8 md:flex lg:flex xl:flex 2xl:flex lg:w-full gap-5">
           <div className="border-0 rounded-xl p-3 w-96">
             <div className="flex gap-6">
               <div className="p-4  bg-slate-100 rounded-xl">
@@ -719,6 +719,7 @@ const SingleProduct = () => {
               </div>
             </div>
           </div>
+
           <div>
             <div className="border-0 w-full rounded-xl mt-5">
               <div className="border w-full rounded-3xl m-2 p-3">
