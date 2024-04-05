@@ -14,7 +14,7 @@ const Profile = () => {
           </div>
         </div>
         <div className="text-left p-5">
-            <button className="bg-primary p-4 rounded rounded-xl text-white">ذخیره اطلاعات</button>
+            <button className="bg-primary p-4 rounded rounded-2xl text-white">ذخیره اطلاعات</button>
         </div>
       </div>
     </>
