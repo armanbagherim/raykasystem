@@ -42,8 +42,9 @@ export default function BottomNavModule({ entities }) {
         </div>
         <ul>
           {level === 1
-            ? entities.map((value) => (
+            ? entities.map((value, key) => (
                 <li
+                  key={key}
                   onClick={(e) => handleClick(value.id)}
                   className="flex justify-between items-center border-b pb-3 mb-6"
                 >
@@ -51,8 +52,8 @@ export default function BottomNavModule({ entities }) {
                   <ChevronLeft />
                 </li>
               ))
-            : subMenuData.map((value) => (
-                <a href={`/category/${value.slug}`}>
+            : subMenuData.map((value, key) => (
+                <a key={key} href={`/category/${value.slug}`}>
                   <li
                     onClick={(e) => handleClick(value.id)}
                     className="flex justify-between items-center border-b pb-3 mb-6"

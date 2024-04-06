@@ -187,14 +187,12 @@ const Sellerpage = async ({ params, searchParams }) => {
                 <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 gap-6">
                     {products?.result?.map((value, key) => (
-                      <Suspense fallback={<p>Loading feed...</p>}>
-                        <ProductCard
-                          key={key}
-                          data={value}
-                          type="main"
-                          className="w-full sm:w-1/2 md:w-1/3"
-                        />
-                      </Suspense>
+                      <ProductCard
+                        key={key}
+                        data={value}
+                        type="main"
+                        className="w-full sm:w-1/2 md:w-1/3"
+                      />
                     ))}
                   </div>
                 </div>
