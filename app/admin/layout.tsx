@@ -84,7 +84,7 @@ export default function RootLayout({
         <html lang="en" dir="rtl">
           <body suppressHydrationWarning={true} className={IRANSansX.className}>
             <QueryClientProvider client={queryClient}>
-              <ToastContainer />
+              <ToastContainer position="bottom-right" />
               <SessionProvider>
                 <NextTopLoader />
                 {children}

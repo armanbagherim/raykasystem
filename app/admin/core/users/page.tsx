@@ -6,6 +6,9 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
+import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
+import { IconButton } from "@mui/material";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 export default function Users() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -18,65 +21,68 @@ export default function Users() {
     });
   }, []);
 
-  const {
-    data: users,
-    isLoading: userIsLoading,
-    error: userError,
-  } = useFetcher(`/v1/api/core/admin/users`, "GET");
-
   const columns = [
     {
-      field: "id",
-      headerName: "شناسه",
-      width: 80,
+      accessorKey: "id",
+      header: "شناسه",
+      size: 10,
+      maxSize: 10,
     },
     {
-      field: "firstname",
-      headerName: "نام",
-      width: 100,
-      editable: true,
+      accessorKey: "firstname",
+      header: "نام ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 100, //max size enforced during resizing
+      size: 100, //medium column
     },
     {
-      field: "lastname",
-      headerName: "نام خانوادگی",
-      width: 100,
+      accessorKey: "lastname",
+      header: "نام خانوادگی",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
     },
     {
-      field: "username",
-      headerName: "نام کاربری",
-      width: 150,
+      accessorKey: "phoneNumber",
+      header: "شماره موبایل",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
     },
     {
-      field: "phoneNumber",
-      headerName: "شماره موبایل",
-      width: 150,
+      accessorKey: "createdAt",
+      header: "تاریخ ایجاد کاربر",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
     },
+
     {
-      field: "createdAt",
-      headerName: "تاریخ ایجاد کاربر",
-      width: 200,
-      renderCell: ({ row }) => {
-        return new Date(row.createdAt).toLocaleDateString("fa-IR");
+      accessorKey: "Actions",
+      header: "عملیات",
+      size: 200,
+      muiTableHeadCellProps: {
+        align: "right",
       },
-    },
-    {
-      field: "actions",
-      headerName: "عملیات",
-      width: 200,
-      renderCell: (row) => (
-        <a href={`/admin/core/users/${row.id}`}>
-          <button
-            type="button"
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-          >
-            ویرایش
-          </button>
-        </a>
+      muiTableBodyCellProps: {
+        align: "right",
+      },
+      Cell: ({ row }) => (
+        <>
+          <a href={`/admin/core/users/${row.id}`}>
+            <IconButton aria-label="delete" color="primary">
+              <ModeEditIcon />
+            </IconButton>
+          </a>
+          {/* <a onClick={(e) => deleteEavType(row.id)}>
+          <IconButton aria-label="delete" color="error">
+            <DeleteIcon />
+          </IconButton>
+        </a> */}
+        </>
       ),
     },
   ];
-  if (userIsLoading) {
-    return <Loading />;
-  }
-  return <DataGrid rows={users.result} columns={columns} />;
+
+  return <LightDataGrid url={"/v1/api/core/admin/users"} columns={columns} />;
 }

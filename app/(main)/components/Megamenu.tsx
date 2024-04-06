@@ -6,7 +6,7 @@ const Megamenu = () => {
     <>
       <div
         onMouseEnter={(e) => e.stopPropagation()}
-        className={`absolute z-40 top-10 bg-customGray rounded rounded-3xl text-md w-full hidden group-hover:lg:block group-hover:md:block group-hover:xl:block group-hover:2xl:block`}
+        className={`absolute z-40 top-10   bg-customGray rounded rounded-3xl text-md w-full hidden group-hover:lg:block group-hover:md:block group-hover:xl:block group-hover:2xl:block`}
       >
         <div
           className="grid grid-cols-5 p-2"

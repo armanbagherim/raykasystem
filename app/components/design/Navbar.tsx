@@ -48,7 +48,10 @@ export default async function NavbarModule() {
                 </span>
               </button>
             </Link>
-            <button className="border rounded-2xl p-4">
+            <button className="border rounded-2xl p-4 relative">
+              <span className="w-6 h-6 rounded-lg absolute bg-primary text-white -right-2 -top-2 flex justify-center items-center">
+                0
+              </span>
               <img src="/icons/cart.svg" alt="" />
             </button>
           </div>

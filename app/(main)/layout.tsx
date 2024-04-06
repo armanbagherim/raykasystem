@@ -5,6 +5,8 @@ import Navbar from "../components/design/Navbar";
 import Footer from "../components/design/Footer";
 import "react-toastify/dist/ReactToastify.css";
 import BottomNav from "../components/design/BottomNav";
+import { ToastContainer } from "react-toastify";
+import { Provider } from "jotai";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,10 +28,13 @@ export default function RootLayout({
         href="/apple-launch-1125x2436.png"
       ></link>
       <body>
-        <Navbar />
-        <BottomNav />
-        {children}
-        <Footer />
+        <Provider>
+          <Navbar />
+          <ToastContainer />
+          <BottomNav />
+          {children}
+          <Footer />
+        </Provider>
       </body>
     </html>
   );

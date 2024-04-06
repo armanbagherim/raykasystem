@@ -27,6 +27,7 @@ import LeftSide from "./LeftSide";
 import Breadcrumb from "@/app/components/design/Breadcrumb";
 import Link from "next/link";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 export default function SingleProductModule({ product, related, cook }) {
   const [localInventories, setLocalInventories] = useState(product.inventories);
@@ -47,6 +48,9 @@ export default function SingleProductModule({ product, related, cook }) {
 
   const addToCart = (inventoryId) => {
     console.log(inventoryId);
+    const id = toast.loading("در حال افزودن");
+    //do something else
+
     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks`, {
       method: "POST",
       headers: {
@@ -58,6 +62,13 @@ export default function SingleProductModule({ product, related, cook }) {
         qty: 1,
       }),
     }).then((res) => {
+      toast.update(id, {
+        render: "اضافه شد",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
+      });
       console.log(res);
     });
   };

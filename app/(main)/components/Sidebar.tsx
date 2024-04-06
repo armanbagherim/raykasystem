@@ -292,9 +292,10 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
           </AccordionSummary>
           <AccordionDetails className="px-8">
             <Slider
+              suppressHydrationWarning
               getAriaLabel={() => "Minimum distance"}
               value={value}
-              min={0}
+              min={Number(0).toLocaleString()}
               max={range.maxPrice}
               onChange={handleChange}
               valueLabelDisplay="auto"
@@ -306,11 +307,13 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
               valueLabelFormat={(value) => value.toLocaleString()}
             />
             <div className="w-full flex justify-between">
-              <span className="max">
+              <span className="max" suppressHydrationWarning>
                 {Number(value[1]).toLocaleString() ||
                   Number(range.maxPrice).toLocaleString()}
               </span>
-              <span className="min">0</span>
+              <span className="min" suppressHydrationWarning>
+                0
+              </span>
             </div>
           </AccordionDetails>
         </Accordion>

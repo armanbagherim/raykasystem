@@ -362,3 +362,9 @@ body {
   animation: animate-svg-stroke-3 2s linear 0.24s both infinite,
     animate-svg-fill-3 0.7s cubic-bezier(0.47, 0, 0.745, 0.715) 1s both;
 }
+
+.bottomToolbar {
+  .MuiBox-root {
+    direction: ltr;
+  }
+}

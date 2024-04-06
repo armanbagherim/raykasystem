@@ -1,11 +1,11 @@
 import Image from "next/image";
-import fetcher from "../components/global/fetcher";
 import Slider from "../components/design/Slider";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/authOptions";
 import ProductCard from "../components/design/Cards/ProductCard/ProductCard";
 import Title from "../components/design/Title";
 import Interseptor from "../components/global/Interseptor";
+import { Metadata } from "next";
 
 async function getProducts() {
   const res = await Interseptor(
