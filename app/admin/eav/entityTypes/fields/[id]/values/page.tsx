@@ -18,7 +18,7 @@ export default function Eav({ params }) {
       link: `/admin/eav/entityTypes/fields/${params.id}/values/new`,
     });
   }, []);
-  console.log(params);
+
   const {
     data: categories,
     isLoading: categoriesIsLoading,

@@ -62,11 +62,9 @@ export default function VendorAddress({ params }) {
         url: `/v1/api/ecommerce/neighborhoods?cityId=${nid}`,
         method: "GET",
       }).then((res) => {
-        console.log(res);
         if (res.result.length !== 0) {
           setNeighberhoods(res.result);
           setneighborhoodId(res.result[0].id);
-          console.log("idssssssssssssss", res.result);
         } else {
           setNeighberhoods(null);
         }
@@ -84,12 +82,11 @@ export default function VendorAddress({ params }) {
   }, [provinceId]);
 
   // useEffect(() => {
-  //   console.log(neighborhoodId);
+  //
   //   getNeighberhoods(neighborhoodId);
   // }, [neighborhoodId]);
 
   const saveVendorAddress = async () => {
-    console.log("hi");
     try {
       const req = await fetcher({
         url: "/v1/api/ecommerce/vendorAddresses",

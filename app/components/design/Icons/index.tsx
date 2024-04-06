@@ -790,8 +790,8 @@ export const PlusSmall = () => {
   return (
     <>
       <svg
-        width="18"
-        height="18"
+        width="20"
+        height="20"
         viewBox="0 0 18 18"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -1020,17 +1020,17 @@ export const Minussquare = () => {
           d="M6.66602 10H13.3327"
           stroke="black"
           stroke-opacity="0.7"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M7.49935 18.3334H12.4993C16.666 18.3334 18.3327 16.6667 18.3327 12.5001V7.50008C18.3327 3.33341 16.666 1.66675 12.4993 1.66675H7.49935C3.33268 1.66675 1.66602 3.33341 1.66602 7.50008V12.5001C1.66602 16.6667 3.33268 18.3334 7.49935 18.3334Z"
           stroke="black"
           stroke-opacity="0.7"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </>
@@ -1051,25 +1051,25 @@ export const Addsquare = () => {
           d="M6.66602 10H13.3327"
           stroke="black"
           stroke-opacity="0.7"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M10 13.3334V6.66675"
           stroke="black"
           stroke-opacity="0.7"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M7.49935 18.3334H12.4993C16.666 18.3334 18.3327 16.6667 18.3327 12.5001V7.50008C18.3327 3.33341 16.666 1.66675 12.4993 1.66675H7.49935C3.33268 1.66675 1.66602 3.33341 1.66602 7.50008V12.5001C1.66602 16.6667 3.33268 18.3334 7.49935 18.3334Z"
           stroke="black"
           stroke-opacity="0.7"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
     </>
@@ -1090,22 +1090,22 @@ export const Sorticon = () => {
           d="M3 7H21"
           stroke="black"
           stroke-opacity="0.7"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         />
         <path
           d="M6 12H18"
           stroke="black"
           stroke-opacity="0.7"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         />
         <path
           d="M10 17H14"
           stroke="black"
           stroke-opacity="0.7"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         />
       </svg>
     </>
@@ -1126,14 +1126,250 @@ export const Searchicon = () => {
           d="M9.16601 16.6665C13.3082 16.6665 16.666 13.3086 16.666 9.1665C16.666 5.02437 13.3082 1.6665 9.16601 1.6665C5.02388 1.6665 1.66602 5.02437 1.66602 9.1665C1.66602 13.3086 5.02388 16.6665 9.16601 16.6665Z"
           stroke="black"
           stroke-opacity="0.7"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M15.775 17.2413C16.2167 18.5747 17.225 18.708 18 17.5413C18.7083 16.4747 18.2417 15.5997 16.9583 15.5997C16.0084 15.5913 15.475 16.333 15.775 17.2413Z"
           stroke="black"
           stroke-opacity="0.7"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </>
+  );
+};
+
+export const Leftarrow = () => {
+  return (
+    <>
+      <svg
+        width="37"
+        height="37"
+        viewBox="0 0 37 37"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M16.7644 13C16.6136 13 16.4628 13.0565 16.3438 13.1775L11.5261 18.0735C11.296 18.3074 11.296 18.6946 11.5261 18.9285L16.3438 23.8246C16.5739 24.0585 16.9549 24.0585 17.1851 23.8246C17.4152 23.5907 17.4152 23.2035 17.1851 22.9696L12.7881 18.501L17.1851 14.0324C17.4152 13.7985 17.4152 13.4114 17.1851 13.1775C17.0739 13.0565 16.9152 13 16.7644 13Z"
+          fill="black"
+          fill-opacity="0.7"
+        />
+        <path
+          d="M25.7498 18L11.9677 18C11.6319 18 11.3535 18.2267 11.3535 18.5C11.3535 18.7733 11.6319 19 11.9677 19L25.7498 19C26.0855 19 26.3639 18.7733 26.3639 18.5C26.3639 18.2267 26.0855 18 25.7498 18Z"
+          fill="black"
+          fill-opacity="0.7"
+        />
+      </svg>
+    </>
+  );
+};
+
+export const Home = () => {
+  return (
+    <>
+      <svg
+        width="24"
+        height="25"
+        viewBox="0 0 24 25"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M9.02 3.09016L3.63 7.29016C2.73 7.99016 2 9.48016 2 10.6102V18.0202C2 20.3402 3.89 22.2402 6.21 22.2402H17.79C20.11 22.2402 22 20.3402 22 18.0302V10.7502C22 9.54016 21.19 7.99016 20.2 7.30016L14.02 2.97016C12.62 1.99016 10.37 2.04016 9.02 3.09016Z"
+          stroke="#8F8F8F"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M12 18.2402V15.2402"
+          stroke="#8F8F8F"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </>
+  );
+};
+
+export const Menu = () => {
+  return (
+    <>
+      <svg
+        width="24"
+        height="25"
+        viewBox="0 0 24 25"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M17 10.25H19C21 10.25 22 9.25 22 7.25V5.25C22 3.25 21 2.25 19 2.25H17C15 2.25 14 3.25 14 5.25V7.25C14 9.25 15 10.25 17 10.25Z"
+          stroke="#484848"
+          strokeWidth="2"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M5 22.25H7C9 22.25 10 21.25 10 19.25V17.25C10 15.25 9 14.25 7 14.25H5C3 14.25 2 15.25 2 17.25V19.25C2 21.25 3 22.25 5 22.25Z"
+          stroke="#484848"
+          strokeWidth="2"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M6 10.25C8.20914 10.25 10 8.45914 10 6.25C10 4.04086 8.20914 2.25 6 2.25C3.79086 2.25 2 4.04086 2 6.25C2 8.45914 3.79086 10.25 6 10.25Z"
+          stroke="#484848"
+          strokeWidth="2"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M18 22.25C20.2091 22.25 22 20.4591 22 18.25C22 16.0409 20.2091 14.25 18 14.25C15.7909 14.25 14 16.0409 14 18.25C14 20.4591 15.7909 22.25 18 22.25Z"
+          stroke="#484848"
+          strokeWidth="2"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </>
+  );
+};
+
+export const CartBottom = () => {
+  return (
+    <>
+      <svg
+        width="24"
+        height="25"
+        viewBox="0 0 24 25"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M2 2.25H3.74001C4.82001 2.25 5.67 3.18 5.58 4.25L4.75 14.21C4.61 15.84 5.89999 17.24 7.53999 17.24H18.19C19.63 17.24 20.89 16.06 21 14.63L21.54 7.13C21.66 5.47 20.4 4.12 18.73 4.12H5.82001"
+          stroke="#484848"
+          strokeWidth="1.5"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M16.25 22.25C16.9404 22.25 17.5 21.6904 17.5 21C17.5 20.3096 16.9404 19.75 16.25 19.75C15.5596 19.75 15 20.3096 15 21C15 21.6904 15.5596 22.25 16.25 22.25Z"
+          stroke="#484848"
+          strokeWidth="1.5"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M8.25 22.25C8.94036 22.25 9.5 21.6904 9.5 21C9.5 20.3096 8.94036 19.75 8.25 19.75C7.55964 19.75 7 20.3096 7 21C7 21.6904 7.55964 22.25 8.25 22.25Z"
+          stroke="#484848"
+          strokeWidth="1.5"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M9 8.25H21"
+          stroke="#484848"
+          strokeWidth="1.5"
+          strokeMiterlimit="10"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </>
+  );
+};
+
+export const Pofile = () => {
+  return (
+    <>
+      <svg
+        width="24"
+        height="25"
+        viewBox="0 0 24 25"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12.1596 12.37C12.1296 12.37 12.1096 12.37 12.0796 12.37C12.0296 12.36 11.9596 12.36 11.8996 12.37C8.99957 12.28 6.80957 10 6.80957 7.19C6.80957 4.33 9.13957 2 11.9996 2C14.8596 2 17.1896 4.33 17.1896 7.19C17.1796 10 14.9796 12.28 12.1896 12.37C12.1796 12.37 12.1696 12.37 12.1596 12.37ZM11.9996 3.5C9.96957 3.5 8.30957 5.16 8.30957 7.19C8.30957 9.19 9.86957 10.8 11.8596 10.87C11.9096 10.86 12.0496 10.86 12.1796 10.87C14.1396 10.78 15.6796 9.17 15.6896 7.19C15.6896 5.16 14.0296 3.5 11.9996 3.5Z"
+          fill="#484848"
+        />
+        <path
+          d="M12.1696 23.3C10.2096 23.3 8.23961 22.8 6.74961 21.8C5.35961 20.88 4.59961 19.62 4.59961 18.25C4.59961 16.88 5.35961 15.61 6.74961 14.68C9.74961 12.69 14.6096 12.69 17.5896 14.68C18.9696 15.6 19.7396 16.86 19.7396 18.23C19.7396 19.6 18.9796 20.87 17.5896 21.8C16.0896 22.8 14.1296 23.3 12.1696 23.3ZM7.57961 15.94C6.61961 16.58 6.09961 17.4 6.09961 18.26C6.09961 19.11 6.62961 19.93 7.57961 20.56C10.0696 22.23 14.2696 22.23 16.7596 20.56C17.7196 19.92 18.2396 19.1 18.2396 18.24C18.2396 17.39 17.7096 16.57 16.7596 15.94C14.2696 14.28 10.0696 14.28 7.57961 15.94Z"
+          fill="#484848"
+        />
+      </svg>
+    </>
+  );
+};
+
+export const Close = () => {
+  return (
+    <>
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M9.17188 14.83L14.8319 9.17004"
+          stroke="#292D32"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M14.8319 14.83L9.17188 9.17004"
+          stroke="#292D32"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+          stroke="#292D32"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </>
+  );
+};
+
+export const BackButton = () => {
+  return (
+    <>
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
+          stroke="#292D32"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M13.26 15.53L9.73999 12L13.26 8.46997"
+          stroke="#292D32"
           stroke-width="1.5"
           stroke-linecap="round"
           stroke-linejoin="round"

@@ -6,6 +6,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify"; // Import toast from react-toastify
 import { useAtom } from "jotai";
 import { pageTitle } from "@/app/admin/layout";
+import SaveBar from "@/app/components/global/SaveBar";
 
 interface User {
   firstname: string;
@@ -90,7 +91,7 @@ export default function Users({ params }: PageProps): JSX.Element {
     });
   };
 
-  const saveUser = async (): Promise<void> => {
+  const save = async (): Promise<void> => {
     const req = await fetcher({
       url: `/v1/api/core/admin/users/${params.id}`,
       method: "PUT",
@@ -218,12 +219,7 @@ export default function Users({ params }: PageProps): JSX.Element {
           ))}
         </div>
       </div>
-      <button
-        onClick={saveUser}
-        className="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
-      >
-        ویرایش نقش
-      </button>
+      <SaveBar action={save} />
     </div>
   );
 }

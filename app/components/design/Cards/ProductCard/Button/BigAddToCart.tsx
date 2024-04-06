@@ -1,7 +1,6 @@
 import { Cart } from "../../../Icons";
 
 export const BigAddToCart = ({ status }) => {
-  console.log(status);
   return (
     <>
       <button

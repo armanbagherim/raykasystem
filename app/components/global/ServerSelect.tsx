@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 
 const ServerSelect = ({ type, init, setRequestBody, requestBody }) => {
   const { data: session } = useSession();
-  console.log(init?.result);
+
   // Transform the data prop to match the expected format
   const initialData = init?.result.map((item) => ({
     label: item.value,
@@ -32,7 +32,6 @@ const ServerSelect = ({ type, init, setRequestBody, requestBody }) => {
 
   const handleChange = (selectedOption) => {
     setRequestBody({ ...requestBody, conditionValue: selectedOption.value });
-    console.log();
   };
 
   return (

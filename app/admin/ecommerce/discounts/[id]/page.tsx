@@ -168,7 +168,7 @@ export default function NewDiscount({ params }) {
         <div className="flex-1">
           <DatePicker
             format="MM/DD/YYYY HH:mm:ss"
-            plugins={[<TimePicker position="bottom" />]}
+            plugins={[<TimePicker key={1} position="bottom" />]}
             calendar={persian}
             locale={persian_fa}
             inputClass="w-full border-b outline-none py-4 border-gray-500"
@@ -187,7 +187,7 @@ export default function NewDiscount({ params }) {
             format="MM/DD/YYYY HH:mm:ss"
             inputClass="w-full border-b outline-none py-4 border-gray-500"
             containerClassName="w-full"
-            plugins={[<TimePicker position="bottom" />]}
+            plugins={[<TimePicker key={2} position="bottom" />]}
             calendar={persian}
             value={new Date(requestBody.endDate)}
             locale={persian_fa}
