@@ -8,6 +8,20 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      animation: {
+        "open-menu": "openMenu 0.2s ease-in-out forwards",
+        "close-menu": "closeMenu 0.2s ease-in-out forwards",
+      },
+      keyframes: {
+        openMenu: {
+          "0%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        closeMenu: {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(100%)" },
+        },
+      },
       colors: {
         primary: "#20AC73",
         customGray: "#F8F8F8",

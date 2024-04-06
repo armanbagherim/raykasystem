@@ -43,7 +43,7 @@ export default function SignInForm({ session }) {
         callbackUrl: "/verify",
       }).then(async (res) => {
         const session = await getSession();
-        console.log(session, res);
+
         if (res.ok && session.signupStatus == true) {
           setState("verify");
           setNumber(phoneNumber);
@@ -57,7 +57,6 @@ export default function SignInForm({ session }) {
       });
     } else {
       if (!verificationCodeRegex.test(verifyCode)) {
-        console.log(verifyCode);
         toast.error("لطفاً کد تایید 6 رقمی را وارد نمایید", {
           position: "top-center",
           autoClose: 5000,

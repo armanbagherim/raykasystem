@@ -20,9 +20,8 @@ export const authOptions = {
       async authorize(credentials, req) {
         const { phoneNumber, verifyCode, firstName, lastName } = credentials;
         let res;
-        console.log(phoneNumber, verifyCode);
+
         if (phoneNumber && !verifyCode) {
-          console.log("come here 1");
           try {
             res = await fetch(
               "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/login",
@@ -40,7 +39,6 @@ export const authOptions = {
             throw Error(error);
           }
         } else if (verifyCode) {
-          console.log("come here 2");
           res = await fetch(
             "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/login/verifyCode",
             {
@@ -57,9 +55,9 @@ export const authOptions = {
             }
           );
         }
-        // console.log(res.body);
+        //
         const user = await res.json();
-        console.log(user);
+
         if (res.ok && user) {
           return user;
         } else return null;

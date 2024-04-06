@@ -8,7 +8,7 @@ export default function LongCard({ border, data }) {
   return (
     <a href={`/product/${data?.slug}`} className="flex-auto">
       <div
-        className={`flex w-full flex-col md:flex-row lg:flex-col xl:flex-row 2xl:flex-row gap-5 border border-${border} rounded-2xl p-4`}
+        className={`flex w-full flex-col md:flex-col lg:flex-col xl:flex-row 2xl:flex-row gap-5 border border-${border} rounded-2xl p-4`}
       >
         <Image
           width={200}

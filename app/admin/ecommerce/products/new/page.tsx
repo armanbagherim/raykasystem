@@ -181,8 +181,6 @@ export default function Products() {
   };
 
   const handleAttributeChange = (id, value) => {
-    console.log(id, value.id);
-
     // Determine the type of value
     const actualValue = value.id !== undefined ? value.id : value;
 
@@ -190,7 +188,6 @@ export default function Products() {
     const existingAttribute = requestBody.attributes.find(
       (attr) => Number(attr.id) === Number(id)
     );
-    console.log(existingAttribute);
 
     if (existingAttribute) {
       setRequestBody((prevState) => ({
@@ -228,7 +225,6 @@ export default function Products() {
   };
 
   const removeInventory = (id: number) => {
-    console.log(id);
     setTempInventories((prevInventories) =>
       prevInventories.filter((inventory) => inventory.id !== id)
     );
@@ -272,7 +268,6 @@ export default function Products() {
   }, [description]);
 
   const saveProduct = async () => {
-    console.log(requestBody);
     try {
       const req = await fetcher({
         url: "/v1/api/ecommerce/admin/products",

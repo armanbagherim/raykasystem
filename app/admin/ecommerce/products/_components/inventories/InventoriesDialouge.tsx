@@ -85,7 +85,6 @@ export default function InventoriesDialouge({
         } else {
           // If the object already has an ID with the 'new_' prefix, handle accordingly
           // For example, you might want to skip adding a new ID or handle this case differently
-          console.log("Object already has an ID with the new_ prefix.");
         }
       } else {
         // If activeSpace is not null, just set the activeSpaceProductsObject as is
@@ -123,8 +122,6 @@ export default function InventoriesDialouge({
   };
 
   const handleSelectChange = (value, key, label) => {
-    console.log(value, key, label);
-
     setLocalTempInventory((prevInventory) => {
       // Check if the key is 'description' to ensure it's treated as a string
       if (key === "description") {
@@ -319,8 +316,6 @@ export default function InventoriesDialouge({
           color="success"
           autoFocus
           onClick={(e) => {
-            console.log(localTempInventory);
-
             if (!isFormValid()) {
               // Optionally display an error message
               toast.error("لطفا تمام فیلد ها را پر نمایید");

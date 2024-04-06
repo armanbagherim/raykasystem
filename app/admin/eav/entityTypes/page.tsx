@@ -7,6 +7,10 @@ import { pageTitle } from "../../layout";
 import { useAtom } from "jotai";
 import { toast } from "react-toastify";
 import Image from "next/image";
+import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
+import { Button, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 export default function Eav() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -18,12 +22,6 @@ export default function Eav() {
       link: "/admin/eav/entityTypes/new",
     });
   }, []);
-  const {
-    data: categories,
-    isLoading: categoriesIsLoading,
-    error: categoriesError,
-    refetch: categoriesRefetch,
-  } = useFetcher(`/v1/api/eav/admin/entityTypes?sortOrder=ASC`, "GET");
 
   const deleteEavType = async (id) => {
     try {
@@ -37,22 +35,25 @@ export default function Eav() {
       toast.error(error.message);
     }
   };
-  const columns: GridColDef[] = [
+  const columns = [
     {
-      field: "id",
-      headerName: "شناسه",
-      width: 150,
+      accessorKey: "id",
+      header: "شناسه",
+      size: 20,
     },
     {
-      field: "name",
-      headerName: "نام ",
-      width: 150,
+      accessorKey: "name",
+      header: "نام ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
     },
+
     {
-      field: "image",
-      headerName: "تصویر ",
-      width: 50,
-      renderCell({ row }) {
+      accessorKey: "image",
+      header: "تصویر ",
+      size: 20,
+      Cell({ row }) {
         return row.attachment ? (
           <Image
             loading="eager"
@@ -71,51 +72,45 @@ export default function Eav() {
       },
     },
     {
-      field: "slug",
-      headerName: "آدرس",
-      width: 150,
+      accessorKey: "slug",
+      header: "آدرس",
     },
 
     {
-      field: "Actions",
-      headerName: "عملیات",
-      width: 300,
-      renderCell: (row) => (
+      accessorKey: "Actions",
+      header: "عملیات",
+      size: 200,
+      muiTableHeadCellProps: {
+        align: "right",
+      },
+      muiTableBodyCellProps: {
+        align: "right",
+      },
+      Cell: ({ row }) => (
         <>
           <a href={`/admin/eav/entityTypes/fields/${row.id}`}>
-            <button
-              type="button"
-              className="ml-4 focus:outline-none text-white bg-primary hover:bg-primary focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-            >
+            <Button variant="outlined" color="success">
               فیلد ها
-            </button>
+            </Button>
           </a>
           <a href={`/admin/eav/entityTypes/edit/${row.id}`}>
-            <button
-              type="button"
-              className="ml-4 focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-            >
-              ویرایش
-            </button>
+            <IconButton aria-label="delete" color="primary">
+              <ModeEditIcon />
+            </IconButton>
           </a>
           <a onClick={(e) => deleteEavType(row.id)}>
-            <button
-              type="button"
-              className="ml-4 focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-            >
-              حذف
-            </button>
+            <IconButton aria-label="delete" color="error">
+              <DeleteIcon />
+            </IconButton>
           </a>
         </>
       ),
     },
   ];
-  if (categoriesIsLoading) {
-    return <Loading />;
-  }
+
   return (
     <div>
-      <DataGrid rows={categories.result} columns={columns} />
+      <LightDataGrid url={"/v1/api/eav/admin/entityTypes"} columns={columns} />
     </div>
   );
 }

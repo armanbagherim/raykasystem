@@ -19,7 +19,7 @@ export default function Title({ text, color }) {
           fillOpacity="0.1"
         />
       </svg>
-      <h4 className={`text-3xl pr-4 font-bold text-${color}`}>{text}</h4>
+      <h4 className={`text-3xl pr-4 font-black text-${color} peyda`}>{text}</h4>
     </div>
   );
 }
