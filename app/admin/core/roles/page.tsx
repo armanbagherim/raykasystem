@@ -6,6 +6,9 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
+import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
+import { IconButton } from "@mui/material";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 export default function Roles() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -18,52 +21,97 @@ export default function Roles() {
     });
   }, []);
 
-  const {
-    data: roles,
-    isLoading: rolesIsLoading,
-    error: rolesError,
-  } = useFetcher(`/v1/api/core/admin/roles?igonePaging=true`, "GET");
+  // const {
+  //   data: roles,
+  //   isLoading: rolesIsLoading,
+  //   error: rolesError,
+  // } = useFetcher(`/v1/api/core/admin/roles?igonePaging=true`, "GET");
 
-  const columns: GridColDef[] = [
+  // const columns: GridColDef[] = [
+  //   {
+  //     field: "id",
+  //     headerName: "شناسه نقش",
+  //     width: 150,
+  //   },
+  //   {
+  //     field: "roleName",
+  //     headerName: "نام نقش",
+  //     width: 150,
+  //   },
+  //   {
+  //     field: "createdAt",
+  //     headerName: "تاریخ ایجاد",
+  //     width: 150,
+  //     valueFormatter: ({ value }) =>
+  //       new Date(value).toLocaleDateString("fa-IR"),
+  //   },
+  //   {
+  //     field: "list",
+  //     headerName: "ویرایش",
+  //     width: 150,
+  //     renderCell: (row) => (
+  //       <a href={`/admin/core/roles/${row.id}`}>
+  //         <button
+  //           type="button"
+  //           className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+  //         >
+  //           ویرایش
+  //         </button>
+  //       </a>
+  //     ),
+  //   },
+  // ];
+  // if (rolesIsLoading) {
+  //   return <Loading />;
+  // }
+
+  const columns = [
     {
-      field: "id",
-      headerName: "شناسه نقش",
-      width: 150,
+      accessorKey: "id",
+      header: "شناسه نقش",
+      size: 10,
+      maxSize: 10,
     },
     {
-      field: "roleName",
-      headerName: "نام نقش",
-      width: 150,
+      accessorKey: "roleName",
+      header: "نام نقش",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 100, //max size enforced during resizing
+      size: 100, //medium column
     },
     {
-      field: "createdAt",
-      headerName: "تاریخ ایجاد",
-      width: 150,
-      valueFormatter: ({ value }) =>
-        new Date(value).toLocaleDateString("fa-IR"),
+      accessorKey: "createdAt",
+      header: "تاریخ ایجاد",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
     },
     {
-      field: "list",
-      headerName: "ویرایش",
-      width: 150,
-      renderCell: (row) => (
-        <a href={`/admin/core/roles/${row.id}`}>
-          <button
-            type="button"
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-          >
-            ویرایش
-          </button>
-        </a>
+      accessorKey: "Actions",
+      header: "عملیات",
+      size: 200,
+      muiTableHeadCellProps: {
+        align: "right",
+      },
+      muiTableBodyCellProps: {
+        align: "right",
+      },
+      Cell: ({ row }) => (
+        <>
+          <a href={`/admin/core/roles/${row.id}`}>
+            <IconButton aria-label="delete" color="primary">
+              <ModeEditIcon />
+            </IconButton>
+          </a>
+          {/* <a onClick={(e) => deleteEavType(row.id)}>
+          <IconButton aria-label="delete" color="error">
+            <DeleteIcon />
+          </IconButton>
+        </a> */}
+        </>
       ),
     },
   ];
-  if (rolesIsLoading) {
-    return <Loading />;
-  }
-  return (
-    <div>
-      <DataGrid rows={roles.result} columns={columns} />
-    </div>
-  );
+
+  return <LightDataGrid url={"/v1/api/core/admin/roles?igonePaging=true"} columns={columns} />;
 }
