@@ -197,7 +197,7 @@ const Cart = () => {
             </div>
           </div>
 
-          <div className="col-span-1 shadow-md border border-customGray bg-white text-xs rounded-3xl mt-8 p-4 pb-10">
+          <div className="col-span-1 shadow-md border  border-customGray bg-white text-xs rounded-3xl mt-8 p-4 pb-10">
             <div className="text-sm mt-4">
               <div className="grid grid-cols-2">
                 <div className="col-span-1">نام</div>
@@ -244,7 +244,7 @@ const Cart = () => {
                     <div className="pr-4 pt-4 font-bold text-md text-primary">
                       خونه
                     </div>
-                    <select className="appearance-none text-sm h-[63px] w-full rounded-2xl bg-customGray hover:border-gray-500 pr-4 shadow focus:outline-none focus:shadow-outline">
+                    <select className="appearance-none text-[12px] h-[63px] w-full rounded-2xl bg-customGray hover:border-gray-500 pr-4 shadow focus:outline-none focus:shadow-outline">
                       <option>
                         شوش، خیابان مولوی، خیابان امیر المومنین پلاک 14 طبقه 2
                       </option>
