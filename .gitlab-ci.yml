@@ -8,6 +8,7 @@ deploy:
   only:
     - main
   script:
-    - npm i -g @liara/cli@5
+    - npm i -g @liara/cli@5 --force --verbos
+    - npm config set legacy-peer-deps true
     - export http_proxy=http://proxy.liara.ir:6666
     - liara deploy --app jahizan --api-token $TOKEN --no-app-logs
