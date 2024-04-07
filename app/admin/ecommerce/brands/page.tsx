@@ -36,15 +36,15 @@ export default function Brands() {
       toast.error(error.message);
     }
   };
-  const {
-    data: brands,
-    isLoading: brandsIsLoading,
-    error: brandsError,
-    refetch: refetchBrands,
-  } = useFetcher(
-    `/v1/api/ecommerce/brands?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
-    "GET"
-  );
+  // const {
+  //   data: brands,
+  //   isLoading: brandsIsLoading,
+  //   error: brandsError,
+  //   refetch: refetchBrands,
+  // } = useFetcher(
+  //   `/v1/api/ecommerce/brands?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
+  //   "GET"
+  // );
 
   // const columns: GridColDef[] = [
   //   {
@@ -176,7 +176,7 @@ export default function Brands() {
               <ModeEditIcon />
             </IconButton>
           </a>
-          <a onClick={(e) => deleteEavType(row.id)}>
+          <a onClick={(e) => deleteBrand(row.id)}>
             <IconButton aria-label="delete" color="error">
               <DeleteIcon />
             </IconButton>
@@ -196,7 +196,7 @@ export default function Brands() {
   // );
   return (
     <div>
-      <LightDataGrid url={"/v1/api/eav/admin/entityTypes"} columns={columns} />
+      <LightDataGrid url={"/v1/api/ecommerce/brands?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=false"} columns={columns} />
     </div>
   );
 }
