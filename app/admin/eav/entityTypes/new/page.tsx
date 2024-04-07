@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 import { HexColorPicker } from "react-colorful";
+import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Eav() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -32,7 +33,7 @@ export default function Eav() {
     `/v1/api/eav/admin/entityTypes?sortOrder=ASC&entityModelId=1&ignoreChilds=true&ignorePaging=true`,
     "GET"
   );
-  const saveBrand = async () => {
+  const save = async () => {
     try {
       const req = await fetcher({
         url: "/v1/api/eav/admin/entityTypes",
@@ -123,12 +124,7 @@ export default function Eav() {
         </select>
       )}
 
-      <button
-        onClick={saveBrand}
-        className="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
-      >
-        ایجاد
-      </button>
+    <SaveBar action={save} />
     </div>
   );
 }

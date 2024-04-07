@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 import { HexColorPicker } from "react-colorful";
+import SaveBar from "@/app/components/global/SaveBar";
 export default function Vendors() {
   const [title, setTitle] = useAtom(pageTitle);
   const [formBody, setFormBody] = useState({
@@ -31,7 +32,7 @@ export default function Vendors() {
     });
   }, []);
 
-  const saveVendor = async () => {
+  const save = async () => {
     try {
       const req = await fetcher({
         url: "/v1/api/ecommerce/vendors",
@@ -178,12 +179,7 @@ export default function Vendors() {
         />
       </div>
 
-      <button
-        onClick={saveVendor}
-        className="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
-      >
-        ساخت فروشگاه جدید
-      </button>
+      <SaveBar action={save} />
     </div>
   );
 }

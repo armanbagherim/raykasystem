@@ -214,7 +214,7 @@ export default function Users({ params }: PageProps): JSX.Element {
                     onChange={() => handleRoleChange(role.id)}
                   />
                 </div>
-              </div>
+              </div> 
             </div>
           ))}
         </div>
