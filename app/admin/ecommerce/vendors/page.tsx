@@ -22,7 +22,7 @@ export default function Vendors() {
     });
   }, []);
 
-  const deleteGuarantee = async (id) => {
+  const deleteRow = async (id) => {
     try {
       const req = await fetcher({
         url: `/v1/api/ecommerce/vendors/${id}`,
@@ -132,7 +132,7 @@ export default function Vendors() {
               <ModeEditIcon />
             </IconButton>
           </a>
-          <a onClick={(e) => deleteGuarantee(row.id)}>
+          <a onClick={(e) => deleteRow(row.id)}>
             <IconButton aria-label="delete" color="error">
               <DeleteIcon />
             </IconButton>

@@ -9,6 +9,7 @@ import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { toast } from "react-toastify";
 
 export default function Colors() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -20,6 +21,19 @@ export default function Colors() {
       link: "/admin/ecommerce/colors/new",
     });
   }, []);
+
+  const deleteRow = async (id) => {
+    try {
+      const req = await fetcher({
+        url: `/v1/api/ecommerce/colors/${id}`,
+        method: "DELETE",
+      });
+      toast.success("موفق");
+      refetchProducts();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   // const {
   //   data: colors,
@@ -92,13 +106,13 @@ export default function Colors() {
       accessorKey: "hexCode",
       header: "کد رنگ ",
       size: 20,
-      renderCell: ({ row }) => (
+      Cell: ({ row }) => (
         <div className="flex items-center">
           <span
-            style={{ background: row.hexCode }}
+            style={{ background: row.original.hexCode }}
             className={`w-5 h-5 ml-2 rounded-sm`}
           ></span>
-          {row.hexCode}
+          {row.original.hexCode}
         </div>
       ),
     },
@@ -115,9 +129,18 @@ export default function Colors() {
       },
       Cell: ({ row }) => (
         <>
+        {
+        console.log(row)
+        }
+        
           <a href={`/admin/ecommerce/colors/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
+            </IconButton>
+          </a>
+          <a onClick={(e) => deleteRow(row.id)}>
+            <IconButton aria-label="delete" color="error">
+              <DeleteIcon />
             </IconButton>
           </a>
         </>
