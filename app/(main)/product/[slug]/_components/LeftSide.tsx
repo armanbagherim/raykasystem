@@ -137,7 +137,7 @@ export default function LeftSide({ product, status }) {
                 </div>
               </div>
             </div>
-            <div className="text-center mx-auto">
+            <div className="text-center">
               <BigAddToCart status={true} />
             </div>
           </>

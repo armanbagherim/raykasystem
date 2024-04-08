@@ -6,6 +6,7 @@ import { useFetcher, fetcher } from "@/app/components/global/fetcher";
 import Loading from "./../../../../components/global/loading";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
+import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Page({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -48,7 +49,7 @@ export default function Page({ params }) {
     return checkedPermissions.includes(permissionId);
   };
 
-  const saveRole = async () => {
+  const save = async () => {
     try {
       await fetcher({
         url: `/v1/api/core/admin/roles/${params.id}`,
@@ -116,12 +117,7 @@ export default function Page({ params }) {
           </div>
         </div>
       ))}
-      <button
-        onClick={saveRole}
-        className="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
-      >
-        ویرایش نقش
-      </button>
+      <SaveBar action={save} />
     </div>
   );
 }

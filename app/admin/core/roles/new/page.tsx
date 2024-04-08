@@ -6,6 +6,7 @@ import Loading from "../../../../components/global/loading";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
+import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Roles() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -44,7 +45,7 @@ export default function Roles() {
       );
     }
   };
-  const saveRole = async () => {
+  const save = async () => {
     try {
       const req = await fetcher({
         url: "/v1/api/core/admin/roles",
@@ -107,12 +108,7 @@ export default function Roles() {
           </div>
         ))}
       </div>
-      <button
-        onClick={saveRole}
-        class="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
-      >
-        ساخت نقش
-      </button>
+      <SaveBar action={save} />
     </div>
   );
 }

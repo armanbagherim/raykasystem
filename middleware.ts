@@ -7,6 +7,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   // If the SessionName cookie exists, skip the fetch request
   if (existingSessionName) {
     console.log("SessionName cookie already exists, skipping fetch request.");
+    console.log(existingSessionName);
     return NextResponse.next(); // Proceed with the request without modifying the response
   }
 
@@ -29,9 +30,9 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   const response = NextResponse.next();
   response.cookies.set("SessionName", data.result.id, {
     path: "/",
-    httpOnly: true,
+    httpOnly: false,
     secure: true, // Set to true if your site is served over HTTPS
-    sameSite: "Lax", // Adjust according to your security requirements
+    sameSite: "none", // Adjust according to your security requirements
   });
 
   console.log("SessionName cookie set:", data.result.id);

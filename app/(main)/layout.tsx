@@ -8,6 +8,7 @@ import BottomNav from "../components/design/BottomNav";
 import { ToastContainer } from "react-toastify";
 import { Provider } from "jotai";
 import Providers from "../components/Providers";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +35,7 @@ export default function RootLayout({
             <Navbar />
             <ToastContainer />
             <BottomNav />
+            <NextTopLoader color="#20ac73" />
             {children}
             <Footer />
           </Provider>

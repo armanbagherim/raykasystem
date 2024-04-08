@@ -6,7 +6,7 @@ export const BigAddToCart = ({ status }) => {
       <button
         className={`${
           status ? "bg-primary" : "bg-[#484848]"
-        } text-white p-4 w-full rounded-3xl items-center flex-row flex justify-center`}
+        } text-white p-5 w-full rounded-3xl items-center flex-row flex justify-center`}
       >
         <span className="ml-4">
           <Cart />

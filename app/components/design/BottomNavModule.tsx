@@ -78,10 +78,12 @@ export default function BottomNavModule({ entities }) {
             <Menu />
             <span className="text-xs mt-2">منو</span>
           </div>
-          <div className="flex flex-col text-center items-center">
-            <CartBottom />
-            <span className="text-xs mt-2">سبد خرید</span>
-          </div>
+          <Link href="/cart">
+            <div className="flex flex-col text-center items-center">
+              <CartBottom />
+              <span className="text-xs mt-2">سبد خرید</span>
+            </div>
+          </Link>
           <a href="/user" className="flex flex-col text-center items-center">
             <Pofile />
             <span className="text-xs mt-2">پروفایل</span>

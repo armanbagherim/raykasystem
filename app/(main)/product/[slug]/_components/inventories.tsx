@@ -12,31 +12,33 @@ export default function Inventories({ product, addToCart }) {
           <h4 className="font-bold  mb-4">فروشندگان این کالا</h4>
           {product.map((value, key) => {
             return (
-              <div key={key} className="mb-5 text-xl">
-                <div className="bg-white flex rounded-xl p-2 px-6 gap-14 items-center justify-between ">
-                  <div className="text-sm">
-                    {value.guarantee.name} {value.guaranteeMonth.name}
-                  </div>
-                  <div className="flex gap-4 items-center">
-                    {value.inventoryStatus.id === 1 ? (
-                      <div className="text-sm bg-green-100 px-3 py-2 rounded-2xl text-green-800">
-                        موجود
-                      </div>
-                    ) : (
-                      <div className="text-sm">ناموجود</div>
-                    )}
+              <div key={key} className="mb-5 text-xl flex">
+                <div className="bg-white flex flex-wrap rounded-2xl p-3 px-6 gap-14 items-center justify-between w-full">
+                  <div className="flex justify-between w-full">
+                    <div className="text-base mb-2">
+                      {value.guarantee.name} {value.guaranteeMonth.name}
+                    </div>
+                    <div className="flex flex-col gap-4 items-end">
+                      {value.inventoryStatus.id === 1 ? (
+                        <div className="text-sm bg-green-100 px-3 py-2 rounded-2xl text-green-800">
+                          موجود
+                        </div>
+                      ) : (
+                        <div className="text-sm">ناموجود</div>
+                      )}
 
-                    {value.onlyProvince && (
-                      <div className="bg-[#E6F3FF] p-4 rounded-3xl text-xs text-[#008AFA]">
-                        ارسال فقط به شهر{" "}
-                        <span className="font-bold">
-                          {value.onlyProvince.name}
-                        </span>
-                      </div>
-                    )}
+                      {value.onlyProvince && (
+                        <div className="bg-[#E6F3FF] p-4 rounded-3xl text-xs text-[#008AFA]">
+                          ارسال فقط به شهر{" "}
+                          <span className="font-bold">
+                            {value.onlyProvince.name}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="flex gap-10 text-center mx-auto ml-1">
+                  <div className="flex text-left mx-auto justify-between w-full">
                     <div className="items-center my-auto">
                       <Price data={value} />
                     </div>
@@ -45,7 +47,7 @@ export default function Inventories({ product, addToCart }) {
                         onClick={(e) => {
                           addToCart(value.id);
                         }}
-                        className="bg-primary text-slate-100 p-3 text-sm rounded-2xl items-center my-auto"
+                        className="bg-primary mr-4 text-slate-100 p-3 text-sm rounded-2xl items-center my-auto"
                       >
                         <div className="flex gap-3">
                           <div>

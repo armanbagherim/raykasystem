@@ -8,9 +8,16 @@ import Interseptor from "../components/global/Interseptor";
 import { Metadata } from "next";
 
 async function getProducts() {
-  const res = await Interseptor(
-    "/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id"
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
+    {
+      cache: "no-store",
+    }
   );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
 
   return res.json();
 }
@@ -32,6 +39,7 @@ export default async function Home() {
           src={"/images/slide.png"}
           width={0}
           height={0}
+          alt="تصویر اسلایدر"
           sizes="100vw"
           style={{ width: "100%", height: "auto" }} // optional
           property=""
@@ -40,6 +48,7 @@ export default async function Home() {
           src={"/images/slide-2.png"}
           width={0}
           height={0}
+          alt="تصویر اسلایدر"
           sizes="100vw"
           style={{ width: "100%", height: "auto" }} // optional
           property=""
@@ -48,6 +57,7 @@ export default async function Home() {
           src={"/images/slide.png"}
           width={0}
           height={0}
+          alt="تصویر اسلایدر"
           sizes="100vw"
           style={{ width: "100%", height: "auto" }} // optional
           property=""

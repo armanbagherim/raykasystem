@@ -48,14 +48,23 @@ export default async function NavbarModule() {
                 </span>
               </button>
             </Link>
-            <button className="border rounded-2xl p-4 relative">
-              <span className="w-6 h-6 rounded-lg absolute bg-primary text-white -right-2 -top-2 flex justify-center items-center">
-                <CartCount />
-              </span>
-              <img src="/icons/cart.svg" alt="" />
-            </button>
+            <Link href="/cart">
+              <button className="border rounded-2xl p-4 relative">
+                <span className="w-6 h-6 rounded-lg absolute bg-primary text-white -right-2 -top-2 flex justify-center items-center">
+                  <span>
+                    <CartCount />
+                  </span>
+                </span>
+                <img src="/icons/cart.svg" alt="" />
+              </button>
+            </Link>
           </div>
         </div>
+
+        {/* <div className="absolute bg-slate-500 justify-between rounded rounded-3xl text-lg text-slate-500 p-4 mt-10 w-full h-10 group-hover:block">
+        </div> */}
+      </div>
+      <div className="container mx-auto">
         <div
           id="navbar"
           className="flex justify-between items-center relative hidden sm:flex z-50"
@@ -92,9 +101,6 @@ export default async function NavbarModule() {
             <span className="mr-2">تخفیفات ویژه</span>
           </button>
         </div>
-
-        {/* <div className="absolute bg-slate-500 justify-between rounded rounded-3xl text-lg text-slate-500 p-4 mt-10 w-full h-10 group-hover:block">
-        </div> */}
       </div>
     </div>
   );

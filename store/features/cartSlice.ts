@@ -13,6 +13,12 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setInitialState: (state, action: PayloadAction<number>) => {
+      state.cartItems = Array(action.payload).fill({
+        inventory: 0,
+        qty: 0,
+      });
+    },
     increment: (state, action) => {
       const cartItem = state.cartItems.find(
         (el) => el.inventory === action.payload.inventory
@@ -26,19 +32,19 @@ export const cartSlice = createSlice({
       }
     },
 
-    // decrement: (state, action) => {
-    //   const cartItem = state.cartItems.find(
-    //     (el) => el.inventory.id === action.payload.id
-    //   );
-    //   if (cartItem) {
-    //     cartItem.qty--;
-    //     if (cartItem.qty === 0) {
-    //       state.cartItems = state.cartItems.filter(
-    //         (el) => el.inventory.id !== action.payload.id
-    //       );
-    //     }
-    //   }
-    // },
+    decrement: (state, action) => {
+      const cartItem = state.cartItems.find(
+        (el) => el.inventory.id === action.payload.id
+      );
+      if (cartItem) {
+        cartItem.qty--;
+        if (cartItem.qty === 0) {
+          state.cartItems = state.cartItems.filter(
+            (el) => el.inventory.id !== action.payload.id
+          );
+        }
+      }
+    },
   },
 });
 
@@ -50,17 +56,11 @@ export const inventoryQtyInCartSelector = createSelector(
     cartItems.find((el) => el.inventory.id === inventoryId)?.qty
 );
 
-export const totalCartItemsSelector = createSelector([cartItems], (cartItems) =>
-  cartItems.reduce((total: number, curr: CartItem) => (total += curr.qty), 0)
-);
-export const TotalPriceSelector = createSelector([cartItems], (cartItems) =>
-  cartItems.reduce(
-    (total: number, curr: CartItem) =>
-      (total += curr.qty * curr.inventory.price),
-    0
-  )
+export const totalCartItemsSelector = createSelector(
+  [cartItems],
+  (cartItems) => cartItems.length
 );
 
-export const { increment, decrement } = cartSlice.actions;
+export const { increment, decrement, setInitialState } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -8,30 +8,40 @@ import {
   Walet,
   ZarinPal,
 } from "@/app/components/design/Icons";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import MapComponent from "@/app/components/global/Map";
+import MapComponentClient from "@/app/components/global/MapClient";
 
-const CartModule = ({ cook }) => {
+const CartModule = ({ cartItems, session, addresses }) => {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks`, {
-      headers: {
-        "x-session-id": cook.value,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        console.log(data);
-        setLoading(false);
-      });
-  }, [cook]);
+  const [open, setOpen] = useState(false);
+  const [cordinates, setCoordinates] = useState();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <>
       <div className="container justify-center mx-auto">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid  gap-4 grid-cols-1 md:grid-cols-3">
           <div className="col-span-2">
             <div className="grid grid-cols-5 gap-2 text-[12px] font-bold p-2">
               <div className="p-1">محصول</div>
@@ -40,7 +50,7 @@ const CartModule = ({ cook }) => {
               <div className="p-1">فروشنده</div>
               <div className="p-1">جمع کل</div>
             </div>
-            {data?.result.map((value, index) => (
+            {cartItems?.result.map((value, index) => (
               <div
                 key={value.productId}
                 className="grid grid-cols-5 shadow-md bg-white text-xs rounded-3xl mt-2 p-4 items-center"
@@ -97,37 +107,66 @@ const CartModule = ({ cook }) => {
 
           <div className="col-span-1 shadow-md border border-customGray bg-white text-xs rounded-3xl mt-8 p-4 pb-10">
             <div className="text-sm mt-4">
-              <div className="grid grid-cols-2">
-                <div className="col-span-1">نام</div>
-                <div className="col-span-1">نام خانوادگی</div>
-              </div>
-              <div className="grid grid-cols-2 p-3">
-                <div className="col-span-1">
+              <div className="flex gap-4 mb-4">
+                <div className="flex-1">
+                  <div className="mb-2">نام</div>
                   <input
-                    className="bg-[#F8F8F8] text-gray-700 rounded rounded-2xl py-3 px-4 mb-3 focus:outline-none focus:bg-white"
+                    className="bg-[#F8F8F8] w-full text-gray-700 rounded rounded-2xl py-4 px-4 mb-3 focus:outline-none"
                     type="text"
                     value="مهراد"
-                    readOnly
+                    disabled
                   />
                 </div>
-                <div className="col-span-1">
+                <div className="flex-1">
+                  <div className="mb-2">نام خانوادگی</div>
                   <input
-                    className="bg-[#F8F8F8] text-gray-700 rounded rounded-2xl py-3 px-4 mb-3 focus:outline-none focus:bg-white"
+                    className="bg-[#F8F8F8] w-full text-gray-700 rounded rounded-2xl py-4 px-4 mb-3 focus:outline-none"
                     type="text"
                     value="مهراد"
-                    readOnly
+                    disabled
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2">
                 <div className="col-span-1">انتخاب آدرس</div>
-                <div className="col-span-1 flex gap-2 justify-end">
+                <button
+                  variant="outlined"
+                  onClick={handleClickOpen}
+                  className="col-span-1 flex gap-2 justify-end"
+                >
                   <span>
                     <PlusSmall />
                   </span>
                   <span>افزودن آدرس</span>
-                </div>
+                </button>
 
+                <Dialog
+                  fullScreen={fullScreen}
+                  open={open}
+                  maxWidth="xl"
+                  onClose={handleClose}
+                  aria-labelledby="responsive-dialog-title"
+                >
+                  <DialogTitle id="responsive-dialog-title">
+                    ثبت آدرس جدید
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      <MapComponentClient
+                        coordinates={cordinates}
+                        setCoordinates={setCoordinates}
+                      />
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button autoFocus onClick={handleClose}>
+                      Disagree
+                    </Button>
+                    <Button onClick={handleClose} autoFocus>
+                      Agree
+                    </Button>
+                  </DialogActions>
+                </Dialog>
                 <div className="inline-block col-span-2 rounded-2xl relative w-full mt-4 bg-customGray">
                   <div className="">
                     <div className="pointer-events-none justify-center mx-auto w-10 absolute inset-y-0 left-0 flex items-center text-gray-700">
@@ -139,44 +178,38 @@ const CartModule = ({ cook }) => {
                         <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                       </svg>
                     </div>
-                    <div className="pr-4 pt-4 font-bold text-md text-primary">
-                      خونه
-                    </div>
+
                     <select className="appearance-none text-sm h-[63px] w-full rounded-2xl bg-customGray hover:border-gray-500 pr-4 shadow focus:outline-none focus:shadow-outline">
-                      <option>
-                        شوش، خیابان مولوی، خیابان امیر المومنین پلاک 14 طبقه 2
-                      </option>
+                      {session?.result ? (
+                        addresses.result.map((value, key) => {
+                          return (
+                            <option key={key} value={value.id}>
+                              {value.name} | {value.address}
+                            </option>
+                          );
+                        })
+                      ) : (
+                        <option>آدرسی جهت نمایش پیدا نشد</option>
+                      )}
                     </select>
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-5 mt-4 text-sm bg-customGray p-2 rounded-xl">
-                <div className="col-span-1 items-center my-auto">
-                  <input
-                    className="p-2 outline-none bg-customGray"
-                    type="text"
-                    placeholder="کد تخفیف"
-                  />
-                </div>
-                <div className="col-span-3 items-center my-auto">
-                  <input
-                    hidden
-                    className="bg-gray-100 text-gray-700  rounded px-4 focus:outline-none focus:bg-white"
-                    type="text"
-                    value=""
-                  />
-                </div>
-                <div className="col-span-1 justify-end mx-auto">
-                  <button className="bg-primary hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-white">
-                    بررسی کد
-                  </button>
-                </div>
+              <div className="mt-4 relative">
+                <input
+                  className="text-sm bg-customGray p-4 w-full rounded-xl outline-none"
+                  type="text"
+                  placeholder="کد تخفیف"
+                />
+                <button className="bg-primary absolute left-2 top-2 hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-white">
+                  بررسی کد
+                </button>
               </div>
 
               <div className="mt-5 text-sm">روش پرداخت</div>
 
-              <div className="grid grid-cols-3 mt-3 gap-2">
+              <div className="grid grid-cols-2 mt-3 gap-2">
                 {/* <div className="col-span-2 flex gap-2 my-auto bg-customGray p-3 rounded-xl">
                   <div className="items-center my-auto">
                     <SnapPay />
@@ -201,59 +234,37 @@ const CartModule = ({ cook }) => {
                     </div>
                   </div>
                 </div> */}
-                <div className="col-span-2 text-sm bg-customGray p-2 rounded-xl">
-                  <div className="grid grid-cols-3 items-center my-auto mt-2">
-                    <div className="flex col-span-2 gap-2 items-center my-auto">
-                      <div className="items-center my-auto">
-                        <SnapPay />
-                      </div>
-                      <div>
-                        <div className="font-bold text-md">
-                          <label htmlFor="snapPay-radio">اسنپ پی</label>
-                        </div>
-                        <div className="text-xs text-blue-500">
-                          <label
-                            htmlFor="snapPay-radio"
-                            suppressHydrationWarning
-                          >
-                            ۴ قسط ماهیانه {Number(333500).toLocaleString()}{" "}
-                            تومان
-                          </label>
-                        </div>
+                <div className=" text-sm bg-customGray p-4 rounded-xl">
+                  <div className="flex justify-between items-center my-auto  h-full">
+                    <div className="items-center my-auto">
+                      <SnapPay />
+                    </div>
+                    <div>
+                      <div className="font-bold text-md">
+                        <label htmlFor="snapPay-radio">اسنپ پی</label>
                       </div>
                     </div>
-                    <div className="flex col-span-1 gap-5 items-center my-auto justify-end">
-                      <div>
-                        <input
-                          id="snapPay-radio"
-                          type="radio"
-                          name="paymentMethod"
-                        />
-                      </div>
-                    </div>
+                    <input
+                      id="snapPay-radio"
+                      type="radio"
+                      name="paymentMethod"
+                    />
                   </div>
                 </div>
 
-                <div className="col-span-1 text-sm bg-customGray p-2 rounded-xl">
-                  <div className="grid grid-cols-3 items-center my-auto mt-2 items-center my-auto">
-                    <div className="flex col-span-2 gap-2 items-center my-auto">
-                      <div>
-                        <ZarinPal />
-                      </div>
-                      <div className="text-sm">
-                        <label htmlFor="zarinPal-radio">زرین پال</label>
-                      </div>
+                <div className=" text-sm bg-customGray p-4 rounded-xl">
+                  <div className="flex justify-between col-span-2 gap-2 h-full items-center my-auto">
+                    <div>
+                      <ZarinPal />
                     </div>
-
-                    <div className="flex col-span-1 gap-5 justify-end">
-                      <div>
-                        <input
-                          id="zarinPal-radio"
-                          type="radio"
-                          name="paymentMethod"
-                        />
-                      </div>
+                    <div className="text-sm">
+                      <label htmlFor="zarinPal-radio">زرین پال</label>
                     </div>
+                    <input
+                      id="zarinPal-radio"
+                      type="radio"
+                      name="paymentMethod"
+                    />
                   </div>
                 </div>
                 {/* <div className="col-span-1 flex gap-5 bg-customGray p-4 rounded-xl">
@@ -271,7 +282,7 @@ const CartModule = ({ cook }) => {
                 </div> */}
               </div>
 
-              <div className="mt-4 text-sm bg-customGray p-2 rounded-xl">
+              <div className="mt-4 text-sm bg-customGray p-4 rounded-xl">
                 <div className="grid grid-cols-2">
                   <div className="flex col-span-1 gap-2 items-center my-auto">
                     <div>
@@ -331,9 +342,15 @@ const CartModule = ({ cook }) => {
               </div>
             </div>
             <div className="mt-4 text-lg text-center">
-              <button className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700">
-                پرداخت سفارش
-              </button>
+              {session?.result ? (
+                <button className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700">
+                  پرداخت سفارش
+                </button>
+              ) : (
+                <button className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700">
+                  برای پرداخت سفارش وارد شوید
+                </button>
+              )}
             </div>
           </div>
         </div>

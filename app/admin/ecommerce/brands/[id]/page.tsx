@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 import { HexColorPicker } from "react-colorful";
+import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Brands({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -36,7 +37,7 @@ export default function Brands({ params }) {
     }
   }, [brandIsLoading]);
 
-  const saveBrand = async () => {
+  const save = async () => {
     try {
       const req = await fetcher({
         url: `/v1/api/ecommerce/brands/${params.id}`,
@@ -92,12 +93,7 @@ export default function Brands({ params }) {
         />
       </div>
 
-      <button
-        onClick={saveBrand}
-        className="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
-      >
-        ویرایش برند
-      </button>
+      <SaveBar action={save} />
     </div>
   );
 }

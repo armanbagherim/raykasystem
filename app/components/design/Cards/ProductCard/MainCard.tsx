@@ -3,6 +3,7 @@ import VariantsCard from "./VariantsCard";
 import CountDown from "../../CountDown";
 import Price from "./Price";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function MainCard({ data }) {
   const uniqueColorsMap = new Map(
@@ -12,7 +13,7 @@ export default function MainCard({ data }) {
   // Convert the Map values back into an array
   const uniqueColorsArray = Array.from(uniqueColorsMap.values());
   return (
-    <a href={`/product/${data?.slug}`} className="flex-auto">
+    <Link href={`/product/${data?.slug}`} className="flex-auto">
       <div className="flex w-full flex-col gap-5 border bg-white rounded-3xl p-4">
         <Image
           width="200"
@@ -42,6 +43,6 @@ export default function MainCard({ data }) {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

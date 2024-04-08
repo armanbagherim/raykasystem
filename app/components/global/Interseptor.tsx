@@ -8,7 +8,7 @@ export default async function Interseptor(url) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
     cache: "no-store",
     headers: {
-      "x-session-id": cookieStore.get("SessionName").value,
+      "x-session-id": cookieStore.get("SessionName")?.value,
     },
   });
 

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 import { HexColorPicker } from "react-colorful";
+import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Colors({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -35,7 +36,7 @@ export default function Colors({ params }) {
   }, [colorIsLoading]);
   const router = useRouter();
 
-  const saveColor = async () => {
+  const save = async () => {
     try {
       const req = await fetcher({
         url: `/v1/api/ecommerce/colors/${params.id}`,
@@ -86,12 +87,7 @@ export default function Colors({ params }) {
         color={colorCode}
         onChange={setColorCode}
       />
-      <button
-        onClick={saveColor}
-        className="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
-      >
-        ویرایش رنگ
-      </button>
+      <SaveBar action={save} />
     </div>
   );
 }
