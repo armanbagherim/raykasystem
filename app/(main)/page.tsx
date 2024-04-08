@@ -15,16 +15,16 @@ async function getProducts() {
   return res.json();
 }
 
-async function getCart() {
-  const res = await Interseptor("/v1/api/ecommerce/user/stocks");
-  return res.json();
-}
+// async function getCart() {
+//   const res = await Interseptor("/v1/api/ecommerce/user/stocks");
+//   return res.json();
+// }
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
   const { result: products } = await getProducts();
-  const cart = await getCart();
-  console.log("cartsssssssssssssss", cart);
+  // const cart = await getCart();
+  // console.log("cartsssssssssssssss", cart);
   return (
     <>
       <Slider slidesPerView={1}>

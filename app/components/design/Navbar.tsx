@@ -3,10 +3,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import Link from "next/link";
 import Megamenu from "@/app/(main)/components/Megamenu";
+import CartCount from "./CartCount";
 
 export default async function NavbarModule() {
   const session = await getServerSession(authOptions);
-
   return (
     <div className="mb-8">
       <img
@@ -50,7 +50,7 @@ export default async function NavbarModule() {
             </Link>
             <button className="border rounded-2xl p-4 relative">
               <span className="w-6 h-6 rounded-lg absolute bg-primary text-white -right-2 -top-2 flex justify-center items-center">
-                0
+                <CartCount />
               </span>
               <img src="/icons/cart.svg" alt="" />
             </button>

@@ -42,7 +42,7 @@ const CartModule = ({ cook }) => {
             </div>
             {data?.result.map((value, index) => (
               <div
-                key={index}
+                key={value.productId}
                 className="grid grid-cols-5 shadow-md bg-white text-xs rounded-3xl mt-2 p-4 items-center"
               >
                 <div className="flex">

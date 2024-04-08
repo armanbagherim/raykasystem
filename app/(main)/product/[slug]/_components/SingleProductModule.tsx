@@ -28,10 +28,19 @@ import Breadcrumb from "@/app/components/design/Breadcrumb";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import {
+  decrement,
+  increment,
+  productQtyInCartSelector,
+} from "@/store/features/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 
 export default function SingleProductModule({ product, related, cook }) {
   const [localInventories, setLocalInventories] = useState(product.inventories);
-
+  // const qty = useAppSelector((state) =>
+  //   productQtyInCartSelector(state, inventory.id)
+  // );
+  const dispatch = useAppDispatch();
   const handleVariantChange = (colorId: number) => {
     const filtered = product.inventories.filter(
       (inventory) => inventory.colorId === colorId
@@ -47,7 +56,7 @@ export default function SingleProductModule({ product, related, cook }) {
   }, [product.inventories]);
 
   const addToCart = (inventoryId) => {
-    console.log(inventoryId);
+    // console.log(inventoryId);
     const id = toast.loading("در حال افزودن");
     //do something else
 
@@ -69,6 +78,12 @@ export default function SingleProductModule({ product, related, cook }) {
         autoClose: 3000,
         closeButton: true,
       });
+      dispatch(
+        increment({
+          inventory: +inventoryId,
+          qty: 1,
+        })
+      );
       console.log(res);
     });
   };
