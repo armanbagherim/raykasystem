@@ -22,7 +22,7 @@ export default function Products() {
     });
   }, []);
 
-  const deleteBrand = async (id) => {
+  const deleteRow = async (id) => {
     try {
       const req = await fetcher({
         url: `/v1/api/ecommerce/admin/products/${id}`,
@@ -99,7 +99,7 @@ export default function Products() {
               <ModeEditIcon />
             </IconButton>
           </a>
-          <a onClick={(e) => deleteEavType(row.id)}>
+          <a onClick={(e) => deleteRow(row.id)}>
             <IconButton aria-label="delete" color="error">
               <DeleteIcon />
             </IconButton>

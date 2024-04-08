@@ -30,7 +30,7 @@ export default function Eav() {
         method: "DELETE",
       });
       toast.success("موفق");
-      categoriesRefetch();
+      categoriesRefetch(); 
     } catch (error) {
       toast.error(error.message);
     }

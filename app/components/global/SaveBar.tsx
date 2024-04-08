@@ -7,7 +7,7 @@ export default function SaveBar({ action }) {
         onClick={action}
         className="!border-blue-700 outline-none text-blue-700 px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-2 border border-transparent rounded-xl"
       >
-        دخیره
+        ذخیره
       </button>
     </div>
   );

@@ -6,6 +6,7 @@ import Loading from "../../../../components/global/loading";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
+import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Vendors({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -56,7 +57,7 @@ export default function Vendors({ params }) {
     });
   }, []);
 
-  const saveVendor = async () => {
+  const save = async () => {
     try {
       const req = await fetcher({
         url: `/v1/api/ecommerce/vendors/${params.id}`,
@@ -210,12 +211,7 @@ export default function Vendors({ params }) {
         />
       </div>
 
-      <button
-        onClick={saveVendor}
-        className="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
-      >
-        ساخت فروشگاه جدید
-      </button>
+      <SaveBar action={save} />
     </div>
   );
 }
