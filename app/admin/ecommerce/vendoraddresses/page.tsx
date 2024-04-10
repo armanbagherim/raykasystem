@@ -7,7 +7,11 @@ import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
 import { toast } from "react-toastify";
 import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
+<<<<<<< HEAD
 import { Button, IconButton } from "@mui/material";
+=======
+import { IconButton } from "@mui/material";
+>>>>>>> 714ee08b7a86c76ea9b507ec119f23b67274f1e1
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
@@ -94,7 +98,10 @@ export default function VendorAddress() {
   // if (brandsIsLoading) {
   //   return <Loading />;
   // }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 714ee08b7a86c76ea9b507ec119f23b67274f1e1
   const columns = [
     {
       accessorKey: "id",
@@ -111,10 +118,17 @@ export default function VendorAddress() {
     },
     {
       accessorKey: "slug",
+<<<<<<< HEAD
       header: "اسلاگ",
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
       size: 180, //medium column
+=======
+      header: "اسلاگ ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 400, //medium column
+>>>>>>> 714ee08b7a86c76ea9b507ec119f23b67274f1e1
     },
     {
       accessorKey: "Actions",
