@@ -23,14 +23,14 @@ import { useTheme } from "@mui/material/styles";
 import MapComponent from "@/app/components/global/Map";
 import MapComponentClient from "@/app/components/global/MapClient";
 
-const CartModule = ({ cartItems, session, addresses }) => {
+const CartModule = ({ cartItems, session, addresses, cookies }) => {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [cordinates, setCoordinates] = useState();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+  const [calculates, setCalculates] = useState();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -38,6 +38,29 @@ const CartModule = ({ cartItems, session, addresses }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  // const getData = () => {
+  //   console.log(cookies.value);
+  //   const res = fetch(
+  //     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/price`,
+  //     {
+  //       headers: {
+  //         "x-session-id": cookies.value,
+  //       },
+  //     }
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => console.log("ARE SHAYAD", data));
+  // };
+  // useEffect(() => {
+  //   getData();
+  // }, []);
+
+  // useEffect(() => {
+  //   // This code runs after `calculates` state has been updated
+  //   console.log(calculates);
+  // }, [calculates]); // Depend on `calculates` to run this effect
+
   return (
     <>
       <div className="container justify-center mx-auto">
@@ -50,11 +73,13 @@ const CartModule = ({ cartItems, session, addresses }) => {
               <div className="p-1">فروشنده</div>
               <div className="p-1">جمع کل</div>
             </div>
+            {/* {console.log("asdasdas", calculates)} */}
             {cartItems?.result.map((value, index) => (
               <div
                 key={value.productId}
                 className="grid grid-cols-5 shadow-md bg-white text-xs rounded-3xl mt-2 p-4 items-center"
               >
+                {console.log(value)}
                 <div className="flex">
                   <div>
                     <img src="/images/product-2.png" />
@@ -63,9 +88,13 @@ const CartModule = ({ cartItems, session, addresses }) => {
                     <span></span>
                     <span>{value.product.title}</span>
                     <span>&nbsp;</span>
-                    <Link className="text-primary" href="#">
-                      {value.product.inventories[0].color.name}
-                    </Link>
+                    {value.product.colorBased ? (
+                      <Link className="text-primary" href="#">
+                        {value.product.inventories[0].color.name}
+                      </Link>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
 
@@ -132,7 +161,7 @@ const CartModule = ({ cartItems, session, addresses }) => {
                 <button
                   variant="outlined"
                   onClick={handleClickOpen}
-                  className="col-span-1 flex gap-2 justify-end"
+                  className="col-span-1 flex gap-2 justify-end outline-none"
                 >
                   <span>
                     <PlusSmall />
@@ -210,30 +239,6 @@ const CartModule = ({ cartItems, session, addresses }) => {
               <div className="mt-5 text-sm">روش پرداخت</div>
 
               <div className="grid grid-cols-2 mt-3 gap-2">
-                {/* <div className="col-span-2 flex gap-2 my-auto bg-customGray p-3 rounded-xl">
-                  <div className="items-center my-auto">
-                    <SnapPay />
-                  </div>
-                  <div className="-mt-1">
-                  </div>
-                  <div className="grid grid-cols-3">
-                    <div className="col-span-2">
-                      <div className="font-bold text-md">
-                        <label htmlFor="snapPay-radio" >
-                          اسنپ پی
-                        </label>
-                      </div>
-                      <div className="text-xs text-blue-500">
-                        <label htmlFor="snapPay-radio">
-                          ۴ قسط ماهیانه {Number(333500).toLocaleString()} تومان
-                        </label>
-                      </div>
-                    </div>
-                    <div className="col-span-1 text-left justify-end mx-auto ml-0 items-center my-auto">
-                      <input id="snapPay-radio" type="radio" name="paymentMethod" />
-                    </div>
-                  </div>
-                </div> */}
                 <div className=" text-sm bg-customGray p-4 rounded-xl">
                   <div className="flex justify-between items-center my-auto  h-full">
                     <div className="items-center my-auto">
@@ -267,19 +272,6 @@ const CartModule = ({ cartItems, session, addresses }) => {
                     />
                   </div>
                 </div>
-                {/* <div className="col-span-1 flex gap-5 bg-customGray p-4 rounded-xl">
-                  <div className="flex">
-                    <div>
-                      <ZarinPal />
-                    </div>
-                    <div className="font-bold text-md">
-                      <label htmlFor="zarinPal-radio">زرین پال</label>
-                    </div>
-                  </div>
-                  <div className="justify-end mx-auto">
-                    <input id="zarinPal-radio" type="radio" name="paymentMethod"/>
-                  </div>
-                </div> */}
               </div>
 
               <div className="mt-4 text-sm bg-customGray p-4 rounded-xl">

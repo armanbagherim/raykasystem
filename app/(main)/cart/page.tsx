@@ -5,7 +5,6 @@ import { Metadata } from "next";
 import Interseptor from "@/app/components/global/Interseptor";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
-
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `جهیزان | سبد خرید`,
@@ -44,6 +43,7 @@ async function getAddress() {
 
 export default async function page() {
   const session = await getServerSession(authOptions);
+  const cookieStore = cookies();
 
   const cart = await getCart();
   const addresses = await getAddress();
@@ -51,6 +51,11 @@ export default async function page() {
   console.log("cartsssssssssssssss", cart);
 
   return (
-    <CartModule addresses={addresses} cartItems={cart} session={session} />
+    <CartModule
+      addresses={addresses}
+      cartItems={cart}
+      session={session}
+      cookies={cookieStore.get("SessionName")}
+    />
   );
 }

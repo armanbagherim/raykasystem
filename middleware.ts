@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function middleware(req: NextRequest, res: NextResponse) {
   // Check if the SessionName cookie already exists
   const existingSessionName = req.cookies.get("SessionName");
-
+  const { pathname } = req.nextUrl
+  
   // If the SessionName cookie exists, skip the fetch request
   if (existingSessionName) {
     console.log("SessionName cookie already exists, skipping fetch request.");
@@ -38,3 +39,8 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   console.log("SessionName cookie set:", data.result.id);
   return response;
 }
+export const config = {
+  matcher: [
+     "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|.*\\..*).*)"
+  ],
+ };

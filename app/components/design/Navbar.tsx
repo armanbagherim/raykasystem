@@ -4,9 +4,25 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import Link from "next/link";
 import Megamenu from "@/app/(main)/components/Megamenu";
 import CartCount from "./CartCount";
+import Search from "../Search";
+import BottomSearch from "./BottomSearch";
+
+async function getEntity() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes?ignoreChilds=true`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  return res.json();
+}
 
 export default async function NavbarModule() {
+  const { result: entity } = await getEntity();
+
   const session = await getServerSession(authOptions);
+
   return (
     <div className="mb-8">
       <img
@@ -25,16 +41,8 @@ export default async function NavbarModule() {
               />
             </Link>
             <div className="relative w-auto md:w-full">
-              <img
-                className="relative md:absolute md:right-3 md:top-4"
-                src="/icons/search.svg"
-                alt=""
-              />
-              <input
-                placeholder="جستجو کنید"
-                type="text"
-                className="border rounded-2xl hidden md:block p-4 pr-12 outline-none w-full bg-[#FBFBFB]"
-              />
+              <BottomSearch />
+              <Search />
             </div>
           </div>
           <div className="flex w-1/2 justify-end hidden md:flex">
@@ -48,7 +56,7 @@ export default async function NavbarModule() {
                 </span>
               </button>
             </Link>
-            <Link href="/cart">
+            <a href="/cart">
               <button className="border rounded-2xl p-4 relative">
                 <span className="w-6 h-6 rounded-lg absolute bg-primary text-white -right-2 -top-2 flex justify-center items-center">
                   <span>
@@ -57,7 +65,7 @@ export default async function NavbarModule() {
                 </span>
                 <img src="/icons/cart.svg" alt="" />
               </button>
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -76,7 +84,7 @@ export default async function NavbarModule() {
                 <span className="mx-3">
                   <a href="#">دسته بندی ها</a>
                 </span>
-                <Megamenu />
+                <Megamenu items={entity} />
                 <img src="/icons/down.svg" width={12} alt="" />
               </li>
               <li className="flex ml-3">
