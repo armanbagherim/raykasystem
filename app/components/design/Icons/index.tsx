@@ -1076,7 +1076,7 @@ export const Addsquare = () => {
   );
 };
 
-export const Sorticon = () => {
+export const Sorticon = ({ stroke = "black" }) => {
   return (
     <>
       <svg
@@ -1088,23 +1088,23 @@ export const Sorticon = () => {
       >
         <path
           d="M3 7H21"
-          stroke="black"
+          stroke={stroke}
           stroke-opacity="0.7"
-          strokeWidth="1.5"
+          strokeWidth="2"
           strokeLinecap="round"
         />
         <path
           d="M6 12H18"
-          stroke="black"
+          stroke={stroke}
           stroke-opacity="0.7"
-          strokeWidth="1.5"
+          strokeWidth="2"
           strokeLinecap="round"
         />
         <path
           d="M10 17H14"
-          stroke="black"
+          stroke={stroke}
           stroke-opacity="0.7"
-          strokeWidth="1.5"
+          strokeWidth="2"
           strokeLinecap="round"
         />
       </svg>
