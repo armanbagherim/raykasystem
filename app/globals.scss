@@ -448,3 +448,13 @@ input[type="checkbox"]:checked::before {
 .leaflet-control-geosearch form input {
   padding-right: 13px;
 }
+
+@media (max-width: 768px) {
+  .to-scroll {
+    padding-bottom: 1em;
+    white-space: nowrap;
+    flex-flow: nowrap;
+    overflow: scroll;
+    display: flex;
+  }
+}

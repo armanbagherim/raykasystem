@@ -94,7 +94,6 @@ export default function VendorAddress() {
   // if (brandsIsLoading) {
   //   return <Loading />;
   // }
-
   const columns = [
     {
       accessorKey: "id",
@@ -111,10 +110,10 @@ export default function VendorAddress() {
     },
     {
       accessorKey: "slug",
-      header: "اسلاگ",
+      header: "اسلاگ ",
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
-      size: 180, //medium column
+      size: 400, //medium column
     },
     {
       accessorKey: "Actions",

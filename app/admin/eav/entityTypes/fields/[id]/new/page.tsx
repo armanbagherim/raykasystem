@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { HexColorPicker } from "react-colorful";
 import { pageTitle } from "@/app/admin/layout";
+import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -32,7 +33,7 @@ export default function Eav({ params }) {
     `/v1/api/eav/admin/attributeTypes?sortOrder=ASC&orderBy=id&ignorePaging=true`,
     "GET"
   );
-  const saveField = async () => {
+  const save = async () => {
     try {
       const req = await fetcher({
         url: "/v1/api/eav/admin/attributes",
@@ -150,12 +151,13 @@ export default function Eav({ params }) {
         </div>
       </div>
 
-      <button
+      {/* <button
         onClick={saveField}
         className="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
       >
         ایجاد
-      </button>
+      </button> */}
+      <SaveBar action={save} />
     </div>
   );
 }

@@ -125,7 +125,10 @@ export default function Search() {
               </div>
             ) : (
               products.map((value, key) => (
-                <div className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4">
+                <div
+                  key={key}
+                  className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
+                >
                   <p>{value.title}</p>
                   <p className="font-bold ">
                     {Number(12000000).toLocaleString()}
@@ -155,7 +158,10 @@ export default function Search() {
               </div>
             ) : (
               brands?.map((value, key) => (
-                <div className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4">
+                <div
+                  key={key}
+                  className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
+                >
                   <p>{value.name}</p>
                 </div>
               ))
@@ -182,7 +188,10 @@ export default function Search() {
               </div>
             ) : (
               categories?.map((value, key) => (
-                <div className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4">
+                <div
+                  key={key}
+                  className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
+                >
                   <p>{value?.name}</p>
                 </div>
               ))

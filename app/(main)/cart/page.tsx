@@ -23,7 +23,10 @@ async function getCart() {
 
 async function getAddress() {
   const session = await getServerSession(authOptions);
-  console.log(session);
+  if (session == null) {
+    return null;
+  }
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/vendors?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
     {
