@@ -7,7 +7,7 @@ import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
 import { toast } from "react-toastify";
 import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 

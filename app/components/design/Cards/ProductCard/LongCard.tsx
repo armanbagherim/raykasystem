@@ -3,10 +3,11 @@ import VariantsCard from "./VariantsCard";
 import CountDown from "../../CountDown";
 import Price from "./Price";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LongCard({ border, data }) {
   return (
-    <a href={`/product/${data?.slug}`} className="flex-auto">
+    <Link href={`/product/${data?.slug}`} className="flex-auto">
       <div
         className={`flex w-full flex-col md:flex-col lg:flex-col xl:flex-row 2xl:flex-row gap-5 border border-${border} rounded-2xl p-4`}
       >
@@ -36,6 +37,6 @@ export default function LongCard({ border, data }) {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

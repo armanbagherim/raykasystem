@@ -10,6 +10,7 @@ import {
   Pofile,
 } from "./Icons";
 import Link from "next/link";
+import CartCount from "./CartCount";
 
 export default function BottomNavModule({ entities }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -78,10 +79,15 @@ export default function BottomNavModule({ entities }) {
             <Menu />
             <span className="text-xs mt-2">منو</span>
           </div>
-          <div className="flex flex-col text-center items-center">
-            <CartBottom />
-            <span className="text-xs mt-2">سبد خرید</span>
-          </div>
+          <Link href="/cart">
+            <div className="flex flex-col text-center items-center relative">
+              <div className="absolute w-6 h-6 rounded-lg bg-primary text-white -right-2 -top-2 flex justify-center items-center">
+                <CartCount />
+              </div>
+              <CartBottom />
+              <span className="text-xs mt-2">سبد خرید</span>
+            </div>
+          </Link>
           <a href="/user" className="flex flex-col text-center items-center">
             <Pofile />
             <span className="text-xs mt-2">پروفایل</span>

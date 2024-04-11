@@ -1,7 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-const Megamenu = () => {
+const Megamenu = ({ items }) => {
+  const [activeSubEntities, setActiveSubEntities] = useState([]);
+  const [groupName, setGroupName] = useState();
+  console.log();
+  useEffect(() => {
+    console.log("syb", items[0].subEntityTypes);
+    setActiveSubEntities(items[0].subEntityTypes);
+    setGroupName(items[0].name);
+  }, []);
+
   return (
     <>
       <div
@@ -13,69 +22,34 @@ const Megamenu = () => {
           onMouseEnter={(e) => e.stopPropagation()}
         >
           <div className="col-span-1 p-4 pb-0 text-slate-500">
-            <p className="p-4 border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              آشپزخانه
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              سرو و پذیرایی
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              لوازم برقی
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              لوازم خانه
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              لوازم دکوری
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              محصولات استوک
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              تخفیفات ویژه
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              سه شنبه های تخفیفی
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              مقالات
-            </p>
+            {items.map((value, key) => (
+              <p
+                key={key}
+                onMouseEnter={(e) => {
+                  setActiveSubEntities(value.subEntityTypes);
+                  setGroupName(value.name);
+                }}
+                className="p-4 border-l hover:border-l-primary hover:border-l-4 hover:text-black"
+              >
+                {value.name}
+              </p>
+            ))}
           </div>
           <div
             className="col-span-2 p-2 pb-0"
             onMouseEnter={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b text-primary">
-              همه لوازم برقی آشپزخانه
-            </div>
+            <div className="p-4 border-b text-primary">همه {groupName} </div>
             <div className="grid grid-cols-2 text-slate-700">
               <div className="col-span-1">
-                <p className="p-4 hover:text-black text-primary">
-                  وسایل آشپزخانه
-                </p>
-                <p className="p-4 hover:text-black">کلمن و فلاسک</p>
-                <p className="p-4">جاادویه و پاسماوری</p>
-                <p className="p-4 hover:text-black">
-                  ترازو , کفگیرملاقه و ابزار
-                </p>
-                <p className="p-4 hover:text-black">آبکش و لگن</p>
-                <p className="p-4 hover:text-black">سماور</p>
-                <p className="p-4 hover:text-black">کتری و قوری</p>
-                <p className="p-4 pb-0 hover:text-black">جا ظرفی و آب چکان</p>
-              </div>
-              <div className="col-span-1">
-                <p className="p-4 hover:text-black text-primary">
-                  وسایل آشپزخانه
-                </p>
-                <p className="p-4 hover:text-black">کلمن و فلاسک</p>
-                <p className="p-4 hover:text-black">جاادویه و پاسماوری</p>
-                <p className="p-4 hover:text-black">
-                  ترازو , کفگیرملاقه و ابزار
-                </p>
-                <p className="p-4 hover:text-black">آبکش و لگن</p>
-                <p className="p-4 hover:text-black">سماور</p>
-                <p className="p-4 hover:text-black">کتری و قوری</p>
-                <p className="p-4 pb-0 hover:text-black">جا ظرفی و آب چکان</p>
+                {activeSubEntities.map((value, key) => {
+                  console.log(value, key);
+                  return (
+                    <p key={key} className="p-4 hover:text-black">
+                      {value.name}
+                    </p>
+                  );
+                })}
               </div>
             </div>
           </div>

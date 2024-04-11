@@ -1,8 +1,16 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { ClassNames } from "@emotion/react";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 
-export default function page({ children }) {
+export default async function page({ children }) {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.token) {
+    return redirect("/login");
+  }
   return (
     <div className="container mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-black">

@@ -7,7 +7,7 @@ const Breadcrumb = () => {
   return (
     <div className="container text-center items-center mx-auto mb-6">
       <div className="w-full py-5 px-4 bg-customGray rounded-[25px] flex items-center overflow-x-auto">
-        <div className="text-right text-black-70 font-Peyda font-medium mx-2">
+        <div className="text-right whitespace-nowrap text-black-70 font-Peyda font-medium mx-2">
           شما اینجا هستید:
         </div>
         <HomeIcon />
