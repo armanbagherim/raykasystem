@@ -160,11 +160,7 @@ export default function Eav({ params }) {
         </select>
       )}
 
-<<<<<<< HEAD
-    <SaveBar action={save} />
-=======
       <SaveBar action={save} />
->>>>>>> 714ee08b7a86c76ea9b507ec119f23b67274f1e1
     </div>
   );
 }

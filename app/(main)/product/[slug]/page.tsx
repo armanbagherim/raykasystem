@@ -14,7 +14,7 @@ async function getRelated() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
     {
-      cache: "no-store",
+      cache: "force-cache",
     }
   );
 

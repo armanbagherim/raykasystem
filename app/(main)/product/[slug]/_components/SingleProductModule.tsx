@@ -28,10 +28,19 @@ import Breadcrumb from "@/app/components/design/Breadcrumb";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import {
+  decrement,
+  increment,
+  productQtyInCartSelector,
+} from "@/store/features/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 
 export default function SingleProductModule({ product, related, cook }) {
   const [localInventories, setLocalInventories] = useState(product.inventories);
-
+  // const qty = useAppSelector((state) =>
+  //   productQtyInCartSelector(state, inventory.id)
+  // );
+  const dispatch = useAppDispatch();
   const handleVariantChange = (colorId: number) => {
     const filtered = product.inventories.filter(
       (inventory) => inventory.colorId === colorId
@@ -47,7 +56,7 @@ export default function SingleProductModule({ product, related, cook }) {
   }, [product.inventories]);
 
   const addToCart = (inventoryId) => {
-    console.log(inventoryId);
+    // console.log(inventoryId);
     const id = toast.loading("در حال افزودن");
     //do something else
 
@@ -69,13 +78,19 @@ export default function SingleProductModule({ product, related, cook }) {
         autoClose: 3000,
         closeButton: true,
       });
+      dispatch(
+        increment({
+          inventory: +inventoryId,
+          qty: 1,
+        })
+      );
       console.log(res);
     });
   };
   return (
     <>
       <Breadcrumb />
-      <div className="container justify-center mx-auto mt-3 grid grid-cols-12 gap-8">
+      <div className="container justify-center mx-auto mt-3 grid grid-cols-12 gap-8 p-8 md:p-0">
         <div className="col-span-12 md:col-span-4 border-0 rounded-lg relative">
           <div className="w-10 h-32 absolute r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-20">
             <div className="pt-3.5 mr-3">
@@ -94,7 +109,7 @@ export default function SingleProductModule({ product, related, cook }) {
               </Link>
             </div>
           </div>
-          <div className="p-3 pr-9 pt-0 mr-0 pb-6">
+          <div className="p-3  pt-0 mr-0 pb-6">
             <Slider slidesPerView={1}>
               {product?.attachments.map((value, key) => (
                 <Image
@@ -110,10 +125,10 @@ export default function SingleProductModule({ product, related, cook }) {
         </div>
 
         <div className="col-span-12 md:col-span-5 rounded-lg">
-          <div className="text-center font-normal text-2xl text-slate-500">
+          <div className="text-right font-normal text-2xl text-slate-500">
             {product.title}
           </div>
-          <div className="text-center font-normal text-sm mt-2 text-slate-400">
+          <div className="text-right font-normal text-sm mt-2 text-slate-400">
             {product.slug.replace(/-/g, " ")}
           </div>
 
@@ -168,28 +183,25 @@ export default function SingleProductModule({ product, related, cook }) {
             product={product}
           />
 
-          <div className="mt-10 justify-center mx-auto p-5 flex gap-72">
-            <ul className="list-disc text-sm leading-7">
-              <li className="text-slate-800">مورد کوتاه 1</li>
-              <li className="text-slate-600">مورد کوتاه 2</li>
-              <li className="text-slate-500">مورد کوتاه بلندتر 1</li>
-              <li className="text-slate-400">مورد کوتاه بلندتر 2</li>
-              <li className="text-slate-300">مورد کوتاه بلندتر 3</li>
-            </ul>
-            <ul className="list-disc text-sm leading-7">
-              <li className="text-slate-800">مورد کوتاه 1</li>
-              <li className="text-slate-600">مورد کوتاه 2</li>
-              <li className="text-slate-500">مورد کوتاه بلندتر 1</li>
-              <li className="text-slate-400">مورد کوتاه بلندتر 2</li>
-              <li className="text-slate-300">مورد کوتاه بلندتر 3</li>
-            </ul>
+          {/* <div className="mt-10 justify-center mx-auto p-5 flex gap-72">
+            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
+            استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در
+            ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و
+            کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی
+            در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را
+            می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی
+            الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این
+            صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و
+            شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای
+            اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد
+            استفاده قرار گیرد.
           </div>
           <div className="flex justify-center mx-auto gap-4">
             <div>مشاهده بیشتر</div>
             <div className="flex my-auto">
               <Toogle />
             </div>
-          </div>
+          </div> */}
         </div>
         <LeftSide
           product={localInventories}
@@ -519,17 +531,17 @@ export default function SingleProductModule({ product, related, cook }) {
         </div>
         <div className="flex mt-3 justify-start mx-auto gap-2" dir="ltr">
           <div>
-            <button className="bg-[#B8B8B8] p-2 text-white pl-5 pr-5 rounded-lg hover:bg-slate-600 text-2xl">
+            <button className="bg-[#B8B8B8] outline-none w-[37px] h-[37px] flex items-center justify-center rounded-[15px] mx-2 text-white bg-primary outline-none">
               1
             </button>
           </div>
           <div>
-            <button className="bg-[#B8B8B8] p-2 text-white pl-5 pr-5 rounded-lg hover:bg-slate-600 text-2xl">
+            <button className="bg-[#B8B8B8] outline-none w-[37px] h-[37px] flex items-center justify-center rounded-[15px] mx-2 text-white bg-primary outline-none">
               2
             </button>
           </div>
           <div>
-            <button className="bg-primary p-2 text-white pl-5 pr-5 rounded-lg hover:bg-slate-600 text-2xl">
+            <button className="bg-[#B8B8B8] outline-none w-[37px] h-[37px] flex items-center justify-center rounded-[15px] mx-2 text-white bg-primary outline-none">
               3
             </button>
           </div>

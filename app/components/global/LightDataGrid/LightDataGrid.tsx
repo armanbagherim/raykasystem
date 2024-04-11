@@ -3,7 +3,7 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
-import { MRT_Localization_FA } from "material-react-table/locales/FA";
+import { MRT_Localization_FA } from "material-react-table/locales/fa";
 import { useSession } from "next-auth/react";
 
 const LightDataGrid = ({ url, columns }) => {

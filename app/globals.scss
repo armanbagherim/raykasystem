@@ -9,7 +9,6 @@
   font-family: inherit !important;
 }
 
-
 .scrollItems::-webkit-scrollbar {
   width: 5px;
 }
@@ -52,7 +51,7 @@ input#gcd-input-query {
 
 .gcd-gl-control.ol-control {
   width: 100%;
-  padding: 6px 4em;
+  padding: 0;
   background: transparent;
 }
 
@@ -66,7 +65,7 @@ button#gcd-button-control {
 
 ul.gcd-gl-result {
   background: #fff;
-  padding: 6em 4em 0;
+  padding: 4em 0em 0;
   li {
     background: #f7f7f7;
     margin: 5px 0;
@@ -104,7 +103,7 @@ ul.gcd-gl-result {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 100;
-  src: url("./assets/IRANSansX/IRANSansX-thin.woff") format("woff");
+  src: url("./assets/IRANSansX/IRANSansX-Thin.woff") format("woff");
 }
 
 @font-face {
@@ -118,98 +117,98 @@ ul.gcd-gl-result {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 300;
-  src: url("./assets/IRANSansX/IRANSansX-light.woff") format("woff");
+  src: url("./assets/IRANSansX/IRANSansX-Light.woff") format("woff");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 500;
-  src: url("./assets/IRANSansX/IRANSansX-medium.woff") format("woff");
+  src: url("./assets/IRANSansX/IRANSansX-Medium.woff") format("woff");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 600;
-  src: url("./assets/IRANSansX/IRANSansX-demibold.woff") format("woff");
+  src: url("./assets/IRANSansX/IRANSansX-DemiBold.woff") format("woff");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 800;
-  src: url("./assets/IRANSansX/IRANSansX-extrabold.woff") format("woff");
+  src: url("./assets/IRANSansX/IRANSansX-ExtraBold.woff") format("woff");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 900;
-  src: url("./assets/IRANSansX/IRANSansX-black.woff") format("woff");
+  src: url("./assets/IRANSansX/IRANSansX-Black.woff") format("woff");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: bold;
-  src: url("./assets/IRANSansX/IRANSansX-bold.woff") format("woff");
+  src: url("./assets/IRANSansX/IRANSansX-Bold.woff") format("woff");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: normal;
-  src: url("./assets/IRANSansX/IRANSansX-regular.woff") format("woff");
+  src: url("./assets/IRANSansX/IRANSansX-Regular.woff") format("woff");
 }
 
 @font-face {
   font-family: Peyda;
   font-style: normal;
   font-weight: 100;
-  src: url("./assets/peyda/PeydaWeb-thin.woff") format("woff");
+  src: url("./assets/peyda/PeydaWeb-Thin.woff") format("woff");
 }
 
 @font-face {
   font-family: Peyda;
   font-style: normal;
   font-weight: 300;
-  src: url("./assets/peyda/PeydaWeb-light.woff") format("woff");
+  src: url("./assets/peyda/peydaWeb-light.woff") format("woff");
 }
 
 @font-face {
   font-family: Peyda;
   font-style: normal;
   font-weight: 500;
-  src: url("./assets/peyda/PeydaWeb-medium.woff") format("woff");
+  src: url("./assets/peyda/PeydaWeb-Medium.woff") format("woff");
 }
 
 @font-face {
   font-family: Peyda;
   font-style: normal;
   font-weight: 800;
-  src: url("./assets/peyda/PeydaWeb-extrabold.woff") format("woff");
+  src: url("./assets/peyda/PeydaWeb-ExtraBold.woff") format("woff");
 }
 
 @font-face {
   font-family: Peyda;
   font-style: normal;
   font-weight: 900;
-  src: url("./assets/peyda/PeydaWeb-black.woff") format("woff");
+  src: url("./assets/peyda/PeydaWeb-Black.woff") format("woff");
 }
 
 @font-face {
   font-family: Peyda;
   font-style: normal;
   font-weight: bold;
-  src: url("./assets/peyda/PeydaWeb-bold.woff") format("woff");
+  src: url("./assets/peyda/PeydaWeb-Bold.woff") format("woff");
 }
 
 @font-face {
   font-family: Peyda;
   font-style: normal;
   font-weight: normal;
-  src: url("./assets/peyda/PeydaWeb-regular.woff") format("woff");
+  src: url("./assets/peyda/PeydaWeb-Regular.woff") format("woff");
 }
 
 .peyda {
@@ -367,5 +366,95 @@ body {
 .bottomToolbar {
   .MuiBox-root {
     direction: ltr;
+  }
+}
+
+input[type="radio"] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  /* Remove most all native input styles */
+  appearance: none;
+  /* For iOS < 15 */
+  background-color: var(--form-background);
+  /* Not removed via appearance */
+  margin: 0;
+  outline: 0;
+  font: inherit;
+  color: rgb(32 172 115 / var(--tw-bg-opacity));
+  width: 18px;
+  height: 18px;
+  border: 1px solid #b3b3b3;
+  border-radius: 7px !important;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 5px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em rgb(32 172 115 / var(--tw-bg-opacity));
+  /* Windows High Contrast Mode */
+  background-color: CanvasText;
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="checkbox"] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  /* Remove most all native input styles */
+  appearance: none;
+  /* For iOS < 15 */
+  background-color: var(--form-background);
+  /* Not removed via appearance */
+  margin: 0;
+  outline: 0;
+  font: inherit;
+  color: rgb(32 172 115 / var(--tw-bg-opacity));
+  width: 18px;
+  height: 18px;
+  border: 1px solid #b3b3b3;
+  border-radius: 7px !important;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 5px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em rgb(32 172 115 / var(--tw-bg-opacity));
+  /* Windows High Contrast Mode */
+  background-color: CanvasText;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+.leaflet-control-geosearch form input {
+  padding-right: 13px;
+}
+
+@media (max-width: 768px) {
+  .to-scroll {
+    padding-bottom: 1em;
+    white-space: nowrap;
+    flex-flow: nowrap;
+    overflow: scroll;
+    display: flex;
   }
 }

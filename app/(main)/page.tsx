@@ -8,54 +8,62 @@ import Interseptor from "../components/global/Interseptor";
 import { Metadata } from "next";
 
 async function getProducts() {
-  const res = await Interseptor(
-    "/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id"
+  // const theme = useTheme();
+  // import { useMediaQuery } from "@mui/material";
+  // import { useTheme } from "@emotion/react";
+  // const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  // console.log(fullScreen)
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
+    {
+      cache: "no-store",
+    }
   );
 
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
   return res.json();
 }
 
-async function getCart() {
-  const res = await Interseptor("/v1/api/ecommerce/user/stocks");
-  return res.json();
-}
+// async function getCart() {
+//   const res = await Interseptor("/v1/api/ecommerce/user/stocks");
+//   return res.json();
+// }
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
   const { result: products } = await getProducts();
-  const cart = await getCart();
-  console.log("cartsssssssssssssss", cart);
+  // const cart = await getCart();
+  // console.log("cartsssssssssssssss", cart);
   return (
     <>
       <Slider slidesPerView={1}>
-        <Image
-          src={"/images/slide.png"}
-          width={0}
-          height={0}
-          sizes="100vw"
-          style={{ width: "100%", height: "auto" }} // optional
-          property=""
-        />
-        <Image
-          src={"/images/slide-2.png"}
-          width={0}
-          height={0}
-          sizes="100vw"
-          style={{ width: "100%", height: "auto" }} // optional
-          property=""
-        />
-        <Image
-          src={"/images/slide.png"}
-          width={0}
-          height={0}
-          sizes="100vw"
-          style={{ width: "100%", height: "auto" }} // optional
-          property=""
-        />
+        <picture>
+          <source media="(max-width: 768px)" srcSet="/images/mobile-1.jpg" />
+          <Image
+            src="/images/slide.png" // Default image
+            alt="Descriptive text for the image"
+            width={500}
+            height={300}
+            layout="responsive"
+          />
+        </picture>
+        <picture>
+          <source media="(max-width: 768px)" srcSet="/images/mobile-2.gif" />
+          <Image
+            src="/images/slide.png" // Default image
+            alt="Descriptive text for the image"
+            width={500}
+            height={300}
+            layout="responsive"
+          />
+        </picture>
       </Slider>
       <div className="container mx-auto mb-24 px-4">
         <Title text="سه شنبه های تخفیفی" color={"primary"} />
-        <div className="flex flex-wrap gap-5">
+        <div className="flex flex-wrap gap-5 to-scroll">
           {products.slice(0, 2).map((value) => (
             <ProductCard
               key={value.id} // Assuming 'value' has an 'id' property, use it for the key
@@ -80,7 +88,7 @@ export default async function Home() {
       </div>
       <div className="container mx-auto mb-24 px-4">
         <Title text="پرفروش ترین ها" color={"primary"} />
-        <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 to-scroll">
           {products.map((value, key) => (
             <ProductCard
               key={key}
@@ -120,7 +128,7 @@ export default async function Home() {
             <img className="h-full" src="/images/banner.png" alt="" />
           </div>
           <div className="w-full xl:w-2/3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 to-scroll">
               {products.slice(0, 6).map((value, key) => (
                 <ProductCard
                   key={key}
@@ -156,7 +164,7 @@ export default async function Home() {
             <img className="h-full" src="/images/banner.png" alt="" />
           </div>
           <div className="w-full md:w-2/3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 to-scroll">
               {products.slice(0, 6).map((value, key) => (
                 <ProductCard
                   key={key}
