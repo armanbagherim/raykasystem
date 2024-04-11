@@ -14,7 +14,7 @@ export default function Guarantees() {
 
   useEffect(() => {
     setTitle({
-      title: "افزودن برند جدید",
+      title: "افزودن گارانتی جدید",
       buttonTitle: "",
       link: "",
     });

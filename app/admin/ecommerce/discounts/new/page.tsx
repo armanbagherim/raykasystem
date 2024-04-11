@@ -3,17 +3,29 @@ import SaveBar from "@/app/components/global/SaveBar";
 import SearchSelect from "@/app/components/global/SearchSelect";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import { Switch, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useAtom } from "jotai";
+import { pageTitle } from "../../../layout";
 
 export default function NewDiscount() {
   const router = useRouter();
 
+  const [title, setTitle] = useAtom(pageTitle);
+
+  useEffect(() => {
+    setTitle({
+      title: "افزودن تخفیف جدید",
+      buttonTitle: "",
+      link: "",
+    });
+  }, []);
+  
   const [requestBody, setRequestBody] = useState({
     name: "",
     description: "",
