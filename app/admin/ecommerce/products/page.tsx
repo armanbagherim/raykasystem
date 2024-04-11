@@ -17,7 +17,7 @@ export default function Products() {
   useEffect(() => {
     setTitle({
       title: "محصولات",
-      buttonTitle: "محصول جدید",
+      buttonTitle: "افزودن محصول جدید",
       link: "/admin/ecommerce/products/new",
     });
   }, []);
@@ -94,7 +94,7 @@ export default function Products() {
               فیلد ها
             </Button>
           </a>
-          <a href={`/admin/eav/entityTypes/edit/${row.id}`}>
+          <a href={`/admin/ecommerce/products/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
             </IconButton>

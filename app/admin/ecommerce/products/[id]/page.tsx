@@ -91,7 +91,7 @@ export default function Products({ params }) {
 
   useEffect(() => {
     setTitle({
-      title: "افزودن برند جدید",
+      title: "ویرایش محصول",
       buttonTitle: "",
       link: "",
     });

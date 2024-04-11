@@ -16,8 +16,8 @@ export default function Users() {
   useEffect(() => {
     setTitle({
       title: "کاربران",
-      buttonTitle: "افزودن کاربر",
-      link: "/admin/core/users/new",
+      buttonTitle: "",
+      link: "",
     });
   }, []);
 
