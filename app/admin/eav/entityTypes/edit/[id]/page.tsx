@@ -14,7 +14,7 @@ export default function Eav({ params }) {
 
   useEffect(() => {
     setTitle({
-      title: "افزودن دسته جدید",
+      title: "ویرایش دسته",
       buttonTitle: "",
       link: "",
     });

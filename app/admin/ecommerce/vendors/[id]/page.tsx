@@ -51,7 +51,7 @@ export default function Vendors({ params }) {
 
   useEffect(() => {
     setTitle({
-      title: "افزودن  فروشگاه  جدید",
+      title: "ویرایش فروشگاه",
       buttonTitle: "",
       link: "",
     });

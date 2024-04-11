@@ -14,7 +14,7 @@ export default function Colors() {
 
   useEffect(() => {
     setTitle({
-      title: "افزودن نقش جدید",
+      title: "افزودن رنگ جدید",
       buttonTitle: "",
       link: "",
     });

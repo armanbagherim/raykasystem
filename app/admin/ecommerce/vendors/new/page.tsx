@@ -179,7 +179,7 @@ export default function Vendors() {
         />
       </div>
 
-      <SaveBar action={save} />
+      <SaveBar action={save}/>
     </div>
   );
 }
