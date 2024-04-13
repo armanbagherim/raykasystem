@@ -266,8 +266,8 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
             </AccordionSummary>
             <AccordionDetails className="bg-white border-0">
               <div className=" overflow-y-scroll max-h-52 font-normal text-md">
-                {brands.map((value) => (
-                  <div className="p-2 grid grid-cols-2">
+                {brands.map((value, key) => (
+                  <div key={key} className="p-2 grid grid-cols-2">
                     <label
                       htmlFor={value.name + value.id}
                       className="col-span-1"
@@ -297,8 +297,8 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
               <Typography>گارانتی</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {guarantees.map((value) => (
-                <div className="p-2 grid grid-cols-2">
+              {guarantees.map((value, key) => (
+                <div key={key} className="p-2 grid grid-cols-2">
                   <label htmlFor={value.name + value.id} className="col-span-1">
                     {value.name}
                   </label>
@@ -342,8 +342,11 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
               </div>
             </AccordionDetails>
           </Accordion>
-          {attributes.map((value) => (
-            <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
+          {attributes.map((value, key) => (
+            <Accordion
+              key={key}
+              className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2"
+            >
               <AccordionSummary
                 expandIcon={<GridArrowDownwardIcon />}
                 aria-controls="panel1-content"
@@ -353,8 +356,11 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
               </AccordionSummary>
               <AccordionDetails>
                 <>
-                  {value.attributeValues.map((values) => (
-                    <div className="grid grid-cols-4 pr-5 mt-3 font-normal text-md">
+                  {value.attributeValues.map((values, key) => (
+                    <div
+                      key={key}
+                      className="grid grid-cols-4 pr-5 mt-3 font-normal text-md"
+                    >
                       <label
                         htmlFor={values.id + values.value}
                         className="col-span-3 flex gap-2 items-center my-auto"
@@ -386,8 +392,11 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
             </AccordionSummary>
             <AccordionDetails>
               <>
-                {colors.map((value) => (
-                  <div className="grid grid-cols-4 pr-5 mt-3 font-normal text-md">
+                {colors.map((value, key) => (
+                  <div
+                    key={key}
+                    className="grid grid-cols-4 pr-5 mt-3 font-normal text-md"
+                  >
                     <label
                       htmlFor={value.name + value.hexCode}
                       className="col-span-3 flex gap-2 items-center my-auto"
