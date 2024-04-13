@@ -21,7 +21,7 @@
   ],
   "theme_color": "#20ac73",
   "background_color": "#FFFFFF",
-  "start_url": "/cart",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "portrait"
 }

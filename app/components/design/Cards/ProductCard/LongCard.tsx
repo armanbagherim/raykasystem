@@ -6,6 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function LongCard({ border, data }) {
+  const uniqueColorsMap = new Map(
+    data?.inventories.map((value) => [value.color.id, value])
+  );
+  const uniqueColorsArray = Array.from(uniqueColorsMap.values());
   return (
     <Link href={`/product/${data?.slug}`} className="flex-auto">
       <div
@@ -18,9 +22,11 @@ export default function LongCard({ border, data }) {
           src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${data?.attachments[0].fileName}`}
         />
         <div className="flex flex-col justify-between w-full">
-          <h3 className="mb-2">{data?.title}</h3>
+          <h3 className="mb-2 w-60 h-14 pl-4 whitespace-break-spaces">
+            {data?.title}
+          </h3>
           <div className="flex mt-2 mb-6">
-            {data?.inventories.map((value, key) => (
+            {uniqueColorsArray.map((value, key) => (
               <VariantsCard
                 key={key}
                 isSelected={false}

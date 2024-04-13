@@ -153,10 +153,10 @@ const Sellerpage = async ({ params, searchParams }) => {
               guarantees={guarantees}
               range={range}
             />
-            <div className="col-span-9 p-4">
+            <div className="col-span-12 md:col-span-9 p-4">
               <div>
-                <div className="p-2 grid grid-cols-4">
-                  <div className="flex gap-2 col-span-3">
+                <div className="p-2 grid grid-cols-4 ">
+                  <div className="flex gap-2 col-span-3 whitespace-nowrap overflow-y-scroll md:overflow-y-hidden">
                     <span className="items-center flex">
                       <Sorticon />
                     </span>
