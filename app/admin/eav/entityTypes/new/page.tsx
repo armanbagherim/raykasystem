@@ -124,7 +124,7 @@ export default function Eav() {
         </select>
       )}
 
-    <SaveBar action={save} />
+    <SaveBar action={save}  backUrl={'/admin/eav/entityTypes/'}/>
     </div>
   );
 }

@@ -92,7 +92,7 @@ export default function Guarantees() {
         />
       </div>
 
-      <SaveBar action={(e) => save()} />
+      <SaveBar action={save} backUrl={'/admin/ecommerce/guarantees/'} />
     </div>
   );
 }

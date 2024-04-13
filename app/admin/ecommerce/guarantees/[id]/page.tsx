@@ -110,7 +110,7 @@ export default function Guarantees({ params }) {
           onChange={(e) => setDescription(e.target.value)}
         />
       </div>
-      <SaveBar action={(e) => save()} />
+      <SaveBar action={save} backUrl={'/admin/ecommerce/guarantees/'}/>
     </div>
   );
 }
