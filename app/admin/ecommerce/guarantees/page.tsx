@@ -7,9 +7,10 @@ import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
 import { toast } from "react-toastify";
 import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import Image from "next/image";
 
 export default function Guarantees() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -116,7 +117,26 @@ export default function Guarantees() {
       maxSize: 400, //max size enforced during resizing
       size: 180, //medium column
     },
-
+    {
+      accessorKey: "image",
+      header: "تصویر ",
+      size: 20,
+      Cell({ row }) {
+        return row.attachment ? (
+          <Image
+            loading="eager"
+            src={`${
+              process.env.NEXT_PUBLIC_BASE_URL
+            }/v1/api/ecommerce/guarantees/image/${row.attachment?.fileName || ""}`}
+            width={50}
+            height={50}
+            alt=""
+          />
+        ) : (
+          <img width={30} height={30} src="/images/no-photos.png" alt="" />
+        );
+      },
+    },
     {
       accessorKey: "Actions",
       header: "عملیات",
@@ -129,7 +149,11 @@ export default function Guarantees() {
       },
       Cell: ({ row }) => (
         <>
-
+          <a href={`#`}>
+            <Button variant="outlined" color="success">
+              آپلود تصویر
+            </Button>
+          </a>
           <a href={`/admin/ecommerce/guarantees/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />

@@ -131,6 +131,14 @@ export default function Discount() {
       },
       Cell: ({ row }) => (
         <>
+          <a href={`/admin/ecommerce/discounts/conditions/${row.id}`}>
+            <button
+              type="button"
+              className="focus:outline-none mx-4 text-white bg-emerald-700 hover:bg-emerald-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+            >
+              شرط ها
+            </button>
+          </a>
           <a href={`/admin/ecommerce/discounts/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
