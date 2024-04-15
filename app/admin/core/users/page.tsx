@@ -57,7 +57,7 @@ export default function Users() {
       maxSize: 400, //max size enforced during resizing
       size: 180, //medium column
       Cell({row}){
-        return ChangeFormatDate(row);
+        return ChangeFormatDate(row.original.updatedAt); 
       }
     },
     {

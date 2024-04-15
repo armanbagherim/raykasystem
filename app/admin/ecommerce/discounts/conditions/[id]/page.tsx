@@ -10,15 +10,16 @@ import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import SaveBar from "@/app/components/global/SaveBar";
 
 export default function DiscountConditions({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {
     setTitle({
-      title: "شرط ها",
+      title: "شرط های تخفیف",
       buttonTitle: "افزودن شرط",
-      link: "/admin/ecommerce/discounts/conditions/new",
+      link: `/admin/ecommerce/discounts/conditions/${+params.id}/new`,
     });
   }, []);
 
@@ -96,12 +97,26 @@ export default function DiscountConditions({ params }) {
     {
       accessorKey: "id",
       header: "شناسه",
-      size: 10,
-      maxSize: 10,
+      size: 5,
+      maxSize: 5,
     },
     {
       accessorKey: "name",
       header: "نام ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 400, //medium column
+    },
+    {
+      accessorKey: "isDefault",
+      header: "شرط پیش فرض ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 150, //max size enforced during resizing
+      size: 150, //medium column
+    },
+    {
+      accessorKey: "conditionType.name",
+      header: "جنس شرط",
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
       size: 400, //medium column
@@ -147,10 +162,9 @@ export default function DiscountConditions({ params }) {
     },
   ];
   return (
-    
     <div>
       <LightDataGrid
-        url={"/v1/api/ecommerce/admin/discounts"}
+        url={`/v1/api/ecommerce/admin/discountConditions?sortOrder=DESC&discountId=${+params.id}&offset=0&limit=10&orderBy=id`}
         columns={columns}
       />
     </div>

@@ -245,7 +245,7 @@ export default function NewDiscount() {
           }
         />
       </div>
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <SearchSelect
           loadingState={vendorsIsLoading}
           data={vendors?.result}
@@ -254,7 +254,7 @@ export default function NewDiscount() {
           label="فروشگاه"
           onChange={(e) => setRequestBody({ ...requestBody, vendorId: e.id })}
         />
-      </div>
+      </div> */}
       <div className="flex gap-6 items-center">
         <div className="flex-1">
           <label className="inline-flex items-center cursor-pointer">

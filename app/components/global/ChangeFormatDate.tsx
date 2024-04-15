@@ -24,7 +24,7 @@ const gregorian_to_jalali=(gy, gm, gd) =>{
 }
 
 const ChangeFormatDate = (raw_date) => {
-  var temp_date = raw_date.original.updatedAt;
+  var temp_date = raw_date;
   if (temp_date) {
     var temp_date = temp_date.split("T");
     var date_splited = temp_date[0].split("-")
