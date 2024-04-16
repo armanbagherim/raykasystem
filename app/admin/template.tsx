@@ -24,8 +24,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
             ""
           )}
         </div>
-
+        <div className="mb-16">
         {children}
+        </div>
+        
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
   useEffect(() => {
     setTitle({
-      title: "ساخت دسته بندی",
+      title: "افزودن فیلد",
       buttonTitle: "",
       link: "",
     });
@@ -138,7 +138,7 @@ export default function Eav({ params }) {
             )}
           </select>
         </div>
-        <div className="w-full">
+        <div className="w-full flex">
           <label htmlFor="required" className="ml-4">
             اجباری؟
           </label>

@@ -117,7 +117,7 @@ export default function Page({ params }) {
           </div>
         </div>
       ))}
-      <SaveBar action={save} />
+      <SaveBar action={save} backUrl={'/admin/core/roles/'} />
     </div>
   );
 }

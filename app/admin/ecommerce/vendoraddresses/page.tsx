@@ -110,7 +110,7 @@ export default function VendorAddress() {
     },
     {
       accessorKey: "slug",
-      header: "اسلاگ ",
+      header: "لینک ",
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
       size: 400, //medium column

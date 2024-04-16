@@ -93,7 +93,7 @@ export default function Brands({ params }) {
         />
       </div>
 
-      <SaveBar action={save} />
+      <SaveBar action={save}  backUrl={'/admin/ecommerce/brands/'}/>
     </div>
   );
 }
