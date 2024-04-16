@@ -72,7 +72,7 @@ export default function Colors() {
         color={colorCode}
         onChange={setColorCode}
       />
-      <SaveBar action={save} />
+      <SaveBar action={save} backUrl={'/admin/ecommerce/colors/'}/>
     </div>
   );
 }

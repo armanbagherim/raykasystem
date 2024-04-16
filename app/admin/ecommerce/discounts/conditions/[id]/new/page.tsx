@@ -76,7 +76,7 @@ export default function NewDiscount({ params }) {
           fetchUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/admin/discountConditionValues`}
         />
       </div>
-      <SaveBar action={save} />
+      <SaveBar action={save} backUrl={`/admin/ecommerce/discounts/conditions/${params.id}`}/>
     </div>
   );
 }

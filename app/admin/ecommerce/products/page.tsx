@@ -53,15 +53,15 @@ export default function Products() {
       accessorKey: "brand.name",
       header: "برند",
       minSize: 100, //min size enforced during resizing
-      maxSize: 400, //max size enforced during resizing
-      size: 180, //medium column
+      maxSize: 150, //max size enforced during resizing
+      size: 150, //medium column
     },
     {
       accessorKey: "publishStatus.name",
       header: "وضعیت انتشار",
       minSize: 100, //min size enforced during resizing
-      maxSize: 400, //max size enforced during resizing
-      size: 180, //medium column
+      maxSize: 150, //max size enforced during resizing
+      size: 150, //medium column
     },
     {
       accessorKey: "entityType.name",
@@ -73,7 +73,7 @@ export default function Products() {
 
     {
       accessorKey: "slug",
-      header: "آدرس",
+      header: "لینک",
       size: 400,
     },
 

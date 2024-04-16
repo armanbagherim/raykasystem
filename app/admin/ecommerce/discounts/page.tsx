@@ -10,6 +10,7 @@ import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import ChangeFormatDate from "@/app/components/global/ChangeFormatDate";
 
 export default function Discount() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -109,15 +110,73 @@ export default function Discount() {
     {
       accessorKey: "id",
       header: "شناسه",
-      size: 10,
-      maxSize: 10,
+      size: 5,
+      maxSize: 5,
     },
     {
       accessorKey: "name",
       header: "نام ",
       minSize: 100, //min size enforced during resizing
+      maxSize: 150, //max size enforced during resizing
+      size: 150, //medium column
+    },
+    {
+      accessorKey: "startDate",
+      header: "تاریخ شروع",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 100, //max size enforced during resizing
+      size: 100, //medium column
+      Cell({row}){
+        return ChangeFormatDate(row.original.startDate);
+      }
+    },
+    {
+      accessorKey: "endDate",
+      header: "تاریخ پایان",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 100, //max size enforced during resizing
+      size: 100, //medium column
+      Cell({row}){
+        return ChangeFormatDate(row.original.endDate);
+      }
+    },
+    {
+      accessorKey: "actionRule.name",
+      header: "نوع شرط ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 250, //max size enforced during resizing
+      size: 250, //medium column
+    },
+    {
+      accessorKey: "actionType.name",
+      header: "نوع اعمال",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 200, //max size enforced during resizing
+      size: 200, //medium column
+    },
+    {
+      accessorKey: "discountType.name",
+      header: "نوع تخفیف",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 150, //max size enforced during resizing
+      size: 150, //medium column
+    },
+    {
+      accessorKey: "priority",
+      header: "اولویت",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 150, //max size enforced during resizing
+      size: 150, //medium column
+    },
+    {
+      accessorKey: "isActive",
+      header: "وضعیت ",
+      minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
       size: 400, //medium column
+      Cell({row}){
+        return row.original.isActive ? "فعال" : "غیرفعال"
+      }
     },
     {
       accessorKey: "Actions",
@@ -131,6 +190,14 @@ export default function Discount() {
       },
       Cell: ({ row }) => (
         <>
+          <a href={`/admin/ecommerce/discounts/conditions/${row.id}`}>
+            <button
+              type="button"
+              className="focus:outline-none mx-4 text-white bg-emerald-700 hover:bg-emerald-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+            >
+              شرط ها
+            </button>
+          </a>
           <a href={`/admin/ecommerce/discounts/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />

@@ -23,6 +23,7 @@ import DataGridLite from "../_components/inventories/Datagrid";
 import InventoriesDialouge from "../_components/inventories/InventoriesDialouge";
 
 import Tab from "../_components/tabs/Tabs";
+import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Products() {
   const [open, setOpen] = useState(false);
@@ -484,13 +485,14 @@ export default function Products() {
       <aside className="w-full bg-slate-100 rounded-xl p-4 col-span-1 flex items-center justify-start flex-col">
         <ProductUploader setPhotos={setPhotos} photos={photos} />
 
-        <button
+        {/* <button
           onClick={saveProduct}
           className="bg-blue-700 w-full mt-6 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
         >
           ساخت محصول
-        </button>
+        </button> */}
       </aside>
+      <SaveBar action={saveProduct} backUrl="/admin/ecommerce/products"></SaveBar>
     </div>
   );
 }

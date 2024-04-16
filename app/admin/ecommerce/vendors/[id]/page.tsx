@@ -211,7 +211,7 @@ export default function Vendors({ params }) {
         />
       </div>
 
-      <SaveBar action={save} />
+      <SaveBar action={save} backUrl={'/admin/ecommerce/vendors/'}/>
     </div>
   );
 }

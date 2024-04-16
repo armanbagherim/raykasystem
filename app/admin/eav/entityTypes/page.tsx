@@ -73,7 +73,7 @@ export default function Eav() {
     },
     {
       accessorKey: "slug",
-      header: "آدرس",
+      header: "لینک",
     },
 
     {
@@ -88,7 +88,12 @@ export default function Eav() {
       },
       Cell: ({ row }) => (
         <>
-          <a href={`/admin/eav/entityTypes/fields/${row.id}`}>
+          <a href={`#`}>
+            <Button variant="outlined" color="success">
+              آپلود تصویر
+            </Button>
+          </a>
+          <a className="ml-1 mr-1" href={`/admin/eav/entityTypes/fields/${row.id}`}>
             <Button variant="outlined" color="success">
               فیلد ها
             </Button>

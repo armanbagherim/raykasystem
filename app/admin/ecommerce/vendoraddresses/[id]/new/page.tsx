@@ -17,7 +17,7 @@ export default function VendorAddress({ params }) {
   });
   useEffect(() => {
     setTitle({
-      title: "افزودن برند جدید",
+      title: "افزودن آدرس جدید",
       buttonTitle: "",
       link: "",
     });

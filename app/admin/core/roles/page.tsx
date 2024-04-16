@@ -1,5 +1,5 @@
 "use client";
-import { useFetcher } from "@/app/components/global/fetcher";
+import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "@/app/components/global/loading";
 import { DataGrid, GridColDef, GridRowsProp, faIR } from "@mui/x-data-grid";
 import Link from "next/link";
@@ -9,6 +9,8 @@ import { pageTitle } from "../../layout";
 import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
 import { IconButton } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { toast } from "react-toastify";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Roles() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -20,6 +22,20 @@ export default function Roles() {
       link: "/admin/core/roles/new",
     });
   }, []);
+
+
+  const deleteRow = async (id) => {
+    try {
+      const req = await fetcher({
+        url: `/v1/api/core/admin/roles/${id}`,
+        method: "DELETE",
+      });
+      toast.success("موفق");
+      refetch();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   // const {
   //   data: roles,
@@ -103,11 +119,11 @@ export default function Roles() {
               <ModeEditIcon />
             </IconButton>
           </a>
-          {/* <a onClick={(e) => deleteEavType(row.id)}>
+          <a onClick={(e) => deleteRow(row.id)}>
           <IconButton aria-label="delete" color="error">
             <DeleteIcon />
           </IconButton>
-        </a> */}
+        </a>
         </>
       ),
     },
