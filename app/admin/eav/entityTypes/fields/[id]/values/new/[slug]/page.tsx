@@ -28,12 +28,12 @@ export default function Eav({ params }) {
         method: "POST",
         body: {
           value: value,
-          attributeId: +params.id,
+          attributeId: +params.slug,
         },
       });
       toast.success("موفق");
       setTimeout(() => {
-        router.push(`/admin/eav/entityTypes/fields/${params.id}/values`);
+        router.push(`/admin/eav/entityTypes/fields/${params.slug}/values`);
       }, 2000);
     } catch (error) {
       toast.error(error.message);

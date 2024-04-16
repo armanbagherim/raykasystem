@@ -3,7 +3,7 @@ import { getCookie } from "cookies-next";
 
 async function fetchTotalCount() {
   const cookie = getCookie("SessionName");
-  console.log('areeeeeeeeeeeeeeeee', cookie)
+  console.log("areeeeeeeeeeeeeeeee", cookie);
   try {
     const response = await fetch(
       "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/stocks/count",
@@ -28,6 +28,6 @@ async function fetchTotalCount() {
 
 export const fetchAndSetInitialState = () => async (dispatch) => {
   const totalCount = await fetchTotalCount();
-  console.log(totalCount);
+  console.log("totaaaaaaaaaaaaaaaaaaaaaal", totalCount);
   dispatch(setInitialState(totalCount));
 };

@@ -21,41 +21,15 @@ async function getCart() {
   return res.json();
 }
 
-async function getAddress() {
-  const session = await getServerSession(authOptions);
-  if (session == null) {
-    return null;
-  }
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/vendors?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
-    {
-      cache: "force-cache",
-      headers: {
-        Authorization: `Bearer ${session?.token}`,
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-}
-
 export default async function page() {
   const session = await getServerSession(authOptions);
   const cookieStore = cookies();
 
   const cart = await getCart();
-  const addresses = await getAddress();
   // const prices = await calculate();
   console.log("cartsssssssssssssss", cart);
-
   return (
     <CartModule
-      addresses={addresses}
       cartItems={cart}
       session={session}
       cookies={cookieStore.get("SessionName")}

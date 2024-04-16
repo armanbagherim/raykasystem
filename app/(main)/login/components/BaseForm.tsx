@@ -1,12 +1,14 @@
 "use client";
 import { getSession, signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import VerificationInput from "react-verification-input";
 export default function SignInForm({ session }) {
   const router = useRouter();
+  const pathname = useSearchParams();
+
   const [phoneNumber, setPhoneNumber] = useState();
   const [verifyCode, setVerifyCode] = useState();
   const [firstName, setFirstName] = useState();
@@ -78,7 +80,11 @@ export default function SignInForm({ session }) {
         firstName: firstName,
         lastName,
         redirect: true,
-        callbackUrl: "/",
+        callbackUrl: `${
+          pathname.get("redirect_back_url")
+            ? pathname.get("redirect_back_url")
+            : "/"
+        }`,
       });
     }
   };

@@ -11,9 +11,12 @@ export default function LongCard({ border, data }) {
   );
   const uniqueColorsArray = Array.from(uniqueColorsMap.values());
   return (
-    <Link href={`/product/${data?.slug}`} className="flex-auto">
+    <Link
+      href={`/product/${data?.sku}/${data?.slug}`}
+      className="flex-auto h-full"
+    >
       <div
-        className={`flex w-full flex-col md:flex-col lg:flex-col xl:flex-row 2xl:flex-row gap-5 border border-${border} rounded-2xl p-4`}
+        className={`flex w-full h-full flex-col md:flex-col lg:flex-col xl:flex-row 2xl:flex-row gap-5 border border-${border} rounded-3xl p-4`}
       >
         <Image
           width={200}
@@ -37,7 +40,15 @@ export default function LongCard({ border, data }) {
           </div>
           <div className="flex flex-row justify-between items-center">
             <div>
-              <CountDown />
+              {data.inventories[0].firstPrice.appliedDiscount ? (
+                <CountDown
+                  dates={
+                    data.inventories[0].firstPrice.appliedDiscount?.endDate
+                  }
+                />
+              ) : (
+                ""
+              )}
             </div>
             <Price data={data} />
           </div>

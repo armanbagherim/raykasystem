@@ -253,62 +253,44 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
               <Close />
             </span>
           </div>
-          <Accordion
-            defaultExpanded
-            className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2"
-          >
-            <AccordionSummary
-              expandIcon={<PlusSmall />}
-              aria-controls="panel1-content"
-              id="panel1-header"
+          {brands ? (
+            <Accordion
+              defaultExpanded
+              className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2"
             >
-              <Typography>برند</Typography>
-            </AccordionSummary>
-            <AccordionDetails className="bg-white border-0">
-              <div className=" overflow-y-scroll max-h-52 font-normal text-md">
-                {brands.map((value, key) => (
-                  <div key={key} className="p-2 grid grid-cols-2">
-                    <label
-                      htmlFor={value.name + value.id}
-                      className="col-span-1"
-                    >
-                      {value.name}
-                    </label>
-                    <span className="col-span-1 flex justify-end">
-                      <input
-                        onChange={(e) => onSelect(e, "brands")}
-                        id={value.name + value.id}
-                        value={value.id}
-                        type="checkbox"
-                      />
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </AccordionDetails>
-          </Accordion>
-
-          <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
-            <AccordionSummary
-              expandIcon={<GridArrowDownwardIcon />}
-              aria-controls="panel1-content"
-              id="panel1-header"
-            >
-              <Typography>گارانتی</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {guarantees.map((value, key) => (
-                <div key={key} className="p-2 grid grid-cols-2">
-                  <label htmlFor={value.name + value.id} className="col-span-1">
-                    {value.name}
-                  </label>
-                  <span className="col-span-1 flex justify-end">
-                    <input id={value.name + value.id} type="checkbox" />
-                  </span>
+              <AccordionSummary
+                expandIcon={<PlusSmall />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+              >
+                <Typography>برند</Typography>
+              </AccordionSummary>
+              <AccordionDetails className="bg-white border-0">
+                <div className=" overflow-y-auto max-h-52 font-normal text-md">
+                  {brands.map((value, key) => (
+                    <div key={key} className="p-2 grid grid-cols-2">
+                      <label
+                        htmlFor={value.name + value.id}
+                        className="col-span-1"
+                      >
+                        {value.name}
+                      </label>
+                      <span className="col-span-1 flex justify-end">
+                        <input
+                          onChange={(e) => onSelect(e, "brands")}
+                          id={value.name + value.id}
+                          value={value.id}
+                          type="checkbox"
+                        />
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </AccordionDetails>
-          </Accordion>
+              </AccordionDetails>
+            </Accordion>
+          ) : (
+            ""
+          )}
 
           <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
             <AccordionSummary
@@ -342,45 +324,47 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
               </div>
             </AccordionDetails>
           </Accordion>
-          {attributes.map((value, key) => (
-            <Accordion
-              key={key}
-              className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2"
-            >
-              <AccordionSummary
-                expandIcon={<GridArrowDownwardIcon />}
-                aria-controls="panel1-content"
-                id="panel1-header"
-              >
-                <Typography>{value.name}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <>
-                  {value.attributeValues.map((values, key) => (
-                    <div
-                      key={key}
-                      className="grid grid-cols-4 pr-5 mt-3 font-normal text-md"
-                    >
-                      <label
-                        htmlFor={values.id + values.value}
-                        className="col-span-3 flex gap-2 items-center my-auto"
-                      >
-                        <span>{values.value}</span>
-                      </label>
-                      <div className="col-span-1 flex items-center my-auto justify-end">
-                        <input
-                          id={values.id + values.value}
-                          className="flex justify-end mx-auto"
-                          type="checkbox"
-                          onChange={(e) => attrChange(e, value, values)}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </>
-              </AccordionDetails>
-            </Accordion>
-          ))}
+          {attributes
+            ? attributes.map((value, key) => (
+                <Accordion
+                  key={key}
+                  className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2"
+                >
+                  <AccordionSummary
+                    expandIcon={<GridArrowDownwardIcon />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                  >
+                    <Typography>{value.name}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <>
+                      {value.attributeValues.map((values, key) => (
+                        <div
+                          key={key}
+                          className="grid grid-cols-4 pr-5 mt-3 font-normal text-md"
+                        >
+                          <label
+                            htmlFor={values.id + values.value}
+                            className="col-span-3 flex gap-2 items-center my-auto"
+                          >
+                            <span>{values.value}</span>
+                          </label>
+                          <div className="col-span-1 flex items-center my-auto justify-end">
+                            <input
+                              id={values.id + values.value}
+                              className="flex justify-end mx-auto"
+                              type="checkbox"
+                              onChange={(e) => attrChange(e, value, values)}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  </AccordionDetails>
+                </Accordion>
+              ))
+            : ""}
 
           <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
             <AccordionSummary

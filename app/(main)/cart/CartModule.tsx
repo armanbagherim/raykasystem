@@ -1,5 +1,6 @@
 "use client";
 import {
+  EmptyCart,
   Minus,
   PlusBig,
   PlusSmall,
@@ -10,6 +11,7 @@ import {
 } from "@/app/components/design/Icons";
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,22 +19,221 @@ import {
   DialogTitle,
 } from "@mui/material";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import MapComponent from "@/app/components/global/Map";
 import MapComponentClient from "@/app/components/global/MapClient";
+import { fetcher, useFetcher } from "@/app/components/global/fetcher";
+import { toast } from "react-toastify";
+import CartItems from "./CartItems";
 
-const CartModule = ({ cartItems, session, addresses, cookies }) => {
+const CartModule = ({ cartItems, session, cookies }) => {
+  const [localCart, setLocalCart] = useState(cartItems);
   const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [cordinates, setCoordinates] = useState();
+  const [cordinates, setcordinates] = useState();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [calculates, setCalculates] = useState();
+  const [name, setName] = useState();
+  const [slug, setSlug] = useState();
+  const [description, setDescription] = useState();
+  const [provinceId, setprovinceId] = useState(0);
+  const [neighborhoodId, setneighborhoodId] = useState(1);
+  const [cities, setCities] = useState([]);
+  const [neghberhoods, setNeighberhoods] = useState();
+  const [cityId, setCityId] = useState(1);
+  const [street, setStreet] = useState();
+  const [alley, setAlley] = useState();
+  const [plaque, setPlaque] = useState();
+  const [floorNumber, setFloorNumber] = useState();
+  const [provinces, setProvinces] = useState([]);
+  const [calculate, setCalculate] = useState([]);
+  const [defaultPayment, setDefaultPayment] = useState([]);
+  const [paymentMethod, setPaymentMethod] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [addressId, setAddressId] = useState();
+  const [addresses, setAddresses] = useState([]);
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const getAddress = async () => {
+    setLoading(true);
+    try {
+      await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/addresses?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
+        {
+          method: "GET",
+          headers: {
+            "x-session-id": cookies.value,
+            Authorization: `Bearer ${session?.token}`,
+          },
+          cache: "no-store",
+        }
+      )
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          setAddresses(data.result);
+          setAddressId(addresses?.result[0].id);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+    if (session == null) {
+      return null;
+    }
+  };
+
+  const priceCalculate = async (addressId, copunCode) => {
+    setLoading(true);
+    try {
+      await fetch(
+        `https://nest-jahizan.chbk.run/v1/api/ecommerce/user/stocks/price`,
+        {
+          method: "POST",
+          headers: {
+            "x-session-id": cookies.value,
+          },
+          body: JSON.stringify({
+            addressId: addressId,
+          }),
+        }
+      )
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          setCalculate(data.result);
+          setDefaultPayment(data.result.paymentOptions[0]);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (calculate.paymentOptions) {
+      if (paymentMethod !== 1) {
+        setDefaultPayment(calculate?.paymentOptions[1]);
+      } else {
+        setDefaultPayment(calculate?.paymentOptions[0]);
+      }
+    }
+  }, [paymentMethod]);
+
+  useEffect(() => {
+    priceCalculate();
+    getAddress();
+  }, []);
+  useEffect(() => {
+    priceCalculate(addressId);
+  }, [addressId]);
+
+  const getNeighberhoods = async (nid) => {
+    if (neighborhoodId !== null) {
+      try {
+        await fetcher({
+          url: `/v1/api/ecommerce/neighborhoods?cityId=${nid}`,
+          method: "GET",
+        }).then((res) => {
+          if (res.result.length !== 0) {
+            setNeighberhoods(res.result);
+            setneighborhoodId(res.result[0].id);
+          } else {
+            setNeighberhoods(null);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const getProvinces = useCallback(async () => {
+    await fetcher({
+      url: `/v1/api/ecommerce/provinces`,
+      method: "GET",
+    }).then((res) => {
+      setProvinces(res.result);
+    });
+  }, []); // every time id changed, new book will be loaded
+
+  const getCities = useCallback(
+    async (pid) => {
+      await fetcher({
+        url: `/v1/api/ecommerce/cities?provinceId=${pid}`,
+        method: "GET",
+      }).then((res) => {
+        setCities(res.result);
+        setCityId(res.result[0].id);
+        getNeighberhoods(res.result[0].id);
+        if (res.result[0].neighborhoodBase) {
+          setneighborhoodId(res.result[0].id);
+        } else {
+          setneighborhoodId(null);
+        }
+      });
+    },
+    [provinceId]
+  ); // every time id changed, new book will be loaded
+
+  useEffect(() => {
+    getProvinces();
+    getCities(provinceId);
+  }, [getProvinces]); // useEffect will run once and when id changes
+
+  // useEffect(() => {
+  //   if (provinces) {
+  //     getProvinces();
+  //     getCities(provinceId);
+  //   }
+  // }, [provinces]);
+
+  useEffect(() => {
+    if (provinceId) {
+      getCities(provinceId);
+      getNeighberhoods(cityId);
+    }
+  }, [provinceId]);
+
+  // useEffect(() => {
+  //
+  //   getNeighberhoods(neighborhoodId);
+  // }, [neighborhoodId]);
+
+  const save = async () => {
+    setIsLoading(true);
+    try {
+      const req = await fetcher({
+        url: "/v1/api/ecommerce/user/addresses",
+        method: "POST",
+        body: {
+          name: name,
+          latitude: cordinates.latitude,
+          longitude: cordinates.longitude,
+          provinceId: +provinceId,
+          cityId: +cityId,
+          neighborhoodId: +neighborhoodId,
+          street,
+          alley,
+          plaque,
+          floorNumber,
+        },
+      });
+      toast.success("موفق");
+      setIsLoading(false);
+      setOpen(false);
+      getAddress();
+    } catch (error) {
+      toast.error(error.message);
+      setIsLoading(false);
+    }
   };
 
   const handleClose = () => {
@@ -74,64 +275,30 @@ const CartModule = ({ cartItems, session, addresses, cookies }) => {
               <div className="p-1">جمع کل</div>
             </div>
             {/* {console.log("asdasdas", calculates)} */}
-            {cartItems?.result.map((value, index) => (
-              <div
-                key={value.productId}
-                className="grid grid-cols-5 shadow-md bg-white text-xs rounded-3xl mt-2 p-4 items-center"
-              >
-                {console.log(value)}
-                <div className="flex">
-                  <div>
-                    <img src="/images/product-2.png" />
-                  </div>
-                  <div className="p-1 gap-1">
-                    <span></span>
-                    <span>{value.product.title}</span>
-                    <span>&nbsp;</span>
-                    {value.product.colorBased ? (
-                      <Link className="text-primary" href="#">
-                        {value.product.inventories[0].color.name}
-                      </Link>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                </div>
-
-                <div className="p-1 flex gap-1">
-                  <div>
-                    <PlusBig />
-                  </div>
-                  <div className="font-bold items-center my-auto">
-                    {value.qty}
-                  </div>
-                  <div>
-                    <Minus />
-                  </div>
-                </div>
-                <div className="p-1">
-                  <span className="block">
-                    <span
-                      suppressHydrationWarning
-                      className="opacity-75 text-xs line-through"
-                    >
-                      {Number(125000).toLocaleString()}
-                    </span>
-                  </span>
-                  <p suppressHydrationWarning className="text-sm">
-                    {Number(125000).toLocaleString()} تومان
-                  </p>
-                </div>
-                <div className="p-1">
-                  <Link className="text-primary" href="#">
-                    {value.product.inventories[0].vendor.name}
-                  </Link>
-                </div>
-                <div suppressHydrationWarning className="p-1 text-sm">
-                  {Number(125000).toLocaleString()} تومان
-                </div>
+            {localCart?.result.length === 0 ? (
+              <div className="text-center">
+                <EmptyCart />
+                <h4 className="text-3xl font-bold my-4">
+                  چیزی در سبد شما پیدا نشد
+                </h4>
+                <a
+                  className="inline-block border border-primary text-primary rounded-2xl py-4 px-8 hover:text-white hover:bg-primary transition-all"
+                  href=""
+                >
+                  همه محصولات
+                </a>
               </div>
-            ))}
+            ) : (
+              localCart?.result.map((value, index) => (
+                <CartItems
+                  localCart={localCart}
+                  setLocalCart={setLocalCart}
+                  cook={cookies.value}
+                  item={value}
+                  priceCalculate={priceCalculate}
+                />
+              ))
+            )}
           </div>
 
           <div className="col-span-1 shadow-md border border-customGray bg-white text-xs rounded-3xl mt-8 p-4 pb-10">
@@ -182,17 +349,199 @@ const CartModule = ({ cartItems, session, addresses, cookies }) => {
                   <DialogContent>
                     <DialogContentText>
                       <MapComponentClient
-                        coordinates={cordinates}
-                        setCoordinates={setCoordinates}
+                        height={400}
+                        onLocationChange={(location) => {
+                          setcordinates({
+                            latitude: location.lat,
+                            longitude: location.lng,
+                          });
+                        }}
+                        onAddressChange={(address) => {
+                          setStreet(address);
+                        }}
                       />
+                      <div>
+                        <label
+                          htmlFor="first_name"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          نام
+                        </label>
+                        <input
+                          type="text"
+                          id="first_name"
+                          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder="John"
+                          required
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                        <div className="flex gap-4">
+                          <div className="flex-1">
+                            <label
+                              htmlFor="first_name"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              استان
+                            </label>
+                            <select
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              name=""
+                              onChange={(e) => setprovinceId(e.target.value)}
+                              id=""
+                            >
+                              {provinces.map((value, key) => (
+                                <option key={key} value={value.id}>
+                                  {value.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="flex-1">
+                            <label
+                              htmlFor="first_name"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              شهر
+                            </label>
+                            <select
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              name=""
+                              id=""
+                              onChange={(e) => {
+                                setCityId(e.target.value);
+                              }}
+                            >
+                              {cities?.map((value, key) => (
+                                <option key={key} value={value.id}>
+                                  {value.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          {neghberhoods ? (
+                            <div className="flex-1">
+                              <label
+                                htmlFor="first_name"
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              >
+                                محله
+                              </label>
+                              <select
+                                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                name=""
+                                onChange={(e) => {
+                                  setneighborhoodId(e.target.value);
+                                }}
+                                id=""
+                              >
+                                {neghberhoods?.map((value, key) => (
+                                  <option key={key} value={value.id}>
+                                    {value.name}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                        <div className="flex gap-4">
+                          <div className="flex-1">
+                            <label
+                              htmlFor="first_name"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              خیابان
+                            </label>
+                            <input
+                              type="text"
+                              id="first_name"
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="John"
+                              required
+                              value={street}
+                              onChange={(e) => setStreet(e.target.value)}
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <label
+                              htmlFor="first_name"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              کوچه
+                            </label>
+                            <input
+                              type="text"
+                              id="first_name"
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="John"
+                              required
+                              onChange={(e) => setAlley(e.target.value)}
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <label
+                              htmlFor="first_name"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              پلاک
+                            </label>
+                            <input
+                              type="text"
+                              id="first_name"
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="John"
+                              required
+                              onChange={(e) => setPlaque(e.target.value)}
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <label
+                              htmlFor="first_name"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              طبقه
+                            </label>
+                            <input
+                              type="text"
+                              id="first_name"
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="John"
+                              required
+                              onChange={(e) => setFloorNumber(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <label
+                          htmlFor="first_name"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          توضیحات
+                        </label>
+                        <input
+                          type="text"
+                          id="first_name"
+                          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder="John"
+                          required
+                          onChange={(e) => setDescription(e.target.value)}
+                        />
+                      </div>
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
                     <Button autoFocus onClick={handleClose}>
                       Disagree
                     </Button>
-                    <Button onClick={handleClose} autoFocus>
-                      Agree
+                    <Button
+                      variant="outlined"
+                      color="success"
+                      onClick={save}
+                      autoFocus
+                      disabled={isLoading} // Disable button while isLoading
+                    >
+                      {isLoading ? <CircularProgress size={24} /> : "ذخیره"}
                     </Button>
                   </DialogActions>
                 </Dialog>
@@ -208,12 +557,15 @@ const CartModule = ({ cartItems, session, addresses, cookies }) => {
                       </svg>
                     </div>
 
-                    <select className="appearance-none text-sm h-[63px] w-full rounded-2xl bg-customGray hover:border-gray-500 pr-4 shadow focus:outline-none focus:shadow-outline">
+                    <select
+                      onChange={(e) => setAddressId(e.target.value)}
+                      className="appearance-none text-sm h-[63px] w-full rounded-2xl bg-customGray hover:border-gray-500 pr-4 shadow focus:outline-none focus:shadow-outline"
+                    >
                       {session?.result ? (
-                        addresses.result.map((value, key) => {
+                        addresses?.map((value, key) => {
                           return (
                             <option key={key} value={value.id}>
-                              {value.name} | {value.address}
+                              {value.name} | {value.street}
                             </option>
                           );
                         })
@@ -238,98 +590,104 @@ const CartModule = ({ cartItems, session, addresses, cookies }) => {
 
               <div className="mt-5 text-sm">روش پرداخت</div>
 
-              <div className="grid grid-cols-2 mt-3 gap-2">
-                <div className=" text-sm bg-customGray p-4 rounded-xl">
-                  <div className="flex justify-between items-center my-auto  h-full">
-                    <div className="items-center my-auto">
-                      <SnapPay />
-                    </div>
-                    <div>
-                      <div className="font-bold text-md">
-                        <label htmlFor="snapPay-radio">اسنپ پی</label>
+              <div className="flex flex-wrap mt-3 gap-2">
+                {!calculate?.paymentOptions ? (
+                  <>
+                    <div className="flex-1 h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
+                    <div className="flex-1 h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
+                    <div className="flex-1 h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
+                  </>
+                ) : (
+                  calculate.paymentOptions.map((value, key) => {
+                    return value.payments.map((payments, pKey) => (
+                      <div
+                        key={pKey}
+                        className="flex-1 whitespace-nowrap text-sm bg-customGray p-4 rounded-xl"
+                      >
+                        <div className="flex justify-between items-center my-auto h-full">
+                          <div>
+                            <div className="font-bold text-md">
+                              <label htmlFor={`${payments.id}-radio`}>
+                                {payments.name}
+                              </label>
+                            </div>
+                          </div>
+                          <input
+                            id={`${payments.id}-radio`}
+                            type="radio"
+                            value={payments.id}
+                            name="paymentMethod"
+                            onChange={(e) => setPaymentMethod(payments.id)}
+                            // اگر آیتم فعلی اولین آیتم است، checked را تنظیم می‌کنیم
+                            checked={payments.id === paymentMethod}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <input
-                      id="snapPay-radio"
-                      type="radio"
-                      name="paymentMethod"
-                    />
-                  </div>
-                </div>
-
-                <div className=" text-sm bg-customGray p-4 rounded-xl">
-                  <div className="flex justify-between col-span-2 gap-2 h-full items-center my-auto">
-                    <div>
-                      <ZarinPal />
-                    </div>
-                    <div className="text-sm">
-                      <label htmlFor="zarinPal-radio">زرین پال</label>
-                    </div>
-                    <input
-                      id="zarinPal-radio"
-                      type="radio"
-                      name="paymentMethod"
-                    />
-                  </div>
-                </div>
+                    ));
+                  })
+                )}
               </div>
 
-              <div className="mt-4 text-sm bg-customGray p-4 rounded-xl">
-                <div className="grid grid-cols-2">
-                  <div className="flex col-span-1 gap-2 items-center my-auto">
-                    <div>
-                      <Walet />
-                    </div>
-                    <div className="text-sm w-full">
-                      <label htmlFor="wallet-radio">کیف پول</label>
-                    </div>
-                  </div>
-
-                  <div className="flex col-span-1 gap-5 items-center my-auto justify-end">
-                    <div className="text-sm font-bold text-primary">
-                      <label htmlFor="wallet-radio" suppressHydrationWarning>
-                        موجودی: {Number(350000).toLocaleString()}
-                      </label>
-                    </div>
-                    <div>
-                      <input
-                        id="wallet-radio"
-                        type="radio"
-                        name="paymentMethod"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div className="mt-4 text-sm p-2">
-                <div className="grid grid-cols-2">
-                  <div className="col-span-1 font-bold mt-2">
-                    سود شما از این خرید:
-                  </div>
-                  <div className="col-span-1 flex gap-1 justify-end  mt-2">
-                    <div className="text-primary" suppressHydrationWarning>
-                      {Number(59000).toLocaleString()}
-                    </div>
-                    <div>تومان</div>
-                  </div>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="flex-1">جمع محصولات</span>
 
-                  <div className="col-span-1 font-bold  mt-2">ارسال:</div>
-                  <div className="col-span-1 flex gap-1 justify-end  mt-2">
-                    <div className="text-primary" suppressHydrationWarning>
-                      {Number(59000).toLocaleString()}
-                    </div>
-                    <div>تومان</div>
-                  </div>
+                  <span className="flex-1 text-left font-bold text-primary">
+                    {loading ? (
+                      <div className="flex-1 h-4 bg-gray-300 dark:bg-gray-600 mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                    ) : (
+                      <span>
+                        {Number(
+                          defaultPayment?.totalProductPrice
+                        ).toLocaleString()}{" "}
+                        تومان
+                      </span>
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="flex-1">سود شما از این خرید</span>
 
-                  <div className="col-span-1 font-bold  mt-2">
-                    مبلغ تمام شده جمع خرید:
-                  </div>
-                  <div className="col-span-1 flex gap-1 justify-end  mt-2">
-                    <div className="text-primary" suppressHydrationWarning>
-                      {Number(1275000).toLocaleString()}
-                    </div>
-                    <div>تومان</div>
-                  </div>
+                  <span className="flex-1 text-left font-bold text-primary">
+                    {loading ? (
+                      <div className="flex-1 h-4 bg-gray-300 dark:bg-gray-600 mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                    ) : (
+                      <span>
+                        {Number(defaultPayment?.totalDiscount).toLocaleString()}{" "}
+                        تومان
+                      </span>
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="flex-1">هزینه ارسال</span>
+
+                  <span className="flex-1 text-left font-bold text-primary">
+                    {loading ? (
+                      <div className="flex-1 text-left font-bold text-primary h-5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                    ) : (
+                      <span>
+                        {Number(
+                          defaultPayment?.totalShipmentPrice
+                        ).toLocaleString()}{" "}
+                        تومان
+                      </span>
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="flex-1">مبلغ نهایی</span>
+
+                  <span className="flex-1 text-left font-bold text-primary">
+                    {loading ? (
+                      <div className="flex-1 h-4 bg-gray-300 dark:bg-gray-600 mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                    ) : (
+                      <span>
+                        {Number(defaultPayment?.totalPrice).toLocaleString()}{" "}
+                        تومان
+                      </span>
+                    )}
+                  </span>
                 </div>
               </div>
             </div>

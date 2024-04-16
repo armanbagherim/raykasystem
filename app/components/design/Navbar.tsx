@@ -75,7 +75,7 @@ export default async function NavbarModule() {
       <div className="container mx-auto">
         <div
           id="navbar"
-          className="flex justify-between items-center relative hidden sm:flex z-50"
+          className="flex justify-between items-center relative hidden sm:flex z-50 whitespace-nowrap"
         >
           <nav>
             <ul className="flex">

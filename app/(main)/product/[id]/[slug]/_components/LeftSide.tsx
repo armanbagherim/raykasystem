@@ -1,4 +1,5 @@
 import { BigAddToCart } from "@/app/components/design/Cards/ProductCard/Button/BigAddToCart";
+import CountDown from "@/app/components/design/CountDown";
 import {
   Espesial,
   Exclamation,
@@ -9,9 +10,9 @@ import {
 } from "@/app/components/design/Icons";
 import React from "react";
 
-export default function LeftSide({ product, status }) {
+export default function LeftSide({ product, status, addToCart }) {
   return (
-    <div className="col-span-12 md:col-span-3  rounded-3xl bg-customGray">
+    <div className="col-span-12 lg:col-span-3  rounded-3xl bg-customGray">
       <div className="px-4 py-8 mr-0 relative flex h-full flex-col justify-between ">
         <div>
           <div className="flex justify-end ml-0 mx-auto absolute left-0 top-0">
@@ -95,24 +96,13 @@ export default function LeftSide({ product, status }) {
             </div>
 
             <div className="mt-9 flex gap-3 mb-4">
-              <div>
-                <div className="bg-primary text-slate-100 font-bold text-xl p-1 w-9 rounded-lg text-center items-center">
-                  23
-                </div>
-                <div>ثانیه</div>
-              </div>
-              <div>
-                <div className="bg-primary text-slate-100 font-bold text-xl p-1 w-9 rounded-lg text-center items-center">
-                  23
-                </div>
-                <div>دقیقه</div>
-              </div>
-              <div>
-                <div className="bg-primary text-slate-100 font-bold text-xl p-1 w-9 rounded-lg text-center items-center">
-                  23
-                </div>
-                <div>ساعت</div>
-              </div>
+              {product[0].firstPrice.appliedDiscount ? (
+                <CountDown
+                  dates={product[0].firstPrice.appliedDiscount.endDate}
+                />
+              ) : (
+                ""
+              )}
               <div
                 className="font-bold justify-start mx-auto ml-2 items-end my-auto"
                 dir="ltr"
@@ -138,7 +128,12 @@ export default function LeftSide({ product, status }) {
               </div>
             </div>
             <div className="text-center">
-              <BigAddToCart status={true} />
+              <BigAddToCart
+                handleClick={(e) => {
+                  addToCart(product[0].id);
+                }}
+                status={true}
+              />
             </div>
           </>
         ) : (

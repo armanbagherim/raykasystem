@@ -1,9 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Variants({ product, handleVariantChange }) {
-  // State to track the currently active color
-  const [activeColorId, setActiveColorId] = useState(null);
-
   // Create a Set from the color IDs to remove duplicates
   const uniqueColorIds = new Set(
     product?.inventories.map((value) => value.color.id)
@@ -17,6 +14,11 @@ export default function Variants({ product, handleVariantChange }) {
     );
     return inventoryItem;
   });
+
+  // Initialize activeColorId with the ID of the first color if available
+  const [activeColorId, setActiveColorId] = useState(
+    uniqueColors.length > 0 ? uniqueColors[0].color.id : null
+  );
 
   return (
     <>

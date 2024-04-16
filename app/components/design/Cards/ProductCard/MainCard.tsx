@@ -13,8 +13,8 @@ export default function MainCard({ data }) {
   // Convert the Map values back into an array
   const uniqueColorsArray = Array.from(uniqueColorsMap.values());
   return (
-    <Link href={`/product/${data?.slug}`} className="flex">
-      <div className="flex w-full flex-col gap-5 border bg-white rounded-3xl p-4">
+    <Link href={`/product/${data?.sku}/${data?.slug}`} className="flex h-full">
+      <div className="flex w-full flex-col gap-5 border bg-white rounded-3xl p-4 h-full justify-between">
         <Image
           width="200"
           height="400"
@@ -38,7 +38,13 @@ export default function MainCard({ data }) {
           </div>
           <div className="flex flex-row justify-between items-center">
             <div>
-              <CountDown />
+              {data.inventories[0].firstPrice.appliedDiscount ? (
+                <CountDown
+                  dates={data.inventories[0].firstPrice.appliedDiscount.endDate}
+                />
+              ) : (
+                ""
+              )}
             </div>
 
             <Price data={data} />

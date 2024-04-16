@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { debounce } from "lodash"; // Import debounce from Lodash
+import Link from "next/link";
 
 export default function Search() {
   const [searchTerm, setSearchTerm] = useState();
@@ -111,8 +112,10 @@ export default function Search() {
       >
         <div className="flex justify-between border-b border-b-gray-300 pb-4 mb-4">
           <p className="peyda">در محصولات</p>
-          <span className="font-bold text-primary">
-            <a href="">همه محصولات</a>
+          <span className="font-bold text-primary text-sm">
+            <Link href={`/search?search=${searchTerm}`}>
+              <span href="">همه {searchTerm || "محصولات"} </span>
+            </Link>
           </span>
         </div>
         <div className="mb-4">
@@ -120,79 +123,76 @@ export default function Search() {
             isLoading ? (
               <div className="h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
             ) : products.length < 1 ? (
-              <div className="flex mb-8 justify-center px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
+              <div className="flex flex-1 mb-8 text-sm justify-center px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
                 چیزی پیدا نشد !
               </div>
             ) : (
               products.map((value, key) => (
                 <div
                   key={key}
-                  className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
+                  className="flex justify-center px-3 py-2 bg-white rounded-2xl border border-gray-300 mb-1 text-sm"
                 >
-                  <p>{value.title}</p>
-                  <p className="font-bold ">
-                    {Number(12000000).toLocaleString()}
-                  </p>
+                  <Link href={`/product/${value.sku}/${value.slug}`}>
+                    <p>{value.title}</p>
+                  </Link>
                 </div>
               ))
             )
           ) : (
-            <div className="flex mb-8 justify-center px-8 py-4 bg-white text-primary text-center justify-center rounded-2xl border border-gray-300 mb-4">
+            <div className="flex text-sm mb-8  px-8 py-4 bg-white text-primary text-center justify-center rounded-2xl border border-gray-300 mb-4">
               برای جست و جو چیزی تایپ کنید
             </div>
           )}
         </div>
         <div className="flex justify-between border-b border-b-gray-300 pb-4 mb-4">
           <p className="peyda">در برند ها</p>
-          <span className="font-bold text-primary">
-            <a href="">همه برند ها</a>
-          </span>
         </div>
         <div className="mb-4 flex gap-2">
           {searchTerm ? (
             isLoading ? (
               <div className="h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
             ) : brands.length < 1 ? (
-              <div className="flex flex-1 mb-8 justify-center px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
+              <div className="flex  flex-1 mb-8 text-sm px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
                 چیزی پیدا نشد !
               </div>
             ) : (
               brands?.map((value, key) => (
                 <div
                   key={key}
-                  className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
+                  className="flex justify-center px-3 py-2 bg-white rounded-2xl border border-gray-300 mb-1 text-sm"
                 >
-                  <p>{value.name}</p>
+                  <Link href={`/brand/${value.slug}`}>
+                    <p>{value.name}</p>
+                  </Link>
                 </div>
               ))
             )
           ) : (
-            <div className="flex-1 justify-center px-8 py-4 bg-white text-primary text-center justify-center rounded-2xl border border-gray-300 mb-4">
+            <div className="flex-1 text-sm px-8 py-4 bg-white text-primary text-center justify-center rounded-2xl border border-gray-300 mb-4">
               برای جست و جو چیزی تایپ کنید
             </div>
           )}
         </div>
         <div className="flex justify-between border-b border-b-gray-300 pb-4 mb-4">
           <p className="peyda">در دسته بندی ها</p>
-          <span className="font-bold text-primary">
-            <a href="">همه دسته بندی ها</a>
-          </span>
         </div>
-        <div className="mb-4 flex gap-2">
+        <div className="mb-4 flex gap-2 flex-wrap whitespace-nowrap">
           {searchTerm ? (
             isLoading ? (
               <div className="h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
             ) : categories.length < 1 ? (
-              <div className="flex flex-1 mb-8 justify-center px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
+              <div className="flex flex-1  text-sm  px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
                 چیزی پیدا نشد !
               </div>
             ) : (
               categories?.map((value, key) => (
                 <div
                   key={key}
-                  className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
+                  className="flex justify-center px-3 py-2 bg-white rounded-2xl border border-gray-300 mb-1 text-sm"
                 >
-                  <p>{value?.name}</p>
+                  <Link href={`/category/${value.slug}`}>
+                    <p>{value.name}</p>
+                  </Link>
                 </div>
               ))
             )

@@ -32,15 +32,18 @@ import {
   decrement,
   increment,
   productQtyInCartSelector,
+  setQty,
 } from "@/store/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
 export default function SingleProductModule({ product, related, cook }) {
+  console.log(product.inventories[0]);
   const [localInventories, setLocalInventories] = useState(product.inventories);
   // const qty = useAppSelector((state) =>
   //   productQtyInCartSelector(state, inventory.id)
   // );
   const dispatch = useAppDispatch();
+
   const handleVariantChange = (colorId: number) => {
     const filtered = product.inventories.filter(
       (inventory) => inventory.colorId === colorId
@@ -52,46 +55,62 @@ export default function SingleProductModule({ product, related, cook }) {
   useEffect(() => {}, [localInventories]);
 
   useEffect(() => {
-    setLocalInventories([...product.inventories]); // Ensure immutability
+    setLocalInventories([product.inventories[0] || ""]); // Ensure immutability
   }, [product.inventories]);
 
   const addToCart = (inventoryId) => {
-    // console.log(inventoryId);
+    console.log(inventoryId);
     const id = toast.loading("در حال افزودن");
     //do something else
-
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks`, {
-      method: "POST",
-      headers: {
-        "x-session-id": cook.value,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        inventoryId: +inventoryId,
-        qty: 1,
-      }),
-    }).then((res) => {
-      toast.update(id, {
-        render: "اضافه شد",
-        type: "success",
-        isLoading: false,
-        autoClose: 3000,
-        closeButton: true,
+    try {
+      fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks`,
+        {
+          method: "POST",
+          headers: {
+            "x-session-id": cook.value,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            inventoryId: +inventoryId,
+            qty: 1,
+          }),
+        }
+      ).then((res) => {
+        fetch(
+          "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/stocks/count",
+          {
+            method: "GET",
+            headers: {
+              "x-session-id": cook.value,
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            dispatch(
+              setQty({
+                qty: data.result,
+              })
+            );
+            toast.update(id, {
+              render: "اضافه شد",
+              type: "success",
+              isLoading: false,
+              autoClose: 3000,
+              closeButton: true,
+            });
+          });
       });
-      dispatch(
-        increment({
-          inventory: +inventoryId,
-          qty: 1,
-        })
-      );
-      console.log(res);
-    });
+    } catch (error) {
+      throw Error("bye");
+    }
   };
   return (
     <>
-      <Breadcrumb />
-      <div className="container justify-center mx-auto mt-3 grid grid-cols-12 gap-8 p-8 md:p-0">
-        <div className="col-span-12 md:col-span-4 border-0 rounded-lg relative">
+      <Breadcrumb product={product} />
+      <div className="container justify-center mx-auto mt-3 grid grid-cols-12 gap-8 p-8 lg:p-0">
+        <div className="col-span-12 lg:col-span-4 border-0 rounded-lg relative">
           <div className="w-10 h-32 absolute opacity-0 lg:opacity-100 r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-20">
             <div className="pt-3.5 mr-3">
               <Link href="#">
@@ -124,7 +143,7 @@ export default function SingleProductModule({ product, related, cook }) {
           </div>
         </div>
 
-        <div className="col-span-12 md:col-span-5 rounded-lg">
+        <div className="col-span-12 lg:col-span-5 rounded-lg">
           <div className="text-right font-normal text-2xl text-slate-500">
             {product.title}
           </div>
@@ -167,9 +186,8 @@ export default function SingleProductModule({ product, related, cook }) {
                 </div>
                 <div className="flex gap-1">
                   <div className="font-bold">دسته: </div>
-                  <button onClick={addToCart}>hi</button>
                   <div>
-                    <Link href={product.entityType.slug}>
+                    <Link href={`/category/${product.entityType.slug}`}>
                       {product.entityType.name}
                     </Link>
                   </div>
@@ -206,6 +224,7 @@ export default function SingleProductModule({ product, related, cook }) {
         <LeftSide
           product={localInventories}
           status={product.inventoryStatus.id}
+          addToCart={addToCart}
         />
       </div>
 
@@ -242,7 +261,7 @@ export default function SingleProductModule({ product, related, cook }) {
       <div className="container mx-auto mt-8 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-8">
         <div className="w-full">امتیاز و دیدگاه کاربران</div>
         <div className="mt-8 grid grid-cols-12">
-          <div className="border-0 rounded-xl p-3 w-full col-span-12 md:col-span-3">
+          <div className="border-0 rounded-xl p-3 w-full col-span-12 lg:col-span-3">
             <div className="flex gap-6">
               <div className="p-4  bg-slate-100 rounded-xl">
                 <div className="flex gap-1">
@@ -392,7 +411,7 @@ export default function SingleProductModule({ product, related, cook }) {
               </div>
             </div>
           </div>
-          <div className="col-span-12 md:col-span-9">
+          <div className="col-span-12 lg:col-span-9">
             <div className="border-0 w-full rounded-xl mt-5">
               <div className="border w-full rounded-3xl m-2 p-3">
                 <div className="flex gap-4">
@@ -563,7 +582,7 @@ export default function SingleProductModule({ product, related, cook }) {
               key={key}
               data={value}
               type="main"
-              className="w-full sm:w-1/2 md:w-1/3"
+              className="w-full sm:w-1/2 lg:w-1/3"
             />
           ))}
         </Slider>

@@ -88,7 +88,7 @@ export default async function Home() {
       </div>
       <div className="container mx-auto mb-24 px-4">
         <Title text="پرفروش ترین ها" color={"primary"} />
-        <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 to-scroll">
+        <div className=" auto-rows-fr grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 to-scroll">
           {products.map((value, key) => (
             <ProductCard
               key={key}

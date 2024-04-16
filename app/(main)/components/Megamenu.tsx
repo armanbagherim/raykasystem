@@ -43,10 +43,18 @@ const Megamenu = ({ items }) => {
             <div className="grid grid-cols-2 text-slate-700">
               <div className="col-span-1">
                 {activeSubEntities.map((value, key) => {
-                  console.log(value, key);
+                  console.log(value.subEntityTypes, key);
                   return (
                     <p key={key} className="p-4 hover:text-black">
                       {value.name}
+                      {value.subEntityTypes.map((values, keys) => {
+                        console.log(values, keys);
+                        return (
+                          <p key={key} className="p-4 hover:text-black">
+                            {values.name}
+                          </p>
+                        );
+                      })}
                     </p>
                   );
                 })}
