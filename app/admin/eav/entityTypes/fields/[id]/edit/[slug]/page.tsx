@@ -6,12 +6,13 @@ import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "@/app/admin/layout";
 import Loading from "@/app/components/global/loading";
+import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
   useEffect(() => {
     setTitle({
-      title: "ساخت دسته بندی",
+      title: "ویرایش فیلد",
       buttonTitle: "",
       link: "",
     });
@@ -160,7 +161,7 @@ export default function Eav({ params }) {
             )}
           </select>
         </div>
-        <div className="w-full">
+        <div className="w-full flex">
           <label htmlFor="required" className="ml-4">
             اجباری؟
           </label>
@@ -174,12 +175,13 @@ export default function Eav({ params }) {
         </div>
       </div>
 
-      <button
+      {/* <button
         onClick={saveField}
         className="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
       >
         ذخیره
-      </button>
+      </button> */}
+      <SaveBar action={saveField} backUrl={`/admin/eav/entityTypes/fields/${params.id}`}></SaveBar>
     </div>
   );
 }

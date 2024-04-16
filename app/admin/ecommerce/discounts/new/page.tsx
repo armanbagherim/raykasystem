@@ -25,7 +25,7 @@ export default function NewDiscount() {
       link: "",
     });
   }, []);
-  
+
   const [requestBody, setRequestBody] = useState({
     name: "",
     description: "",
@@ -129,7 +129,7 @@ export default function NewDiscount() {
           }
         />
       </div>
-      <div className="mb-6">
+      <div className="mb-10">
         <SearchSelect
           loadingState={discountTypesIsLoading}
           data={discountTypes?.result}
@@ -141,12 +141,18 @@ export default function NewDiscount() {
       </div>
       <div className="flex gap-6 mb-6">
         <div className="flex-1">
+          <label
+            htmlFor="first_name"
+            className="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            تاریخ شروع
+          </label>
           <DatePicker
             format="MM/DD/YYYY HH:mm:ss"
             plugins={[<TimePicker key={1} position="bottom" />]}
             calendar={persian}
             locale={persian_fa}
-            inputClass="w-full border-b outline-none py-4 border-gray-500"
+            inputClass="w-full border-b outline-none py-1 border-gray-500"
             containerClassName="w-full"
             onChange={(e) =>
               setRequestBody({
@@ -157,9 +163,15 @@ export default function NewDiscount() {
           />
         </div>
         <div className="flex-1">
+          <label
+            htmlFor="first_name"
+            className="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            تاریخ پایان
+          </label>
           <DatePicker
             format="MM/DD/YYYY HH:mm:ss"
-            inputClass="w-full border-b outline-none py-4 border-gray-500"
+            inputClass="w-full border-b outline-none py-1 border-gray-500"
             containerClassName="w-full"
             plugins={[<TimePicker key={2} position="bottom" />]}
             calendar={persian}
@@ -285,7 +297,7 @@ export default function NewDiscount() {
           />
         </div>
       </div>
-      <SaveBar action={save} backUrl={'/admin/ecommerce/discounts/'}/>
+      <SaveBar action={save} backUrl={"/admin/ecommerce/discounts/"} />
     </div>
   );
 }
