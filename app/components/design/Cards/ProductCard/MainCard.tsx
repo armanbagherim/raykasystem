@@ -38,9 +38,11 @@ export default function MainCard({ data }) {
           </div>
           <div className="flex flex-row justify-between items-center">
             <div>
-              {data.inventories[0].firstPrice.appliedDiscount ? (
+              {data.inventories[0]?.firstPrice?.appliedDiscount ? (
                 <CountDown
-                  dates={data.inventories[0].firstPrice.appliedDiscount.endDate}
+                  dates={
+                    data.inventories[0]?.firstPrice?.appliedDiscount?.endDate
+                  }
                 />
               ) : (
                 ""

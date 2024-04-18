@@ -9,7 +9,7 @@ import BottomSearch from "./BottomSearch";
 
 async function getEntity() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes?ignoreChilds=true`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes?ignoreChilds=true&sortOrder=ASC`,
     {
       cache: "no-store",
     }
@@ -98,8 +98,10 @@ export default async function NavbarModule() {
                 <span className="mx-3">پک های هدیه</span>
               </li>
               <li className="flex ml-3">
-                <img src="/icons/brands.svg" alt="" />
-                <span className="mx-3">برند ها</span>
+                <Link className="flex" href={"/brands"}>
+                  <img src="/icons/brands.svg" alt="" />
+                  <span className="mx-3">برند ها</span>
+                </Link>
               </li>
             </ul>
           </nav>

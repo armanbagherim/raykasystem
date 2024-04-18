@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const Megamenu = ({ items }) => {
@@ -10,7 +11,11 @@ const Megamenu = ({ items }) => {
     setActiveSubEntities(items[0].subEntityTypes);
     setGroupName(items[0].name);
   }, []);
+  console.log(items);
 
+  function compareNumbers(a, b) {
+    return b.subEntityTypes.length - a.subEntityTypes.length;
+  }
   return (
     <>
       <div
@@ -36,34 +41,47 @@ const Megamenu = ({ items }) => {
             ))}
           </div>
           <div
-            className="col-span-2 p-2 pb-0"
+            className="col-span-4 p-2 pb-0"
             onMouseEnter={(e) => e.stopPropagation()}
           >
             <div className="p-4 border-b text-primary">همه {groupName} </div>
-            <div className="grid grid-cols-2 text-slate-700">
-              <div className="col-span-1">
-                {activeSubEntities.map((value, key) => {
-                  console.log(value.subEntityTypes, key);
+            <div className="grid grid-cols-3 text-slate-700">
+              <div className="col-span-3 grid grid-cols-4">
+                {activeSubEntities.sort(compareNumbers).map((value, key) => {
+                  let columnCounter = 0; // متغیر برای شمارش ستون‌ها
                   return (
-                    <p key={key} className="p-4 hover:text-black">
-                      {value.name}
+                    <div key={key} className="p-4 col-span-1 hover:text-black ">
+                      <Link href={value.slug}>
+                        <span className="w-2 h-2 ml-3 rounded-xl bg-primary inline-block"></span>
+                        <span className="text-primary text-md">
+                          {value.name}
+                        </span>
+                      </Link>
+
                       {value.subEntityTypes.map((values, keys) => {
-                        console.log(values, keys);
+                        // برای هر 8 آیتم، ستون را تغییر می‌دهیم
+                        if (keys % 8 === 0) {
+                          columnCounter++; // شمارش ستون را افزایش می‌دهیم
+                        }
                         return (
-                          <p key={key} className="p-4 hover:text-black">
+                          <Link
+                            href={values.slug}
+                            key={keys}
+                            className={`block py-4 pr-2 hover:text-black text-md pb-2 ${
+                              columnCounter > 0
+                                ? "col-span-" + (columnCounter + 1)
+                                : ""
+                            }`}
+                          >
                             {values.name}
-                          </p>
+                          </Link>
                         );
                       })}
-                    </p>
+                    </div>
                   );
                 })}
               </div>
             </div>
-          </div>
-          <div className="col-span-1"></div>
-          <div className="col-span-1 p-2 pb-0 items-center my-auto rounded rounded-3xl">
-            <img src="/images/ghahvesaz.png" alt="" />
           </div>
         </div>
       </div>

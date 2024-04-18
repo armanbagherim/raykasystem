@@ -11,6 +11,7 @@ import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import Image from "next/image";
+import Uploader from "@/app/components/global/Uploader";
 
 export default function Guarantees() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -122,12 +123,14 @@ export default function Guarantees() {
       header: "تصویر ",
       size: 20,
       Cell({ row }) {
-        return row.attachment ? (
+        return row ? (
           <Image
             loading="eager"
             src={`${
               process.env.NEXT_PUBLIC_BASE_URL
-            }/v1/api/ecommerce/guarantees/image/${row.attachment?.fileName || ""}`}
+            }/v1/api/ecommerce/guarantees/image/${
+              row.original.attachment?.fileName || ""
+            }`}
             width={50}
             height={50}
             alt=""
@@ -149,11 +152,11 @@ export default function Guarantees() {
       },
       Cell: ({ row }) => (
         <>
-          <a href={`#`}>
-            <Button variant="outlined" color="success">
-              آپلود تصویر
-            </Button>
-          </a>
+          <Uploader
+            location={`v1/api/ecommerce/guarantees/image`}
+            id={row.id}
+          />
+
           <a href={`/admin/ecommerce/guarantees/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
@@ -169,11 +172,12 @@ export default function Guarantees() {
     },
   ];
 
-
   return (
     <div>
       <LightDataGrid
-        url={"/v1/api/ecommerce/guarantees?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false"}
+        url={
+          "/v1/api/ecommerce/guarantees?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false"
+        }
         columns={columns}
       />
     </div>

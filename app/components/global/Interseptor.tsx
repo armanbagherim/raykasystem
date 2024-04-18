@@ -2,13 +2,14 @@
 
 import { cookies } from "next/headers";
 
-export default async function Interseptor(url) {
+export default async function Interseptor(url, session) {
   const cookieStore = cookies();
-
+  console.log("sessionnnnnnnnnnnnnnnnnnnnn", session);
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
     cache: "no-store",
     headers: {
       "x-session-id": cookieStore.get("SessionName")?.value,
+      Authorization: `  Bearer ${session?.token}`,
     },
   });
 

@@ -32,7 +32,7 @@ async function getPriceRange() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/priceRange`,
     {
-      cache: "no-store",
+      cache: "force-cache",
     }
   );
 
@@ -56,7 +56,7 @@ async function getProducts(searchParams) {
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?${queryString}&limit=12`;
 
   const res = await fetch(url, {
-    cache: "no-store",
+    cache: "force-cache",
   });
 
   if (!res.ok) {

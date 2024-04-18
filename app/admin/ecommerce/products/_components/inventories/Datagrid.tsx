@@ -93,8 +93,8 @@ export default function DataGridLite({
       width: 100,
       valueGetter({ row }) {
         return row.secondaryPrice.price
-          ? row.secondaryPrice.price
-          : row.secondaryPrice;
+          ? row.secondaryPrice.price || "-"
+          : row.secondaryPrice || "-";
       },
     },
     {

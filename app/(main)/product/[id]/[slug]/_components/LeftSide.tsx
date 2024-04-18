@@ -81,18 +81,22 @@ export default function LeftSide({ product, status, addToCart }) {
                   {product[0].vendor.name}
                 </span>
               </div>
-              <div
-                className="font-bold justify-start mx-auto ml-2 items-end my-auto"
-                dir="ltr"
-              >
-                <div className="text-center bg-[#E2F0EB] text-primary text-xs rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
-                  قیمت نقدی
+              {product[0]?.secondaryPrice?.price ? (
+                <div
+                  className="font-bold justify-start mx-auto ml-2 items-end my-auto"
+                  dir="ltr"
+                >
+                  <div className="text-center bg-[#E2F0EB] text-primary text-xs rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
+                    قیمت نقدی
+                  </div>
+                  <div dir="rtl">
+                    {Number(product[0].secondaryPrice.price).toLocaleString()}{" "}
+                    تومان
+                  </div>
                 </div>
-                <div dir="rtl">
-                  {Number(product[0].secondaryPrice.price).toLocaleString()}{" "}
-                  تومان
-                </div>
-              </div>
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="mt-9 flex gap-3 mb-4">

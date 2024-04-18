@@ -1,6 +1,8 @@
+"use client";
 import { Minus, PlusBig, Trash } from "@/app/components/design/Icons";
 import { setQty } from "@/store/features/cartSlice";
 import { useAppDispatch } from "@/store/store";
+import { count } from "console";
 import Link from "next/link";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
@@ -11,6 +13,7 @@ export default function CartItems({
   localCart,
   setLocalCart,
   priceCalculate,
+  session,
 }) {
   const dispatch = useAppDispatch();
 
@@ -25,6 +28,7 @@ export default function CartItems({
           method: "PUT",
           headers: {
             "x-session-id": cook,
+            Authorization: `  Bearer ${session?.token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -86,6 +90,7 @@ export default function CartItems({
           headers: {
             "x-session-id": cook,
             "Content-Type": "application/json",
+            Authorization: `  Bearer ${session?.token}`,
           },
           body: JSON.stringify({
             inventoryId: +inventoryId,
@@ -143,6 +148,7 @@ export default function CartItems({
         `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/${inventoryId}`,
         {
           method: "DELETE",
+          Authorization: `  Bearer ${session?.token}`,
           headers: {
             "x-session-id": cook,
             "Content-Type": "application/json",
@@ -203,6 +209,7 @@ export default function CartItems({
       key={item.productId}
       className="grid grid-cols-5 shadow-md bg-white text-xs rounded-3xl mt-2 p-4 items-center"
     >
+      {/* {console.log()} */}
       <div className="flex">
         <div>
           <img src="/images/product-2.png" />
@@ -241,16 +248,11 @@ export default function CartItems({
         </div>
       </div>
       <div className="p-1">
-        <span className="block">
-          <span
-            suppressHydrationWarning
-            className="opacity-75 text-xs line-through"
-          >
-            {Number(125000).toLocaleString()}
-          </span>
-        </span>
         <p suppressHydrationWarning className="text-sm">
-          {Number(125000).toLocaleString()} تومان
+          {Number(
+            item.product.inventories[0].firstPrice.price
+          ).toLocaleString()}{" "}
+          تومان
         </p>
       </div>
       <div className="p-1">
@@ -259,7 +261,10 @@ export default function CartItems({
         </Link>
       </div>
       <div suppressHydrationWarning className="p-1 text-sm">
-        {Number(125000).toLocaleString()} تومان
+        {Number(
+          item.product.inventories[0].firstPrice.price * itemCount
+        ).toLocaleString()}{" "}
+        تومان
       </div>
     </div>
   );

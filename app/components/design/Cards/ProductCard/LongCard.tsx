@@ -40,10 +40,10 @@ export default function LongCard({ border, data }) {
           </div>
           <div className="flex flex-row justify-between items-center">
             <div>
-              {data.inventories[0].firstPrice.appliedDiscount ? (
+              {data.inventories[0]?.firstPrice?.appliedDiscount ? (
                 <CountDown
                   dates={
-                    data.inventories[0].firstPrice.appliedDiscount?.endDate
+                    data.inventories[0]?.firstPrice?.appliedDiscount?.endDate
                   }
                 />
               ) : (

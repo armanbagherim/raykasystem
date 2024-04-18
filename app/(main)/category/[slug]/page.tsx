@@ -17,7 +17,7 @@ async function getEntity(params) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes/slug/${params.slug}`,
     {
-      cache: "no-store",
+      cache: "force-cache",
     }
   );
 
@@ -28,7 +28,7 @@ async function getBrands(entity) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/brands?sortOrder=DESC&entityTypeId=${entity}&offset=0&limit=10&orderBy=id&ignorePaging=true`,
     {
-      cache: "no-store",
+      cache: "force-cache",
     }
   );
 
@@ -58,7 +58,7 @@ async function getAttributes(entity) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/attributes?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false&entityTypeId=${entity}&attributeTypeId=3`,
     {
-      cache: "no-store",
+      cache: "force-cache",
     }
   );
 
@@ -73,7 +73,7 @@ async function getPriceRange(entity) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/priceRange?entityTypeId=${entity.id}`,
     {
-      cache: "no-store",
+      cache: "force-cache",
     }
   );
 
@@ -112,7 +112,7 @@ async function getProducts(searchParams, entity) {
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?${queryString}&entityTypeId=${entity}&limit=12`;
 
   const res = await fetch(url, {
-    cache: "no-store",
+    cache: "force-cache",
   });
 
   if (!res.ok) {

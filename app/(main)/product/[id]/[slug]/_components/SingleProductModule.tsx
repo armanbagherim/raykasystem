@@ -153,16 +153,16 @@ export default function SingleProductModule({ product, related, cook }) {
 
           <div>
             <div className="flex gap-4 justify-center mx-auto">
-              <div className="mt-5 w-60 h-10 bg-customGray rounded-2xl">
-                <div className="pt-2.5 mr-3 flex gap-2 text-slate-500">
+              <div className="mt-5 w-60 bg-customGray rounded-2xl">
+                <div className="py-4 mr-3 flex gap-2 text-slate-500">
                   <div className="pt-0.5">
                     <Goldstart />
                   </div>
                   <div>4.75 از 4240 نظر</div>
                 </div>
               </div>
-              <div className="mt-5 w-2/3 h-10 bg-customGray rounded-2xl">
-                <div className="pt-2.5 mr-3 flex gap-2 text-slate-500">
+              <div className="mt-5 w-2/3  bg-customGray rounded-2xl">
+                <div className="py-4 mr-3 flex gap-2 text-slate-500">
                   <div className="pt-1">
                     <Category2 />
                   </div>
@@ -179,8 +179,8 @@ export default function SingleProductModule({ product, related, cook }) {
               </div>
             </div>
 
-            <div className="mt-5 w-auto h-10 bg-customGray rounded-2xl">
-              <div className="pt-2.5 mr-3 flex gap-2 text-slate-500">
+            <div className="mt-5 w-auto  bg-customGray rounded-2xl">
+              <div className="py-4 mr-3 flex gap-2 text-slate-500">
                 <div className="pt-0.5">
                   <Category2 />
                 </div>
@@ -228,7 +228,11 @@ export default function SingleProductModule({ product, related, cook }) {
         />
       </div>
 
-      <Inventories addToCart={addToCart} product={localInventories} />
+      <Inventories
+        addToCart={addToCart}
+        inventoryStatusId={product.inventoryStatus}
+        product={localInventories}
+      />
 
       <div className="container mx-auto mt-5 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-5 flex">
         <div className="mr-3 text-green-700">نقد و بررسی محصول</div>

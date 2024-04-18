@@ -16,8 +16,9 @@ export async function generateMetadata(): Promise<Metadata> {
 //   return res.json();
 // }
 
-async function getCart() {
-  const res = await Interseptor("/v1/api/ecommerce/user/stocks");
+async function getCart(session) {
+  console.log("areeeeeeeeeeeeeeeeeeeeeeeeeeeee", session);
+  const res = await Interseptor("/v1/api/ecommerce/user/stocks", session);
   return res.json();
 }
 
@@ -25,7 +26,7 @@ export default async function page() {
   const session = await getServerSession(authOptions);
   const cookieStore = cookies();
 
-  const cart = await getCart();
+  const cart = await getCart(session);
   // const prices = await calculate();
   console.log("cartsssssssssssssss", cart);
   return (

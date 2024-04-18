@@ -27,8 +27,11 @@ import MapComponentClient from "@/app/components/global/MapClient";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import { toast } from "react-toastify";
 import CartItems from "./CartItems";
+import { idID } from "@mui/material/locale";
+import { useRouter } from "next/navigation";
 
 const CartModule = ({ cartItems, session, cookies }) => {
+  const router = useRouter();
   const [localCart, setLocalCart] = useState(cartItems);
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,17 +57,21 @@ const CartModule = ({ cartItems, session, cookies }) => {
   const [defaultPayment, setDefaultPayment] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [addressId, setAddressId] = useState();
+  const [addressId, setAddressId] = useState(null);
   const [addresses, setAddresses] = useState([]);
+  const [calculateErrors, setCalculateErrors] = useState("");
+  const [copunValue, setCopunValue] = useState(null);
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+  const checkCopun = () => {
+    priceCalculate(addressId, copunValue);
+  };
   const getAddress = async () => {
     setLoading(true);
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/addresses?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/addresses?sortOrder=ASC&offset=0&limit=10&orderBy=id`,
         {
           method: "GET",
           headers: {
@@ -78,8 +85,9 @@ const CartModule = ({ cartItems, session, cookies }) => {
           return res.json();
         })
         .then((data) => {
+          console.log(data);
           setAddresses(data.result);
-          setAddressId(addresses?.result[0].id);
+          setAddressId(data?.result[0]?.id);
         });
     } catch (error) {
       console.log(error);
@@ -89,7 +97,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
     }
   };
 
-  const priceCalculate = async (addressId, copunCode) => {
+  const priceCalculate = async () => {
     setLoading(true);
     try {
       await fetch(
@@ -98,9 +106,12 @@ const CartModule = ({ cartItems, session, cookies }) => {
           method: "POST",
           headers: {
             "x-session-id": cookies.value,
+            Authorization: `  Bearer ${session?.token}`,
+            "Content-type": "application/json",
           },
           body: JSON.stringify({
-            addressId: addressId,
+            addressId: +addressId,
+            couponCode: copunValue == "" ? null : copunValue,
           }),
         }
       )
@@ -108,13 +119,47 @@ const CartModule = ({ cartItems, session, cookies }) => {
           return res.json();
         })
         .then((data) => {
-          setCalculate(data.result);
-          setDefaultPayment(data.result.paymentOptions[0]);
-          setLoading(false);
+          if (data.statusCode === 400) {
+            setCalculateErrors(data.message);
+          } else {
+            console.log(data);
+            setCalculate(data.result);
+            setDefaultPayment(data.result.paymentOptions[0]);
+            setLoading(false);
+            setCalculateErrors("");
+          }
         });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
+  };
+
+  const submitPayment = async () => {
+    setLoading(true);
+    try {
+      await fetch(
+        `https://nest-jahizan.chbk.run/v1/api/ecommerce/user/payments/stock`,
+        {
+          method: "POST",
+          headers: {
+            "x-session-id": cookies.value,
+            Authorization: `  Bearer ${session?.token}`,
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            addressId: +addressId,
+            couponCode: copunValue == "" ? null : copunValue,
+            paymentId: 2,
+            variationPriceId: 2,
+          }),
+        }
+      )
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          router.push(data.result.redirectUrl);
+        });
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -128,11 +173,16 @@ const CartModule = ({ cartItems, session, cookies }) => {
   }, [paymentMethod]);
 
   useEffect(() => {
-    priceCalculate();
+    // if (addressId) {
+    //   priceCalculate(addressId);
+    // }
     getAddress();
   }, []);
+
   useEffect(() => {
-    priceCalculate(addressId);
+    if (addressId !== null) {
+      priceCalculate();
+    }
   }, [addressId]);
 
   const getNeighberhoods = async (nid) => {
@@ -296,6 +346,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                   cook={cookies.value}
                   item={value}
                   priceCalculate={priceCalculate}
+                  session={session}
                 />
               ))
             )}
@@ -582,13 +633,27 @@ const CartModule = ({ cartItems, session, cookies }) => {
                   className="text-sm bg-customGray p-4 w-full rounded-xl outline-none"
                   type="text"
                   placeholder="کد تخفیف"
+                  onChange={(e) => setCopunValue(e.target.value)}
                 />
-                <button className="bg-primary absolute left-2 top-2 hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-white">
+                <button
+                  onClick={(e) => checkCopun()}
+                  className="bg-primary absolute left-2 top-2 hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-white"
+                >
                   بررسی کد
                 </button>
               </div>
 
               <div className="mt-5 text-sm">روش پرداخت</div>
+              {calculateErrors !== "" ? (
+                <div
+                  class="p-4 mb-4 mt-2 text-sm text-red-800 rounded-xl bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  role="alert"
+                >
+                  <span class="font-medium">{calculateErrors}</span>
+                </div>
+              ) : (
+                ""
+              )}
 
               <div className="flex flex-wrap mt-3 gap-2">
                 {!calculate?.paymentOptions ? (
@@ -609,6 +674,13 @@ const CartModule = ({ cartItems, session, cookies }) => {
                             <div className="font-bold text-md">
                               <label htmlFor={`${payments.id}-radio`}>
                                 {payments.name}
+                                <p className="text-blue-600">
+                                  {value.variationPriceName}
+                                </p>
+                                <p>
+                                  {Number(value.totalPrice).toLocaleString()}{" "}
+                                  <span>تومان</span>
+                                </p>
                               </label>
                             </div>
                           </div>
@@ -693,7 +765,15 @@ const CartModule = ({ cartItems, session, cookies }) => {
             </div>
             <div className="mt-4 text-lg text-center">
               {session?.result ? (
-                <button className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700">
+                <button
+                  onClick={submitPayment}
+                  disabled={
+                    calculate?.stocks?.length === 0 || calculateErrors !== ""
+                      ? true
+                      : false
+                  }
+                  className={`bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
+                >
                   پرداخت سفارش
                 </button>
               ) : (
