@@ -126,9 +126,9 @@ export default function Discount() {
       minSize: 100, //min size enforced during resizing
       maxSize: 100, //max size enforced during resizing
       size: 100, //medium column
-      Cell({row}){
+      Cell({ row }) {
         return ChangeFormatDate(row.original.startDate);
-      }
+      },
     },
     {
       accessorKey: "endDate",
@@ -136,9 +136,9 @@ export default function Discount() {
       minSize: 100, //min size enforced during resizing
       maxSize: 100, //max size enforced during resizing
       size: 100, //medium column
-      Cell({row}){
+      Cell({ row }) {
         return ChangeFormatDate(row.original.endDate);
-      }
+      },
     },
     {
       accessorKey: "actionRule.name",
@@ -174,9 +174,9 @@ export default function Discount() {
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
       size: 400, //medium column
-      Cell({row}){
-        return row.original.isActive ? "فعال" : "غیرفعال"
-      }
+      Cell({ row }) {
+        return row.original.isActive ? "فعال" : "غیرفعال";
+      },
     },
     {
       accessorKey: "Actions",
@@ -191,12 +191,7 @@ export default function Discount() {
       Cell: ({ row }) => (
         <>
           <a href={`/admin/ecommerce/discounts/conditions/${row.id}`}>
-            <button
-              type="button"
-              className="focus:outline-none mx-4 text-white bg-emerald-700 hover:bg-emerald-900 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-            >
-              شرط ها
-            </button>
+            <Button variant="outlined"> شرط ها</Button>
           </a>
           <a href={`/admin/ecommerce/discounts/${row.id}`}>
             <IconButton aria-label="delete" color="primary">

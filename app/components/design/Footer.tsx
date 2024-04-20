@@ -55,10 +55,14 @@ export default function Footer() {
           </text>
           <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6text-black/70 text-[10px] md:text-sm">
             <li>پیگیری سفارش</li>
-            <li>مرکز تماس</li>
+            <li>
+              <Link href="/contactus">مرکز تماس</Link>
+            </li>
             <li>علاقه مندی ها</li>
             <li>همکاری در فروش</li>
-            <li>تماس با ما</li>
+            <li>
+              <Link href="/about-us">درباره ما</Link>
+            </li>{" "}
           </ul>
         </div>
         <div>
@@ -67,7 +71,9 @@ export default function Footer() {
           </text>
           <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
             <li>پیگیری سفارش</li>
-            <li>مرکز تماس</li>
+            <li>
+              <Link href="/contactus">مرکز تماس</Link>
+            </li>{" "}
             <li>علاقه مندی ها</li>
             <li>همکاری در فروش</li>
             <li>تماس با ما</li>

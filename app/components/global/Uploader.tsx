@@ -108,13 +108,10 @@ const Uploader: React.FC<UploaderProps> = ({
 
   return (
     <>
-      <button
-        type="button"
-        className="focus:outline-none w-full text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-        onClick={() => setOpen(true)}
-      >
+      <Button variant="outlined" onClick={() => setOpen(true)} color="success">
         آپلود تصویر
-      </button>
+      </Button>
+
       <Dialog
         open={open}
         onClose={() => setOpen(false)}

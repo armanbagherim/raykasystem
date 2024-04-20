@@ -89,11 +89,6 @@ export default function Products() {
       },
       Cell: ({ row }) => (
         <>
-          <a href={`/admin/eav/entityTypes/fields/${row.id}`}>
-            <Button variant="outlined" color="success">
-              فیلد ها
-            </Button>
-          </a>
           <a href={`/admin/ecommerce/products/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />

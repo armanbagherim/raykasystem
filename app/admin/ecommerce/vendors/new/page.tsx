@@ -61,7 +61,6 @@ export default function Vendors() {
           type="text"
           id="name"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
           required
           onChange={(e) => setFormBody({ ...formBody, name: e.target.value })}
         />
@@ -75,7 +74,6 @@ export default function Vendors() {
           type="text"
           id="slug"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
           required
           onChange={(e) => setFormBody({ ...formBody, slug: e.target.value })}
         />
@@ -89,7 +87,6 @@ export default function Vendors() {
           type="text"
           id="description"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
           required
           onChange={(e) =>
             setFormBody({ ...formBody, address: e.target.value })
@@ -105,7 +102,6 @@ export default function Vendors() {
           type="text"
           id="description"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
           required
           onChange={(e) =>
             setFormBody({ ...formBody, description: e.target.value })
@@ -121,7 +117,6 @@ export default function Vendors() {
           type="text"
           id="description"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
           required
           onChange={(e) =>
             setFormBody({
@@ -143,7 +138,6 @@ export default function Vendors() {
           type="text"
           id="description"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
           required
           onChange={(e) =>
             setFormBody({
@@ -165,7 +159,6 @@ export default function Vendors() {
           type="text"
           id="description"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
           required
           onChange={(e) =>
             setFormBody({
@@ -179,7 +172,7 @@ export default function Vendors() {
         />
       </div>
 
-      <SaveBar action={save} backUrl={'/admin/ecommerce/vendors/'}/>
+      <SaveBar action={save} backUrl={"/admin/ecommerce/vendors/"} />
     </div>
   );
 }

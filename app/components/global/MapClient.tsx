@@ -1,113 +1,140 @@
-"use client";
-import React, { useEffect, useRef, useState } from "react";
-import Map from "ol/Map";
-import View from "ol/View";
-import TileLayer from "ol/layer/Tile";
-import OSM from "ol/source/OSM";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
-import Overlay from "ol/Overlay";
-import { fromLonLat, toLonLat } from "ol/proj";
-import { Icon, Style } from "ol/style";
-import {
-  defaults as defaultInteractions,
-  DragRotateAndZoom,
-} from "ol/interaction";
-import { defaults as defaultControls, FullScreen } from "ol/control";
-import Geocoder from "ol-geocoder";
-import "ol/ol.css"; // Include OpenLayers styles
+import type { FunctionComponent } from "react";
 
-const MapComponentClient = ({ coordinates, setCoordinates }) => {
-  const mapRef = useRef();
-  const vectorLayerRef = useRef();
-  const overlayRef = useRef();
+import mapboxgl from "mapbox-gl";
+import React, { memo, useEffect, useState } from "react";
+
+import "mapbox-gl/dist/mapbox-gl.css";
+import { Box } from "@mui/material";
+
+mapboxgl.accessToken =
+  "pk.eyJ1IjoicmFtaW5tb2hhIiwiYSI6ImNscnc1dGU1aTEwMDEyam1yMXRnbmVqYzEifQ.OKYpf7J9BpjWYLZDOGUX1Q";
+
+mapboxgl.setRTLTextPlugin(
+  "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js",
+  () => {},
+  true // Lazy load the plugin
+);
+
+const DEFAULT_LOCATION = {
+  lat: 35.65326,
+  lng: 51.35471,
+};
+
+interface LocationState {
+  lat: number;
+  lng: number;
+}
+
+export interface MapProps {
+  height?: number | string;
+  defaultLocation?: LocationState;
+  onAddressChange?: (address: string) => void;
+  onLocationChange?: (location: LocationState) => void;
+}
+const Map: FunctionComponent<MapProps> = ({
+  defaultLocation = DEFAULT_LOCATION,
+  onAddressChange,
+  onLocationChange,
+  height = 200,
+}) => {
+  const [location, setLocation] = useState<LocationState>(defaultLocation);
+  const [isTouched, setIsTouched] = useState<boolean>(false);
 
   useEffect(() => {
-    const rasterLayer = new TileLayer({
-      source: new OSM(),
-    });
+    setLocation(defaultLocation);
+  }, [defaultLocation]);
 
-    const vectorSource = new VectorSource();
-    const vectorLayer = new VectorLayer({
-      source: vectorSource,
-    });
-    vectorLayerRef.current = vectorLayer;
-
-    const overlay = new Overlay({
-      element: document.getElementById("marker"),
-      positioning: "bottom-center",
-      stopEvent: false,
-      offset: [0, -50],
-    });
-    overlayRef.current = overlay;
-
-    const map = new Map({
-      layers: [rasterLayer, vectorLayer],
-      target: mapRef.current,
-      view: new View({
-        center: fromLonLat([51.3347, 35.7219]), // Tehran, Iran
-        zoom: 12,
-      }),
-      interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
-      controls: defaultControls().extend([new FullScreen()]),
-      overlays: [overlay],
-    });
-
-    const geocoder = new Geocoder("nominatim", {
-      provider: "osm",
-      lang: "en",
-      placeholder: "جست و جوی لوکیشن",
-      limit: 10,
-      autoComplete: true,
-      keepOpen: true,
-      showMarker: false,
-    });
-    map.addControl(geocoder);
-
-    map.on("singleclick", function (evt) {
-      // Clear previous markers
-      vectorSource.clear();
-
-      // Add new marker
-      const feature = new Feature(new Point(evt.coordinate));
-      feature.setStyle(
-        new Style({
-          image: new Icon({
-            anchor: [0.5, 46],
-            anchorXUnits: "fraction",
-            anchorYUnits: "pixels",
-            src: "/icons/marker.png",
-          }),
-        })
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        `https://api.teh-1.snappmaps.ir/reverse/v1/?lat=${location.lat}&lon=${location.lng}&type=driver&display=false`,
+        {
+          method: "GET",
+          headers: {
+            "X-Smapp-Key": "214906b54f2b776d0fcd5ef52b128c11",
+          },
+        }
       );
+      const data = await response.json();
+      console.log(data);
+      const address = (
+        data.result.components as {
+          name: string;
+          type: string;
+        }[]
+      )
+        .filter((item) => {
+          return (
+            !!item.name &&
+            item.type !== "city" &&
+            item.type !== "province" &&
+            item.type !== "poi"
+          );
+        })
+        .map((item) => {
+          return item.name;
+        })
+        .reverse()
+        .join("، ");
 
-      vectorSource.addFeature(feature);
+      onAddressChange?.(address);
+    } catch {
+      // TODO: should be handled later
+    }
+  };
 
-      const lonLat = toLonLat(evt.coordinate);
-
-      overlay.setPosition(evt.coordinate);
-      setCoordinates({
-        latitude: lonLat[1],
-        longitude: lonLat[0],
-      });
+  useEffect(() => {
+    const map = new mapboxgl.Map({
+      container: "map",
+      style: "https://tile.snappmaps.ir/styles/snapp-style/style.json",
+      center: [location.lng, location.lat],
+      zoom: 12,
     });
+
+    const mapMarker = document.createElement("img");
+    mapMarker.src = "/assets/map/img_pin.png";
+    mapMarker.style.width = "144px";
+    mapMarker.style.height = "158px";
+
+    const marker = new mapboxgl.Marker({
+      element: mapMarker,
+    })
+      .setLngLat([location.lng, location.lat])
+      .addTo(map);
+
+    map.on("move", () => {
+      const center = map.getCenter();
+      const newLocation: LocationState = {
+        lat: +center.lat.toFixed(6),
+        lng: +center.lng.toFixed(6),
+      };
+
+      setLocation(newLocation);
+
+      onLocationChange?.(newLocation);
+
+      setIsTouched(true);
+      marker.setLngLat([center.lng, center.lat]);
+    });
+  }, [defaultLocation]);
+
+  useEffect(() => {
+    if (!isTouched) {
+      return;
+    }
+
+    const timeOut = setTimeout(fetchData, 500);
 
     return () => {
-      map.dispose();
+      clearTimeout(timeOut);
     };
-  }, []);
+  }, [location]);
 
   return (
-    <div
-      className="map"
-      style={{ height: "400px", width: "600px" }}
-      ref={mapRef}
-    >
-      <div id="marker" style={{ display: "none" }}></div>
-    </div>
+    <Box className="relative w-[950px] h-96">
+      <Box id="map" style={{ width: "100%", height: "100%" }} />
+    </Box>
   );
 };
 
-export default MapComponentClient;
+export default memo(Map);

@@ -30,27 +30,27 @@ export default function Slider({
 
     breakpoints: {
       320: {
-        slidesPerView: slidesPerView ? slidesPerView : 1.5,
+        slidesPerView: slidesPerView ? slidesPerView : 1.2,
         spaceBetween: 10,
       },
       // Mobile
       640: {
-        slidesPerView: slidesPerView ? slidesPerView : 2.5,
+        slidesPerView: slidesPerView ? slidesPerView : 2.2,
         spaceBetween: 10,
       },
       // Tablet
-      768: {
-        slidesPerView: slidesPerView ? slidesPerView : 3.5,
+      769: {
+        slidesPerView: slidesPerView ? slidesPerView : 3.2,
         spaceBetween: 10,
       },
       // Medium (md)
       1024: {
-        slidesPerView: slidesPerView ? slidesPerView : 4,
+        slidesPerView: slidesPerView ? slidesPerView : 3.2,
         spaceBetween: 10,
       },
       // Large (lg)
       1280: {
-        slidesPerView: slidesPerView ? slidesPerView : 4.5,
+        slidesPerView: slidesPerView ? slidesPerView : 3.2,
         spaceBetween: 10,
       },
       // Extra-large (xl) and 2xl

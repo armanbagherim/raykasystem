@@ -14,36 +14,16 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     setInitialState: (state, action: PayloadAction<number>) => {
-      state.cartItems = Array(action.payload).fill({
-        inventory: 0,
-        qty: 0,
-      });
+      console.log(action.payload);
+      state.cartItems = {
+        qty: action.payload,
+      };
     },
-    increment: (state, action) => {
-      const cartItem = state.cartItems.find(
-        (el) => el.inventory === action.payload.inventory
-      );
-      if (cartItem) cartItem.qty += action.payload.qty;
-      else {
-        state.cartItems.push({
-          inventory: action.payload.inventory,
-          qty: action.payload.qty,
-        });
-      }
-    },
-
-    decrement: (state, action) => {
-      const cartItem = state.cartItems.find(
-        (el) => el.inventory.id === action.payload.id
-      );
-      if (cartItem) {
-        cartItem.qty--;
-        if (cartItem.qty === 0) {
-          state.cartItems = state.cartItems.filter(
-            (el) => el.inventory.id !== action.payload.id
-          );
-        }
-      }
+    setQty: (state, action) => {
+      console.log(action.payload);
+      state.cartItems = {
+        qty: action.payload.qty,
+      };
     },
   },
 });
@@ -58,9 +38,9 @@ export const inventoryQtyInCartSelector = createSelector(
 
 export const totalCartItemsSelector = createSelector(
   [cartItems],
-  (cartItems) => cartItems.length
+  (cartItems) => cartItems.qty
 );
 
-export const { increment, decrement, setInitialState } = cartSlice.actions;
+export const { setQty, setInitialState } = cartSlice.actions;
 
 export default cartSlice.reducer;

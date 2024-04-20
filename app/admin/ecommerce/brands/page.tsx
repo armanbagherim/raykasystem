@@ -139,12 +139,14 @@ export default function Brands() {
       header: "تصویر ",
       size: 20,
       Cell({ row }) {
-        return row.attachment ? (
+        return row.original.attachment ? (
           <Image
             loading="eager"
             src={`${
               process.env.NEXT_PUBLIC_BASE_URL
-            }/v1/api/ecommerce/brands/image/${row.attachment?.fileName || ""}`}
+            }/v1/api/ecommerce/brands/image/${
+              row.original.attachment?.fileName || ""
+            }`}
             width={50}
             height={50}
             alt=""
@@ -166,10 +168,8 @@ export default function Brands() {
       },
       Cell: ({ row }) => (
         <>
-          <a href='#'>
-            <Button variant="outlined" color="success">
-               آپلود تصویر
-            </Button>
+          <a href="#">
+            <Uploader location={`v1/api/ecommerce/brands/image`} id={row.id} />
           </a>
           <a href={`/admin/ecommerce/brands/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
@@ -196,7 +196,12 @@ export default function Brands() {
   // );
   return (
     <div>
-      <LightDataGrid url={"/v1/api/ecommerce/brands?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=false"} columns={columns} />
+      <LightDataGrid
+        url={
+          "/v1/api/ecommerce/brands?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=false"
+        }
+        columns={columns}
+      />
     </div>
   );
 }

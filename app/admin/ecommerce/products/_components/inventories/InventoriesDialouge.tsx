@@ -113,7 +113,6 @@ export default function InventoriesDialouge({
       "qty",
       "buyPrice",
       "firstPrice",
-      "secondaryPrice",
     ];
 
     return requiredFields.every(
@@ -243,7 +242,6 @@ export default function InventoriesDialouge({
               variant="standard"
               defaultValue={localTempInventory?.buyPrice}
               onChange={(e) => handleSelectChange(e, "buyPrice")}
-          
             />
           </div>
         </div>

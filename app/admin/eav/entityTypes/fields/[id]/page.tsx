@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import { useAtom } from "jotai";
 import { pageTitle } from "@/app/admin/layout";
 import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
@@ -111,8 +111,8 @@ export default function Eav({ params }) {
       maxSize: 200, //max size enforced during resizing
       size: 200, //medium column
       Cell({ row }) {
-        return !row.required ? 'غیراجباری' : 'اجباری'
-      }
+        return !row.required ? "غیراجباری" : "اجباری";
+      },
     },
     {
       accessorKey: "Actions",
@@ -126,6 +126,16 @@ export default function Eav({ params }) {
       },
       Cell: ({ row }) => (
         <>
+          {console.log(row)}
+          {row?.original?.attributeType?.valueBased == true ? (
+            <a href={`/admin/eav/entityTypes/fields/${row.id}/values`}>
+              <Button type="button" variant="outlined">
+                مقادیر
+              </Button>
+            </a>
+          ) : (
+            ""
+          )}
           <a href={`/admin/eav/entityTypes/fields/${params.id}/edit/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
