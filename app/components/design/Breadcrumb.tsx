@@ -19,7 +19,7 @@ const Breadcrumb = ({ product }) => {
           </div>
         </Link>
         <ChevronLeft />
-        <Link href={product.entityType.slug}>
+        <Link href={`/category/${product.entityType.slug}`}>
           <div className="whitespace-nowrap text-right text-green-500 text-black-70 font mx-2 font-medium">
             {product.entityType.name}
           </div>

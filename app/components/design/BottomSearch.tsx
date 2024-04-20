@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { debounce } from "lodash"; // Import debounce from Lodash
 import { ChevronLeft, Close, Menu } from "./Icons";
+import Link from "next/link";
 
 export default function BottomSearch() {
   const [searchTerm, setSearchTerm] = useState();
@@ -84,7 +85,7 @@ export default function BottomSearch() {
         alt=""
       />
       <div
-        className={`w-full overflow-x-scroll h-full bg-white fixed top-0 left-0 z-10 pt-5 px-6 ${
+        className={`w-full overflow-x-scroll h-full bg-white fixed top-0 left-0 z-10 pt-5 px-6 pb-48 overflow-y-auto ${
           isMenuOpen ? "block animate-open-menu" : "hidden animate-close-menu"
         }`}
       >
@@ -107,7 +108,9 @@ export default function BottomSearch() {
           <div className="flex justify-between border-b border-b-gray-300 pb-4 mb-4">
             <p className="peyda">در محصولات</p>
             <span className="font-bold text-primary">
-              <a href="">همه محصولات</a>
+              <Link href={`/search?search=${searchTerm}`}>
+                <span href="">همه {searchTerm || "محصولات"} </span>
+              </Link>
             </span>
           </div>
           <div className="mb-4">
@@ -124,10 +127,9 @@ export default function BottomSearch() {
                     key={key}
                     className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
                   >
-                    <p>{value.title}</p>
-                    <p className="font-bold ">
-                      {Number(12000000).toLocaleString()}
-                    </p>
+                    <Link href={`/product/${value.sku}/${value.slug}`}>
+                      <p>{value.title}</p>
+                    </Link>
                   </div>
                 ))
               )
@@ -143,7 +145,7 @@ export default function BottomSearch() {
               <a href="">همه برند ها</a>
             </span>
           </div>
-          <div className="mb-4 flex gap-2">
+          <div className="mb-4 flex gap-2 flex-wrap">
             {searchTerm ? (
               isLoading ? (
                 <div className="h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
@@ -157,7 +159,9 @@ export default function BottomSearch() {
                     key={key}
                     className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
                   >
-                    <p>{value.name}</p>
+                    <Link href={`/brand/${value.slug}`}>
+                      <p>{value.name}</p>
+                    </Link>
                   </div>
                 ))
               )
@@ -187,7 +191,9 @@ export default function BottomSearch() {
                     key={key}
                     className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
                   >
-                    <p>{value?.name}</p>
+                    <Link href={`/category/${value.slug}`}>
+                      <p>{value.name}</p>
+                    </Link>
                   </div>
                 ))
               )

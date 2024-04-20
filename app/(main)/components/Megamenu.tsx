@@ -51,7 +51,7 @@ const Megamenu = ({ items }) => {
                   let columnCounter = 0; // متغیر برای شمارش ستون‌ها
                   return (
                     <div key={key} className="p-4 col-span-1 hover:text-black ">
-                      <Link href={value.slug}>
+                      <Link href={`/category/${value.slug}`}>
                         <span className="w-2 h-2 ml-3 rounded-xl bg-primary inline-block"></span>
                         <span className="text-primary text-md">
                           {value.name}
@@ -65,7 +65,7 @@ const Megamenu = ({ items }) => {
                         }
                         return (
                           <Link
-                            href={values.slug}
+                            href={`/category/${values.slug}`}
                             key={keys}
                             className={`block py-4 pr-2 hover:text-black text-md pb-2 ${
                               columnCounter > 0

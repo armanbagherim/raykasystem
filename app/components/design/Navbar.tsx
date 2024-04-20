@@ -11,7 +11,7 @@ async function getEntity() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes?ignoreChilds=true&sortOrder=ASC`,
     {
-      cache: "no-store",
+      cache: "force-cache",
     }
   );
 

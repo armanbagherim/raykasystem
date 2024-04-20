@@ -234,7 +234,7 @@ export default function SingleProductModule({ product, related, cook }) {
         product={localInventories}
       />
 
-      <div className="container mx-auto mt-5 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-5 flex">
+      <div className="container mx-auto mt-5 gap-10 border-[#F4F4F4] whitespace-nowrap overflow-x-auto shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl p-5 flex">
         <div className="mr-3 text-green-700">نقد و بررسی محصول</div>
         <div>مشخصات محصول</div>
         <div>نظرات</div>
@@ -418,7 +418,7 @@ export default function SingleProductModule({ product, related, cook }) {
           <div className="col-span-12 lg:col-span-9">
             <div className="border-0 w-full rounded-xl mt-5">
               <div className="border w-full rounded-3xl m-2 p-3">
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap flex-wrap">
                   <div className="text-md items-center my-auto">
                     آرمان باقری
                   </div>
@@ -463,7 +463,7 @@ export default function SingleProductModule({ product, related, cook }) {
 
             <div className="border-0 w-full rounded-xl mt-5">
               <div className="border w-full rounded-3xl m-2 p-3">
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap">
                   <div className="text-md items-center my-auto">
                     آرمان باقری
                   </div>
@@ -508,7 +508,7 @@ export default function SingleProductModule({ product, related, cook }) {
 
             <div className="border-0 w-full rounded-xl mt-5">
               <div className="border w-full rounded-3xl m-2 p-3">
-                <div className="flex gap-4">
+                <div className="flex gap-4 flex-wrap">
                   <div className="text-md items-center my-auto">
                     آرمان باقری
                   </div>

@@ -341,6 +341,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
             ) : (
               localCart?.result.map((value, index) => (
                 <CartItems
+                  key={index}
                   localCart={localCart}
                   setLocalCart={setLocalCart}
                   cook={cookies.value}
@@ -360,7 +361,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                   <input
                     className="bg-[#F8F8F8] w-full text-gray-700 rounded rounded-2xl py-4 px-4 mb-3 focus:outline-none"
                     type="text"
-                    value="مهراد"
+                    value={session?.result?.firstname ?? ""}
                     disabled
                   />
                 </div>
@@ -369,23 +370,34 @@ const CartModule = ({ cartItems, session, cookies }) => {
                   <input
                     className="bg-[#F8F8F8] w-full text-gray-700 rounded rounded-2xl py-4 px-4 mb-3 focus:outline-none"
                     type="text"
-                    value="مهراد"
+                    value={session?.result?.lastname ?? ""}
                     disabled
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2">
                 <div className="col-span-1">انتخاب آدرس</div>
-                <button
-                  variant="outlined"
-                  onClick={handleClickOpen}
-                  className="col-span-1 flex gap-2 justify-end outline-none"
-                >
-                  <span>
-                    <PlusSmall />
-                  </span>
-                  <span>افزودن آدرس</span>
-                </button>
+                {session?.token ? (
+                  <button
+                    variant="outlined"
+                    onClick={handleClickOpen}
+                    className="col-span-1 flex gap-2 justify-end outline-none"
+                  >
+                    <span>
+                      <PlusSmall />
+                    </span>
+                    <span>افزودن آدرس</span>
+                  </button>
+                ) : (
+                  <Link href={`/login?redirect_back_url=/cart`}>
+                    <button
+                      variant="outlined"
+                      className="col-span-1 flex gap-2 justify-end outline-none w-full"
+                    >
+                      <span>ورود برای افزودن آدرس</span>
+                    </button>
+                  </Link>
+                )}
 
                 <Dialog
                   fullScreen={fullScreen}
@@ -422,7 +434,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           type="text"
                           id="first_name"
                           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="John"
                           required
                           onChange={(e) => setName(e.target.value)}
                         />
@@ -509,7 +520,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
                               type="text"
                               id="first_name"
                               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              placeholder="John"
                               required
                               value={street}
                               onChange={(e) => setStreet(e.target.value)}
@@ -526,7 +536,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
                               type="text"
                               id="first_name"
                               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              placeholder="John"
                               required
                               onChange={(e) => setAlley(e.target.value)}
                             />
@@ -542,7 +551,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
                               type="text"
                               id="first_name"
                               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              placeholder="John"
                               required
                               onChange={(e) => setPlaque(e.target.value)}
                             />
@@ -558,7 +566,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
                               type="text"
                               id="first_name"
                               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              placeholder="John"
                               required
                               onChange={(e) => setFloorNumber(e.target.value)}
                             />
@@ -574,7 +581,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           type="text"
                           id="first_name"
                           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="John"
                           required
                           onChange={(e) => setDescription(e.target.value)}
                         />
@@ -777,9 +783,11 @@ const CartModule = ({ cartItems, session, cookies }) => {
                   پرداخت سفارش
                 </button>
               ) : (
-                <button className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700">
-                  برای پرداخت سفارش وارد شوید
-                </button>
+                <Link href={`/login?redirect_back_url=/cart`}>
+                  <button className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700">
+                    برای پرداخت سفارش وارد شوید
+                  </button>
+                </Link>
               )}
             </div>
           </div>

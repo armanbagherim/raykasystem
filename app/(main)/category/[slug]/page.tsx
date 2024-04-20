@@ -124,6 +124,7 @@ async function getProducts(searchParams, entity) {
 
 export async function generateMetadata({ params }): Promise<Metadata> {
   const { result: entity } = await getEntity(params);
+  console.log(entity);
   return {
     title: `جهیزان | ${entity.name}`,
   };

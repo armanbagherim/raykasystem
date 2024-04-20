@@ -28,7 +28,6 @@ export default async function page() {
 
   const cart = await getCart(session);
   // const prices = await calculate();
-  console.log("cartsssssssssssssss", cart);
   return (
     <CartModule
       cartItems={cart}
