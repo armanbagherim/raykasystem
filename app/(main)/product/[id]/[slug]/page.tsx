@@ -2,19 +2,24 @@ import React from "react";
 import { Metadata } from "next";
 import SingleProductModule from "./_components/SingleProductModule";
 import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
 const getProduct = async (slug: number) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/${slug}`
   );
   const response = await res.json();
+  console.log("newwwwwwwwwwwwwwww", response);
+  if (response.statusCode === 404) {
+    return notFound();
+  }
   return response;
 };
 
-async function getRelated() {
+async function getRelated(entity) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id&entityTypeId=${entity}`,
     {
-      cache: "no-store",
+      cache: "force-cache",
     }
   );
 
@@ -34,14 +39,14 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   };
 }
 
-export default async function SingleProduct({ params }) {
+export default async function SingleProduct({ params, searchParams }) {
   const coo = cookies();
-
+  console.log(params);
   const {
     result: { result: product },
   } = await getProduct(params.slug);
 
-  const { result: related } = await getRelated();
+  const { result: related } = await getRelated(product.entityTypeId);
 
   return (
     <SingleProductModule

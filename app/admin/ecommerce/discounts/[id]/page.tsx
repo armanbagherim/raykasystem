@@ -11,9 +11,12 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Loading from "@/app/components/global/loading";
+import { useAtom } from "jotai";
+import { pageTitle } from "../../../layout";
 
 export default function NewDiscount({ params }) {
   const router = useRouter();
+  const [title, setTitle] = useAtom(pageTitle);
 
   const [requestBody, setRequestBody] = useState({
     id: null,
@@ -38,6 +41,14 @@ export default function NewDiscount({ params }) {
     isLoading: discountIsLoading,
     error: discountError,
   } = useFetcher(`/v1/api/ecommerce/admin/discounts/${params.id}`, "GET");
+
+  useEffect(() => {
+    setTitle({
+      title: "ویرایش تخفیف",
+      buttonTitle: "",
+      link: "",
+    });
+  }, []);
 
   useEffect(() => {
     if (!discountIsLoading) {
@@ -278,7 +289,7 @@ export default function NewDiscount({ params }) {
           }
         />
       </div>
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <SearchSelect
           loadingState={vendorsIsLoading}
           data={vendors?.result}
@@ -288,7 +299,7 @@ export default function NewDiscount({ params }) {
           label="فروشگاه"
           onChange={(e) => setRequestBody({ ...requestBody, vendorId: e.id })}
         />
-      </div>
+      </div> */}
       <div className="flex gap-6 items-center">
         <div className="flex-1">
           <label className="inline-flex items-center cursor-pointer">
@@ -320,7 +331,7 @@ export default function NewDiscount({ params }) {
           />
         </div>
       </div>
-      <SaveBar action={save} />
+      <SaveBar action={save} backUrl={'/admin/ecommerce/discounts/'}/>
     </div>
   );
 }

@@ -113,7 +113,6 @@ export default function InventoriesDialouge({
       "qty",
       "buyPrice",
       "firstPrice",
-      "secondaryPrice",
     ];
 
     return requiredFields.every(
@@ -237,7 +236,7 @@ export default function InventoriesDialouge({
           <div className="flex-1">
             <TextField
               autoComplete="off"
-              required
+              // required
               id="standard-basic"
               label="قیمت خرید"
               variant="standard"
@@ -250,7 +249,7 @@ export default function InventoriesDialouge({
           <div className="flex-1">
             <TextField
               autoComplete="off"
-              required
+              // required
               id="standard-basic"
               label="قیمت اقساطی"
               variant="standard"
@@ -261,10 +260,9 @@ export default function InventoriesDialouge({
           <div className="flex-1">
             <TextField
               autoComplete="off"
-              required
+              // required
               id="standard-basic"
               label="قیمت نقدی"
-              nullable={true}
               variant="standard"
               defaultValue={localTempInventory?.secondaryPrice}
               onChange={(e) => handleSelectChange(e, "secondaryPrice")}

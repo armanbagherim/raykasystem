@@ -7,12 +7,13 @@ import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { HexColorPicker } from "react-colorful";
 import { pageTitle } from "@/app/admin/layout";
+import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
   useEffect(() => {
     setTitle({
-      title: "ساخت دسته بندی",
+      title: "افزودن فیلد",
       buttonTitle: "",
       link: "",
     });
@@ -32,7 +33,7 @@ export default function Eav({ params }) {
     `/v1/api/eav/admin/attributeTypes?sortOrder=ASC&orderBy=id&ignorePaging=true`,
     "GET"
   );
-  const saveField = async () => {
+  const save = async () => {
     try {
       const req = await fetcher({
         url: "/v1/api/eav/admin/attributes",
@@ -68,7 +69,6 @@ export default function Eav({ params }) {
           type="text"
           id="first_name"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
           required
           onChange={(e) => setName(e.target.value)}
         />
@@ -84,7 +84,6 @@ export default function Eav({ params }) {
               type="text"
               id="first_name"
               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="John"
               required
               onChange={(e) => setMin(e.target.value)}
             />
@@ -101,7 +100,6 @@ export default function Eav({ params }) {
               type="text"
               id="first_name"
               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="John"
               required
               onChange={(e) => setMax(e.target.value)}
             />
@@ -137,7 +135,7 @@ export default function Eav({ params }) {
             )}
           </select>
         </div>
-        <div className="w-full">
+        <div className="w-full flex">
           <label htmlFor="required" className="ml-4">
             اجباری؟
           </label>
@@ -150,12 +148,13 @@ export default function Eav({ params }) {
         </div>
       </div>
 
-      <button
+      {/* <button
         onClick={saveField}
         className="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
       >
         ایجاد
-      </button>
+      </button> */}
+      <SaveBar action={save} />
     </div>
   );
 }

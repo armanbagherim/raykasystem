@@ -9,6 +9,7 @@ import { pageTitle } from "../../layout";
 import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
 import { IconButton } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import ChangeFormatDate from "@/app/components/global/ChangeFormatDate";
 
 export default function Users() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -16,8 +17,8 @@ export default function Users() {
   useEffect(() => {
     setTitle({
       title: "کاربران",
-      buttonTitle: "افزودن کاربر",
-      link: "/admin/core/users/new",
+      buttonTitle: "",
+      link: "",
     });
   }, []);
 
@@ -55,8 +56,10 @@ export default function Users() {
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
       size: 180, //medium column
+      Cell({row}){
+        return ChangeFormatDate(row.original.updatedAt); 
+      }
     },
-
     {
       accessorKey: "Actions",
       header: "عملیات",

@@ -6,6 +6,12 @@ import Loading from "../../../components/global/loading";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
 import { toast } from "react-toastify";
+import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
+import { Button, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import Image from "next/image";
+import Uploader from "@/app/components/global/Uploader";
 
 export default function Guarantees() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -30,69 +36,150 @@ export default function Guarantees() {
       toast.error(error.message);
     }
   };
-  const {
-    data: brands,
-    isLoading: brandsIsLoading,
-    error: brandsError,
-    refetch: refetchBrands,
-  } = useFetcher(
-    `/v1/api/ecommerce/guarantees?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
-    "GET"
-  );
+  // const {
+  //   data: brands,
+  //   isLoading: brandsIsLoading,
+  //   error: brandsError,
+  //   refetch: refetchBrands,
+  // } = useFetcher(
+  //   `/v1/api/ecommerce/guarantees?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
+  //   "GET"
+  // );
 
-  const columns: GridColDef[] = [
+  // const columns: GridColDef[] = [
+  //   {
+  //     field: "id",
+  //     headerName: "شناسه",
+  //     width: 150,
+  //   },
+  //   {
+  //     field: "name",
+  //     headerName: "نام ",
+  //     width: 150,
+  //   },
+  //   {
+  //     field: "slug",
+  //     headerName: "اسلاگ",
+  //     width: 150,
+  //   },
+  //   {
+  //     field: "list",
+  //     headerName: "ویرایش",
+  //     width: 150,
+  //     renderCell: (row) => (
+  //       <a href={`/admin/ecommerce/guarantees/${row.id}`}>
+  //         <button
+  //           type="button"
+  //           className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+  //         >
+  //           ویرایش
+  //         </button>
+  //       </a>
+  //     ),
+  //   },
+  //   {
+  //     field: "delete",
+  //     headerName: "حذف",
+  //     width: 150,
+  //     renderCell: ({ row }) => (
+  //       <a onClick={(e) => deleteGuarantee(row.id)}>
+  //         <button
+  //           type="button"
+  //           className="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+  //         >
+  //           حذف
+  //         </button>
+  //       </a>
+  //     ),
+  //   },
+  // ];
+  // if (brandsIsLoading) {
+  //   return <Loading />;
+  // }
+
+  const columns = [
     {
-      field: "id",
-      headerName: "شناسه",
-      width: 150,
+      accessorKey: "id",
+      header: "شناسه",
+      size: 10,
+      maxSize: 10,
     },
     {
-      field: "name",
-      headerName: "نام ",
-      width: 150,
+      accessorKey: "name",
+      header: "نام ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 100, //max size enforced during resizing
+      size: 100, //medium column
     },
     {
-      field: "slug",
-      headerName: "اسلاگ",
-      width: 150,
+      accessorKey: "slug",
+      header: "لینک",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
     },
     {
-      field: "list",
-      headerName: "ویرایش",
-      width: 150,
-      renderCell: (row) => (
-        <a href={`/admin/ecommerce/guarantees/${row.id}`}>
-          <button
-            type="button"
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-          >
-            ویرایش
-          </button>
-        </a>
-      ),
+      accessorKey: "image",
+      header: "تصویر ",
+      size: 20,
+      Cell({ row }) {
+        return row ? (
+          <Image
+            loading="eager"
+            src={`${
+              process.env.NEXT_PUBLIC_BASE_URL
+            }/v1/api/ecommerce/guarantees/image/${
+              row.original.attachment?.fileName || ""
+            }`}
+            width={50}
+            height={50}
+            alt=""
+          />
+        ) : (
+          <img width={30} height={30} src="/images/no-photos.png" alt="" />
+        );
+      },
     },
     {
-      field: "delete",
-      headerName: "حذف",
-      width: 150,
-      renderCell: ({ row }) => (
-        <a onClick={(e) => deleteGuarantee(row.id)}>
-          <button
-            type="button"
-            className="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-          >
-            حذف
-          </button>
-        </a>
+      accessorKey: "Actions",
+      header: "عملیات",
+      size: 200,
+      muiTableHeadCellProps: {
+        align: "right",
+      },
+      muiTableBodyCellProps: {
+        align: "right",
+      },
+      Cell: ({ row }) => (
+        <>
+          <Uploader
+            location={`v1/api/ecommerce/guarantees/image`}
+            id={row.id}
+          />
+
+          <a href={`/admin/ecommerce/guarantees/${row.id}`}>
+            <IconButton aria-label="delete" color="primary">
+              <ModeEditIcon />
+            </IconButton>
+          </a>
+          <a onClick={(e) => deleteGuarantee(row.id)}>
+            <IconButton aria-label="delete" color="error">
+              <DeleteIcon />
+            </IconButton>
+          </a>
+        </>
       ),
     },
   ];
-  if (brandsIsLoading) {
-    return <Loading />;
-  }
+
   return (
     <div>
-      <DataGrid rows={brands.result} columns={columns} />
+      <LightDataGrid
+        url={
+          "/v1/api/ecommerce/guarantees?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false"
+        }
+        columns={columns}
+      />
     </div>
   );
 }

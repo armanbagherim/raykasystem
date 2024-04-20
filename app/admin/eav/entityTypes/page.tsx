@@ -11,6 +11,7 @@ import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import Uploader from "@/app/components/global/Uploader";
 
 export default function Eav() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -54,13 +55,13 @@ export default function Eav() {
       header: "تصویر ",
       size: 20,
       Cell({ row }) {
-        return row.attachment ? (
+        return row.original.attachment ? (
           <Image
             loading="eager"
             src={`${
               process.env.NEXT_PUBLIC_BASE_URL
             }/v1/api/eav/admin/entityTypes/image/${
-              row.attachment?.fileName || ""
+              row.original.attachment?.fileName || ""
             }`}
             width={50}
             height={50}
@@ -73,7 +74,7 @@ export default function Eav() {
     },
     {
       accessorKey: "slug",
-      header: "آدرس",
+      header: "لینک",
     },
 
     {
@@ -88,7 +89,16 @@ export default function Eav() {
       },
       Cell: ({ row }) => (
         <>
-          <a href={`/admin/eav/entityTypes/fields/${row.id}`}>
+          <a href={`#`}>
+            <Uploader
+              location={`v1/api/eav/admin/entityTypes/image`}
+              id={row.id}
+            />
+          </a>
+          <a
+            className="ml-1 mr-1"
+            href={`/admin/eav/entityTypes/fields/${row.id}`}
+          >
             <Button variant="outlined" color="success">
               فیلد ها
             </Button>

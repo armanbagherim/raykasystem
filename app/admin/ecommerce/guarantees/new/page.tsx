@@ -14,7 +14,7 @@ export default function Guarantees() {
 
   useEffect(() => {
     setTitle({
-      title: "افزودن برند جدید",
+      title: "افزودن گارانتی جدید",
       buttonTitle: "",
       link: "",
     });
@@ -58,7 +58,6 @@ export default function Guarantees() {
           type="text"
           id="first_name"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
           required
           onChange={(e) => setName(e.target.value)}
         />
@@ -72,27 +71,24 @@ export default function Guarantees() {
           type="text"
           id="first_name"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
           required
           onChange={(e) => setSlug(e.target.value)}
         />
+
         <label
-          htmlFor="first_name"
+          htmlFor="description"
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >
           توضیحات
         </label>
-        <input
-          type="text"
-          id="first_name"
+        <textarea
+          id="description"
+          rows="5"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
-          required
-          onChange={(e) => setDescription(e.target.value)}
-        />
+        ></textarea>
       </div>
 
-      <SaveBar action={(e) => save()} />
+      <SaveBar action={save} backUrl={"/admin/ecommerce/guarantees/"} />
     </div>
   );
 }

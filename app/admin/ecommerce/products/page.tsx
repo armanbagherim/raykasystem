@@ -17,12 +17,12 @@ export default function Products() {
   useEffect(() => {
     setTitle({
       title: "محصولات",
-      buttonTitle: "محصول جدید",
+      buttonTitle: "افزودن محصول جدید",
       link: "/admin/ecommerce/products/new",
     });
   }, []);
 
-  const deleteBrand = async (id) => {
+  const deleteRow = async (id) => {
     try {
       const req = await fetcher({
         url: `/v1/api/ecommerce/admin/products/${id}`,
@@ -53,15 +53,15 @@ export default function Products() {
       accessorKey: "brand.name",
       header: "برند",
       minSize: 100, //min size enforced during resizing
-      maxSize: 400, //max size enforced during resizing
-      size: 180, //medium column
+      maxSize: 150, //max size enforced during resizing
+      size: 150, //medium column
     },
     {
       accessorKey: "publishStatus.name",
       header: "وضعیت انتشار",
       minSize: 100, //min size enforced during resizing
-      maxSize: 400, //max size enforced during resizing
-      size: 180, //medium column
+      maxSize: 150, //max size enforced during resizing
+      size: 150, //medium column
     },
     {
       accessorKey: "entityType.name",
@@ -73,7 +73,7 @@ export default function Products() {
 
     {
       accessorKey: "slug",
-      header: "آدرس",
+      header: "لینک",
       size: 400,
     },
 
@@ -89,17 +89,12 @@ export default function Products() {
       },
       Cell: ({ row }) => (
         <>
-          <a href={`/admin/eav/entityTypes/fields/${row.id}`}>
-            <Button variant="outlined" color="success">
-              فیلد ها
-            </Button>
-          </a>
-          <a href={`/admin/eav/entityTypes/edit/${row.id}`}>
+          <a href={`/admin/ecommerce/products/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
             </IconButton>
           </a>
-          <a onClick={(e) => deleteEavType(row.id)}>
+          <a onClick={(e) => deleteRow(row.id)}>
             <IconButton aria-label="delete" color="error">
               <DeleteIcon />
             </IconButton>

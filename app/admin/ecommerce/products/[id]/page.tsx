@@ -23,6 +23,7 @@ import DataGridLite from "../_components/inventories/Datagrid";
 import InventoriesDialouge from "../_components/inventories/InventoriesDialouge";
 import Tab from "../_components/tabs/Tabs";
 import Loading from "@/app/components/global/loading";
+import SaveBar from "@/app/components/global/SaveBar";
 
 interface ProductProps {
   params: {
@@ -91,7 +92,7 @@ export default function Products({ params }) {
 
   useEffect(() => {
     setTitle({
-      title: "افزودن برند جدید",
+      title: "ویرایش محصول",
       buttonTitle: "",
       link: "",
     });
@@ -614,13 +615,14 @@ export default function Products({ params }) {
           photos={photos}
         />
 
-        <button
+        {/* <button
           onClick={saveProduct}
           className="bg-blue-700 w-full mt-6 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
         >
           ساخت محصول
-        </button>
+        </button> */}
       </aside>
+      <SaveBar action={saveProduct} backUrl="/admin/ecommerce/products"></SaveBar>
     </div>
   );
 }

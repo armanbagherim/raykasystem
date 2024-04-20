@@ -3,16 +3,28 @@ import SaveBar from "@/app/components/global/SaveBar";
 import SearchSelect from "@/app/components/global/SearchSelect";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import { Switch, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useAtom } from "jotai";
+import { pageTitle } from "../../../layout";
 
 export default function NewDiscount() {
   const router = useRouter();
+
+  const [title, setTitle] = useAtom(pageTitle);
+
+  useEffect(() => {
+    setTitle({
+      title: "افزودن تخفیف جدید",
+      buttonTitle: "",
+      link: "",
+    });
+  }, []);
 
   const [requestBody, setRequestBody] = useState({
     name: "",
@@ -117,7 +129,7 @@ export default function NewDiscount() {
           }
         />
       </div>
-      <div className="mb-6">
+      <div className="mb-10">
         <SearchSelect
           loadingState={discountTypesIsLoading}
           data={discountTypes?.result}
@@ -129,12 +141,18 @@ export default function NewDiscount() {
       </div>
       <div className="flex gap-6 mb-6">
         <div className="flex-1">
+          <label
+            htmlFor="first_name"
+            className="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            تاریخ شروع
+          </label>
           <DatePicker
             format="MM/DD/YYYY HH:mm:ss"
             plugins={[<TimePicker key={1} position="bottom" />]}
             calendar={persian}
             locale={persian_fa}
-            inputClass="w-full border-b outline-none py-4 border-gray-500"
+            inputClass="w-full border-b outline-none py-1 border-gray-500"
             containerClassName="w-full"
             onChange={(e) =>
               setRequestBody({
@@ -145,9 +163,15 @@ export default function NewDiscount() {
           />
         </div>
         <div className="flex-1">
+          <label
+            htmlFor="first_name"
+            className="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            تاریخ پایان
+          </label>
           <DatePicker
             format="MM/DD/YYYY HH:mm:ss"
-            inputClass="w-full border-b outline-none py-4 border-gray-500"
+            inputClass="w-full border-b outline-none py-1 border-gray-500"
             containerClassName="w-full"
             plugins={[<TimePicker key={2} position="bottom" />]}
             calendar={persian}
@@ -233,7 +257,7 @@ export default function NewDiscount() {
           }
         />
       </div>
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <SearchSelect
           loadingState={vendorsIsLoading}
           data={vendors?.result}
@@ -242,7 +266,7 @@ export default function NewDiscount() {
           label="فروشگاه"
           onChange={(e) => setRequestBody({ ...requestBody, vendorId: e.id })}
         />
-      </div>
+      </div> */}
       <div className="flex gap-6 items-center">
         <div className="flex-1">
           <label className="inline-flex items-center cursor-pointer">
@@ -273,7 +297,7 @@ export default function NewDiscount() {
           />
         </div>
       </div>
-      <SaveBar action={save} />
+      <SaveBar action={save} backUrl={"/admin/ecommerce/discounts/"} />
     </div>
   );
 }

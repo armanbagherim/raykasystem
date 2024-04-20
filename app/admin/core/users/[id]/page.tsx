@@ -214,12 +214,12 @@ export default function Users({ params }: PageProps): JSX.Element {
                     onChange={() => handleRoleChange(role.id)}
                   />
                 </div>
-              </div>
+              </div> 
             </div>
           ))}
         </div>
       </div>
-      <SaveBar action={save} />
+      <SaveBar action={save}  backUrl={'/admin/core/users/'} />
     </div>
   );
 }

@@ -3,8 +3,24 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import Link from "next/link";
 import Megamenu from "@/app/(main)/components/Megamenu";
+import CartCount from "./CartCount";
+import Search from "../Search";
+import BottomSearch from "./BottomSearch";
+
+async function getEntity() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes?ignoreChilds=true&sortOrder=ASC`,
+    {
+      cache: "force-cache",
+    }
+  );
+
+  return res.json();
+}
 
 export default async function NavbarModule() {
+  const { result: entity } = await getEntity();
+
   const session = await getServerSession(authOptions);
 
   return (
@@ -25,16 +41,8 @@ export default async function NavbarModule() {
               />
             </Link>
             <div className="relative w-auto md:w-full">
-              <img
-                className="relative md:absolute md:right-3 md:top-4"
-                src="/icons/search.svg"
-                alt=""
-              />
-              <input
-                placeholder="جستجو کنید"
-                type="text"
-                className="border rounded-2xl hidden md:block p-4 pr-12 outline-none w-full bg-[#FBFBFB]"
-              />
+              <BottomSearch />
+              <Search />
             </div>
           </div>
           <div className="flex w-1/2 justify-end hidden md:flex">
@@ -48,17 +56,26 @@ export default async function NavbarModule() {
                 </span>
               </button>
             </Link>
-            <button className="border rounded-2xl p-4 relative">
-              <span className="w-6 h-6 rounded-lg absolute bg-primary text-white -right-2 -top-2 flex justify-center items-center">
-                0
-              </span>
-              <img src="/icons/cart.svg" alt="" />
-            </button>
+            <a href="/cart">
+              <button className="border rounded-2xl p-4 relative">
+                <span className="w-6 h-6 rounded-lg absolute bg-primary text-white -right-2 -top-2 flex justify-center items-center">
+                  <span>
+                    <CartCount />
+                  </span>
+                </span>
+                <img src="/icons/cart.svg" alt="" />
+              </button>
+            </a>
           </div>
         </div>
+
+        {/* <div className="absolute bg-slate-500 justify-between rounded rounded-3xl text-lg text-slate-500 p-4 mt-10 w-full h-10 group-hover:block">
+        </div> */}
+      </div>
+      <div className="container mx-auto">
         <div
           id="navbar"
-          className="flex justify-between items-center relative hidden sm:flex z-50"
+          className="flex justify-between items-center relative hidden sm:flex z-50 whitespace-nowrap"
         >
           <nav>
             <ul className="flex">
@@ -67,7 +84,7 @@ export default async function NavbarModule() {
                 <span className="mx-3">
                   <a href="#">دسته بندی ها</a>
                 </span>
-                <Megamenu />
+                <Megamenu items={entity} />
                 <img src="/icons/down.svg" width={12} alt="" />
               </li>
               <li className="flex ml-3">
@@ -81,8 +98,10 @@ export default async function NavbarModule() {
                 <span className="mx-3">پک های هدیه</span>
               </li>
               <li className="flex ml-3">
-                <img src="/icons/brands.svg" alt="" />
-                <span className="mx-3">برند ها</span>
+                <Link className="flex" href={"/brands"}>
+                  <img src="/icons/brands.svg" alt="" />
+                  <span className="mx-3">برند ها</span>
+                </Link>
               </li>
             </ul>
           </nav>
@@ -92,9 +111,6 @@ export default async function NavbarModule() {
             <span className="mr-2">تخفیفات ویژه</span>
           </button>
         </div>
-
-        {/* <div className="absolute bg-slate-500 justify-between rounded rounded-3xl text-lg text-slate-500 p-4 mt-10 w-full h-10 group-hover:block">
-        </div> */}
       </div>
     </div>
   );

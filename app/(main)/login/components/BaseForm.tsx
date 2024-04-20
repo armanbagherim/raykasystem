@@ -1,12 +1,14 @@
 "use client";
 import { getSession, signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import VerificationInput from "react-verification-input";
 export default function SignInForm({ session }) {
   const router = useRouter();
+  const pathname = useSearchParams();
+
   const [phoneNumber, setPhoneNumber] = useState();
   const [verifyCode, setVerifyCode] = useState();
   const [firstName, setFirstName] = useState();
@@ -78,7 +80,11 @@ export default function SignInForm({ session }) {
         firstName: firstName,
         lastName,
         redirect: true,
-        callbackUrl: "/",
+        callbackUrl: `${
+          pathname.get("redirect_back_url")
+            ? pathname.get("redirect_back_url")
+            : "/"
+        }`,
       });
     }
   };
@@ -87,20 +93,20 @@ export default function SignInForm({ session }) {
       <div className="login">
         <ToastContainer />
 
-        <div className="">
-          <div className="h-full flex shadow-shadowCustom justify-center border border-[#F1F1F1] rounded-[25px]">
-            <div className="flex-1 flex justify-center items-center py-40">
-              <div className="text-center">
+        <div className="mb-10 md:mb-0">
+          <div className="h-full md:flex lg:flex xl:flex 2xl:flex shadow-none md:shadow-shadowCustom border-none md:border justify-center border border-[#F1F1F1] rounded-[25px]">
+            <div className="flex-1 flex justify-center items-center py-2 md:py-40 lg:py-40 xl:py-40 2xl:py-40">
+              <div className="text-center  w-full px-4 md:px-16">
                 <h4 className="text-2xl mb-2">ورود یا ثبت نام</h4>
                 <p className="mb-10">
                   ورود به خانواده <span className="text-primary">21000</span>{" "}
                   نفری جهیزان
                 </p>
                 {state == "phone" && (
-                  <div className="text-right">
+                  <div className="text-right md:m-0 lg:m-0 xl:m-0 2xl:m-0">
                     <h4 className="opacity-70 text-xs mb-3">شماره موبایل</h4>
                     <input
-                      className="bg-[#F8F8F8] text-left rounded-2xl py-4 px-6 w-full outline-none mb-8"
+                      className="bg-[#F8F8F8] text-left rounded-2xl py-4 w-full md:w-full lg:w-full xl:full px-6 outline-none mb-8"
                       type="text"
                       label="Phone Number"
                       pattern="/^(\{?(09)([1-3]){2}-([0-9]){7,7}\}?)$/"
@@ -247,8 +253,8 @@ export default function SignInForm({ session }) {
                 </button>
               </div>
             </div>
-            <div className="flex-1">
-              <div className="wrapper flex flex-col justify-between rounded-e-[25px] h-full text-white bg-gradiant-login px-8 py-11">
+            <div className="flex-1 pr-3 pl-3 lg:p-0">
+              <div className="wrapper hidden md:block  flex flex-col justify-between md:rounded-e-[25px] lg:rounded-e-[25px] xl:rounded-e-[25px] 2xl:rounded-e-[25px] h-full text-white bg-gradiant-login px-8 py-11">
                 <div>
                   <h1 className="text-2xl mb-5">به جهیزان خوش اومدی :)</h1>
                   <p className="text-lg mb-9">

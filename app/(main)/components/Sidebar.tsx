@@ -2,6 +2,7 @@
 
 import {
   Addsquare,
+  Close,
   Minussquare,
   PlusSmall,
   Searchicon,
@@ -37,7 +38,7 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
   const [selectedAttributes, setSelectedAttributes] = useState([]);
   const [firstLoad, setfirstLoad] = useState(true);
   const [value, setValue] = useState([0, range.maxPrice]);
-
+  const [isOpen, setIsOpen] = useState(false);
   const onSelect = (
     event: ChangeEvent<HTMLSelectElement>,
     type: string,
@@ -67,7 +68,7 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
     // Check if &attributes exists in the URL
     const attributesIndex = current.toString().indexOf("&attributes");
     let query = current.toString();
-
+    console.log(attributesIndex);
     // if (attributesIndex !== -1) {
     //   // Insert the new parameters before &attributes
     //   query =
@@ -86,6 +87,7 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
     });
   };
   const updateAttrSlug = (obj) => {
+    console.log(obj);
     var objs = {
       attributes: obj,
     };
@@ -127,12 +129,15 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
     startTransition(() => {
       router.push(`${pathname}${query}`);
     });
+
+    console.log(createQueryString(flatten(objs)));
   };
 
   // const isInitialMount = useRef(true);
 
   useEffect(() => {
     if (!firstLoad) {
+      console.log(selectedAttributes);
       updateAttrSlug(selectedAttributes);
     }
   }, [selectedAttributes]); // Keep selectedAttributesVersion in the dependency array
@@ -213,6 +218,7 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
       let min = [Math.min(newValue[0], value[1] - minDistance), value[1]];
       setValue(min);
       debouncedOnSelect(min[0], "minPrice");
+      console.log(min);
     } else {
       let max = [value[0], Math.max(newValue[1], value[0] + minDistance)];
       setValue(max);
@@ -222,132 +228,176 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
 
   return (
     <>
+      <div className="flex  md:hidden fixed bottom-28 right-5 bg-primary w-12 h-12 justify-center rounded-xl">
+        <button onClick={(e) => setIsOpen(true)} className="">
+          <Sorticon stroke="white" />
+        </button>
+      </div>
       {isPending && (
         <div className="bg-[#fffffff0] fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
           <ClientLoading />
         </div>
       )}
-      <div className="col-span-3 p-4">
-        <Accordion
-          defaultExpanded
-          className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2"
-        >
-          <AccordionSummary
-            expandIcon={<PlusSmall />}
-            aria-controls="panel1-content"
-            id="panel1-header"
+
+      <div
+        className={`md:block col-span-3 p-4 fixed top-0 left-0 w-full h-full md:w-auto md:h-auto md:static  bg-white ${
+          isOpen ? "block" : "hidden"
+        }`}
+      >
+        <div className="relative h-4/5 overflow-y-scroll px-4 md:px-0 mb-3 md:overflow-y-hidden">
+          <div
+            className="mb-6 flex justify-between items-center md:hidden"
+            onClick={(e) => setIsOpen(false)}
           >
-            <Typography>برند</Typography>
-          </AccordionSummary>
-          <AccordionDetails className="bg-white border-0">
-            <div className=" overflow-y-scroll max-h-52 font-normal text-md">
-              {brands.map((value, key) => (
-                <div key={key} className="p-2 grid grid-cols-2">
-                  <label htmlFor={value.name + value.id} className="col-span-1">
-                    {value.name}
-                  </label>
-                  <span className="col-span-1 flex justify-end">
-                    <input
-                      onChange={(e) => onSelect(e, "brands")}
-                      id={value.name + value.id}
-                      value={value.id}
-                      type="checkbox"
-                    />
-                  </span>
+            <span>
+              <Close />
+            </span>
+          </div>
+          {brands ? (
+            <Accordion
+              defaultExpanded
+              className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2"
+            >
+              <AccordionSummary
+                expandIcon={<PlusSmall />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+              >
+                <Typography>برند</Typography>
+              </AccordionSummary>
+              <AccordionDetails className="bg-white border-0">
+                <div className=" overflow-y-auto max-h-52 font-normal text-md">
+                  {brands.map((value, key) => (
+                    <div key={key} className="p-2 grid grid-cols-2">
+                      <label
+                        htmlFor={value.name + value.id}
+                        className="col-span-1"
+                      >
+                        {value.name}
+                      </label>
+                      <span className="col-span-1 flex justify-end">
+                        <input
+                          onChange={(e) => onSelect(e, "brands")}
+                          id={value.name + value.id}
+                          value={value.id}
+                          type="checkbox"
+                        />
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </AccordionDetails>
-        </Accordion>
+              </AccordionDetails>
+            </Accordion>
+          ) : (
+            ""
+          )}
 
-        <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
-          <AccordionSummary
-            expandIcon={<GridArrowDownwardIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-          >
-            <Typography>گارانتی</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            {guarantees.map((value, key) => (
-              <div key={key} className="p-2 grid grid-cols-2">
-                <label htmlFor={value.name + value.id} className="col-span-1">
-                  {value.name}
-                </label>
-                <span className="col-span-1 flex justify-end">
-                  <input id={value.name + value.id} type="checkbox" />
-                </span>
-              </div>
-            ))}
-          </AccordionDetails>
-        </Accordion>
-
-        <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
-          <AccordionSummary
-            expandIcon={<GridArrowDownwardIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-          >
-            <Typography>قیمت</Typography>
-          </AccordionSummary>
-          <AccordionDetails className="px-8">
-            <Slider
-              suppressHydrationWarning
-              getAriaLabel={() => "Minimum distance"}
-              value={value}
-              min={Number(0).toLocaleString()}
-              max={range.maxPrice}
-              onChange={handleChange}
-              valueLabelDisplay="auto"
-              getAriaValueText={valuetext}
-              disableSwap={true}
-              color="success"
-              step={Math.round(range.maxPrice / 10)}
-              mark={true}
-              valueLabelFormat={(value) => value.toLocaleString()}
-            />
-            <div className="w-full flex justify-between">
-              <span className="max" suppressHydrationWarning>
-                {Number(value[1]).toLocaleString() ||
-                  Number(range.maxPrice).toLocaleString()}
-              </span>
-              <span className="min" suppressHydrationWarning>
-                0
-              </span>
-            </div>
-          </AccordionDetails>
-        </Accordion>
-        {attributes.map((value, key) => (
-          <Accordion
-            key={key}
-            className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2"
-          >
+          <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
             <AccordionSummary
               expandIcon={<GridArrowDownwardIcon />}
               aria-controls="panel1-content"
               id="panel1-header"
             >
-              <Typography>{value.name}</Typography>
+              <Typography>قیمت</Typography>
+            </AccordionSummary>
+            <AccordionDetails className="px-8">
+              <Slider
+                getAriaLabel={() => "Minimum distance"}
+                value={value}
+                min={0}
+                max={range.maxPrice}
+                onChange={handleChange}
+                valueLabelDisplay="auto"
+                getAriaValueText={valuetext}
+                disableSwap={true}
+                color="success"
+                step={Math.round(range.maxPrice / 10)}
+                mark={true}
+                valueLabelFormat={(value) => value.toLocaleString()}
+              />
+              <div className="w-full flex justify-between">
+                <span className="max">
+                  {Number(value[1]).toLocaleString() ||
+                    Number(range.maxPrice).toLocaleString()}
+                </span>
+                <span className="min">0</span>
+              </div>
+            </AccordionDetails>
+          </Accordion>
+          {attributes
+            ? attributes.map((value, key) => (
+                <Accordion
+                  key={key}
+                  className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2"
+                >
+                  <AccordionSummary
+                    expandIcon={<GridArrowDownwardIcon />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                  >
+                    <Typography>{value.name}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <>
+                      {value.attributeValues.map((values, key) => (
+                        <div
+                          key={key}
+                          className="grid grid-cols-4 pr-5 mt-3 font-normal text-md"
+                        >
+                          <label
+                            htmlFor={values.id + values.value}
+                            className="col-span-3 flex gap-2 items-center my-auto"
+                          >
+                            <span>{values.value}</span>
+                          </label>
+                          <div className="col-span-1 flex items-center my-auto justify-end">
+                            <input
+                              id={values.id + values.value}
+                              className="flex justify-end mx-auto"
+                              type="checkbox"
+                              onChange={(e) => attrChange(e, value, values)}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  </AccordionDetails>
+                </Accordion>
+              ))
+            : ""}
+
+          <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
+            <AccordionSummary
+              expandIcon={<GridArrowDownwardIcon />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+            >
+              <Typography>رنگ</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <>
-                {value.attributeValues.map((values, key) => (
+                {colors.map((value, key) => (
                   <div
                     key={key}
                     className="grid grid-cols-4 pr-5 mt-3 font-normal text-md"
                   >
                     <label
-                      htmlFor={values.id + values.value}
+                      htmlFor={value.name + value.hexCode}
                       className="col-span-3 flex gap-2 items-center my-auto"
                     >
-                      <span>{values.value}</span>
+                      <span
+                        style={{ background: value.hexCode }}
+                        className="w-7 h-7 rounded-lg"
+                      ></span>
+                      <span>{value.name}</span>
                     </label>
                     <div className="col-span-1 flex items-center my-auto justify-end">
                       <input
-                        id={values.id + values.value}
+                        id={value.name + value.hexCode}
+                        onChange={(e) => onSelect(e, "colors")}
                         className="flex justify-end mx-auto"
+                        value={value.id}
                         type="checkbox"
-                        onChange={(e) => attrChange(e, value, values)}
                       />
                     </div>
                   </div>
@@ -355,47 +405,15 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
               </>
             </AccordionDetails>
           </Accordion>
-        ))}
-
-        <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] mb-3 !rounded-2xl no-before py-2">
-          <AccordionSummary
-            expandIcon={<GridArrowDownwardIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
+        </div>
+        <div className="px-4 block md:hidden">
+          <button
+            onClick={(e) => setIsOpen(false)}
+            className="w-full bg-primary text-white p-5 rounded-2xl text-center"
           >
-            <Typography>رنگ</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <>
-              {colors.map((value, key) => (
-                <div
-                  key={key}
-                  className="grid grid-cols-4 pr-5 mt-3 font-normal text-md"
-                >
-                  <label
-                    htmlFor={value.name + value.hexCode}
-                    className="col-span-3 flex gap-2 items-center my-auto"
-                  >
-                    <span
-                      style={{ background: value.hexCode }}
-                      className="w-7 h-7 rounded-lg"
-                    ></span>
-                    <span>{value.name}</span>
-                  </label>
-                  <div className="col-span-1 flex items-center my-auto justify-end">
-                    <input
-                      id={value.name + value.hexCode}
-                      onChange={(e) => onSelect(e, "colors")}
-                      className="flex justify-end mx-auto"
-                      value={value.id}
-                      type="checkbox"
-                    />
-                  </div>
-                </div>
-              ))}
-            </>
-          </AccordionDetails>
-        </Accordion>
+            اعمال تغییرات
+          </button>
+        </div>
       </div>
     </>
   );

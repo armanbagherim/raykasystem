@@ -1,7 +1,21 @@
 "use client";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const Megamenu = () => {
+const Megamenu = ({ items }) => {
+  const [activeSubEntities, setActiveSubEntities] = useState([]);
+  const [groupName, setGroupName] = useState();
+  console.log();
+  useEffect(() => {
+    console.log("syb", items[0].subEntityTypes);
+    setActiveSubEntities(items[0].subEntityTypes);
+    setGroupName(items[0].name);
+  }, []);
+  console.log(items);
+
+  function compareNumbers(a, b) {
+    return b.subEntityTypes.length - a.subEntityTypes.length;
+  }
   return (
     <>
       <div
@@ -13,75 +27,61 @@ const Megamenu = () => {
           onMouseEnter={(e) => e.stopPropagation()}
         >
           <div className="col-span-1 p-4 pb-0 text-slate-500">
-            <p className="p-4 border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              آشپزخانه
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              سرو و پذیرایی
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              لوازم برقی
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              لوازم خانه
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              لوازم دکوری
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              محصولات استوک
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              تخفیفات ویژه
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              سه شنبه های تخفیفی
-            </p>
-            <p className="p-4 border-t border-l hover:border-l-primary hover:border-l-4 hover:text-black">
-              مقالات
-            </p>
+            {items.map((value, key) => (
+              <p
+                key={key}
+                onMouseEnter={(e) => {
+                  setActiveSubEntities(value.subEntityTypes);
+                  setGroupName(value.name);
+                }}
+                className="p-4 border-l hover:border-l-primary hover:border-l-4 hover:text-black"
+              >
+                {value.name}
+              </p>
+            ))}
           </div>
           <div
-            className="col-span-2 p-2 pb-0"
+            className="col-span-4 p-2 pb-0"
             onMouseEnter={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b text-primary">
-              همه لوازم برقی آشپزخانه
-            </div>
-            <div className="grid grid-cols-2 text-slate-700">
-              <div className="col-span-1">
-                <p className="p-4 hover:text-black text-primary">
-                  وسایل آشپزخانه
-                </p>
-                <p className="p-4 hover:text-black">کلمن و فلاسک</p>
-                <p className="p-4">جاادویه و پاسماوری</p>
-                <p className="p-4 hover:text-black">
-                  ترازو , کفگیرملاقه و ابزار
-                </p>
-                <p className="p-4 hover:text-black">آبکش و لگن</p>
-                <p className="p-4 hover:text-black">سماور</p>
-                <p className="p-4 hover:text-black">کتری و قوری</p>
-                <p className="p-4 pb-0 hover:text-black">جا ظرفی و آب چکان</p>
+            <div className="p-4 border-b text-primary">همه {groupName} </div>
+            <div className="grid grid-cols-3 text-slate-700">
+              <div className="col-span-3 grid grid-cols-4">
+                {activeSubEntities.sort(compareNumbers).map((value, key) => {
+                  let columnCounter = 0; // متغیر برای شمارش ستون‌ها
+                  return (
+                    <div key={key} className="p-4 col-span-1 hover:text-black ">
+                      <Link href={`/category/${value.slug}`}>
+                        <span className="w-2 h-2 ml-3 rounded-xl bg-primary inline-block"></span>
+                        <span className="text-primary text-md">
+                          {value.name}
+                        </span>
+                      </Link>
+
+                      {value.subEntityTypes.map((values, keys) => {
+                        // برای هر 8 آیتم، ستون را تغییر می‌دهیم
+                        if (keys % 8 === 0) {
+                          columnCounter++; // شمارش ستون را افزایش می‌دهیم
+                        }
+                        return (
+                          <Link
+                            href={`/category/${values.slug}`}
+                            key={keys}
+                            className={`block py-4 pr-2 hover:text-black text-md pb-2 ${
+                              columnCounter > 0
+                                ? "col-span-" + (columnCounter + 1)
+                                : ""
+                            }`}
+                          >
+                            {values.name}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
               </div>
-              <div className="col-span-1">
-                <p className="p-4 hover:text-black text-primary">
-                  وسایل آشپزخانه
-                </p>
-                <p className="p-4 hover:text-black">کلمن و فلاسک</p>
-                <p className="p-4 hover:text-black">جاادویه و پاسماوری</p>
-                <p className="p-4 hover:text-black">
-                  ترازو , کفگیرملاقه و ابزار
-                </p>
-                <p className="p-4 hover:text-black">آبکش و لگن</p>
-                <p className="p-4 hover:text-black">سماور</p>
-                <p className="p-4 hover:text-black">کتری و قوری</p>
-                <p className="p-4 pb-0 hover:text-black">جا ظرفی و آب چکان</p>
-              </div>
             </div>
-          </div>
-          <div className="col-span-1"></div>
-          <div className="col-span-1 p-2 pb-0 items-center my-auto rounded rounded-3xl">
-            <img src="/images/ghahvesaz.png" alt="" />
           </div>
         </div>
       </div>

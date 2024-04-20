@@ -3,12 +3,20 @@ import VariantsCard from "./VariantsCard";
 import CountDown from "../../CountDown";
 import Price from "./Price";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LongCard({ border, data }) {
+  const uniqueColorsMap = new Map(
+    data?.inventories.map((value) => [value.color.id, value])
+  );
+  const uniqueColorsArray = Array.from(uniqueColorsMap.values());
   return (
-    <a href={`/product/${data?.slug}`} className="flex-auto">
+    <Link
+      href={`/product/${data?.sku}/${data?.slug}`}
+      className="flex-auto h-full"
+    >
       <div
-        className={`flex w-full flex-col md:flex-col lg:flex-col xl:flex-row 2xl:flex-row gap-5 border border-${border} rounded-2xl p-4`}
+        className={`flex w-full h-full flex-col md:flex-col lg:flex-col xl:flex-row 2xl:flex-row gap-5 border border-${border} rounded-3xl p-4`}
       >
         <Image
           width={200}
@@ -17,9 +25,11 @@ export default function LongCard({ border, data }) {
           src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${data?.attachments[0].fileName}`}
         />
         <div className="flex flex-col justify-between w-full">
-          <h3 className="mb-2">{data?.title}</h3>
+          <h3 className="mb-2 w-60 h-14 pl-4 whitespace-break-spaces">
+            {data?.title}
+          </h3>
           <div className="flex mt-2 mb-6">
-            {data?.inventories.map((value, key) => (
+            {uniqueColorsArray.map((value, key) => (
               <VariantsCard
                 key={key}
                 isSelected={false}
@@ -30,12 +40,20 @@ export default function LongCard({ border, data }) {
           </div>
           <div className="flex flex-row justify-between items-center">
             <div>
-              <CountDown />
+              {data.inventories[0]?.firstPrice?.appliedDiscount ? (
+                <CountDown
+                  dates={
+                    data.inventories[0]?.firstPrice?.appliedDiscount?.endDate
+                  }
+                />
+              ) : (
+                ""
+              )}
             </div>
             <Price data={data} />
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
