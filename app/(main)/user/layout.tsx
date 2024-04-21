@@ -173,7 +173,7 @@ export default async function page({ children }) {
             </li>
           </ul>
         </div>
-        <div className="col-span-9">{children}</div>
+        <div className="col-span-9 ">{children}</div>
       </div>
     </div>
   );
