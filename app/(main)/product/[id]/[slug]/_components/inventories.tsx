@@ -3,6 +3,7 @@ import { SmallAddToCart } from "@/app/components/design/Cards/ProductCard/Button
 import React, { useEffect } from "react";
 import Price from "./Price";
 import { Cart } from "@/app/components/design/Icons";
+import Link from "next/link";
 
 export default function Inventories({ product, addToCart, inventoryStatusId }) {
   console.log(product);
@@ -20,7 +21,9 @@ export default function Inventories({ product, addToCart, inventoryStatusId }) {
                       <p className="mb-2 font-bold text-primary">
                         فروشنده: {value?.vendor?.name || "فعالی وجود ندارد"}
                       </p>
-                      {value?.guarantee?.name} {value?.guaranteeMonth?.name}
+                      <Link href={`/guarantees/${value?.guarantee?.slug}`}>
+                        {value?.guarantee?.name} {value?.guaranteeMonth?.name}
+                      </Link>
                     </div>
                     <div className="flex flex-col md:flex-row gap-4 items-end md:items-center">
                       {value.inventoryStatusId === 1 ? (
