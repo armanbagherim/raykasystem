@@ -131,6 +131,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
         });
     } catch (error) {}
   };
+  console.log(defaultPayment);
 
   const submitPayment = async () => {
     setLoading(true);
@@ -148,7 +149,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
             addressId: +addressId,
             couponCode: copunValue == "" ? null : copunValue,
             paymentId: 2,
-            variationPriceId: 2,
+            variationPriceId: defaultPayment.variationPriceId,
           }),
         }
       )

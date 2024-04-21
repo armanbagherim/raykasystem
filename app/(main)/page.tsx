@@ -4,15 +4,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/authOptions";
 import ProductCard from "../components/design/Cards/ProductCard/ProductCard";
 import Title from "../components/design/Title";
-import Interseptor from "../components/global/Interseptor";
-import { Metadata } from "next";
 
 async function getProducts() {
-  // const theme = useTheme();
-  // import { useMediaQuery } from "@mui/material";
-  // import { useTheme } from "@emotion/react";
-  // const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  // console.log(fullScreen)
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id`,
     {
@@ -27,35 +20,31 @@ async function getProducts() {
   return res.json();
 }
 
-// async function getCart() {
-//   const res = await Interseptor("/v1/api/ecommerce/user/stocks");
-//   return res.json();
-// }
-
 export default async function Home() {
   const session = await getServerSession(authOptions);
   const { result: products } = await getProducts();
-  // const cart = await getCart();
-  // console.log("cartsssssssssssssss", cart);
+
   return (
     <>
       <Slider slidesPerView={1}>
         <picture>
           <source media="(max-width: 768px)" srcSet="/images/mobile-1.jpg" />
           <Image
-            src="/images/slide.png" // Default image
+            src="/images/slide.png"
             alt="Descriptive text for the image"
             width={500}
             height={300}
+            quality={100}
             layout="responsive"
           />
         </picture>
         <picture>
-          <source media="(max-width: 768px)" srcSet="/images/mobile-2.gif" />
+          <source media="(max-width: 768px)" srcSet="/images/mobile-2.png" />
           <Image
-            src="/images/slide.png" // Default image
+            src="/images/slide-2.png"
             alt="Descriptive text for the image"
             width={500}
+            quality={100}
             height={300}
             layout="responsive"
           />
@@ -102,10 +91,23 @@ export default async function Home() {
       <div className="container mx-auto mb-20">
         <div className="flex flex-col md:flex-row lg:flex-row xl:flex-row gap-5">
           <div className="flex-1">
-            <img className="w-full" src="/images/right.png" alt="" />
+            <Image
+              className="w-full h-full"
+              src="/images/right.png"
+              width={0}
+              height={0}
+              sizes="100vw"
+            />
           </div>
           <div className="flex-1">
-            <img className="w-full" src="/images/left.png" alt="" />
+            <Image
+              className="w-full h-full"
+              alt=""
+              width={0}
+              height={0}
+              sizes="100vw"
+              src="/images/left.png"
+            />
           </div>
         </div>
       </div>
@@ -125,7 +127,14 @@ export default async function Home() {
       <div className="container mx-auto mb-24 px-4">
         <div className="flex gap-5">
           <div className="w-1/3 hidden md:block lg:block xl:block 2xl:block">
-            <img className="h-full" src="/images/banner.png" alt="" />
+            <Image
+              className="w-full h-full"
+              alt=""
+              width={0}
+              height={0}
+              sizes="100vw"
+              src="/images/banner.png"
+            />
           </div>
           <div className="w-full xl:w-2/3">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 to-scroll">
@@ -156,12 +165,26 @@ export default async function Home() {
       </div>
 
       <div className="container mx-auto mb-24 px-4">
-        <img src="/images/banner-big.png" className="w-full" alt="" />
+        <Image
+          className="w-full h-full"
+          alt=""
+          width={0}
+          height={0}
+          sizes="100vw"
+          src="/images/banner-big.png"
+        />
       </div>
       <div className="container mx-auto mb-24 px-4">
         <div className="flex gap-5">
           <div className="w-1/3 hidden lg:block xl:block 2xl:block">
-            <img className="h-full" src="/images/banner.png" alt="" />
+            <Image
+              className="w-full h-full"
+              alt=""
+              width={0}
+              height={0}
+              sizes="100vw"
+              src="/images/banner.png"
+            />
           </div>
           <div className="w-full md:w-2/3">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 to-scroll">
