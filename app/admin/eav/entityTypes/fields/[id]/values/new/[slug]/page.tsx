@@ -35,7 +35,7 @@ export default function NewConditions({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push(`/admin/eav/entityTypes/fields/${params.id}/values`);
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }

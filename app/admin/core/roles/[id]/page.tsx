@@ -62,7 +62,7 @@ export default function Page({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/core/roles");
-      }, 2000);
+      }, 500);
     } catch (err) {
       toast.error(err.message);
     }

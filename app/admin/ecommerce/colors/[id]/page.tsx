@@ -49,7 +49,7 @@ export default function Colors({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/colors");
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }

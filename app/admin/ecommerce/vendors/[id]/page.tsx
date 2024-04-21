@@ -67,7 +67,7 @@ export default function Vendors({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/vendors");
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }

@@ -109,7 +109,7 @@ export default function VendorAddress({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/vendorAddresses");
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }

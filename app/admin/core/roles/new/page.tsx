@@ -58,7 +58,7 @@ export default function Roles() {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/core/roles");
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
