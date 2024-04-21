@@ -7,18 +7,29 @@ export default function BrandModule({ data }) {
   return (
     <div className="container mx-auto">
       <h1 className="peyda text-[26px] my-9">برند ها</h1>
-      <div className="flex gap-4 flex-wrap px-6 md:px-0">
+      <div className="flex gap-4 flex-wrap items-stretch px-6 md:px-0">
         {data.result.map((value, key) => {
           return (
             <Link key={key} href={`/brand/${value.slug}`}>
               <div className="flex flex-wrap flex-col items-center mb-4">
-                <Image
-                  width={500}
-                  height={500}
-                  className="w-24 border border-gray-200 rounded-2xl mb-2"
-                  src={`https://nest-jahizan.chbk.run/v1/api/ecommerce/brands/image/${value.attachment.fileName}`}
-                  alt=""
-                />
+                {value?.attachment?.fileName ? (
+                  <Image
+                    width={500}
+                    height={500}
+                    className="w-24 border border-gray-200 rounded-2xl mb-2"
+                    src={`https://nest-jahizan.chbk.run/v1/api/ecommerce/brands/image/${value.attachment.fileName}`}
+                    alt=""
+                  />
+                ) : (
+                  <Image
+                    width={500}
+                    height={500}
+                    className="w-24 border border-gray-200 rounded-2xl mb-2"
+                    src="/images/no-photo.png"
+                    alt=""
+                  />
+                )}
+
                 <h3>{value.name}</h3>
               </div>
             </Link>

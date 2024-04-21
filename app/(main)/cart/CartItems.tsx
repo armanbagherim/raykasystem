@@ -190,8 +190,9 @@ export default function CartItems({
                 closeButton: true,
               });
               const newData = localCart.result.filter(
-                (item) => item.inventoryId !== inventoryId
+                (item) => +item.id !== +inventoryId
               );
+              console.log(newData, localCart.result);
               setLocalCart((prevState) => ({
                 ...prevState,
                 result: newData,

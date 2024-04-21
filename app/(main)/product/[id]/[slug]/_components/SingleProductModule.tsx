@@ -168,7 +168,11 @@ export default function SingleProductModule({ product, related, cook }) {
                   </div>
                   <div className="flex gap-1">
                     <div className="font-bold">برند: </div>
-                    <div>{product.brand.name}</div>
+                    <div>
+                      <Link href={`/brand/${product?.brand?.slug}`}>
+                        {product?.brand?.name}
+                      </Link>
+                    </div>
                   </div>
                   <div className="justify-start mx-auto ml-2">
                     <div className="pt-0.5 justify-center flex mx-auto w-12 bg-slate-50 rounded-xl">

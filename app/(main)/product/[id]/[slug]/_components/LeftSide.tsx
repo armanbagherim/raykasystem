@@ -8,6 +8,7 @@ import {
   Tickstar,
   Trucktick,
 } from "@/app/components/design/Icons";
+import Link from "next/link";
 import React from "react";
 
 export default function LeftSide({ product, status, addToCart }) {
@@ -33,10 +34,12 @@ export default function LeftSide({ product, status, addToCart }) {
               <div>
                 <span className="font-bold text-primary">
                   {product[0] ? (
-                    <span>
-                      {product[0].guarantee.name}{" "}
-                      {product[0].guaranteeMonth.name}
-                    </span>
+                    <Link href={`/guarantees/${product[0]?.guarantee?.slug}`}>
+                      <span>
+                        {product[0]?.guarantee?.name}{" "}
+                        {product[0]?.guaranteeMonth?.name}
+                      </span>
+                    </Link>
                   ) : (
                     <span>بدون گارانتی فعال</span>
                   )}
@@ -78,7 +81,7 @@ export default function LeftSide({ product, status, addToCart }) {
               <div className="pb-0.5">
                 فروشنده:{" "}
                 <span className="font-bold text-primary">
-                  {product[0].vendor.name}
+                  {product[0].vendor?.name}
                 </span>
               </div>
               {product[0]?.secondaryPrice?.price ? (
@@ -90,7 +93,7 @@ export default function LeftSide({ product, status, addToCart }) {
                     قیمت نقدی
                   </div>
                   <div dir="rtl">
-                    {Number(product[0].secondaryPrice.price).toLocaleString()}{" "}
+                    {Number(product[0].secondaryPrice?.price).toLocaleString()}{" "}
                     تومان
                   </div>
                 </div>
@@ -102,7 +105,7 @@ export default function LeftSide({ product, status, addToCart }) {
             <div className="mt-9 flex gap-3 mb-4">
               {product[0].firstPrice.appliedDiscount ? (
                 <CountDown
-                  dates={product[0].firstPrice.appliedDiscount.endDate}
+                  dates={product[0].firstPrice?.appliedDiscount.endDate}
                 />
               ) : (
                 ""
@@ -111,23 +114,36 @@ export default function LeftSide({ product, status, addToCart }) {
                 className="font-bold justify-start mx-auto ml-2 items-end my-auto"
                 dir="ltr"
               >
-                <div className="flex items-center my-auto gap-1">
-                  <div className="text-center bg-primary text-slate-100 rounded-xl p-1 w-10">
-                    14%
-                  </div>
-                  <div className="relative">
-                    <div className="absolute top-1 w-10 text-slate-950">
-                      <Lineonnum />
-                    </div>
-                    <div className="text-slate-400 text-sm">155000</div>
-                  </div>
-                </div>
-
-                <div dir="rtl">
-                  <span>
-                    {Number(product[0].firstPrice.price).toLocaleString()}{" "}
-                  </span>{" "}
-                  تومان
+                <div className="flex items-center my-auto gap-1 flex-col">
+                  {product[0]?.firstPrice.appliedDiscount ? (
+                    <>
+                      <span className="mb-1 block">
+                        <span className="text-xs mr-2  bg-primary text-white rounded-full px-2 py-1">
+                          {product[0]?.firstPrice.appliedDiscount.amount}
+                          {product[0]?.firstPrice.appliedDiscount.actionType ===
+                          1
+                            ? "%"
+                            : "تومان"}
+                        </span>
+                        <span className="opacity-75 text-xs line-through">
+                          {Number(
+                            product[0]?.firstPrice.price
+                          ).toLocaleString()}
+                        </span>
+                      </span>
+                      <p className="text-sm">
+                        {Number(
+                          product[0]?.firstPrice.appliedDiscount.newPrice
+                        ).toLocaleString()}{" "}
+                        تومان
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-sm">
+                      {Number(product[0]?.firstPrice.price).toLocaleString()}{" "}
+                      تومان
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
