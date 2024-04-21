@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function MainCard({ data }) {
   const uniqueColorsMap = new Map(
-    data?.inventories.map((value) => [value.color.id, value])
+    data?.inventories.map((value) => [value?.color?.id, value])
   );
 
   // Convert the Map values back into an array
@@ -15,26 +15,39 @@ export default function MainCard({ data }) {
   return (
     <Link href={`/product/${data?.sku}/${data?.slug}`} className="flex h-full">
       <div className="flex w-full flex-col gap-5 border bg-white rounded-3xl p-4 h-full justify-between">
-        <Image
-          width="200"
-          height="400"
-          className="mx-auto"
-          priority
-          src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${data?.attachments[0].fileName}`}
-        />
+        {data?.attachments[0]?.fileName ? (
+          <Image
+            width="200"
+            height="400"
+            className="mx-auto"
+            priority
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${data?.attachments[0].fileName}`}
+          />
+        ) : (
+          <Image
+            width={500}
+            height={500}
+            className="w-full border border-gray-200 rounded-2xl mb-2"
+            src="/images/no-photo.png"
+            alt=""
+          />
+        )}
+
         <div className="flex flex-col justify-between w-full">
           <h3 className="mb-2 w-60 h-14 pl-4 whitespace-break-spaces">
             {data?.title}
           </h3>
           <div className="flex mt-2 mb-6">
-            {uniqueColorsArray.map((value, key) => (
-              <VariantsCard
-                key={key}
-                isSelected={false}
-                color={value.color.hexCode}
-                name={value.color.name}
-              />
-            ))}
+            {data.colorBased
+              ? uniqueColorsArray.map((value, key) => (
+                  <VariantsCard
+                    key={key}
+                    isSelected={false}
+                    color={value?.color?.hexCode}
+                    name={value?.color?.name}
+                  />
+                ))
+              : ""}
           </div>
           <div className="flex flex-row justify-between items-center">
             <div>

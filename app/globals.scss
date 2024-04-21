@@ -458,3 +458,13 @@ input[type="checkbox"]:checked::before {
     display: flex;
   }
 }
+
+.content {
+  h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+  p {
+    margin-bottom: 12px;
+  }
+}

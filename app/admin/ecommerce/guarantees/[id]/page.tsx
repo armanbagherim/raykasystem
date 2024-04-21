@@ -8,6 +8,7 @@ import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 import { HexColorPicker } from "react-colorful";
 import SaveBar from "@/app/components/global/SaveBar";
+import SeoBox from "../../products/_components/SeoBox";
 
 export default function Guarantees({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -35,7 +36,7 @@ export default function Guarantees({ params }) {
     if (guaranteesIsLoading === false) {
       setName(guaranteesData.result.name);
       setSlug(guaranteesData.result.slug);
-      setDescription(guaranteesData.result.Description);
+      setDescription(guaranteesData.result.description);
     }
   }, [guaranteesIsLoading]);
 
@@ -92,31 +93,14 @@ export default function Guarantees({ params }) {
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
         />
-        <label
-          htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          لینک گارانتی
-        </label>
-        <input
-          type="text"
-          id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          required
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+
         <label
           htmlFor="description"
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >
           توضیحات
         </label>
-        <textarea
-          id="description"
-          rows="5"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        ></textarea>
+        <SeoBox setDescription={setDescription} description={description} />
       </div>
       <SaveBar action={save} backUrl={"/admin/ecommerce/guarantees/"} />
     </div>

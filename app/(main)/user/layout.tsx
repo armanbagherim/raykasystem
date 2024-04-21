@@ -13,8 +13,8 @@ export default async function page({ children }) {
   }
   return (
     <div className="container mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-black">
-        <div className="bg-primary md:col-span-1 text-center p-9 rounded-3xl text-white">
+      <div className="grid grid-cols-12 md:grid-cols-12 gap-4 text-black">
+        <div className="bg-primary col-span-3 text-center p-9 rounded-3xl text-white">
           <img src="/user.png" className="mx-auto mb-7" alt="" />
           <h4 className="text-center mb-7 text-primaryCustom text-3xl">
             آرمان باقری
@@ -173,7 +173,7 @@ export default async function page({ children }) {
             </li>
           </ul>
         </div>
-        <>{children}</>
+        <div className="col-span-9 ">{children}</div>
       </div>
     </div>
   );
