@@ -69,7 +69,7 @@ export default function Eav({ params }) {
         onChange={(e) => setValue(e.target.value)}
       />
 
-      <SaveBar action={save} />
+      <SaveBar action={save} backUrl={`/admin/eav/entityTypes/fields/${params.id}/values`}/>
     </div>
   );
 }

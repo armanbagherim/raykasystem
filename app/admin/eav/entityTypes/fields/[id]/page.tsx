@@ -115,6 +115,13 @@ export default function Eav({ params }) {
       },
     },
     {
+      accessorKey: "attributeType.name",
+      header: "نوع فیلد",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 200, //max size enforced during resizing
+      size: 200, //medium column
+    },
+    {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
@@ -126,7 +133,7 @@ export default function Eav({ params }) {
       },
       Cell: ({ row }) => (
         <>
-          {console.log(row)}
+          {/* {console.log(row)} */}
           {row?.original?.attributeType?.valueBased == true ? (
             <a href={`/admin/eav/entityTypes/fields/${row.id}/values`}>
               <Button type="button" variant="outlined">
