@@ -3,7 +3,6 @@ import Link from "next/link";
 import React from "react";
 
 export default function BrandModule({ data }) {
-  console.log(data);
   return (
     <div className="container mx-auto">
       <h1 className="peyda text-[26px] my-9">برند ها</h1>

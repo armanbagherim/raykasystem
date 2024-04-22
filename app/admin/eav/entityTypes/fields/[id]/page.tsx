@@ -126,7 +126,6 @@ export default function Eav({ params }) {
       },
       Cell: ({ row }) => (
         <>
-          {console.log(row)}
           {row?.original?.attributeType?.valueBased == true ? (
             <a href={`/admin/eav/entityTypes/fields/${row.id}/values`}>
               <Button type="button" variant="outlined">

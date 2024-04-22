@@ -5,7 +5,6 @@ import { ChevronLeft, HomeIcon } from "./Icons";
 import Link from "next/link";
 
 const Breadcrumb = ({ product }) => {
-  console.log();
   return (
     <div className="container text-center items-center mx-auto mb-6">
       <div className="w-full py-5 px-4 bg-customGray rounded-[25px] flex items-center overflow-x-auto">

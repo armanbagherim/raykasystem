@@ -1,12 +1,14 @@
 "use client";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import React, { startTransition, useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import ReactPaginate from "react-paginate";
+import ClientLoading from "../../global/ClientLoading";
 
 const Numberpaginate = ({ items }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
@@ -42,14 +44,19 @@ const Numberpaginate = ({ items }) => {
 
   return (
     <>
+      {isPending && (
+        <div className="bg-[#fffffff0] fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+          <ClientLoading />
+        </div>
+      )}
       <ReactPaginate
         breakLabel="..."
-        className="flex items-center justify-start direction-ltr"
+        className="flex items-center justify-start direction-ltr mt-8"
         nextLabel="بعدی >"
         activeLinkClassName="bg-primary outline-none"
         pageLinkClassName="bg-[#B8B8B8] outline-none w-[37px] h-[37px] flex items-center justify-center rounded-[15px] mx-2 text-white"
         onPageChange={handlePageClick}
-        pageRangeDisplayed={12}
+        pageRangeDisplayed={6}
         pageCount={pageCount}
         previousLabel="< قبلی"
         renderOnZeroPageCount={null}

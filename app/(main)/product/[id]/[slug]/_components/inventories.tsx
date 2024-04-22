@@ -6,7 +6,6 @@ import { Cart } from "@/app/components/design/Icons";
 import Link from "next/link";
 
 export default function Inventories({ product, addToCart, inventoryStatusId }) {
-  console.log(product);
   return (
     <div className="container mx-auto mt-10  gap-10 bg-customGray rounded-3xl p-5">
       {product[0] !== "" ? (
@@ -26,12 +25,13 @@ export default function Inventories({ product, addToCart, inventoryStatusId }) {
                       </Link>
                     </div>
                     <div className="flex flex-col md:flex-row gap-4 items-end md:items-center">
-                      {value.inventoryStatusId === 1 ? (
-                        <div className="text-sm bg-green-100 px-3 py-2 rounded-2xl text-green-800">
-                          موجود
+                      {value?.qty < 10 ? (
+                        <div className="bg-[#ffe6f6] p-4 rounded-3xl text-xs text-[#fa0057]">
+                          فقط <span className="font-bold">{value.qty}</span> عدد
+                          باقی مانده
                         </div>
                       ) : (
-                        <div className="text-sm">ناموجود</div>
+                        ""
                       )}
 
                       {value.onlyProvince && (

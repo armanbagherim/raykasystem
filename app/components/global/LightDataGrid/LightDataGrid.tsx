@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 
 const LightDataGrid = ({ url, columns }) => {
   const { data: session } = useSession();
-  console.log(url);
+
   //data and fetching state
   const [data, setData] = useState([]);
   const [isError, setIsError] = useState(false);
@@ -41,8 +41,6 @@ const LightDataGrid = ({ url, columns }) => {
     urls.searchParams.set("filters", JSON.stringify(columnFilters ?? []));
     urls.searchParams.set("search", globalFilter ?? "");
     urls.searchParams.set("sorting", JSON.stringify(sorting ?? []));
-
-    console.log(urls);
 
     try {
       const response = await fetch(urls.href, {

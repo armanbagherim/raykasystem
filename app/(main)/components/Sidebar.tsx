@@ -67,8 +67,9 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
 
     // Check if &attributes exists in the URL
     const attributesIndex = current.toString().indexOf("&attributes");
+    current.set("offset", "0");
     let query = current.toString();
-    console.log(attributesIndex);
+
     // if (attributesIndex !== -1) {
     //   // Insert the new parameters before &attributes
     //   query =
@@ -87,7 +88,6 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
     });
   };
   const updateAttrSlug = (obj) => {
-    console.log(obj);
     var objs = {
       attributes: obj,
     };
@@ -129,15 +129,12 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
     startTransition(() => {
       router.push(`${pathname}${query}`);
     });
-
-    console.log(createQueryString(flatten(objs)));
   };
 
   // const isInitialMount = useRef(true);
 
   useEffect(() => {
     if (!firstLoad) {
-      console.log(selectedAttributes);
       updateAttrSlug(selectedAttributes);
     }
   }, [selectedAttributes]); // Keep selectedAttributesVersion in the dependency array
@@ -218,7 +215,6 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
       let min = [Math.min(newValue[0], value[1] - minDistance), value[1]];
       setValue(min);
       debouncedOnSelect(min[0], "minPrice");
-      console.log(min);
     } else {
       let max = [value[0], Math.max(newValue[1], value[0] + minDistance)];
       setValue(max);

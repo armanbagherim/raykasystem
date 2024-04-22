@@ -2,7 +2,6 @@
 import React from "react";
 
 export default function Price({ data }) {
-  console.log(data);
   return data?.inventoryStatusId === 1 ? (
     <div className="text-left text-base">
       {data?.inventories[0].firstPrice.appliedDiscount ? (

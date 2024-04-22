@@ -8,7 +8,7 @@ const getProduct = async (slug: number) => {
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/${slug}`
   );
   const response = await res.json();
-  console.log("newwwwwwwwwwwwwwww", response);
+
   if (response.statusCode === 404) {
     return notFound();
   }
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 
 export default async function SingleProduct({ params, searchParams }) {
   const coo = cookies();
-  console.log(params);
+
   const {
     result: { result: product },
   } = await getProduct(params.slug);
