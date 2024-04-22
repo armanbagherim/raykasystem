@@ -14,13 +14,11 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     setInitialState: (state, action: PayloadAction<number>) => {
-      console.log(action.payload);
       state.cartItems = {
         qty: action.payload,
       };
     },
     setQty: (state, action) => {
-      console.log(action.payload);
       state.cartItems = {
         qty: action.payload.qty,
       };

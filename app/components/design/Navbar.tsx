@@ -77,23 +77,40 @@ export default async function NavbarModule() {
                     : ""}
                 </span>
                 <ul className="">
-                  <li className="mb-2 text-sm flex justify-between">
-                    <span>پروفایل کاربری</span>
-                    <span>
-                      <ChevronLeft />
-                    </span>
+                  <li>
+                    <Link
+                      href="/user"
+                      className="mb-2 text-sm flex justify-between"
+                    >
+                      <span>پروفایل کاربری</span>
+                      <span>
+                        <ChevronLeft />
+                      </span>
+                    </Link>
                   </li>
-                  <li className="mb-2 text-sm flex justify-between">
-                    <span>سفارشات</span>
-                    <span>
-                      <ChevronLeft />
-                    </span>
+                  <li className="">
+                    <Link
+                      href="/user/orders"
+                      className="mb-2 text-sm flex justify-between"
+                    >
+                      {" "}
+                      <span>سفارشات</span>
+                      <span>
+                        <ChevronLeft />
+                      </span>
+                    </Link>
                   </li>
-                  <li className="mb-2 text-sm flex justify-between">
-                    <span>آدرس ها</span>
-                    <span>
-                      <ChevronLeft />
-                    </span>
+                  <li className="">
+                    <Link
+                      href="/user/addresses"
+                      className="mb-2 text-sm flex justify-between"
+                    >
+                      {" "}
+                      <span>آدرس ها</span>
+                      <span>
+                        <ChevronLeft />
+                      </span>
+                    </Link>
                   </li>
                   <SignOutButton />
                 </ul>

@@ -14,12 +14,12 @@ export default function MainCard({ data }) {
   const uniqueColorsArray = Array.from(uniqueColorsMap.values());
   return (
     <Link href={`/product/${data?.sku}/${data?.slug}`} className="flex h-full">
-      <div className="flex w-full flex-col gap-5 border bg-white rounded-3xl p-4 h-full justify-between">
+      <div className="flex w-full flex-col gap-5 border bg-white rounded-3xl p-4 h-full justify-start">
         {data?.attachments[0]?.fileName ? (
           <Image
             width="200"
             height="400"
-            className="mx-auto"
+            className="mx-auto h-auto"
             priority
             src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${data?.attachments[0].fileName}`}
           />
@@ -33,7 +33,7 @@ export default function MainCard({ data }) {
           />
         )}
 
-        <div className="flex flex-col justify-between w-full">
+        <div className="flex flex-col justify-between w-full h-full">
           <h3 className="mb-2 w-60 h-14 pl-4 whitespace-break-spaces">
             {data?.title}
           </h3>

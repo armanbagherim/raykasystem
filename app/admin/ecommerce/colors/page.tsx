@@ -129,10 +129,8 @@ export default function Colors() {
       },
       Cell: ({ row }) => (
         <>
-        {
-        console.log(row)
-        }
-        
+          {}
+
           <a href={`/admin/ecommerce/colors/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
@@ -150,7 +148,12 @@ export default function Colors() {
 
   return (
     <div>
-      <LightDataGrid url={"/v1/api/ecommerce/colors?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false"} columns={columns} />
+      <LightDataGrid
+        url={
+          "/v1/api/ecommerce/colors?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false"
+        }
+        columns={columns}
+      />
     </div>
   );
 }

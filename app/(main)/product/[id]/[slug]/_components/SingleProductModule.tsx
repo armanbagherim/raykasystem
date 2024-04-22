@@ -37,7 +37,6 @@ import {
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
 export default function SingleProductModule({ product, related, cook }) {
-  console.log(product.inventories[0]);
   const [localInventories, setLocalInventories] = useState(product.inventories);
   // const qty = useAppSelector((state) =>
   //   productQtyInCartSelector(state, inventory.id)
@@ -59,7 +58,6 @@ export default function SingleProductModule({ product, related, cook }) {
   }, [product.inventories]);
 
   const addToCart = (inventoryId) => {
-    console.log(inventoryId);
     const id = toast.loading("در حال افزودن");
     //do something else
     try {
@@ -129,17 +127,27 @@ export default function SingleProductModule({ product, related, cook }) {
             </div>
           </div>
           <div className="p-3  pt-0 mr-0 pb-6">
-            <Slider slidesPerView={1}>
-              {product?.attachments.map((value, key) => (
-                <Image
-                  key={key}
-                  className="w-full"
-                  height={"500"}
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
-                  width="500"
-                />
-              ))}
-            </Slider>
+            {product?.attachments.length ? (
+              <Slider slidesPerView={1}>
+                {product?.attachments.map((value, key) => (
+                  <Image
+                    key={key}
+                    className="w-full"
+                    height={"500"}
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
+                    width="500"
+                  />
+                ))}
+              </Slider>
+            ) : (
+              <Image
+                width={500}
+                height={500}
+                className="w-full border border-gray-200 rounded-2xl mb-2"
+                src="/images/no-photo.png"
+                alt=""
+              />
+            )}
           </div>
         </div>
 
@@ -204,26 +212,6 @@ export default function SingleProductModule({ product, related, cook }) {
             handleVariantChange={handleVariantChange}
             product={product}
           />
-
-          {/* <div className="mt-10 justify-center mx-auto p-5 flex gap-72">
-            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-            استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در
-            ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و
-            کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی
-            در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را
-            می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی
-            الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این
-            صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و
-            شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای
-            اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد
-            استفاده قرار گیرد.
-          </div>
-          <div className="flex justify-center mx-auto gap-4">
-            <div>مشاهده بیشتر</div>
-            <div className="flex my-auto">
-              <Toogle />
-            </div>
-          </div> */}
         </div>
         <LeftSide
           product={localInventories}

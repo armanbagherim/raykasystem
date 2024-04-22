@@ -56,7 +56,7 @@ const Map: FunctionComponent<MapProps> = ({
         }
       );
       const data = await response.json();
-      console.log(data);
+
       const address = (
         data.result.components as {
           name: string;

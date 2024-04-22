@@ -156,7 +156,6 @@ export default function CartItems({
         }
       ).then((res) => {
         if (!res.ok) {
-          console.log(res.json);
           toast.update(id, {
             render: "این محصول موجودی ندارد",
             type: "error",
@@ -192,7 +191,7 @@ export default function CartItems({
               const newData = localCart.result.filter(
                 (item) => +item.id !== +inventoryId
               );
-              console.log(newData, localCart.result);
+
               setLocalCart((prevState) => ({
                 ...prevState,
                 result: newData,
@@ -210,7 +209,6 @@ export default function CartItems({
       key={item.productId}
       className="grid grid-cols-5 shadow-md bg-white text-xs rounded-3xl mt-2 p-4 items-center"
     >
-      {/* {console.log()} */}
       <div className="flex">
         <div>
           <img src="/images/product-2.png" />
