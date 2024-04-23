@@ -294,6 +294,7 @@ export default function Products() {
             required
             id="standard-basic"
             label="نام محصول"
+            fullWidth
             variant="standard"
           />
         </div>
@@ -302,12 +303,15 @@ export default function Products() {
             onChange={(e) =>
               setRequestBody({ ...requestBody, slug: e.target.value })
             }
+            fullWidth
             required
             id="standard-basic"
             label="لینک محصول"
             variant="standard"
           />
         </div>
+      </div>
+      <div className="flex gap-4 col-span-3 flex-wrap">
         <SelectSearch
           loadingState={brandsIsLoading}
           data={brands?.result}
@@ -322,24 +326,24 @@ export default function Products() {
             setRequestBody({ ...requestBody, publishStatusId: e.id })
           }
         />
-        <div className="flex-1">
-          {parentEntityTypesIsLoading ? (
-            "loading"
-          ) : (
-            <NestedSelect
-              data={parentEntityTypes?.result}
-              onChange={(e) => {
-                setEntityTypeId(e.target.value);
-                setRequestBody({
-                  ...requestBody,
-                  entityTypeId: +e.target.value,
-                });
-              }}
-            />
-          )}
-        </div>
 
-        <div className="flex w-full">
+        <div className="flex w-full items-center gap-8">
+          <div className="flex-1">
+            {parentEntityTypesIsLoading ? (
+              "loading"
+            ) : (
+              <NestedSelect
+                data={parentEntityTypes?.result}
+                onChange={(e) => {
+                  setEntityTypeId(e.target.value);
+                  setRequestBody({
+                    ...requestBody,
+                    entityTypeId: +e.target.value,
+                  });
+                }}
+              />
+            )}
+          </div>
           <div className="flex-1">
             <label className="inline-flex items-center cursor-pointer">
               <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -492,7 +496,10 @@ export default function Products() {
           ساخت محصول
         </button> */}
       </aside>
-      <SaveBar action={saveProduct} backUrl="/admin/ecommerce/products"></SaveBar>
+      <SaveBar
+        action={saveProduct}
+        backUrl="/admin/ecommerce/products"
+      ></SaveBar>
     </div>
   );
 }

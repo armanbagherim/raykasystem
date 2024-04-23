@@ -2,7 +2,7 @@
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "@/app/components/global/loading";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { pageTitle } from "../../layout";
 import { useAtom } from "jotai";
 import { toast } from "react-toastify";
@@ -15,6 +15,7 @@ import Uploader from "@/app/components/global/Uploader";
 
 export default function Eav() {
   const [title, setTitle] = useAtom(pageTitle);
+  const [triggered, setTriggered] = useState(false);
 
   useEffect(() => {
     setTitle({
@@ -31,7 +32,7 @@ export default function Eav() {
         method: "DELETE",
       });
       toast.success("موفق");
-      categoriesRefetch();
+      setTriggered(!triggered);
     } catch (error) {
       toast.error(error.message);
     }
@@ -120,7 +121,11 @@ export default function Eav() {
 
   return (
     <div>
-      <LightDataGrid url={"/v1/api/eav/admin/entityTypes"} columns={columns} />
+      <LightDataGrid
+        triggered={triggered}
+        url={"/v1/api/eav/admin/entityTypes"}
+        columns={columns}
+      />
     </div>
   );
 }

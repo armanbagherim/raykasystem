@@ -56,9 +56,9 @@ export default function Users() {
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
       size: 180, //medium column
-      Cell({row}){
-        return ChangeFormatDate(row.original.updatedAt); 
-      }
+      Cell({ row }) {
+        return ChangeFormatDate(row.original.updatedAt);
+      },
     },
     {
       accessorKey: "Actions",
@@ -77,11 +77,6 @@ export default function Users() {
               <ModeEditIcon />
             </IconButton>
           </a>
-          {/* <a onClick={(e) => deleteEavType(row.id)}>
-          <IconButton aria-label="delete" color="error">
-            <DeleteIcon />
-          </IconButton>
-        </a> */}
         </>
       ),
     },

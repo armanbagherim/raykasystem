@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Roles() {
   const [title, setTitle] = useAtom(pageTitle);
+  const [triggered, setTriggered] = useState(false);
 
   useEffect(() => {
     setTitle({
@@ -23,7 +24,6 @@ export default function Roles() {
     });
   }, []);
 
-
   const deleteRow = async (id) => {
     try {
       const req = await fetcher({
@@ -31,55 +31,11 @@ export default function Roles() {
         method: "DELETE",
       });
       toast.success("موفق");
-      refetch();
+      setTriggered(!triggered);
     } catch (error) {
       toast.error(error.message);
     }
   };
-
-  // const {
-  //   data: roles,
-  //   isLoading: rolesIsLoading,
-  //   error: rolesError,
-  // } = useFetcher(`/v1/api/core/admin/roles?igonePaging=true`, "GET");
-
-  // const columns: GridColDef[] = [
-  //   {
-  //     field: "id",
-  //     headerName: "شناسه نقش",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "roleName",
-  //     headerName: "نام نقش",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "createdAt",
-  //     headerName: "تاریخ ایجاد",
-  //     width: 150,
-  //     valueFormatter: ({ value }) =>
-  //       new Date(value).toLocaleDateString("fa-IR"),
-  //   },
-  //   {
-  //     field: "list",
-  //     headerName: "ویرایش",
-  //     width: 150,
-  //     renderCell: (row) => (
-  //       <a href={`/admin/core/roles/${row.id}`}>
-  //         <button
-  //           type="button"
-  //           className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-  //         >
-  //           ویرایش
-  //         </button>
-  //       </a>
-  //     ),
-  //   },
-  // ];
-  // if (rolesIsLoading) {
-  //   return <Loading />;
-  // }
 
   const columns = [
     {
@@ -120,14 +76,20 @@ export default function Roles() {
             </IconButton>
           </a>
           <a onClick={(e) => deleteRow(row.id)}>
-          <IconButton aria-label="delete" color="error">
-            <DeleteIcon />
-          </IconButton>
-        </a>
+            <IconButton aria-label="delete" color="error">
+              <DeleteIcon />
+            </IconButton>
+          </a>
         </>
       ),
     },
   ];
 
-  return <LightDataGrid url={"/v1/api/core/admin/roles?igonePaging=true"} columns={columns} />;
+  return (
+    <LightDataGrid
+      url={"/v1/api/core/admin/roles?igonePaging=true"}
+      columns={columns}
+      triggered={triggered}
+    />
+  );
 }

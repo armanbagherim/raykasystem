@@ -50,7 +50,7 @@ const Megamenu = ({ items }) => {
               {/* Assuming subEntityTypes can have their own subEntities */}
               {subEntity.subEntityTypes &&
                 subEntity.subEntityTypes.map((nestedSubEntity) => (
-                  <div> {nestedSubEntity.name}</div>
+                  <div key={nestedSubEntity.id}> {nestedSubEntity.name}</div>
                 ))}
             </div>
           ))}

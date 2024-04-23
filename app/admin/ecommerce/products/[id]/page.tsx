@@ -405,29 +405,31 @@ export default function Products({ params }) {
         </div>{" "}
       </div>
       <div className="flex gap-4 p-6 col-span-3 flex-wrap">
-        <div className="flex-1">
-          <TextField
-            onChange={(e) =>
-              setRequestBody({ ...requestBody, title: e.target.value })
-            }
-            required
-            id="standard-basic"
-            label="نام محصول"
-            defaultValue={requestBody.title}
-            variant="standard"
-          />
-        </div>
-        <div className="flex-1">
-          <TextField
-            onChange={(e) =>
-              setRequestBody({ ...requestBody, slug: e.target.value })
-            }
-            required
-            id="standard-basic"
-            label="لینک محصول"
-            defaultValue={requestBody.slug}
-            variant="standard"
-          />
+        <div className="flex">
+          <div className="flex-1">
+            <TextField
+              onChange={(e) =>
+                setRequestBody({ ...requestBody, title: e.target.value })
+              }
+              required
+              id="standard-basic"
+              label="نام محصول"
+              defaultValue={requestBody.title}
+              variant="standard"
+            />
+          </div>
+          <div className="flex-1">
+            <TextField
+              onChange={(e) =>
+                setRequestBody({ ...requestBody, slug: e.target.value })
+              }
+              required
+              id="standard-basic"
+              label="لینک محصول"
+              defaultValue={requestBody.slug}
+              variant="standard"
+            />
+          </div>
         </div>
         <SelectSearch
           loadingState={brandsIsLoading}
@@ -622,7 +624,10 @@ export default function Products({ params }) {
           ساخت محصول
         </button> */}
       </aside>
-      <SaveBar action={saveProduct} backUrl="/admin/ecommerce/products"></SaveBar>
+      <SaveBar
+        action={saveProduct}
+        backUrl="/admin/ecommerce/products"
+      ></SaveBar>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 import { useFetcher } from "@/app/components/global/fetcher";
 import MenuLoader from "@/app/components/global/menuLoader";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation"; // Corrected import for useRouter
 import React, { useEffect, useState } from "react";
 
 const SideMenu = () => {
@@ -17,12 +17,36 @@ const SideMenu = () => {
     "GET"
   );
 
+  const router = usePathname(); // Use useRouter hook to get the current path
+
   const toggleSubMenu = (index: number): void => {
     setSubMenuVisibility({
       ...subMenuVisibility,
       [index]: !subMenuVisibility[index],
     });
   };
+
+  // Function to check if the current path matches the link's path or starts with it
+  const isActive = (path: string) => {
+    console.log(router);
+    return router.startsWith(path);
+  };
+
+  // Function to check if any submenu is active
+  const isSubMenuActive = (subMenus: any[]) => {
+    return subMenus.some((submenu) => isActive(submenu.url));
+  };
+
+  // Adjust the visibility of submenus based on the current path
+  useEffect(() => {
+    if (menus?.result) {
+      const newSubMenuVisibility = {};
+      menus.result.forEach((menu) => {
+        newSubMenuVisibility[menu.id] = isSubMenuActive(menu.subMenus);
+      });
+      setSubMenuVisibility(newSubMenuVisibility);
+    }
+  }, [menus, router]);
 
   return (
     <div className="">
@@ -59,7 +83,7 @@ const SideMenu = () => {
         } `}
         aria-label="Sidebar"
       >
-        <div className="h-full  px-3 py-4 bg-gray-50 dark:bg-gray-800">
+        <div className="h-full px-3 py-4 bg-gray-50 dark:bg-gray-800">
           <div className="flex bg-gray-200 justify-between items-center rounded-xl p-4 mb-5 border-b">
             <a
               href="https://flowbite.com/"
@@ -83,7 +107,11 @@ const SideMenu = () => {
               <li key={key}>
                 <button
                   type="button"
-                  className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                  className={`flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 ${
+                    isActive(menu.url)
+                      ? "text-blue-500 bg-gray-700"
+                      : "text-gray-900"
+                  }`}
                   aria-controls="dropdown-example"
                   data-collapse-toggle="dropdown-example"
                   aria-expanded="true"
@@ -116,9 +144,15 @@ const SideMenu = () => {
                   {menu.subMenus.map((submenu, key) => (
                     <li key={key}>
                       <Link href={submenu.url}>
-                        <span className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        <p
+                          className={`flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 ${
+                            isActive(submenu.url)
+                              ? "text-blue-500 bg-gray-200 font-bold"
+                              : "text-gray-900 "
+                          }`}
+                        >
                           {submenu.title}
-                        </span>
+                        </p>
                       </Link>
                     </li>
                   ))}

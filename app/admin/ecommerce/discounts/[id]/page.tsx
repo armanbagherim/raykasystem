@@ -331,7 +331,7 @@ export default function NewDiscount({ params }) {
           />
         </div>
       </div>
-      <SaveBar action={save} backUrl={'/admin/ecommerce/discounts/'}/>
+      <SaveBar action={save} backUrl={"/admin/ecommerce/discounts/"} />
     </div>
   );
 }

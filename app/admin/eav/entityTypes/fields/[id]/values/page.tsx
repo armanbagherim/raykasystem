@@ -2,7 +2,7 @@
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "@/app/components/global/loading";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { toast } from "react-toastify";
 import Image from "next/image";
@@ -14,7 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
-
+  const [triggered, setTriggered] = useState(false);
   useEffect(() => {
     setTitle({
       title: "مقادیر",
@@ -26,11 +26,11 @@ export default function Eav({ params }) {
   const deleteEavType = async (id) => {
     try {
       const req = await fetcher({
-        url: `/v1/api/eav/admin/entityTypes/${id}`,
+        url: `/v1/api/eav/admin/attributeValues/${id}`,
         method: "DELETE",
       });
       toast.success("موفق");
-      categoriesRefetch();
+      setTriggered(!triggered);
     } catch (error) {
       toast.error(error.message);
     }
@@ -85,6 +85,7 @@ export default function Eav({ params }) {
       <LightDataGrid
         url={`/v1/api/eav/admin/attributeValues?sortOrder=ASC&orderBy=id&ignorePaging=false&attributeId=${params.id}`}
         columns={columns}
+        triggered={triggered}
       />
     </div>
   );

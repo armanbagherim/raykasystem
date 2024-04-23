@@ -1,6 +1,6 @@
 "use client";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { fetcher, useFetcher } from "../../../components/global/fetcher";
 import Loading from "../../../components/global/loading";
 import { useAtom } from "jotai";
@@ -15,7 +15,9 @@ import Uploader from "@/app/components/global/Uploader";
 
 export default function Guarantees() {
   const [title, setTitle] = useAtom(pageTitle);
-
+  const [triggered, setTriggered] = useState(false);
+  // setTriggered(!triggered);
+  // triggered = { triggered };
   useEffect(() => {
     setTitle({
       title: "گارانتی ها",
@@ -31,71 +33,11 @@ export default function Guarantees() {
         method: "DELETE",
       });
       toast.success("موفق");
-      refetchBrands();
+      setTriggered(!triggered);
     } catch (error) {
       toast.error(error.message);
     }
   };
-  // const {
-  //   data: brands,
-  //   isLoading: brandsIsLoading,
-  //   error: brandsError,
-  //   refetch: refetchBrands,
-  // } = useFetcher(
-  //   `/v1/api/ecommerce/guarantees?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
-  //   "GET"
-  // );
-
-  // const columns: GridColDef[] = [
-  //   {
-  //     field: "id",
-  //     headerName: "شناسه",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "name",
-  //     headerName: "نام ",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "slug",
-  //     headerName: "اسلاگ",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "list",
-  //     headerName: "ویرایش",
-  //     width: 150,
-  //     renderCell: (row) => (
-  //       <a href={`/admin/ecommerce/guarantees/${row.id}`}>
-  //         <button
-  //           type="button"
-  //           className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-  //         >
-  //           ویرایش
-  //         </button>
-  //       </a>
-  //     ),
-  //   },
-  //   {
-  //     field: "delete",
-  //     headerName: "حذف",
-  //     width: 150,
-  //     renderCell: ({ row }) => (
-  //       <a onClick={(e) => deleteGuarantee(row.id)}>
-  //         <button
-  //           type="button"
-  //           className="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-  //         >
-  //           حذف
-  //         </button>
-  //       </a>
-  //     ),
-  //   },
-  // ];
-  // if (brandsIsLoading) {
-  //   return <Loading />;
-  // }
 
   const columns = [
     {
@@ -179,6 +121,7 @@ export default function Guarantees() {
           "/v1/api/ecommerce/guarantees?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false"
         }
         columns={columns}
+        triggered={triggered}
       />
     </div>
   );
