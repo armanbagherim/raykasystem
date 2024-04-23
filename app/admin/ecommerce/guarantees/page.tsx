@@ -119,11 +119,31 @@ export default function Guarantees() {
       size: 180, //medium column
     },
     {
+      // accessorKey: "image",
+      // header: "تصویر ",
+      // size: 20,
+      // Cell({ row }) {
+      //   return row ? (
+      //     <Image
+      //       loading="eager"
+      //       src={`${
+      //         process.env.NEXT_PUBLIC_BASE_URL
+      //       }/v1/api/ecommerce/guarantees/image/${
+      //         row.original.attachment?.fileName || ""
+      //       }`}
+      //       width={50}
+      //       height={50}
+      //       alt=""
+      //     />
+      //   ) : (
+      //     <img width={30} height={30} src="/images/no-photos.png" alt="" />
+      //   );
+      // },
       accessorKey: "image",
       header: "تصویر ",
       size: 20,
       Cell({ row }) {
-        return row ? (
+        return row.original.attachment ? (
           <Image
             loading="eager"
             src={`${
@@ -139,7 +159,7 @@ export default function Guarantees() {
           <img width={30} height={30} src="/images/no-photos.png" alt="" />
         );
       },
-    },
+    }, 
     {
       accessorKey: "Actions",
       header: "عملیات",

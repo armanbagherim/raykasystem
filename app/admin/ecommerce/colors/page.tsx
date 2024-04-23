@@ -1,7 +1,7 @@
 "use client";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useEffect } from "react";
-import { useFetcher } from "../../../components/global/fetcher";
+import { fetcher, useFetcher } from "../../../components/global/fetcher";
 import Loading from "../../../components/global/loading";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";

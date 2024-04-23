@@ -34,7 +34,7 @@ const ChangeFormatDate = (raw_date) => {
     var date_merged = gregorian_to_jalali(parseInt(gy),parseInt(gm),parseInt(gd));
     var result = date_merged[0]+"-"+date_merged[1]+"-"+date_merged[2];
     console.log(result);
-    return result;
+    return result+"T"+temp_date[1];
   }
   return false;
 };
