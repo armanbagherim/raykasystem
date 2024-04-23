@@ -85,13 +85,10 @@ const CartModule = ({ cartItems, session, cookies }) => {
           return res.json();
         })
         .then((data) => {
-          console.log(data);
           setAddresses(data.result);
           setAddressId(data?.result[0]?.id);
         });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     if (session == null) {
       return null;
     }
@@ -122,7 +119,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
           if (data.statusCode === 400) {
             setCalculateErrors(data.message);
           } else {
-            console.log(data);
             setCalculate(data.result);
             setDefaultPayment(data.result.paymentOptions[0]);
             setLoading(false);
@@ -131,7 +127,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
         });
     } catch (error) {}
   };
-  console.log(defaultPayment);
 
   const submitPayment = async () => {
     setLoading(true);
@@ -148,8 +143,8 @@ const CartModule = ({ cartItems, session, cookies }) => {
           body: JSON.stringify({
             addressId: +addressId,
             couponCode: copunValue == "" ? null : copunValue,
-            paymentId: 2,
-            variationPriceId: defaultPayment.variationPriceId,
+            paymentId: defaultPayment?.payments[0].id,
+            variationPriceId: defaultPayment?.variationPriceId,
           }),
         }
       )
@@ -157,7 +152,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
           return res.json();
         })
         .then((data) => {
-          console.log(data);
           router.push(data.result.redirectUrl);
         });
     } catch (error) {}
@@ -200,9 +194,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
             setNeighberhoods(null);
           }
         });
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
   };
 
@@ -292,7 +284,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
   };
 
   // const getData = () => {
-  //   console.log(cookies.value);
+  //
   //   const res = fetch(
   //     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/price`,
   //     {
@@ -302,7 +294,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
   //     }
   //   )
   //     .then((response) => response.json())
-  //     .then((data) => console.log("ARE SHAYAD", data));
+  //     .then((data) =>
   // };
   // useEffect(() => {
   //   getData();
@@ -310,7 +302,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
 
   // useEffect(() => {
   //   // This code runs after `calculates` state has been updated
-  //   console.log(calculates);
+  //
   // }, [calculates]); // Depend on `calculates` to run this effect
 
   return (
@@ -325,7 +317,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
               <div className="p-1">فروشنده</div>
               <div className="p-1">جمع کل</div>
             </div>
-            {/* {console.log("asdasdas", calculates)} */}
+
             {localCart?.result.length === 0 ? (
               <div className="text-center">
                 <EmptyCart />

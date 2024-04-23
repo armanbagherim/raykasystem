@@ -73,7 +73,6 @@ export default function BottomSearch() {
       getProduct();
       getBrands();
       getCategories();
-      console.log(searchTerm);
     }
   }, [searchTerm]);
   return (

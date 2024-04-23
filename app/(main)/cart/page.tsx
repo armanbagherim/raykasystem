@@ -17,7 +17,6 @@ export async function generateMetadata(): Promise<Metadata> {
 // }
 
 async function getCart(session) {
-  console.log("areeeeeeeeeeeeeeeeeeeeeeeeeeeee", session);
   const res = await Interseptor("/v1/api/ecommerce/user/stocks", session);
   return res.json();
 }

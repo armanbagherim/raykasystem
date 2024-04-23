@@ -468,3 +468,8 @@ input[type="checkbox"]:checked::before {
     margin-bottom: 12px;
   }
 }
+
+.swiper-slide {
+  height: auto !important;
+  flex-wrap: wrap !important;
+}

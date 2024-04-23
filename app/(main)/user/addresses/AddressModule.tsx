@@ -71,15 +71,12 @@ export default function AddressModule({ cookies, session }) {
         .then((data) => {
           setAddresses(data.result);
         });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     if (session == null) {
       return null;
     }
   };
   useEffect(() => {
-    console.log("object");
     getAddress();
   }, []);
   useEffect(() => {
@@ -102,9 +99,7 @@ export default function AddressModule({ cookies, session }) {
             setNeighberhoods(null);
           }
         });
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
   };
 

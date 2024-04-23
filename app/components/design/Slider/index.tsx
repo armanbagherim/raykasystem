@@ -30,8 +30,8 @@ export default function Slider({
 
     breakpoints: {
       320: {
-        slidesPerView: slidesPerView ? slidesPerView : 1.2,
-        spaceBetween: 10,
+        slidesPerView: slidesPerView ? slidesPerView : 1.1,
+        spaceBetween: 20,
       },
       // Mobile
       640: {
@@ -40,7 +40,7 @@ export default function Slider({
       },
       // Tablet
       769: {
-        slidesPerView: slidesPerView ? slidesPerView : 3.2,
+        slidesPerView: slidesPerView ? slidesPerView : 2.2,
         spaceBetween: 10,
       },
       // Medium (md)
@@ -50,7 +50,7 @@ export default function Slider({
       },
       // Large (lg)
       1280: {
-        slidesPerView: slidesPerView ? slidesPerView : 3.2,
+        slidesPerView: slidesPerView ? slidesPerView : 4.2,
         spaceBetween: 10,
       },
       // Extra-large (xl) and 2xl

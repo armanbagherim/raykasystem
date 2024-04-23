@@ -45,7 +45,8 @@ export default async function Home() {
             alt="Descriptive text for the image"
             width={500}
             quality={100}
-            height={300}
+            height={406}
+            loading="eager"
             layout="responsive"
           />
         </picture>
@@ -58,12 +59,13 @@ export default async function Home() {
               key={value.id} // Assuming 'value' has an 'id' property, use it for the key
               data={value}
               type="long"
-              className="w-full sm:w-1/2 md:w-1/3"
+              className="w-full sm:w-1/2 xl:w-1/3"
             />
           ))}
         </div>
       </div>
-      <div className="bg-primary py-10 mb-20">
+
+      <div className="bg-primary py-10 mb-20 bg-[url('/images/pattern.png')]">
         <div className="container mx-auto">
           <Title text="سه شنبه های تخفیفی" color="white" />
           <div className="flex gap-5 px-4">
@@ -77,19 +79,19 @@ export default async function Home() {
       </div>
       <div className="container mx-auto mb-24 px-4">
         <Title text="پرفروش ترین ها" color={"primary"} />
-        <div className=" auto-rows-fr grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 to-scroll">
+        <div className=" auto-rows-fr grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 xl:grid-cols-3 gap-6 to-scroll">
           {products.map((value, key) => (
             <ProductCard
               key={key}
               data={value}
               type="long"
-              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
+              className="w-full sm:w-1/2 xl:w-1/3 lg:w-1/4 xl:w-1/5"
             />
           ))}
         </div>
       </div>
       <div className="container mx-auto mb-20">
-        <div className="flex flex-col md:flex-row lg:flex-row xl:flex-row gap-5">
+        <div className="flex flex-col xl:flex-row lg:flex-row xl:flex-row gap-5">
           <div className="flex-1">
             <Image
               className="w-full h-full"
@@ -119,14 +121,14 @@ export default async function Home() {
               key={key}
               data={value}
               type="main"
-              className="w-full sm:w-1/2 md:w-1/3"
+              className="w-full sm:w-1/2 xl:w-1/3"
             />
           ))}
         </Slider>
       </div>
       <div className="container mx-auto mb-24 px-4">
         <div className="flex gap-5">
-          <div className="w-1/3 hidden md:block lg:block xl:block 2xl:block">
+          <div className="w-1/3 hidden xl:block lg:block xl:block 2xl:block">
             <Image
               className="w-full h-full"
               alt=""
@@ -137,13 +139,13 @@ export default async function Home() {
             />
           </div>
           <div className="w-full xl:w-2/3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 to-scroll">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 to-scroll">
               {products.slice(0, 6).map((value, key) => (
                 <ProductCard
                   key={key}
                   data={value}
                   type="long"
-                  className="w-full sm:w-1/2 md:w-1/3"
+                  className="w-full sm:w-1/2 xl:w-1/3"
                 />
               ))}
             </div>
@@ -158,12 +160,11 @@ export default async function Home() {
               key={key}
               data={value}
               type="main"
-              className="w-full sm:w-1/2 md:w-1/3"
+              className="w-full sm:w-1/2 xl:w-1/3"
             />
           ))}
         </Slider>
       </div>
-
       <div className="container mx-auto mb-24 px-4">
         <Image
           className="w-full h-full"
@@ -186,14 +187,14 @@ export default async function Home() {
               src="/images/banner.png"
             />
           </div>
-          <div className="w-full md:w-2/3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 to-scroll">
+          <div className="w-full xl:w-2/3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 to-scroll">
               {products.slice(0, 6).map((value, key) => (
                 <ProductCard
                   key={key}
                   data={value}
                   type="long"
-                  className="w-full sm:w-1/2 md:w-1/3"
+                  className="w-full sm:w-1/2 xl:w-1/3"
                 />
               ))}
             </div>

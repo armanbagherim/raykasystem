@@ -65,12 +65,11 @@ export default function Search() {
       getProduct();
       getBrands();
       getCategories();
-      console.log(searchTerm);
     }
   }, [searchTerm]);
 
   // const getData = () => {
-  //   console.log(cookies.value);
+  //
   //   const res = fetch(
   //     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/price`,
   //     {
@@ -80,7 +79,7 @@ export default function Search() {
   //     }
   //   )
   //     .then((response) => response.json())
-  //     .then((data) => console.log("ARE SHAYAD", data));
+  //     .then((data) =>
   // };
   // useEffect(() => {
   //   getData();
@@ -88,7 +87,7 @@ export default function Search() {
 
   // useEffect(() => {
   //   // This code runs after `calculates` state has been updated
-  //   console.log(calculates);
+  //
   // }, [calculates]); // Depend on `calculates` to run this effect
 
   return (

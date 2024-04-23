@@ -13,16 +13,16 @@ export default function LongCard({ border, data }) {
   return (
     <Link
       href={`/product/${data?.sku}/${data?.slug}`}
-      className="flex-auto h-full"
+      className="flex-auto h-auto"
     >
       <div
-        className={`flex w-full h-full flex-col md:flex-col lg:flex-col xl:flex-row 2xl:flex-row gap-5 border border-${border} rounded-3xl p-4`}
+        className={`flex w-full h-full flex-col md:flex-col lg:flex-col xl:flex-row items-center 2xl:flex-row gap-5 border border-${border} rounded-3xl p-4`}
       >
         {data?.attachments[0]?.fileName ? (
           <Image
             width="200"
             height="400"
-            className="mx-auto"
+            className="mx-auto h-full"
             priority
             alt=""
             src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${data?.attachments[0].fileName}`}
@@ -31,7 +31,7 @@ export default function LongCard({ border, data }) {
           <Image
             width={500}
             height={500}
-            className="w-32 border border-gray-200 rounded-2xl mb-2"
+            className="w-full xl:w-32 border border-gray-200 rounded-2xl mb-2"
             src="/images/no-photo.png"
             alt=""
           />

@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function Price({ data }) {
-  console.log(data);
   return data ? (
     <div className="text-left text-base">
       {data?.firstPrice.appliedDiscount ? (
