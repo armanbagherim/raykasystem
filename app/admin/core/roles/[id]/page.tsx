@@ -62,7 +62,7 @@ export default function Page({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/core/roles");
-      }, 2000);
+      }, 500);
     } catch (err) {
       toast.error(err.message);
     }
@@ -104,13 +104,13 @@ export default function Page({ params }) {
           </div>
           <div className="px-5 py-6">
             {group.permissions.map((permission, key) => (
-              <div key={key}>
-                {permission.permissionName}
+              <div key={key} className="flex gap-2 mb-1">
                 <input
                   type="checkbox"
                   checked={isPermissionChecked(permission.id)}
                   onChange={() => handlePermissionChange(permission.id)}
                 />
+                <div>{permission.permissionName}</div>
               </div>
             ))}
           </div>

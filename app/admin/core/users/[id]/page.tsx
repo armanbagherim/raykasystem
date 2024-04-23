@@ -104,7 +104,7 @@ export default function Users({ params }: PageProps): JSX.Element {
         toast.success("موفق");
         setTimeout(() => {
           router.push("/admin/core/users");
-        }, 2000);
+        }, 500);
       })
       .catch((err) => {
         toast.error(err);

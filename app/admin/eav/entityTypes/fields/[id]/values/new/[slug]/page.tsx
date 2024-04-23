@@ -35,7 +35,7 @@ export default function NewConditions({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push(`/admin/eav/entityTypes/fields/${params.id}/values`);
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
@@ -57,7 +57,7 @@ export default function NewConditions({ params }) {
         onChange={(e) => setValue(e.target.value)}
       />
 
-      <SaveBar action={save} />
+      <SaveBar action={save} backUrl={`/admin/eav/entityTypes/fields/${params.id}/values`}/>
     </div>
   );
 }

@@ -50,7 +50,7 @@ export default function Eav({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push(`/admin/eav/entityTypes/fields/${params.id}`);
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }

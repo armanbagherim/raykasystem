@@ -64,7 +64,7 @@ export default function Eav({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push(`/admin/eav/entityTypes/fields/${params.id}`);
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
@@ -101,7 +101,7 @@ export default function Eav({ params }) {
               type="text"
               id="first_name"
               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              required
+              // required
               onChange={(e) => setMin(e.target.value)}
               value={min}
             />
@@ -118,7 +118,7 @@ export default function Eav({ params }) {
               type="text"
               id="first_name"
               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              required
+              // required
               value={max}
               onChange={(e) => setMax(e.target.value)}
             />

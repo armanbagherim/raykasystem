@@ -58,7 +58,7 @@ export default function Roles() {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/core/roles");
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
@@ -91,7 +91,7 @@ export default function Roles() {
             </div>
             <div className="px-5 py-6">
               {group.permissions.map((permission, key) => (
-                <div key={key}>
+                <div key={key} className="flex gap-2 mb-1">
                   <input
                     id={permission.id}
                     className="ml-2"

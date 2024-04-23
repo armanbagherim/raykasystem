@@ -54,7 +54,7 @@ export default function Guarantees({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/guarantees");
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }

@@ -11,6 +11,7 @@ import { IconButton } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { toast } from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ChangeFormatDate from "@/app/components/global/ChangeFormatDate";
 
 export default function Roles() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -101,6 +102,9 @@ export default function Roles() {
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
       size: 180, //medium column
+      Cell({row}){
+        return row.original.createdAt && ChangeFormatDate(row.original.createdAt); 
+      }
     },
     {
       accessorKey: "Actions",

@@ -1,5 +1,5 @@
 "use client";
-import { useFetcher } from "@/app/components/global/fetcher";
+import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "@/app/components/global/loading";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useEffect } from "react";
@@ -9,6 +9,7 @@ import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { toast } from "react-toastify";
 
 export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -29,7 +30,18 @@ export default function Eav({ params }) {
     `/v1/api/eav/admin/attributes?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false&entityTypeId=${+params.id}`,
     "GET"
   );
-
+  const deleteField = async (id) => {
+    try {
+      const req = await fetcher({
+        url: `/v1/api/eav/admin/attributes/${id}`,
+        method: "DELETE",
+      });
+      toast.success("موفق");
+      categoriesRefetch();
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   // const columns: GridColDef[] = [
   //   {
   //     field: "id",
@@ -115,6 +127,13 @@ export default function Eav({ params }) {
       },
     },
     {
+      accessorKey: "attributeType.name",
+      header: "نوع فیلد",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 200, //max size enforced during resizing
+      size: 200, //medium column
+    },
+    {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
@@ -138,6 +157,11 @@ export default function Eav({ params }) {
           <a href={`/admin/eav/entityTypes/fields/${params.id}/edit/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
+            </IconButton>
+          </a>
+          <a onClick={(e) => deleteField(row.id)}>
+            <IconButton aria-label="delete" color="error">
+              <DeleteIcon />
             </IconButton>
           </a>
         </>

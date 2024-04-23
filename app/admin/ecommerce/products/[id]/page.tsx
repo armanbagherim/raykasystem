@@ -362,7 +362,7 @@ export default function Products({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/products");
-      }, 2000);
+      }, 500);
     } catch (error) {
       setLoading(false);
 

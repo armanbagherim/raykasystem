@@ -57,7 +57,7 @@ export default function NewDiscount({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push(`/admin/ecommerce/discounts/conditions/${params.id}`);
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
