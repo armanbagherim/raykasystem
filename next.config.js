@@ -16,7 +16,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "nest-jahizan.chbk.run",
+        hostname: "service.jahizan.com",
       },
     ],
   },

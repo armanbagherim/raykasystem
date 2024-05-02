@@ -11,7 +11,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <SideMenu />
-      <div className="p-4 sm:mr-64">
+      <div className="p-4 pb-36 sm:mr-64">
         <div className="flex justify-between px-3 mb-5 items-center h-16 bg-gray-100 py-2 rounded-2xl pl-2">
           <div className="text-lg font-bold">{atom.title}</div>
           {atom.link !== "" ? (
@@ -24,10 +24,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
             ""
           )}
         </div>
-        <div className="mb-16">
-        {children}
-        </div>
-        
+        <div className="mb-16">{children}</div>
       </div>
     </div>
   );

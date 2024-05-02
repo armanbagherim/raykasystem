@@ -32,7 +32,7 @@ const LightDataGrid = ({ url, columns, triggered }) => {
       setIsRefetching(true);
     }
 
-    const urls = new URL(`${url}`, "https://nest-jahizan.chbk.run");
+    const urls = new URL(`${url}`, process.env.NEXT_PUBLIC_BASE_URL);
     urls.searchParams.set(
       "offset",
       `${pagination.pageIndex * pagination.pageSize}`
@@ -85,8 +85,8 @@ const LightDataGrid = ({ url, columns, triggered }) => {
       columnPinning: { right: ["Actions"] },
       density: "compact",
     },
-    data,
-    getRowId: (row) => row.id,
+    data: data || [],
+    getRowId: (row) => row?.id,
 
     // initialState: {  }, // Disable column filters
     manualFiltering: false, // Disable manual filtering
@@ -116,7 +116,14 @@ const LightDataGrid = ({ url, columns, triggered }) => {
     muiBottomToolbarProps: {
       className: "bottomToolbar",
     },
-
+    muiTableBodyProps: {
+      sx: {
+        //stripe the rows, make odd rows a darker color
+        "& tr:nth-of-type(odd) > td": {
+          backgroundColor: "#f5f5f5",
+        },
+      },
+    },
     localization: MRT_Localization_FA,
   });
 

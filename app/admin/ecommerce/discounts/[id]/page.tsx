@@ -20,16 +20,16 @@ export default function NewDiscount({ params }) {
 
   const [requestBody, setRequestBody] = useState({
     id: null,
-    name: "",
-    description: "",
-    discountTypeId: 0,
-    discountActionTypeId: 0,
-    discountActionRuleId: 0,
-    discountValue: 0,
-    maxValue: 0,
-    couponCode: "",
-    priority: 0,
-    limit: 0,
+    name: null,
+    description: null,
+    discountTypeId: null,
+    discountActionTypeId: null,
+    discountActionRuleId: null,
+    discountValue: null,
+    maxValue: null,
+    couponCode: null,
+    priority: null,
+    limit: null,
     isActive: true,
     startDate: "2024-03-26T01:49:58.489Z",
     endDate: "2024-03-26T01:49:58.489Z",
@@ -56,23 +56,28 @@ export default function NewDiscount({ params }) {
         ...prevState,
         id: discount.result.id,
         name: discount.result.name,
-        description: discount.result.description,
+        description:
+          discount.result.description === ""
+            ? null
+            : discount.result.description,
         discountTypeId: discount.result.discountTypeId,
         discountActionTypeId: discount.result.discountActionTypeId,
         discountValue: discount.result.discountValue,
         maxValue: discount.result.maxValue,
         discountActionRuleId: discount.result.discountActionRuleId,
-        couponCode: discount.result.couponCode,
-        priority: discount.result.priority,
+        couponCode:
+          discount.result.couponCode === "" ? null : discount.result.couponCode,
         priority: discount.result.priority,
         limit: discount.result.limit,
         startDate: discount.result.startDate,
         endDate: discount.result.endDate,
-        // vendorId: discount.result.
       }));
     }
   }, [discountIsLoading]);
 
+  useEffect(() => {
+    setRequestBody({ ...requestBody, couponCode: null });
+  }, [requestBody.discountTypeId]);
   const {
     data: discountTypes,
     isLoading: discountTypesIsLoading,
@@ -91,15 +96,6 @@ export default function NewDiscount({ params }) {
     error: discountActionRulesError,
   } = useFetcher(`/v1/api/ecommerce/admin/discountActionRules`, "GET");
 
-  const {
-    data: vendors,
-    isLoading: vendorsIsLoading,
-    error: vendorsError,
-  } = useFetcher(
-    `/v1/api/ecommerce/user/vendors?sortOrder=DESC&offset=0&orderBy=id`,
-    "GET"
-  );
-
   const save = async () => {
     try {
       const req = await fetcher({
@@ -110,7 +106,7 @@ export default function NewDiscount({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/discounts");
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
@@ -123,7 +119,7 @@ export default function NewDiscount({ params }) {
       <div className="mb-6">
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           نام
         </label>
@@ -145,7 +141,7 @@ export default function NewDiscount({ params }) {
       <div className="mb-6">
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           توضیحات
         </label>
@@ -159,7 +155,7 @@ export default function NewDiscount({ params }) {
           onChange={(e) =>
             setRequestBody((prevState) => ({
               ...prevState,
-              description: e.target.value,
+              description: e.target.value === "" ? null : e.target.value,
             }))
           }
         />
@@ -257,9 +253,12 @@ export default function NewDiscount({ params }) {
         <div className="mb-6 flex-1">
           <TextField
             value={requestBody.maxValue}
-            onChange={(e) =>
-              setRequestBody({ ...requestBody, maxValue: +e.target.value })
-            }
+            onChange={(e) => {
+              setRequestBody({
+                ...requestBody,
+                maxValue: e.target.value === "" ? null : +e.target.value,
+              });
+            }}
             label="سقف تخفیف"
             variant="standard"
             fullWidth
@@ -270,7 +269,10 @@ export default function NewDiscount({ params }) {
             type="number"
             value={requestBody.limit}
             onChange={(e) =>
-              setRequestBody({ ...requestBody, limit: +e.target.value })
+              setRequestBody({
+                ...requestBody,
+                limit: e.target.value === "" ? null : +e.target.value,
+              })
             }
             label="محدودیت استفاده"
             variant="standard"

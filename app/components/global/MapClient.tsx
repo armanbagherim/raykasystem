@@ -131,7 +131,7 @@ const Map: FunctionComponent<MapProps> = ({
   }, [location]);
 
   return (
-    <Box className="relative w-[950px] h-96">
+    <Box className="relative w-full h-96">
       <Box id="map" style={{ width: "100%", height: "100%" }} />
     </Box>
   );

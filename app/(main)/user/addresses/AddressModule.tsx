@@ -212,14 +212,14 @@ export default function AddressModule({ cookies, session }) {
             <div>
               <label
                 htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 نام
               </label>
               <input
                 type="text"
                 id="first_name"
-                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 required
                 onChange={(e) => setName(e.target.value)}
               />
@@ -227,12 +227,12 @@ export default function AddressModule({ cookies, session }) {
                 <div className="flex-1">
                   <label
                     htmlFor="first_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     استان
                   </label>
                   <select
-                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     name=""
                     onChange={(e) => setprovinceId(e.target.value)}
                     id=""
@@ -247,12 +247,12 @@ export default function AddressModule({ cookies, session }) {
                 <div className="flex-1">
                   <label
                     htmlFor="first_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     شهر
                   </label>
                   <select
-                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     name=""
                     id=""
                     onChange={(e) => {
@@ -271,12 +271,12 @@ export default function AddressModule({ cookies, session }) {
                   <div className="flex-1">
                     <label
                       htmlFor="first_name"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      className="block mb-2 text-sm font-medium text-gray-900 "
                     >
                       محله
                     </label>
                     <select
-                      className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                       name=""
                       onChange={(e) => {
                         setneighborhoodId(e.target.value);
@@ -298,14 +298,14 @@ export default function AddressModule({ cookies, session }) {
                 <div className="flex-1">
                   <label
                     htmlFor="first_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     خیابان
                   </label>
                   <input
                     type="text"
                     id="first_name"
-                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     required
                     value={street}
                     onChange={(e) => setStreet(e.target.value)}
@@ -314,14 +314,14 @@ export default function AddressModule({ cookies, session }) {
                 <div className="flex-1">
                   <label
                     htmlFor="first_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     کوچه
                   </label>
                   <input
                     type="text"
                     id="first_name"
-                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     required
                     onChange={(e) => setAlley(e.target.value)}
                   />
@@ -329,14 +329,14 @@ export default function AddressModule({ cookies, session }) {
                 <div className="flex-1">
                   <label
                     htmlFor="first_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     پلاک
                   </label>
                   <input
                     type="text"
                     id="first_name"
-                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     required
                     onChange={(e) => setPlaque(e.target.value)}
                   />
@@ -344,14 +344,14 @@ export default function AddressModule({ cookies, session }) {
                 <div className="flex-1">
                   <label
                     htmlFor="first_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     طبقه
                   </label>
                   <input
                     type="text"
                     id="first_name"
-                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     required
                     onChange={(e) => setFloorNumber(e.target.value)}
                   />
@@ -359,14 +359,14 @@ export default function AddressModule({ cookies, session }) {
                 <div className="flex-1">
                   <label
                     htmlFor="first_name"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     کد پستی
                   </label>
                   <input
                     type="text"
                     id="first_name"
-                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                     required
                     onChange={(e) => setPostalCode(e.target.value)}
                   />
@@ -374,14 +374,14 @@ export default function AddressModule({ cookies, session }) {
               </div>
               <label
                 htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 توضیحات
               </label>
               <input
                 type="text"
                 id="first_name"
-                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 required
                 onChange={(e) => setDescription(e.target.value)}
               />
@@ -403,7 +403,7 @@ export default function AddressModule({ cookies, session }) {
           </Button>
         </DialogActions>
       </Dialog>
-      <div className="grid grid-cols-12 w-full gap-4">
+      <div className="grid grid-cols-1 w-full gap-4  md:grid-cols-12">
         {addresses?.map((value) => (
           <div
             key={value.id}

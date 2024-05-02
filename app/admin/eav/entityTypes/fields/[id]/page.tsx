@@ -70,8 +70,15 @@ export default function Eav({ params }) {
       maxSize: 200, //max size enforced during resizing
       size: 200, //medium column
       Cell({ row }) {
-        return !row.required ? "غیراجباری" : "اجباری";
+        return !row.original.required ? "غیراجباری" : "اجباری";
       },
+    },
+    {
+      accessorKey: "attributeType.name",
+      header: "نوع فیلد",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 200, //max size enforced during resizing
+      size: 200, //medium column
     },
     {
       accessorKey: "Actions",

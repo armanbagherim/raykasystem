@@ -8,6 +8,7 @@ import { useAtom } from "jotai";
 import { pageTitle } from "../../../../layout";
 import MapComponent from "@/app/components/global/Map";
 import SaveBar from "@/app/components/global/SaveBar";
+import MapClient from "@/app/components/global/MapClient";
 
 export default function VendorAddress({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -25,7 +26,6 @@ export default function VendorAddress({ params }) {
 
   const [name, setName] = useState();
   const [slug, setSlug] = useState();
-  const [description, setDescription] = useState();
   const [provinceId, setprovinceId] = useState(0);
   const [neighborhoodId, setneighborhoodId] = useState(1);
   const [cities, setCities] = useState([]);
@@ -35,6 +35,7 @@ export default function VendorAddress({ params }) {
   const [alley, setAlley] = useState();
   const [plaque, setPlaque] = useState();
   const [floorNumber, setFloorNumber] = useState();
+  const [postalCode, setPostalCode] = useState();
   const router = useRouter();
   const { data: provinces, isLoading: provincesIsLoading } = useFetcher(
     `/v1/api/ecommerce/provinces`,
@@ -82,11 +83,6 @@ export default function VendorAddress({ params }) {
     getNeighberhoods(cityId);
   }, [provinceId]);
 
-  // useEffect(() => {
-  //
-  //   getNeighberhoods(neighborhoodId);
-  // }, [neighborhoodId]);
-
   const save = async () => {
     try {
       const req = await fetcher({
@@ -104,12 +100,13 @@ export default function VendorAddress({ params }) {
           alley,
           plaque,
           floorNumber,
+          postalCode,
         },
       });
       toast.success("موفق");
       setTimeout(() => {
-        router.push("/admin/ecommerce/vendorAddresses");
-      }, 2000);
+        router.push(`/admin/ecommerce/vendorAddresses/${params.id}`);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
@@ -119,18 +116,28 @@ export default function VendorAddress({ params }) {
   }
   return (
     <div>
-      <MapComponent coordinates={coordinates} setCoordinates={setCoordinates} />
+      <MapClient
+        onAddressChange={(address) => {
+          setStreet(address);
+        }}
+        onLocationChange={(location) => {
+          setCoordinates({
+            latitude: location.lat.toString(),
+            longitude: location.lng.toString(),
+          });
+        }}
+      />
       <div>
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           نام
         </label>
         <input
           type="text"
           id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
           onChange={(e) => setName(e.target.value)}
         />
@@ -138,12 +145,12 @@ export default function VendorAddress({ params }) {
           <div className="flex-1">
             <label
               htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               استان
             </label>
             <select
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               name=""
               onChange={(e) => setprovinceId(e.target.value)}
               id=""
@@ -158,12 +165,12 @@ export default function VendorAddress({ params }) {
           <div className="flex-1">
             <label
               htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               شهر
             </label>
             <select
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               name=""
               id=""
               onChange={(e) => {
@@ -182,12 +189,12 @@ export default function VendorAddress({ params }) {
             <div className="flex-1">
               <label
                 htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 محله
               </label>
               <select
-                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 name=""
                 onChange={(e) => {
                   setneighborhoodId(e.target.value);
@@ -209,29 +216,30 @@ export default function VendorAddress({ params }) {
           <div className="flex-1">
             <label
               htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               خیابان
             </label>
             <input
               type="text"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
+              value={street}
               onChange={(e) => setStreet(e.target.value)}
             />
           </div>
           <div className="flex-1">
             <label
               htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               کوچه
             </label>
             <input
               type="text"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
               onChange={(e) => setAlley(e.target.value)}
             />
@@ -239,14 +247,14 @@ export default function VendorAddress({ params }) {
           <div className="flex-1">
             <label
               htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               پلاک
             </label>
             <input
               type="text"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
               onChange={(e) => setPlaque(e.target.value)}
             />
@@ -254,32 +262,34 @@ export default function VendorAddress({ params }) {
           <div className="flex-1">
             <label
               htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               طبقه
             </label>
             <input
               type="text"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
               onChange={(e) => setFloorNumber(e.target.value)}
             />
           </div>
+          <div className="flex-1">
+            <label
+              htmlFor="first_name"
+              className="block mb-2 text-sm font-medium text-gray-900 "
+            >
+              کد پستی
+            </label>
+            <input
+              type="text"
+              id="first_name"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              required
+              onChange={(e) => setPostalCode(e.target.value)}
+            />
+          </div>
         </div>
-        <label
-          htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          توضیحات
-        </label>
-        <input
-          type="text"
-          id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          required
-          onChange={(e) => setDescription(e.target.value)}
-        />
       </div>
 
       <SaveBar action={save} />

@@ -24,7 +24,7 @@ export const authOptions = {
         if (phoneNumber && !verifyCode) {
           try {
             res = await fetch(
-              "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/login",
+              `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/login`,
               {
                 method: "POST",
                 headers: {
@@ -40,7 +40,7 @@ export const authOptions = {
           }
         } else if (verifyCode) {
           res = await fetch(
-            "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/login/verifyCode",
+            `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/login/verifyCode`,
             {
               method: "POST",
               headers: {

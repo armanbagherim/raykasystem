@@ -54,7 +54,8 @@ export default function InventoriesDialouge({
   });
 
   const activeSpaceProductsObject = useMemo(() => {
-    const activeSpaceProducts = product?.filter(
+    if (!product) return null;
+    const activeSpaceProducts = product.filter(
       (value) =>
         (typeof value.id === "string" ? value.id : +value.id) ===
         (typeof value.id === "string" ? activeSpace : +activeSpace)
@@ -64,11 +65,14 @@ export default function InventoriesDialouge({
       {}
     );
   }, [product, activeSpace]);
+
   function generateRandomId() {
     return `new_${Math.floor(Math.random() * 1000000)}`; // Generates a random number between 0 and 999999 and prefixes it with 'new_'
   }
+
   useEffect(() => {
     if (activeSpaceProductsObject) {
+      console.log(activeSpaceProductsObject);
       // Check if activeSpace is null
       if (!activeSpace) {
         // Check if the object already has an ID without the 'new_' prefix
@@ -103,15 +107,12 @@ export default function InventoriesDialouge({
     const requiredFields = [
       "vendorId",
       "vendorName",
-      "colorId",
-      "colorName",
       "guaranteeId",
       "guaranteeName",
       "guaranteeMonthId",
       "guaranteeMonthName",
       "weight",
       "qty",
-      "buyPrice",
       "firstPrice",
     ];
 
@@ -119,7 +120,6 @@ export default function InventoriesDialouge({
       (field) => localTempInventory[field] !== undefined
     );
   };
-
   const handleSelectChange = (value, key, label) => {
     setLocalTempInventory((prevInventory) => {
       // Check if the key is 'description' to ensure it's treated as a string
@@ -129,19 +129,28 @@ export default function InventoriesDialouge({
           [key]: value.target.value, // Directly use the value as it's already a string
         };
       } else {
-        return {
-          ...prevInventory,
-          [key]:
-            typeof value === "object" && value !== null && value.target
-              ? +value.target.value
-              : value.id !== null
-              ? value.id
-              : null,
-          [label]:
-            typeof value === "object" && value !== null && value.target
-              ? value.target.value
-              : value.name,
-        };
+        // Check if the value is null
+        if (value === null) {
+          return {
+            ...prevInventory,
+            [key]: null,
+            [label]: "",
+          };
+        } else {
+          return {
+            ...prevInventory,
+            [key]:
+              typeof value === "object" && value !== null && value.target
+                ? +value.target.value
+                : value !== null
+                ? value.id
+                : null,
+            [label]:
+              typeof value === "object" && value !== null && value.target
+                ? value.target.value
+                : value.name,
+          };
+        }
       }
     });
   };
@@ -240,9 +249,13 @@ export default function InventoriesDialouge({
               id="standard-basic"
               label="قیمت خرید"
               variant="standard"
-              defaultValue={localTempInventory?.buyPrice}
+              defaultValue={localTempInventory?.buyPrice || null}
               onChange={(e) => handleSelectChange(e, "buyPrice")}
             />
+            <div className="text-xs">
+              {Number(localTempInventory?.buyPrice || null).toLocaleString()}{" "}
+              تومان
+            </div>
           </div>
         </div>
         <div className="flex gap-4 mb-4" dir="rtl">
@@ -256,6 +269,10 @@ export default function InventoriesDialouge({
               defaultValue={localTempInventory?.firstPrice}
               onChange={(e) => handleSelectChange(e, "firstPrice")}
             />
+            <div className="text-xs">
+              {Number(localTempInventory?.firstPrice || null).toLocaleString()}{" "}
+              تومان
+            </div>
           </div>
           <div className="flex-1">
             <TextField
@@ -264,9 +281,15 @@ export default function InventoriesDialouge({
               id="standard-basic"
               label="قیمت نقدی"
               variant="standard"
-              defaultValue={localTempInventory?.secondaryPrice}
+              defaultValue={localTempInventory?.secondaryPrice || null}
               onChange={(e) => handleSelectChange(e, "secondaryPrice")}
             />
+            <div className="text-xs">
+              {Number(
+                localTempInventory?.secondaryPrice || null
+              ).toLocaleString()}{" "}
+              تومان
+            </div>
           </div>
         </div>
         <div className="mb-6">
@@ -276,7 +299,7 @@ export default function InventoriesDialouge({
             fullWidth
             id="standard-basic"
             defaultValue={localTempInventory?.weight}
-            label="وزن"
+            label="وزن (گرم)"
             nullable={true}
             variant="standard"
             onChange={(e) => handleSelectChange(e, "weight")}
@@ -284,7 +307,7 @@ export default function InventoriesDialouge({
         </div>
         <label
           htmlFor="message"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           توضیحات
         </label>
@@ -293,7 +316,7 @@ export default function InventoriesDialouge({
           onChange={(e) => handleSelectChange(e, "description")}
           id="message"
           rows="4"
-          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
           placeholder="توضیحات"
         ></textarea>
       </DialogContent>
@@ -314,6 +337,7 @@ export default function InventoriesDialouge({
           color="success"
           autoFocus
           onClick={(e) => {
+            console.log(localTempInventory);
             if (!isFormValid()) {
               // Optionally display an error message
               toast.error("لطفا تمام فیلد ها را پر نمایید");

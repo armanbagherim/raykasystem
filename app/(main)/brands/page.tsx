@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 async function getBrands() {
   const res = await fetch(
-    "https://nest-jahizan.chbk.run/v1/api/ecommerce/brands?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=true",
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/brands?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=true`,
     {
       cache: "no-store",
     }

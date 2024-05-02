@@ -17,10 +17,12 @@ async function getEntity(params) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes/slug/${params.slug}`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
-
+  if (res.status === 404) {
+    return notFound();
+  }
   return res.json();
 }
 
@@ -28,7 +30,7 @@ async function getBrands(entity) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/brands?sortOrder=DESC&entityTypeId=${entity}&offset=0&limit=10&orderBy=id&ignorePaging=true`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
 
@@ -43,7 +45,7 @@ async function getColors(entity) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/colors?sortOrder=DESC&entityTypeId=${entity}&offset=0&limit=10&orderBy=id&ignorePaging=false`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
 
@@ -58,7 +60,7 @@ async function getAttributes(entity) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/attributes?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false&entityTypeId=${entity}&attributeTypeId=3`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
 
@@ -71,9 +73,9 @@ async function getAttributes(entity) {
 
 async function getPriceRange(entity) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/priceRange?entityTypeId=${entity.id}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/priceRange?entityTypeId=${entity?.id}`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
 
@@ -88,7 +90,7 @@ async function getGuarantees() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/guarantees?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=true`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
 
@@ -112,7 +114,7 @@ async function getProducts(searchParams, entity) {
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?${queryString}&entityTypeId=${entity}&limit=12`;
 
   const res = await fetch(url, {
-    cache: "force-cache",
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -124,18 +126,20 @@ async function getProducts(searchParams, entity) {
 
 export async function generateMetadata({ params }): Promise<Metadata> {
   const { result: entity } = await getEntity(params);
-
+  console.log(entity);
   return {
-    title: `جهیزان | ${entity.name}`,
+    title: `جهیزان | ${entity?.name}`,
+    description: entity?.metaDescription,
+    keywords: entity?.metaKeywords,
   };
 }
 
 const Sellerpage = async ({ params, searchParams }) => {
   const { result: entity } = await getEntity(params);
-  const products = await getProducts(searchParams, entity.id);
-  const { result: brands } = await getBrands(entity.id);
-  const { result: colors } = await getColors(entity.id);
-  const { result: attributes } = await getAttributes(entity.id);
+  const products = await getProducts(searchParams, entity?.id);
+  const { result: brands } = await getBrands(entity?.id);
+  const { result: colors } = await getColors(entity?.id);
+  const { result: attributes } = await getAttributes(entity?.id);
   const { result: guarantees } = await getGuarantees();
   const { result: range } = await getPriceRange(entity);
 
@@ -143,10 +147,10 @@ const Sellerpage = async ({ params, searchParams }) => {
     <>
       <div className="container justify-center mx-auto mt-10 mb-64">
         <div className="text-3xl p-5 pr-7">
-          <h1 className="peyda text-[26px]">{entity.name}</h1>
+          <h1 className="peyda text-[26px]">{entity?.name}</h1>
         </div>
         <div className="mt-7">
-          <div className="grid grid-cols-12">
+          <div className="grid grid-cols-12 h-full">
             <Sidebar
               brands={brands}
               colors={colors}
@@ -156,8 +160,8 @@ const Sellerpage = async ({ params, searchParams }) => {
             />
             <div className="col-span-12 md:col-span-9 p-4">
               <div>
-                <div className="p-2 grid grid-cols-4 ">
-                  <div className="flex gap-2 col-span-3 whitespace-nowrap overflow-y-scroll md:overflow-y-hidden">
+                <div className="p-2 grid grid-cols-1 ">
+                  {/* <div className="flex gap-2 col-span-3 whitespace-nowrap overflow-y-scroll md:overflow-y-hidden">
                     <span className="items-center flex">
                       <Sorticon />
                     </span>
@@ -178,7 +182,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                         <a href="#">محبوبیت</a>
                       </span>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-span-1 items-center flex justify-end">
                     <div className="text-xs text-slate-500">
                       {products?.total} کالا
@@ -186,7 +190,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                   </div>
                 </div>
                 <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 gap-6">
                     {products?.result?.map((value, key) => (
                       <ProductCard
                         key={key}

@@ -43,7 +43,7 @@ export default function NewDiscount({ params }) {
     isLoading: conditionsIsLoading,
     error: conditionsError,
   } = useFetcher(
-    `/v1/api/ecommerce/admin/discountConditionValues?sortOrder=ASC&conditionTypeId=${requestBody.conditionType}&offset=0&limit=10&orderBy=id`,
+    `/v1/api/ecommerce/admin/discountConditionValues?sortOrder=ASC&conditionTypeId=${requestBody.conditionTypeId}&offset=0&limit=10&orderBy=id`,
     "GET"
   );
 
@@ -57,7 +57,7 @@ export default function NewDiscount({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push(`/admin/ecommerce/discounts/conditions/${params.id}`);
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
@@ -69,7 +69,7 @@ export default function NewDiscount({ params }) {
         <SearchSelect
           loadingState={discountConditionsIsLoading}
           data={discountConditions?.result}
-          label="فروشگاه"
+          label="نوع شرط اعمالی"
           defaultValue={1}
           onChange={(e) =>
             setRequestBody({ ...requestBody, conditionTypeId: e.id })

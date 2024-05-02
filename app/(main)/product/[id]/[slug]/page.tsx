@@ -19,7 +19,7 @@ async function getRelated(entity) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id&entityTypeId=${entity}`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
 
@@ -35,7 +35,9 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 
   const product = await getProduct(slug);
   return {
-    title: product.result.result.title,
+    title: product?.result?.result?.title,
+    description: product?.result?.result?.metaDescription,
+    keywords: product?.result?.result?.metaKeywords,
   };
 }
 

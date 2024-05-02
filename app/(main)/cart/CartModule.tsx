@@ -98,7 +98,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
     setLoading(true);
     try {
       await fetch(
-        `https://nest-jahizan.chbk.run/v1/api/ecommerce/user/stocks/price`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/price`,
         {
           method: "POST",
           headers: {
@@ -132,7 +132,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
     setLoading(true);
     try {
       await fetch(
-        `https://nest-jahizan.chbk.run/v1/api/ecommerce/user/payments/stock`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/payments/stock`,
         {
           method: "POST",
           headers: {
@@ -317,7 +317,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
               <div className="p-1">فروشنده</div>
               <div className="p-1">جمع کل</div>
             </div>
-
+            {console.log(localCart)}
             {localCart?.result.length === 0 ? (
               <div className="text-center">
                 <EmptyCart />
@@ -419,14 +419,14 @@ const CartModule = ({ cartItems, session, cookies }) => {
                       <div>
                         <label
                           htmlFor="first_name"
-                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          className="block mb-2 text-sm font-medium text-gray-900 "
                         >
                           نام
                         </label>
                         <input
                           type="text"
                           id="first_name"
-                          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                           required
                           onChange={(e) => setName(e.target.value)}
                         />
@@ -434,12 +434,12 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           <div className="flex-1">
                             <label
                               htmlFor="first_name"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900 "
                             >
                               استان
                             </label>
                             <select
-                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                               name=""
                               onChange={(e) => setprovinceId(e.target.value)}
                               id=""
@@ -454,12 +454,12 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           <div className="flex-1">
                             <label
                               htmlFor="first_name"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900 "
                             >
                               شهر
                             </label>
                             <select
-                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                               name=""
                               id=""
                               onChange={(e) => {
@@ -478,12 +478,12 @@ const CartModule = ({ cartItems, session, cookies }) => {
                             <div className="flex-1">
                               <label
                                 htmlFor="first_name"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                className="block mb-2 text-sm font-medium text-gray-900 "
                               >
                                 محله
                               </label>
                               <select
-                                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                                 name=""
                                 onChange={(e) => {
                                   setneighborhoodId(e.target.value);
@@ -505,14 +505,14 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           <div className="flex-1">
                             <label
                               htmlFor="first_name"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900 "
                             >
                               خیابان
                             </label>
                             <input
                               type="text"
                               id="first_name"
-                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                               required
                               value={street}
                               onChange={(e) => setStreet(e.target.value)}
@@ -521,14 +521,14 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           <div className="flex-1">
                             <label
                               htmlFor="first_name"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900 "
                             >
                               کوچه
                             </label>
                             <input
                               type="text"
                               id="first_name"
-                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                               required
                               onChange={(e) => setAlley(e.target.value)}
                             />
@@ -536,14 +536,14 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           <div className="flex-1">
                             <label
                               htmlFor="first_name"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900 "
                             >
                               پلاک
                             </label>
                             <input
                               type="text"
                               id="first_name"
-                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                               required
                               onChange={(e) => setPlaque(e.target.value)}
                             />
@@ -551,14 +551,14 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           <div className="flex-1">
                             <label
                               htmlFor="first_name"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              className="block mb-2 text-sm font-medium text-gray-900 "
                             >
                               طبقه
                             </label>
                             <input
                               type="text"
                               id="first_name"
-                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                               required
                               onChange={(e) => setFloorNumber(e.target.value)}
                             />
@@ -566,14 +566,14 @@ const CartModule = ({ cartItems, session, cookies }) => {
                         </div>
                         <label
                           htmlFor="first_name"
-                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          className="block mb-2 text-sm font-medium text-gray-900 "
                         >
                           توضیحات
                         </label>
                         <input
                           type="text"
                           id="first_name"
-                          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                           required
                           onChange={(e) => setDescription(e.target.value)}
                         />

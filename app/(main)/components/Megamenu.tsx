@@ -28,7 +28,7 @@ const Megamenu = ({ items }) => {
         <Link
           href={`/category/${item.slug}`}
           key={item.id}
-          className="block py-4 pr-2 hover:text-black text-md pb-2"
+          className="block py-2 pr-2 hover:text-black text-sm pb-2"
         >
           <h3>
             <span className="w-2 h-2 ml-3 rounded-xl bg-primary inline-block"></span>
@@ -43,7 +43,7 @@ const Megamenu = ({ items }) => {
               <Link
                 href={`/category/${subEntity.slug}`}
                 key={subEntity.id}
-                className="block py-4 pr-2 hover:text-black text-md pb-2"
+                className="block py-2 pr-2 hover:text-black text-sm pb-2"
               >
                 <h4>{subEntity.name}</h4>
               </Link>

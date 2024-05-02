@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { fetcher, useFetcher } from "../../../components/global/fetcher";
 import Loading from "../../../components/global/loading";
 import { useAtom } from "jotai";
@@ -13,6 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 export default function Products() {
   const [title, setTitle] = useAtom(pageTitle);
+  const [triggered, setTriggered] = useState(false);
 
   useEffect(() => {
     setTitle({
@@ -29,7 +30,7 @@ export default function Products() {
         method: "DELETE",
       });
       toast.success("موفق");
-      refetchProducts();
+      setTriggered(!triggered);
     } catch (error) {
       toast.error(error.message);
     }
@@ -43,32 +44,57 @@ export default function Products() {
       maxSize: 10,
     },
     {
+      accessorKey: "pPhoto",
+      header: "تصویر",
+      minSize: 100,
+      maxSize: 100,
+      size: 100,
+      Cell: ({ row }) => {
+        return row?.original?.attachments?.length ? (
+          <Image
+            key={row.id}
+            loading="eager"
+            src={`${
+              process.env.NEXT_PUBLIC_BASE_URL
+            }/v1/api/ecommerce/productphotos/image/${
+              row.original.attachments[0]?.fileName || ""
+            }`}
+            width={30}
+            height={30}
+            alt=""
+          />
+        ) : (
+          <img width={30} height={30} src="/images/no-photo.png" alt="" />
+        );
+      },
+    },
+    {
       accessorKey: "title",
       header: "نام ",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 400, //max size enforced during resizing
-      size: 400, //medium column
+      minSize: 100,
+      maxSize: 400,
+      size: 400,
     },
     {
       accessorKey: "brand.name",
       header: "برند",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 150, //max size enforced during resizing
-      size: 150, //medium column
+      minSize: 100,
+      maxSize: 150,
+      size: 150,
     },
     {
       accessorKey: "publishStatus.name",
       header: "وضعیت انتشار",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 150, //max size enforced during resizing
-      size: 150, //medium column
+      minSize: 100,
+      maxSize: 150,
+      size: 150,
     },
     {
       accessorKey: "entityType.name",
       header: "دسته بندی",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 400, //max size enforced during resizing
-      size: 180, //medium column
+      minSize: 100,
+      maxSize: 400,
+      size: 180,
     },
 
     {
@@ -89,7 +115,7 @@ export default function Products() {
       },
       Cell: ({ row }) => (
         <>
-          <a href={`/admin/ecommerce/products/${row.id}`}>
+          <a target="_blank" href={`/admin/ecommerce/products/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
             </IconButton>
@@ -109,6 +135,7 @@ export default function Products() {
       <LightDataGrid
         url={"/v1/api/ecommerce/admin/products"}
         columns={columns}
+        triggered={triggered}
       />
     </div>
   );

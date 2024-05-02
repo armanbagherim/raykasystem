@@ -58,7 +58,7 @@ export default function page() {
           <p className="text-sm font-medium text-primary dark:text-bprimary">
             ارور 404 خوردی که!
           </p>
-          <h1 className="mt-3 text-2xl font-semibold text-gray-800 dark:text-white md:text-3xl">
+          <h1 className="mt-3 text-2xl font-semibold text-gray-800  md:text-3xl">
             این صفحه برای همیشه رفته!
           </h1>
           <p className="mt-4 text-gray-500 dark:text-gray-400">

@@ -140,6 +140,9 @@ export default function LeftSide({ product, status, addToCart }) {
                     </>
                   ) : (
                     <p className="text-sm">
+                      <div className="text-center animate-bounce bg-[#E2F0EB] text-primary text-sm rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
+                        قیمت اقساطی
+                      </div>
                       {Number(product[0]?.firstPrice.price).toLocaleString()}{" "}
                       تومان
                     </p>

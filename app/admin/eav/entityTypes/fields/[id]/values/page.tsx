@@ -23,7 +23,7 @@ export default function Eav({ params }) {
     });
   }, []);
 
-  const deleteEavType = async (id) => {
+  const deleteValue = async (id) => {
     try {
       const req = await fetcher({
         url: `/v1/api/eav/admin/attributeValues/${id}`,
@@ -70,7 +70,7 @@ export default function Eav({ params }) {
               <ModeEditIcon />
             </IconButton>
           </a>
-          <a onClick={(e) => deleteEavType(row.id)}>
+          <a onClick={(e) => deleteValue(row.id)}>
             <IconButton aria-label="delete" color="error">
               <DeleteIcon />
             </IconButton>

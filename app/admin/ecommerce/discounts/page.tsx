@@ -58,7 +58,13 @@ export default function Discount() {
       maxSize: 100,
       size: 100,
       Cell({ row }) {
-        return ChangeFormatDate(row.original.startDate);
+        return (
+          new Date(row.original?.startDate).toLocaleDateString("fa-IR", {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+          }) || ""
+        );
       },
     },
     {
@@ -68,7 +74,13 @@ export default function Discount() {
       maxSize: 100,
       size: 100,
       Cell({ row }) {
-        return ChangeFormatDate(row.original.endDate);
+        return (
+          new Date(row.original?.endDate).toLocaleDateString("fa-IR", {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+          }) || ""
+        );
       },
     },
     {

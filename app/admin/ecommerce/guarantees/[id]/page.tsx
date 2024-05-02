@@ -55,12 +55,15 @@ export default function Guarantees({ params }) {
           name,
           slug,
           description,
+          metaKeywords,
+          metaDescription,
+          metaTitle,
         },
       });
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/guarantees");
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
@@ -73,28 +76,28 @@ export default function Guarantees({ params }) {
       <div>
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           نام گارانتی
         </label>
         <input
           type="text"
           id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           لینک گارانتی
         </label>
         <input
           type="text"
           id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
@@ -102,7 +105,7 @@ export default function Guarantees({ params }) {
 
         <label
           htmlFor="description"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           توضیحات
         </label>
@@ -111,28 +114,28 @@ export default function Guarantees({ params }) {
 
       <label
         htmlFor="first_name"
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        className="block mb-2 text-sm font-medium text-gray-900 "
       >
         عنوان سئو
       </label>
       <input
         type="text"
         id="first_name"
-        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         required
         value={metaTitle}
         onChange={(e) => setMetaTitle(e.target.value)}
       />
       <label
         htmlFor="first_name"
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        className="block mb-2 text-sm font-medium text-gray-900 "
       >
         توضیحات سئو
       </label>
       <input
         type="text"
         id="first_name"
-        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         required
         value={metaDescription}
         onChange={(e) => setMetaDescription(e.target.value)}
@@ -140,14 +143,14 @@ export default function Guarantees({ params }) {
 
       <label
         htmlFor="first_name"
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        className="block mb-2 text-sm font-medium text-gray-900 "
       >
         کلمات کلیدی (با کاما جدا شود)
       </label>
       <input
         type="text"
         id="first_name"
-        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         required
         value={metaKeywords}
         onChange={(e) => setMetaKeywords(e.target.value)}

@@ -107,7 +107,7 @@ export default function SignInForm({ session }) {
                     <h4 className="opacity-70 text-xs mb-3">شماره موبایل</h4>
                     <input
                       className="bg-[#F8F8F8] text-left rounded-2xl py-4 w-full md:w-full lg:w-full xl:full px-6 outline-none mb-8"
-                      type="text"
+                      type="tel"
                       label="Phone Number"
                       pattern="/^(\{?(09)([1-3]){2}-([0-9]){7,7}\}?)$/"
                       onChange={(e) => setPhoneNumber(e.target.value)}
@@ -205,6 +205,9 @@ export default function SignInForm({ session }) {
                         onChange={(e) => setVerifyCode(e)}
                         autoFocus="true"
                         placeholder="_"
+                        inputProps={{
+                          type: "tel",
+                        }}
                         length={6}
                         classNames={{
                           container:
@@ -217,10 +220,10 @@ export default function SignInForm({ session }) {
                         }}
                       />
                     </div>
-                    <p className="rule flex opacity-70 text-sm mb-4 justify-between">
+                    {/* <p className="rule flex opacity-70 text-sm mb-4 justify-between">
                       <span>ارسال مجدد کد</span>
                       <span>19:20</span>
-                    </p>
+                    </p> */}
                   </div>
                 )}
                 <button

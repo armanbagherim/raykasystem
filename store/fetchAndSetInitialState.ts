@@ -7,7 +7,7 @@ async function fetchTotalCount() {
 
   try {
     const response = await fetch(
-      "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/stocks/count",
+      `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
       {
         method: "GET",
         headers: {

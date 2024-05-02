@@ -86,6 +86,9 @@ export default function Products({ params }) {
     photos: photos,
     attributes: [],
     inventories: [],
+    metaDescription: "",
+    metaTitle: "",
+    metaKeywords: "",
   });
   const [inventories, setInventories] = useState([]);
   const [tempInventories, setTempInventories] = useState([]);
@@ -144,6 +147,9 @@ export default function Products({ params }) {
         title: product.result.title,
         slug: product.result.slug,
         entityTypeId: product.result.entityTypeId,
+        metaDescription: product.result?.metaDescription,
+        metaKeywords: product.result?.metaKeywords,
+        metaTitle: product.result?.metaTitle,
       });
       setDescription(product.result.description);
       const attrs = product.result.productAttributeValues.map((attrValues) => {
@@ -362,7 +368,7 @@ export default function Products({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/products");
-      }, 2000);
+      }, 500);
     } catch (error) {
       setLoading(false);
 
@@ -405,12 +411,13 @@ export default function Products({ params }) {
         </div>{" "}
       </div>
       <div className="flex gap-4 p-6 col-span-3 flex-wrap">
-        <div className="flex">
-          <div className="flex-1">
+        <div className="flex w-full gap-4">
+          <div className="flex-1 w-full">
             <TextField
               onChange={(e) =>
                 setRequestBody({ ...requestBody, title: e.target.value })
               }
+              fullWidth
               required
               id="standard-basic"
               label="نام محصول"
@@ -418,11 +425,12 @@ export default function Products({ params }) {
               variant="standard"
             />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 w-full">
             <TextField
               onChange={(e) =>
                 setRequestBody({ ...requestBody, slug: e.target.value })
               }
+              fullWidth
               required
               id="standard-basic"
               label="لینک محصول"
@@ -431,22 +439,30 @@ export default function Products({ params }) {
             />
           </div>
         </div>
-        <SelectSearch
-          loadingState={brandsIsLoading}
-          data={brands?.result}
-          label="برند"
-          defaultValue={requestBody.brandId}
-          onChange={(e) => setRequestBody({ ...requestBody, brandId: e.id })}
-        />
-        <SelectSearch
-          loadingState={publishStatusesIsLoading}
-          data={publishStatuses?.result}
-          label="وضعیت انتشار"
-          defaultValue={requestBody.publishStatusId}
-          onChange={(e) =>
-            setRequestBody({ ...requestBody, publishStatusId: e.id })
-          }
-        />
+        <div className="flex w-full gap-4">
+          <div className="flex-1 w-full">
+            <SelectSearch
+              loadingState={brandsIsLoading}
+              data={brands?.result}
+              label="برند"
+              defaultValue={requestBody.brandId}
+              onChange={(e) =>
+                setRequestBody({ ...requestBody, brandId: e.id })
+              }
+            />
+          </div>
+          <div className="flex-1 w-full ">
+            <SelectSearch
+              loadingState={publishStatusesIsLoading}
+              data={publishStatuses?.result}
+              label="وضعیت انتشار"
+              defaultValue={requestBody.publishStatusId}
+              onChange={(e) =>
+                setRequestBody({ ...requestBody, publishStatusId: e.id })
+              }
+            />
+          </div>
+        </div>
         <div className="flex-1">
           {parentEntityTypesIsLoading && !selectedEav ? (
             "در حال بارگزاری"
@@ -565,7 +581,6 @@ export default function Products({ params }) {
                           افزودن موجودی جدید
                         </Button>
                         <DataGridLite
-                          handleClickOpen={handleClickOpen}
                           data={tempInventories}
                           removeInventory={removeInventory}
                           key={tempInventories}
@@ -596,6 +611,54 @@ export default function Products({ params }) {
                         className={openTab === 3 ? "block" : "hidden"}
                         id="link3"
                       >
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaKeywords: e.target.value,
+                              })
+                            }
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="کلمات کلیدی"
+                            defaultValue={requestBody.metaKeywords}
+                            variant="standard"
+                          />
+                        </div>
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaDescription: e.target.value,
+                              })
+                            }
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="توضیحات متا"
+                            variant="standard"
+                            defaultValue={requestBody.metaDescription}
+                          />
+                        </div>
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaTitle: e.target.value,
+                              })
+                            }
+                            defaultValue={requestBody.metaTitle}
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="عنوان سئو"
+                            variant="standard"
+                          />
+                        </div>
                         <SeoBox
                           setDescription={setDescription}
                           description={description}

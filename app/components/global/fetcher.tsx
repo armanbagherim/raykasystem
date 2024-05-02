@@ -3,7 +3,7 @@ import { getSession } from "next-auth/react";
 
 interface FetcherParams {
   url: string;
-  method: "GET" | "POST" | "PUT" | "DELETE";
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   body?: Record<string, FormData>;
   isFile?: boolean;
 }

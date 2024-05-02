@@ -17,7 +17,7 @@ async function getColors() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/colors?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
 
@@ -32,7 +32,7 @@ async function getPriceRange() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/priceRange`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
 
@@ -56,7 +56,7 @@ async function getProducts(searchParams) {
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?${queryString}&limit=12`;
 
   const res = await fetch(url, {
-    cache: "force-cache",
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -68,7 +68,9 @@ async function getProducts(searchParams) {
 
 export async function generateMetadata({ searchParams }): Promise<Metadata> {
   return {
-    title: `جهیزان | نتایج جست و جو برای ${searchParams.search}`,
+    title: searchParams.search
+      ? `جهیزان | نتایج جست و جو برای ${searchParams.search}`
+      : "جهیزان | جست و جو",
   };
 }
 
@@ -85,12 +87,12 @@ const Sellerpage = async ({ params, searchParams }) => {
           <h1 className="peyda text-[26px]">{searchParams.search}</h1>
         </div>
         <div className="mt-7">
-          <div className="grid grid-cols-12">
+          <div className="grid grid-cols-12 h-full">
             <Sidebar colors={colors} range={range} />
             <div className="col-span-12 md:col-span-9 p-4">
               <div>
-                <div className="p-2 grid grid-cols-4 ">
-                  <div className="flex gap-2 col-span-3 whitespace-nowrap overflow-y-scroll md:overflow-y-hidden">
+                <div className="p-2 grid grid-cols-1 ">
+                  {/* <div className="flex gap-2 col-span-3 whitespace-nowrap overflow-y-scroll md:overflow-y-hidden">
                     <span className="items-center flex">
                       <Sorticon />
                     </span>
@@ -111,7 +113,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                         <a href="#">محبوبیت</a>
                       </span>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-span-1 items-center flex justify-end">
                     <div className="text-xs text-slate-500">
                       {products?.total} کالا
@@ -119,7 +121,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                   </div>
                 </div>
                 <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 gap-6">
                     {products?.result?.map((value, key) => (
                       <ProductCard
                         key={key}

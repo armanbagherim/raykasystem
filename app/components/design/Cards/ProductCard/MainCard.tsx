@@ -14,12 +14,12 @@ export default function MainCard({ data }) {
   const uniqueColorsArray = Array.from(uniqueColorsMap.values());
   return (
     <Link href={`/product/${data?.sku}/${data?.slug}`} className="flex h-full">
-      <div className="flex w-full flex-col gap-5 border bg-white rounded-3xl p-4 h-full justify-start">
+      <div className="flex w-full flex-col border bg-white rounded-3xl p-4 h-full justify-start">
         {data?.attachments[0]?.fileName ? (
           <Image
-            width="200"
-            height="400"
-            className="mx-auto h-auto"
+            width={500}
+            height={500}
+            className="mx-auto h-auto object-contain rounded-3xl"
             priority
             src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${data?.attachments[0].fileName}`}
           />
@@ -27,28 +27,31 @@ export default function MainCard({ data }) {
           <Image
             width={500}
             height={500}
-            className="w-full border border-gray-200 rounded-2xl mb-2"
+            className="w-full border border-gray-200 rounded-3xl mb-2"
             src="/images/no-photo.png"
             alt=""
           />
         )}
 
         <div className="flex flex-col justify-between w-full h-full">
-          <h3 className="mb-2 w-60 h-14 pl-4 whitespace-break-spaces">
-            {data?.title}
-          </h3>
-          <div className="flex mt-2 mb-6">
-            {data.colorBased
-              ? uniqueColorsArray.map((value, key) => (
-                  <VariantsCard
-                    key={key}
-                    isSelected={false}
-                    color={value?.color?.hexCode}
-                    name={value?.color?.name}
-                  />
-                ))
-              : ""}
+          <div>
+            <h3 className="mb-2 w-full h-auto whitespace-break-spaces mt-3">
+              {data?.title}
+            </h3>
+            <div className="flex mt-2 mb-6">
+              {data.colorBased
+                ? uniqueColorsArray.map((value, key) => (
+                    <VariantsCard
+                      key={key}
+                      isSelected={false}
+                      color={value?.color?.hexCode}
+                      name={value?.color?.name}
+                    />
+                  ))
+                : ""}
+            </div>
           </div>
+
           <div className="flex flex-row justify-between items-center">
             <div>
               {data.inventories[0]?.firstPrice?.appliedDiscount ? (

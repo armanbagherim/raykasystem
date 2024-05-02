@@ -16,8 +16,7 @@ import Uploader from "@/app/components/global/Uploader";
 export default function Guarantees() {
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
-  // setTriggered(!triggered);
-  // triggered = { triggered };
+
   useEffect(() => {
     setTitle({
       title: "گارانتی ها",

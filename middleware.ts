@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
 
   // If the SessionName cookie does not exist, generate a new session
   const resp = await fetch(
-    "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/sessions/generate",
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/sessions/generate`,
     {
       method: "POST",
     }

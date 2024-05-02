@@ -39,7 +39,7 @@ const Numberpaginate = ({ items }) => {
     current.set("offset", newOffset.toString());
     const query = current.toString() ? `?${current.toString()}` : "";
     router.push(`${pathname}${query}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 250, behavior: "smooth" });
   };
 
   return (
@@ -51,7 +51,7 @@ const Numberpaginate = ({ items }) => {
       )}
       <ReactPaginate
         breakLabel="..."
-        className="flex items-center justify-start direction-ltr mt-8"
+        className="flex items-center justify-start direction-ltr mt-8 whitespace-nowrap overflow-x-auto"
         nextLabel="بعدی >"
         activeLinkClassName="bg-primary outline-none"
         pageLinkClassName="bg-[#B8B8B8] outline-none w-[37px] h-[37px] flex items-center justify-center rounded-[15px] mx-2 text-white"

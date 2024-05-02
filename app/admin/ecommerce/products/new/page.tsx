@@ -54,10 +54,13 @@ export default function Products() {
     publishStatusId: "",
     brandId: "",
     description: description,
-    colorBased: true,
+    colorBased: false,
     photos: photos,
     attributes: [],
     inventories: [],
+    metaDescription: "",
+    metaTitle: "",
+    metaKeywords: "",
   });
   const [inventories, setInventories] = useState([]);
   const [tempInventories, setTempInventories] = useState([]);
@@ -278,7 +281,7 @@ export default function Products() {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/products");
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
@@ -472,6 +475,51 @@ export default function Products() {
                         className={openTab === 3 ? "block" : "hidden"}
                         id="link3"
                       >
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaKeywords: e.target.value,
+                              })
+                            }
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="کلمات کلیدی"
+                            variant="standard"
+                          />
+                        </div>
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaDescription: e.target.value,
+                              })
+                            }
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="توضیحات متا"
+                            variant="standard"
+                          />
+                        </div>
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaTitle: e.target.value,
+                              })
+                            }
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="عنوان سئو"
+                            variant="standard"
+                          />
+                        </div>
                         <SeoBox
                           setDescription={setDescription}
                           description={description}

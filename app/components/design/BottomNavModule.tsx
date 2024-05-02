@@ -17,16 +17,27 @@ export default function BottomNavModule({ entities }) {
   const [subMenuData, setSubMenuData] = useState([]);
   const [level, setLevel] = useState(1);
   const [depthSubMenuData, setDepthSubMenuData] = useState([]);
-
+  const [currentParentCategory, setCurrentParentCategory] = useState(""); // new state
   const handleClick = (menuId) => {
     const activeMenu = entities.find((value) => value.id === menuId);
     setLevel(2);
-    setSubMenuData(activeMenu.subEntityTypes);
+    const submenuData = [
+      ...activeMenu.subEntityTypes,
+      { ...activeMenu, link: `/category/${activeMenu.slug}` },
+    ];
+    setSubMenuData(submenuData);
+    setCurrentParentCategory(activeMenu.name); // update current parent category
   };
+
   const handleSubMenuClick = (menuId) => {
     const activeSubMenu = subMenuData.find((value) => value.id === menuId);
     setLevel(3);
-    setDepthSubMenuData(activeSubMenu.subEntityTypes);
+    const submenuData = [
+      ...activeSubMenu.subEntityTypes,
+      { ...activeSubMenu, link: `/category/${activeSubMenu.slug}` },
+    ];
+    setDepthSubMenuData(submenuData);
+    setCurrentParentCategory(activeSubMenu.name); // update current parent category
   };
   return (
     <>
@@ -36,8 +47,12 @@ export default function BottomNavModule({ entities }) {
         }`}
       >
         <div className="mb-10 flex justify-between items-center">
-          <span onClick={(e) => setIsMenuOpen(false)}>
+          <span
+            className="flex items-center gap-4"
+            onClick={(e) => setIsMenuOpen(false)}
+          >
             <Close />
+            {level !== 1 ? <span>{currentParentCategory}</span> : ""}
           </span>
 
           {level !== 1 ? (
@@ -50,7 +65,7 @@ export default function BottomNavModule({ entities }) {
         </div>
         <ul>
           {level === 1
-            ? entities.map((value, key) => {
+            ? entities.reverse().map((value, key) => {
                 return value.subEntityTypes.length > 0 ? (
                   <li
                     key={key}
@@ -73,8 +88,14 @@ export default function BottomNavModule({ entities }) {
                 );
               })
             : level === 2
-            ? subMenuData.map((value, key) =>
-                value.subEntityTypes.length === 0 ? (
+            ? subMenuData.reverse().map((value, key) =>
+                value.link ? (
+                  <a key={key} href={value.link}>
+                    <li className="flex justify-between items-center border-b pb-3 mb-6">
+                      <span>{value.name}</span>
+                    </li>
+                  </a>
+                ) : value.subEntityTypes.length === 0 ? (
                   <a key={key} href={`/category/${value.slug}`}>
                     <li
                       onClick={(e) => handleSubMenuClick(value.id)}
@@ -95,17 +116,34 @@ export default function BottomNavModule({ entities }) {
                   </li>
                 )
               )
-            : depthSubMenuData.map((value, key) => (
-                <a key={key} href={`/category/${value.slug}`}>
+            : depthSubMenuData.reverse().map((value, key) =>
+                value.link ? (
+                  <a key={key} href={value.link}>
+                    <li className="flex justify-between items-center border-b pb-3 mb-6">
+                      <span>{value.name}</span>
+                    </li>
+                  </a>
+                ) : value.length === 0 ? (
+                  <a key={key} href={`/category/${value.slug}`}>
+                    <li
+                      onClick={(e) => handleSubMenuClick(value.id)}
+                      className="flex justify-between items-center border-b pb-3 mb-6"
+                    >
+                      <span>{value.name}</span>
+                      <ChevronLeft />
+                    </li>
+                  </a>
+                ) : (
                   <li
+                    key={key}
                     onClick={(e) => handleSubMenuClick(value.id)}
                     className="flex justify-between items-center border-b pb-3 mb-6"
                   >
                     <span>{value.name}</span>
                     <ChevronLeft />
                   </li>
-                </a>
-              ))}
+                )
+              )}
         </ul>
       </div>
       <div className="fixed z-50 bottom-0 left-0 right-0 bg-[#FAFAFA] w-full h-20 px-8 block md:hidden lg:hidden xl:hidden border-t">

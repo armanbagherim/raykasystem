@@ -240,7 +240,7 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
           isOpen ? "block" : "hidden"
         }`}
       >
-        <div className="relative h-4/5 overflow-y-scroll px-4 md:px-0 mb-3 md:overflow-y-hidden">
+        <div className="relative h-4/5 overflow-y-scroll h-full px-4 md:px-0 mb-3 md:overflow-y-hidden">
           <div
             className="mb-6 flex justify-between items-center md:hidden"
             onClick={(e) => setIsOpen(false)}

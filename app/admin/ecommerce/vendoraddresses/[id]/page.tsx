@@ -2,18 +2,21 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useEffect } from "react";
 import { fetcher, useFetcher } from "../../../../components/global/fetcher";
-import Loading from "../../../../components/global/loading";
+import Loading from "../../../../../components/global/loading";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 import { toast } from "react-toastify";
-
+import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
+import { IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 export default function VendorAddress({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {
     setTitle({
       title: "آدرس های فروشگاه",
-      buttonTitle: "افزودن فروشگاه جدید",
+      buttonTitle: "افزودن آدرس جدید",
       link: `/admin/ecommerce/vendorAddresses/${params.id}/new`,
     });
   }, []);
@@ -30,72 +33,72 @@ export default function VendorAddress({ params }) {
       toast.error(error.message);
     }
   };
-  const {
-    data: addresses,
-    isLoading: addressesIsLoading,
-    error: addressesError,
-    refetch: refetchAddresses,
-  } = useFetcher(
-    `/v1/api/ecommerce/vendorAddresses?sortOrder=DESC&offset=0&limit=10&orderBy=id&vendorId=${params.id}`,
-    "GET"
-  );
+  const columns = [
+    {
+      accessorKey: "id",
+      header: "شناسه",
+      size: 20,
+    },
+    {
+      accessorKey: "address.name",
+      header: "نام آدرس ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
+    },
+    {
+      accessorKey: "vendor.name",
+      header: "نام فروشگاه ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
+    },
 
-  const columns: GridColDef[] = [
     {
-      field: "id",
-      headerName: "شناسه",
-      width: 150,
+      accessorKey: "address.street",
+      header: "خیابان ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
     },
+
     {
-      field: "name",
-      headerName: "نام ",
-      width: 150,
-      valueGetter: ({ row }) => {
-        return row.address.name;
+      accessorKey: "Actions",
+      header: "عملیات",
+      size: 200,
+      muiTableHeadCellProps: {
+        align: "right",
       },
-    },
-    {
-      field: "slug",
-      headerName: "اسلاگ",
-      width: 150,
-    },
-    {
-      field: "list",
-      headerName: "ویرایش",
-      width: 150,
-      renderCell: (row) => (
-        <a href={`/admin/ecommerce/vendoraddresses/${row.id}/new`}>
-          <button
-            type="button"
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+      muiTableBodyCellProps: {
+        align: "right",
+      },
+      Cell: ({ row }) => (
+        <>
+          {}
+
+          <a
+            href={`/admin/ecommerce/vendoraddresses/${params.id}/edit/${row.id}`}
           >
-            آدرس ها
-          </button>
-        </a>
-      ),
-    },
-    {
-      field: "delete",
-      headerName: "حذف",
-      width: 150,
-      renderCell: ({ row }) => (
-        <a onClick={(e) => deleteGuarantee(row.id)}>
-          <button
-            type="button"
-            className="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-          >
-            حذف
-          </button>
-        </a>
+            <IconButton aria-label="delete" color="primary">
+              <ModeEditIcon />
+            </IconButton>
+          </a>
+          <a onClick={(e) => deleteRow(row.id)}>
+            <IconButton aria-label="delete" color="error">
+              <DeleteIcon />
+            </IconButton>
+          </a>
+        </>
       ),
     },
   ];
-  if (addressesIsLoading) {
-    return <Loading />;
-  }
+
   return (
     <div>
-      <DataGrid rows={addresses.result} columns={columns} />
+      <LightDataGrid
+        url={`/v1/api/ecommerce/vendorAddresses?sortOrder=DESC&offset=0&limit=10&orderBy=id&vendorId=${params.id}`}
+        columns={columns}
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
-import { ClassNames } from "@emotion/react";
+import SignOutButton from "@/app/components/SignOut";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -14,12 +14,12 @@ export default async function page({ children }) {
   return (
     <div className="container mx-auto">
       <div className="grid grid-cols-12 md:grid-cols-12 gap-4 text-black">
-        <div className="bg-primary col-span-3 text-center p-9 rounded-3xl text-white">
+        <div className="bg-primary col-span-12 md:col-span-3 text-center p-9 rounded-none md:rounded-3xl text-white">
           <img src="/user.png" className="mx-auto mb-7" alt="" />
-          <h4 className="text-center mb-7 text-primaryCustom text-3xl">
+          <h4 className="md:text-center text-right mb-7 text-primaryCustom text-3xl">
             آرمان باقری
           </h4>
-          <ul className="text-center p-8">
+          <ul className="text-center p-0 md:p-8 gap-4 md:block">
             <Link href="/profile/user/dashboard">
               <li className="flex mb-4">
                 <svg
@@ -161,12 +161,11 @@ export default async function page({ children }) {
                   strokeLinejoin="round"
                 />
               </svg>
-
-              <span className="mr-4">خروج</span>
+              <SignOutButton />
             </li>
           </ul>
         </div>
-        <div className="col-span-9 ">{children}</div>
+        <div className="md:col-span-9 col-span-12 md:p-0 p-8">{children}</div>
       </div>
     </div>
   );

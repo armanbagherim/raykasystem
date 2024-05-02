@@ -12,6 +12,7 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
+import RouteGuard from "./RouteGuard";
 
 // export const metadata: Metadata = {
 //   title: "پنل مدیریت",
@@ -84,10 +85,10 @@ export default function RootLayout({
         <html lang="en" dir="rtl">
           <body suppressHydrationWarning={true} className={IRANSansX.className}>
             <QueryClientProvider client={queryClient}>
-              <ToastContainer position="bottom-right" />
+              <ToastContainer autoClose={1000} position="bottom-right" />
               <SessionProvider>
                 <NextTopLoader />
-                {children}
+                <RouteGuard>{children}</RouteGuard>
               </SessionProvider>
             </QueryClientProvider>
           </body>

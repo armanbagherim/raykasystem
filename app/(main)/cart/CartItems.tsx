@@ -3,6 +3,7 @@ import { Minus, PlusBig, Trash } from "@/app/components/design/Icons";
 import { setQty } from "@/store/features/cartSlice";
 import { useAppDispatch } from "@/store/store";
 import { count } from "console";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
@@ -48,7 +49,7 @@ export default function CartItems({
           //   throw Error(res.errors);
         } else {
           fetch(
-            "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/stocks/count",
+            `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
             {
               method: "GET",
               headers: {
@@ -80,7 +81,7 @@ export default function CartItems({
     }
   };
   const decreaseCart = (inventoryId) => {
-    const id = toast.loading("در حال افزودن");
+    const id = toast.loading("در حال کاهش موجودی");
     //do something else
     try {
       fetch(
@@ -109,7 +110,7 @@ export default function CartItems({
           //   throw Error(res.errors);
         } else {
           fetch(
-            "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/stocks/count",
+            `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
             {
               method: "GET",
               headers: {
@@ -166,7 +167,7 @@ export default function CartItems({
           //   throw Error(res.errors);
         } else {
           fetch(
-            "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/stocks/count",
+            `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
             {
               method: "GET",
               headers: {
@@ -205,66 +206,90 @@ export default function CartItems({
     }
   };
   return (
-    <div
-      key={item.productId}
-      className="grid grid-cols-5 shadow-md bg-white text-xs rounded-3xl mt-2 p-4 items-center"
-    >
-      <div className="flex">
-        <div>
-          <img src="/images/product-2.png" />
+    <>
+      {item.product.inventoryStatusId === 2 ? (
+        <div
+          class="p-4 mb-4 mt-2 text-sm text-red-800 rounded-xl bg-red-50 dark:bg-gray-800 dark:text-red-400"
+          role="alert"
+        >
+          <span class="font-medium">
+            محصول {item.product.title} به دلیل اتمام موجودی از سبد شما حذف می
+            گردد
+          </span>
         </div>
-        <div className="p-1 gap-1">
-          <span></span>
-          <span>{item.product.title}</span>
-          <span>&nbsp;</span>
-          {item.product.colorBased ? (
-            <Link className="text-primary" href="#">
-              {item.product.inventories[0].color.name}
-            </Link>
-          ) : (
-            ""
-          )}
+      ) : (
+        ""
+      )}
+      <div
+        key={item.productId}
+        className="grid grid-cols-5 shadow-md bg-white text-xs rounded-3xl mt-2 p-4 items-center"
+      >
+        <div className="flex">
+          <div>
+            {item?.product?.attachments[0]?.fileName ? (
+              <Image
+                width={65}
+                height={65}
+                loading="eager"
+                src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${item?.product?.attachments[0]?.fileName}`}
+              />
+            ) : (
+              <img width={65} height={65} src="/images/no-photo.png" alt="" />
+            )}
+          </div>
+          <div className="p-1 gap-1">
+            <span></span>
+            <span>{item.product.title}</span>
+            <span>&nbsp;</span>
+            {item.product.colorBased ? (
+              <Link className="text-primary" href="#">
+                {item?.product?.inventories[0]?.color?.name || ""}
+              </Link>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
-      </div>
 
-      <div className="p-1 flex gap-1">
-        <div>
-          <button onClick={(e) => addToCart(item.inventoryId)}>
-            <PlusBig />
-          </button>
-        </div>
-        <div className="font-bold items-center my-auto">{itemCount}</div>
-        <div>
-          {itemCount > 1 ? (
-            <button onClick={(e) => decreaseCart(item.inventoryId)}>
-              <Minus />
+        <div className="p-1 flex gap-1">
+          <div>
+            <button onClick={(e) => addToCart(item.inventoryId)}>
+              <PlusBig />
             </button>
-          ) : (
-            <button onClick={(e) => deleteItem(item.id)}>
-              <Trash />
-            </button>
-          )}
+          </div>
+          <div className="font-bold items-center my-auto">{itemCount}</div>
+          <div>
+            {itemCount > 1 ? (
+              <button onClick={(e) => decreaseCart(item.inventoryId)}>
+                <Minus />
+              </button>
+            ) : (
+              <button onClick={(e) => deleteItem(item.id)}>
+                <Trash />
+              </button>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="p-1">
-        <p suppressHydrationWarning className="text-sm">
+        <div className="p-1">
+          <p suppressHydrationWarning className="text-sm">
+            {Number(
+              item?.product?.inventories[0]?.firstPrice?.price || 0
+            ).toLocaleString()}{" "}
+            تومان
+          </p>
+        </div>
+        <div className="p-1">
+          <Link className="text-primary" href="#">
+            {item?.product?.inventories[0]?.vendor?.name || ""}
+          </Link>
+        </div>
+        <div suppressHydrationWarning className="p-1 text-sm">
           {Number(
-            item.product.inventories[0].firstPrice.price
+            (item?.product?.inventories[0]?.firstPrice?.price || 0) * itemCount
           ).toLocaleString()}{" "}
           تومان
-        </p>
+        </div>
       </div>
-      <div className="p-1">
-        <Link className="text-primary" href="#">
-          {item.product.inventories[0].vendor.name}
-        </Link>
-      </div>
-      <div suppressHydrationWarning className="p-1 text-sm">
-        {Number(
-          item.product.inventories[0].firstPrice.price * itemCount
-        ).toLocaleString()}{" "}
-        تومان
-      </div>
-    </div>
+    </>
   );
 }

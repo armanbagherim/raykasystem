@@ -16,7 +16,7 @@ export default function BrandModule({ data }) {
                     width={500}
                     height={500}
                     className="w-24 border border-gray-200 rounded-2xl mb-2"
-                    src={`https://nest-jahizan.chbk.run/v1/api/ecommerce/brands/image/${value.attachment.fileName}`}
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/brands/image/${value.attachment.fileName}`}
                     alt=""
                   />
                 ) : (

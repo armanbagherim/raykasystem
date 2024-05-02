@@ -27,20 +27,20 @@ export default function NewDiscount() {
   }, []);
 
   const [requestBody, setRequestBody] = useState({
-    name: "",
-    description: "",
-    discountTypeId: 0,
-    discountActionTypeId: 0,
-    discountActionRuleId: 0,
-    discountValue: 0,
-    maxValue: 0,
-    couponCode: "",
-    priority: 0,
-    limit: 0,
+    name: null,
+    description: null,
+    discountTypeId: null,
+    discountActionTypeId: null,
+    discountActionRuleId: null,
+    discountValue: null,
+    maxValue: null,
+    couponCode: null,
+    priority: null,
+    limit: null,
     isActive: true,
     startDate: "2024-03-26T01:49:58.489Z",
     endDate: "2024-03-26T01:49:58.489Z",
-    vendorId: 0,
+    vendorId: null,
   });
   const {
     data: discountTypes,
@@ -68,7 +68,9 @@ export default function NewDiscount() {
     `/v1/api/ecommerce/user/vendors?sortOrder=DESC&offset=0&orderBy=id`,
     "GET"
   );
-
+  useEffect(() => {
+    setRequestBody({ ...requestBody, couponCode: null });
+  }, [requestBody.discountTypeId]);
   const save = async () => {
     try {
       const req = await fetcher({
@@ -79,7 +81,7 @@ export default function NewDiscount() {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/discounts");
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
@@ -90,7 +92,7 @@ export default function NewDiscount() {
       <div className="mb-6">
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           نام
         </label>
@@ -103,7 +105,7 @@ export default function NewDiscount() {
           onChange={(e) =>
             setRequestBody((prevState) => ({
               ...prevState,
-              name: e.target.value,
+              name: e.target.value === "" ? null : e.target.value,
             }))
           }
         />
@@ -111,7 +113,7 @@ export default function NewDiscount() {
       <div className="mb-6">
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           توضیحات
         </label>
@@ -124,7 +126,7 @@ export default function NewDiscount() {
           onChange={(e) =>
             setRequestBody((prevState) => ({
               ...prevState,
-              description: e.target.value,
+              description: e.target.value === "" ? null : e.target.value,
             }))
           }
         />
@@ -143,7 +145,7 @@ export default function NewDiscount() {
         <div className="flex-1">
           <label
             htmlFor="first_name"
-            className="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-0 text-sm font-medium text-gray-900 "
           >
             تاریخ شروع
           </label>
@@ -165,7 +167,7 @@ export default function NewDiscount() {
         <div className="flex-1">
           <label
             htmlFor="first_name"
-            className="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-0 text-sm font-medium text-gray-900 "
           >
             تاریخ پایان
           </label>
@@ -218,7 +220,10 @@ export default function NewDiscount() {
         <div className="mb-6 flex-1">
           <TextField
             onChange={(e) =>
-              setRequestBody({ ...requestBody, discountValue: +e.target.value })
+              setRequestBody({
+                ...requestBody,
+                discountValue: e.target.value === "" ? null : +e.target.value,
+              })
             }
             label="میزان تخفیف"
             variant="standard"
@@ -228,7 +233,10 @@ export default function NewDiscount() {
         <div className="mb-6 flex-1">
           <TextField
             onChange={(e) =>
-              setRequestBody({ ...requestBody, maxValue: +e.target.value })
+              setRequestBody({
+                ...requestBody,
+                maxValue: e.target.value === "" ? null : +e.target.value,
+              })
             }
             label="سقف تخفیف"
             variant="standard"
@@ -239,7 +247,10 @@ export default function NewDiscount() {
           <TextField
             type="number"
             onChange={(e) =>
-              setRequestBody({ ...requestBody, limit: +e.target.value })
+              setRequestBody({
+                ...requestBody,
+                limit: e.target.value === "" ? null : +e.target.value,
+              })
             }
             label="محدودیت استفاده"
             variant="standard"
@@ -289,7 +300,10 @@ export default function NewDiscount() {
           <TextField
             type="number"
             onChange={(e) =>
-              setRequestBody({ ...requestBody, priority: +e.target.value })
+              setRequestBody({
+                ...requestBody,
+                priority: e.target.value === "" ? null : +e.target.value,
+              })
             }
             label="اولویت"
             variant="standard"
