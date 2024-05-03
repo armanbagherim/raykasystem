@@ -65,7 +65,7 @@ const OrderDataTable = ({ data = [], handleProccess }) => {
               href={`/product/${row.original.product.sku}/${row.original.product.title}`}
               variant="outlined"
             >
-              {row.original.product.inventories[0].color.name}
+              {row.original.product.inventories[0]?.color?.name}
             </Link>
           );
         }
@@ -82,8 +82,8 @@ const OrderDataTable = ({ data = [], handleProccess }) => {
               href={`/product/${row.original.product.sku}/${row.original.product.title}`}
               variant="outlined"
             >
-              {row.original.product.inventories[0].guarantee.name}{" "}
-              {row.original.product.inventories[0].guaranteeMonth.name}
+              {row.original.product.inventories[0]?.guarantee?.name}{" "}
+              {row.original.product.inventories[0]?.guaranteeMonth?.name}
             </Link>
           );
         }

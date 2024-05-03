@@ -2,20 +2,30 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
-import Loading from "../../../../../components/global/loading";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../../layout";
 import MapComponent from "@/app/components/global/Map";
 import SaveBar from "@/app/components/global/SaveBar";
 import MapClient from "@/app/components/global/MapClient";
+import Loading from "@/app/components/global/loading";
+import SearchSelect from "@/app/components/global/SearchSelect";
+import { TextField } from "@mui/material";
 
 export default function VendorAddress({ params }) {
+  console.log(params);
   const [title, setTitle] = useAtom(pageTitle);
   const [coordinates, setCoordinates] = useState({
     latitude: null,
     longitude: null,
   });
+  const [isAddressManuallyChanged, setIsAddressManuallyChanged] =
+    useState(false);
+
+  const setStreetAndUpdateAddress = (value) => {
+    setStreet(value);
+    setIsAddressManuallyChanged(true);
+  };
   useEffect(() => {
     setTitle({
       title: "افزودن آدرس جدید",
@@ -26,10 +36,11 @@ export default function VendorAddress({ params }) {
 
   const [name, setName] = useState();
   const [slug, setSlug] = useState();
-  const [provinceId, setprovinceId] = useState(0);
+  const [provinces, setProvinces] = useState([]);
+  const [provinceId, setprovinceId] = useState(1);
   const [neighborhoodId, setneighborhoodId] = useState(1);
   const [cities, setCities] = useState([]);
-  const [neghberhoods, setNeighberhoods] = useState();
+  const [neghberhoods, setNeighberhoods] = useState([]);
   const [cityId, setCityId] = useState(1);
   const [street, setStreet] = useState();
   const [alley, setAlley] = useState();
@@ -37,56 +48,64 @@ export default function VendorAddress({ params }) {
   const [floorNumber, setFloorNumber] = useState();
   const [postalCode, setPostalCode] = useState();
   const router = useRouter();
-  const { data: provinces, isLoading: provincesIsLoading } = useFetcher(
-    `/v1/api/ecommerce/provinces`,
-    "GET"
-  );
+
+  const getProvinces = async () => {
+    await fetcher({
+      url: `/v1/api/ecommerce/provinces`,
+      method: "GET",
+    }).then((res) => {
+      setProvinces(res.result);
+    });
+  };
 
   const getCities = async (pid) => {
     await fetcher({
       url: `/v1/api/ecommerce/cities?provinceId=${pid}`,
       method: "GET",
     }).then((res) => {
-      setCities(res.result);
       setCityId(res.result[0].id);
-      getNeighberhoods(res.result[0].id);
-      if (res.result[0].neighborhoodBase) {
-        setneighborhoodId(res.result[0].id);
-      } else {
-        setneighborhoodId(null);
-      }
+      setCities(res.result);
     });
   };
 
-  const getNeighberhoods = async (nid) => {
-    if (neighborhoodId !== null) {
-      await fetcher({
-        url: `/v1/api/ecommerce/neighborhoods?cityId=${nid}`,
-        method: "GET",
-      }).then((res) => {
-        if (res.result.length !== 0) {
-          setNeighberhoods(res.result);
-          setneighborhoodId(res.result[0].id);
-        } else {
-          setNeighberhoods(null);
-        }
-      });
-    }
+  const getNeighberhoods = async (cid) => {
+    await fetcher({
+      url: `/v1/api/ecommerce/neighborhoods?cityId=${cid}`,
+      method: "GET",
+    }).then((res) => {
+      console.log(res.result.length);
+      if (res.result.length !== 0) {
+        setNeighberhoods(res.result);
+        setneighborhoodId(res.result[0].id);
+        // if (address?.result?.address?.neighborhoodId !== neighborhoodId) {
+        //   setneighborhoodId(res.result[0].id);
+        // }
+      } else {
+        setneighborhoodId(null);
+        setNeighberhoods(null);
+      }
+    });
   };
+  useEffect(() => {
+    getProvinces();
+  }, []);
 
   useEffect(() => {
-    getCities(provinceId);
-  }, [provinces]);
-
-  useEffect(() => {
-    getCities(provinceId);
-    getNeighberhoods(cityId);
+    if (provinceId !== null) {
+      getCities(provinceId);
+    }
   }, [provinceId]);
+
+  useEffect(() => {
+    if (cityId !== null) {
+      getNeighberhoods(cityId);
+    }
+  }, [cityId]);
 
   const save = async () => {
     try {
       const req = await fetcher({
-        url: "/v1/api/ecommerce/vendorAddresses",
+        url: `/v1/api/ecommerce/vendorAddresses`,
         method: "POST",
         body: {
           vendorId: +params.id,
@@ -95,7 +114,7 @@ export default function VendorAddress({ params }) {
           longitude: coordinates.longitude,
           provinceId: +provinceId,
           cityId: +cityId,
-          neighborhoodId: +neighborhoodId,
+          neighborhoodId: neighborhoodId === null ? null : +neighborhoodId,
           street,
           alley,
           plaque,
@@ -105,26 +124,28 @@ export default function VendorAddress({ params }) {
       });
       toast.success("موفق");
       setTimeout(() => {
-        router.push(`/admin/ecommerce/vendorAddresses/${params.id}`);
+        router.push(`/admin/ecommerce/vendoraddresses/${params.id}`);
       }, 500);
     } catch (error) {
       toast.error(error.message);
     }
   };
-  if (provincesIsLoading) {
-    return <Loading />;
-  }
+
   return (
     <div>
       <MapClient
+        height={400}
         onAddressChange={(address) => {
-          setStreet(address);
+          if (!isAddressManuallyChanged) {
+            setStreetAndUpdateAddress(address);
+          }
         }}
         onLocationChange={(location) => {
           setCoordinates({
             latitude: location.lat.toString(),
             longitude: location.lng.toString(),
           });
+          setIsAddressManuallyChanged(false);
         }}
       />
       <div>
@@ -139,153 +160,116 @@ export default function VendorAddress({ params }) {
           id="first_name"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
+          value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <div className="flex gap-4">
+        <div className="flex gap-4 mb-6">
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              استان
-            </label>
-            <select
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              name=""
-              onChange={(e) => setprovinceId(e.target.value)}
-              id=""
-            >
-              {provinces.result.map((value, key) => (
-                <option key={key} value={value.id}>
-                  {value.name}
-                </option>
-              ))}
-            </select>
+            {provinces && (
+              <SearchSelect
+                onChange={(e) =>
+                  e !== null ? setprovinceId(e.id) : setprovinceId(1)
+                }
+                data={provinces}
+                value={provinceId}
+                defaultValue={provinceId}
+                isDiff={true}
+                diffName="name"
+                label="استان"
+              />
+            )}
           </div>
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              شهر
-            </label>
-            <select
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              name=""
-              id=""
-              onChange={(e) => {
-                setCityId(e.target.value);
-              }}
-            >
-              {cities?.map((value, key) => (
-                <option key={key} value={value.id}>
-                  {value.name}
-                </option>
-              ))}
-            </select>
+            {cities && (
+              <SearchSelect
+                onChange={(e) =>
+                  e !== null ? setCityId(e.id) : setCityId(cities[0].id)
+                }
+                data={cities}
+                value={cityId}
+                defaultValue={cityId}
+                isDiff={true}
+                diffName="name"
+                label="شهر"
+              />
+            )}
           </div>
-
-          {neghberhoods ? (
-            <div className="flex-1">
-              <label
-                htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-gray-900 "
-              >
-                محله
-              </label>
-              <select
-                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                name=""
-                onChange={(e) => {
-                  setneighborhoodId(e.target.value);
-                }}
-                id=""
-              >
-                {neghberhoods?.map((value, key) => (
-                  <option key={key} value={value.id}>
-                    {value.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          ) : (
-            ""
+          {neghberhoods && (
+            <SearchSelect
+              onChange={(e) =>
+                e !== null
+                  ? setneighborhoodId(e.id)
+                  : setneighborhoodId(neghberhoods[0].id)
+              }
+              data={neghberhoods}
+              value={neighborhoodId}
+              defaultValue={neighborhoodId}
+              // isDiff={true}
+              // diffName="name"
+              label="محله"
+            />
           )}
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 mb-6">
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              خیابان
-            </label>
-            <input
+            <TextField
               type="text"
+              variant="standard"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
+              label="خیابان"
               value={street}
-              onChange={(e) => setStreet(e.target.value)}
+              onChange={(e) => setStreetAndUpdateAddress(e.target.value)}
             />
           </div>
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              کوچه
-            </label>
-            <input
+            <TextField
               type="text"
+              variant="standard"
+              label="کوچه"
               id="first_name"
               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
+              value={alley}
               onChange={(e) => setAlley(e.target.value)}
             />
           </div>
+        </div>
+        <div className="flex gap-4">
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              پلاک
-            </label>
-            <input
+            <TextField
               type="text"
+              variant="standard"
               id="first_name"
               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
+              label="پلاک"
+              value={plaque}
               onChange={(e) => setPlaque(e.target.value)}
             />
           </div>
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              طبقه
-            </label>
-            <input
+            <TextField
               type="text"
+              variant="standard"
               id="first_name"
               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
+              label="طبقه"
+              value={floorNumber}
               onChange={(e) => setFloorNumber(e.target.value)}
             />
           </div>
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 "
-            >
-              کد پستی
-            </label>
-            <input
+            <TextField
               type="text"
+              variant="standard"
               id="first_name"
               className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
+              label="کد پستی"
+              value={postalCode}
               onChange={(e) => setPostalCode(e.target.value)}
             />
           </div>

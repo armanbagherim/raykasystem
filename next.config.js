@@ -12,6 +12,9 @@ const nextConfig = {
     skipWaiting: true,
     disable: process.env.NODE_ENV === "development",
   },
+  urlImports: [
+    "https://static.neshan.org/sdk/leaflet/v1.9.4/neshan-sdk/v1.0.8/index.js",
+  ],
   images: {
     remotePatterns: [
       {

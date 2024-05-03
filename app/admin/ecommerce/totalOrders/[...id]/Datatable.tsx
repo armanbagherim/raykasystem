@@ -4,16 +4,22 @@ import {
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 //nested data is ok, see accessorKeys in ColumnDef below
 
-const OrderDataTable = ({ data = [], handleProccess }) => {
+const OrderDataTable = ({ data = [], decreaseDetail, deleteDetail }) => {
   console.log(data);
   //should be memoized or stable
   const columns = [
+    {
+      accessorKey: "id",
+      header: "شناسه",
+      size: 30,
+    },
     {
       accessorKey: "image",
       header: "تصویر ",
@@ -99,11 +105,7 @@ const OrderDataTable = ({ data = [], handleProccess }) => {
       header: "فروشنده",
       size: 30,
     },
-    {
-      accessorKey: "id",
-      header: "شناسه",
-      size: 30,
-    },
+
     {
       accessorKey: "productPrice",
       header: "مجموع قیمت محصولات",
@@ -142,16 +144,20 @@ const OrderDataTable = ({ data = [], handleProccess }) => {
       },
       Cell: ({ row }) => {
         {
-          if (row.original.orderDetailStatusId === 1) {
-            return (
+          return (
+            <>
               <Button
-                onClick={(e) => handleProccess(row.original.id)}
+                onClick={(e) => decreaseDetail(row.original.id)}
                 variant="outlined"
+                color="error"
               >
-                پردازش محصول
+                کاهش موجودی
               </Button>
-            );
-          }
+              <IconButton onClick={(e) => deleteDetail(row.original.id)}>
+                <DeleteIcon color="error" />
+              </IconButton>
+            </>
+          );
         }
       },
     },

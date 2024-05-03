@@ -82,7 +82,7 @@ const SideMenu = () => {
         } `}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 bg-gray-50 flex flex-wrap justify-between flex-col">
+        <div className="h-full px-3 py-4 bg-gray-50 flex justify-between flex-col h-full overflow-y-auto">
           <div>
             <div className="flex bg-gray-200 justify-between items-center rounded-xl p-4 mb-5 border-b">
               <a
@@ -102,7 +102,7 @@ const SideMenu = () => {
               </a>
             </div>
             {menusIsLoading && <MenuLoader />}
-            <ul className="space-y-2 font-medium">
+            <ul className="space-y-2 font-medium pb-8">
               {menus?.result?.map((menu, key) => (
                 <li key={key}>
                   <button

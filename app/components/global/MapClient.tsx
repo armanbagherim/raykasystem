@@ -1,19 +1,13 @@
 import type { FunctionComponent } from "react";
-
-import mapboxgl from "mapbox-gl";
-import React, { memo, useEffect, useState } from "react";
-
-import "mapbox-gl/dist/mapbox-gl.css";
-import { Box } from "@mui/material";
-
-mapboxgl.accessToken =
-  "pk.eyJ1IjoicmFtaW5tb2hhIiwiYSI6ImNscnc1dGU1aTEwMDEyam1yMXRnbmVqYzEifQ.OKYpf7J9BpjWYLZDOGUX1Q";
-
-mapboxgl.setRTLTextPlugin(
-  "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js",
-  () => {},
-  true // Lazy load the plugin
-);
+import React, { memo, useEffect, useState, useRef } from "react";
+import { Map, Overlay, Feature } from "ol";
+import { Point } from "ol/geom";
+import { fromLonLat, toLonLat } from "ol/proj";
+import NeshanMap, {
+  NeshanMapRef,
+  Ol,
+  OlMap,
+} from "@neshan-maps-platform/react-openlayers";
 
 const DEFAULT_LOCATION = {
   lat: 35.65326,
@@ -30,52 +24,39 @@ export interface MapProps {
   defaultLocation?: LocationState;
   onAddressChange?: (address: string) => void;
   onLocationChange?: (location: LocationState) => void;
+  isAddressManuallyChanged?: boolean;
 }
-const Map: FunctionComponent<MapProps> = ({
+
+const Maps: FunctionComponent<MapProps> = ({
   defaultLocation = DEFAULT_LOCATION,
   onAddressChange,
   onLocationChange,
+  isAddressManuallyChanged = false,
   height = 200,
 }) => {
-  const [location, setLocation] = useState<LocationState>(defaultLocation);
-  const [isTouched, setIsTouched] = useState<boolean>(false);
+  const mapRef = useRef<NeshanMapRef | null>(null);
+  const [ol, setOl] = useState<Ol>();
+  const [olMap, setOlMap] = useState<OlMap>();
+  const [marker, setMarker] = useState<Overlay | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<LocationState>({
+    lat: defaultLocation.lat,
+    lng: defaultLocation.lng,
+  });
 
-  useEffect(() => {
-    setLocation(defaultLocation);
-  }, [defaultLocation]);
-
-  const fetchData = async () => {
+  const fetchAddress = async (location: LocationState) => {
     try {
       const response = await fetch(
-        `https://api.teh-1.snappmaps.ir/reverse/v1/?lat=${location.lat}&lon=${location.lng}&type=driver&display=false`,
+        `https://api.neshan.org/v5/reverse?lat=${location.lat}&lng=${location.lng}`,
         {
           method: "GET",
           headers: {
-            "X-Smapp-Key": "214906b54f2b776d0fcd5ef52b128c11",
+            "Api-Key": "service.82262935bb57409f98393c487d373e3e",
           },
         }
       );
       const data = await response.json();
 
-      const address = (
-        data.result.components as {
-          name: string;
-          type: string;
-        }[]
-      )
-        .filter((item) => {
-          return (
-            !!item.name &&
-            item.type !== "city" &&
-            item.type !== "province" &&
-            item.type !== "poi"
-          );
-        })
-        .map((item) => {
-          return item.name;
-        })
-        .reverse()
-        .join("، ");
+      const address = data.formatted_address;
 
       onAddressChange?.(address);
     } catch {
@@ -83,58 +64,81 @@ const Map: FunctionComponent<MapProps> = ({
     }
   };
 
-  useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: "map",
-      style: "https://tile.snappmaps.ir/styles/snapp-style/style.json",
-      center: [location.lng, location.lat],
-      zoom: 12,
+  const onInit = (ol: Ol, map: OlMap) => {
+    setOl(ol);
+    setOlMap(map);
+
+    // Create the marker
+    const markerElement = document.createElement("div");
+    markerElement.className = "marker";
+    markerElement.style.width = "114px";
+    markerElement.style.height = "114px";
+    markerElement.style.backgroundImage = "url('/assets/map/img_pin.png')";
+    markerElement.style.backgroundSize = "contain";
+
+    const markerFeature = new Feature({
+      geometry: new Point(
+        fromLonLat([defaultLocation.lng, defaultLocation.lat])
+      ),
     });
 
-    const mapMarker = document.createElement("img");
-    mapMarker.src = "/assets/map/img_pin.png";
-    mapMarker.style.width = "144px";
-    mapMarker.style.height = "158px";
-
-    const marker = new mapboxgl.Marker({
-      element: mapMarker,
-    })
-      .setLngLat([location.lng, location.lat])
-      .addTo(map);
-
-    map.on("move", () => {
-      const center = map.getCenter();
-      const newLocation: LocationState = {
-        lat: +center.lat.toFixed(6),
-        lng: +center.lng.toFixed(6),
-      };
-
-      setLocation(newLocation);
-
-      onLocationChange?.(newLocation);
-
-      setIsTouched(true);
-      marker.setLngLat([center.lng, center.lat]);
+    const markerOverlay = new Overlay({
+      element: markerElement,
+      positioning: "bottom-center",
+      stopEvent: false,
+      feature: markerFeature,
     });
-  }, [defaultLocation]);
+
+    map.addOverlay(markerOverlay);
+    setMarker(markerOverlay);
+
+    // Animate the map to the default location
+    setTimeout(() => {
+      const view = map.getView();
+      view.animate({
+        center: fromLonLat([defaultLocation.lng, defaultLocation.lat]),
+        zoom: 12,
+        duration: 1000,
+      });
+    }, 2000);
+  };
 
   useEffect(() => {
-    if (!isTouched) {
-      return;
+    if (olMap && marker) {
+      olMap.on("moveend", () => {
+        const center = olMap.getView().getCenter();
+        if (center) {
+          const [longitude, latitude] = toLonLat(center);
+          onLocationChange?.({ lat: latitude, lng: longitude });
+          console.log("Latitude:", latitude);
+          console.log("Longitude:", longitude);
+          setCurrentLocation({ lat: latitude, lng: longitude });
+        }
+      });
     }
+  }, [olMap, marker, ol, onLocationChange]);
 
-    const timeOut = setTimeout(fetchData, 500);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchAddress(currentLocation);
+    }, 1000);
 
-    return () => {
-      clearTimeout(timeOut);
-    };
-  }, [location]);
+    return () => clearTimeout(timer);
+  }, [currentLocation, fetchAddress]);
 
   return (
-    <Box className="relative w-full h-96">
-      <Box id="map" style={{ width: "100%", height: "100%" }} />
-    </Box>
+    <NeshanMap
+      mapKey="web.17a0c7f735234ae7acfa9eac73c9ca2e"
+      defaultType="neshan"
+      center={{
+        latitude: defaultLocation.lat,
+        longitude: defaultLocation.lng,
+      }}
+      style={{ height: `${height}px`, width: "100%" }}
+      onInit={onInit}
+      zoom={12}
+    />
   );
 };
 
-export default memo(Map);
+export default memo(Maps);

@@ -584,6 +584,7 @@ export default function Products({ params }) {
                           data={tempInventories}
                           removeInventory={removeInventory}
                           key={tempInventories}
+                          handleClickOpen={handleClickOpen}
                         />
                         <InventoriesDialouge
                           colors={colors}

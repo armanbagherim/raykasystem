@@ -7,6 +7,7 @@ import OrderDataTable from "./Datatable";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import FactorGenerator from "./FactorGenerator";
+import Swal from "sweetalert2";
 
 export default function TotalOrders({ params }) {
   const router = useRouter();
@@ -20,38 +21,69 @@ export default function TotalOrders({ params }) {
     `/v1/api/ecommerce/admin/totalOrders/${params.id[0]}?sortOrder=DESC`,
     "GET"
   );
-
-  const handleProccess = async (id) => {
+  const decreaseDetail = async (id) => {
     try {
-      const req = await fetcher({
-        url: `/v1/api/ecommerce/admin/pendingOrders/processDetail/${id}`,
-        method: "PATCH",
+      const result = await Swal.fire({
+        title: "مطمئن هستید؟",
+        text: "با کم کردن تعداد دیگر قادر به بازگشت آن نیستید",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله کم کن",
+        cancelButtonText: "لغو",
       });
-      toast.success("موفق");
-      refetchData();
+
+      if (result.isConfirmed) {
+        const req = await fetcher({
+          url: `/v1/api/ecommerce/admin/totalOrders/decreaseDetail/${id}`,
+          method: "DELETE",
+        });
+        toast.success("موفق");
+        refetchData();
+      }
     } catch (error) {
       toast.error(error.message);
     }
   };
-  useEffect(() => {
-    if (!orderDetailIsLoading) {
-      if (orderDetail?.result?.result === null) {
-        router.push("/admin/ecommerce/pendingOrders");
+
+  const deleteDetail = async (id) => {
+    try {
+      const result = await Swal.fire({
+        title: "مطمئن هستید؟",
+        text: "با حذف کردن محصول دیگر قادر به بازگشت آن نیستید",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله حذف کن",
+        cancelButtonText: "لغو",
+      });
+
+      if (result.isConfirmed) {
+        const req = await fetcher({
+          url: `/v1/api/ecommerce/admin/totalOrders/removeDetail/${id}`,
+          method: "DELETE",
+        });
+        toast.success("موفق");
+        refetchData();
       }
+    } catch (error) {
+      toast.error(error.message);
     }
-  }, [orderDetail]);
+  };
 
   if (orderDetailIsLoading) {
     return <Loading />;
   }
   return (
     <div>
-      <FactorGenerator data={orderDetail?.result} />
-      <section className=" relative">
+      {/* <FactorGenerator data={orderDetail?.result} /> */}
+      <section className="relative">
         <div className="w-full px-4 md:px-5 lg-6 mx-auto">
-          <div className="flex items-start flex-col gap-6 xl:flex-row ">
-            <div className="w-full max-w-sm md:max-w-3xl xl:max-w-sm flex items-start flex-col gap-8 max-xl:mx-auto">
-              <div className="p-6 border border-gray-200 rounded-3xl w-full group transition-all duration-500 hover:border-gray-400 ">
+          <div className="flex items-start flex-col">
+            <div className="w-full  flex items-start flex-row gap-8 max-xl:mx-auto mb-8">
+              <div className="p-6 flex-1 border border-gray-200 rounded-3xl w-full group transition-all duration-500 hover:border-gray-400 ">
                 <div className="flex justify-between border-b border-gray-200 items-center pb-6 ">
                   <h2 className="font-manrope font-bold text-lg leading-10 text-black ">
                     {`#${orderDetail.result.id}`}
@@ -62,8 +94,8 @@ export default function TotalOrders({ params }) {
                     ).toLocaleDateString("fa-IR")}
                   </span>
                 </div>
-                <div className="data py-6 border-b border-gray-200">
-                  <div className="flex items-center justify-between gap-4 mb-2">
+                <div className="data py-6">
+                  <div className="flex items-center justify-between gap-4">
                     <p className="font-normal text-sm leading-8 text-gray-400 transition-all duration-500 group-hover:text-gray-700">
                       قیمت محصولات
                     </p>
@@ -85,7 +117,7 @@ export default function TotalOrders({ params }) {
                       تومان
                     </p>
                   </div>
-                  <div className="flex items-center justify-between gap-4 ">
+                  <div className="flex items-center justify-between gap-4">
                     <p className="font-normal text-sm leading-8 text-gray-400 transition-all duration-500 group-hover:text-gray-700 ">
                       تخفیف
                     </p>
@@ -97,26 +129,21 @@ export default function TotalOrders({ params }) {
                     </p>
                   </div>
                 </div>
-                <div className="total flex items-center justify-between pt-6">
-                  <p className="font-normal text-xl leading-8 text-black ">
+                <div className="total flex items-center justify-between">
+                  <p className="font-normal text-sm leading-8 text-black ">
                     جمع کل
                   </p>
-                  <h5 className="font-manrope font-bold text-2xl leading-9 text-primary">
+                  <h5 className="font-manrope font-bold text-sm leading-9 text-primary">
                     {Number(orderDetail?.result?.totalPrice).toLocaleString()}{" "}
                     تومان
                   </h5>
                 </div>
               </div>
-              <div className="p-6 border border-gray-200 rounded-3xl w-full group transition-all duration-500 hover:border-gray-400 ">
+              <div className="p-6 border flex-1 border-gray-200 rounded-3xl w-full group transition-all duration-500 hover:border-gray-400 ">
                 <div className="flex justify-between border-b border-gray-200 items-center pb-6 ">
                   <h2 className="font-manrope font-bold text-lg leading-10 text-black ">
                     اطلاعات کاربر
                   </h2>
-                  <span>
-                    {new Date(
-                      orderDetail?.result?.createdAt
-                    ).toLocaleDateString("fa-IR")}
-                  </span>
                 </div>
                 <div className="data py-6">
                   <div className="flex items-center justify-between gap-4 mb-2">
@@ -143,15 +170,40 @@ export default function TotalOrders({ params }) {
                       {orderDetail?.result?.user.phoneNumber}
                     </p>
                   </div>
+                  <div className="flex items-center justify-between gap-4 ">
+                    <p className="font-bold text-md leading-8 text-gray-400 transition-all duration-500 group-hover:text-gray-700 ">
+                      آدرس
+                    </p>
+                    <p className="text-md leading-8 font-bold">
+                      <span>
+                        استان: {orderDetail?.result?.address.province.name}{" "}
+                      </span>
+                      <span>
+                        شهر: {orderDetail?.result?.address.city.name}{" "}
+                      </span>
+                      <span>
+                        محله:
+                        {orderDetail?.result?.address.neighborhood.name}{" "}
+                      </span>
+                      <span>
+                        خیابان: {orderDetail?.result?.address.street}{" "}
+                      </span>
+                      <span>پلاک: {orderDetail?.result?.address.plaque} </span>
+                      <span>
+                        طبقه: {orderDetail?.result?.address.floorNumber}{" "}
+                      </span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="w-full">
+            <div className="w-full ">
               <div className="grid grid-cols-1 gap-6">
                 <h3>محصولات</h3>
                 <OrderDataTable
                   data={orderDetail?.result?.details}
-                  handleProccess={handleProccess}
+                  decreaseDetail={decreaseDetail}
+                  deleteDetail={deleteDetail}
                 />
               </div>
             </div>

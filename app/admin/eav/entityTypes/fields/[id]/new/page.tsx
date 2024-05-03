@@ -22,7 +22,7 @@ export default function Eav({ params }) {
   const [min, setMin] = useState();
   const [max, setMax] = useState();
   const [attributeTypeId, setAttributeTypeId] = useState(1);
-  const [isRequired, setIsRequired] = useState();
+  const [isRequired, setIsRequired] = useState(true);
   const router = useRouter();
 
   const {

@@ -77,6 +77,13 @@ export default function Transactions() {
       },
     },
     {
+      accessorKey: "user.phoneNumber",
+      header: "شماره موبایل",
+      minSize: 100,
+      maxSize: 400,
+      size: 180,
+    },
+    {
       accessorKey: "paymentType.name",
       header: "نوع پرداخت",
       minSize: 100,

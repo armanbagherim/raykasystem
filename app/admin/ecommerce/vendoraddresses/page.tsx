@@ -15,8 +15,8 @@ export default function VendorAddress() {
   useEffect(() => {
     setTitle({
       title: "آدرس فروشنده ها",
-      buttonTitle: "افزودن آدرس جدید",
-      link: "/admin/ecommerce/vendors/new",
+      buttonTitle: "",
+      link: "",
     });
   }, []);
 

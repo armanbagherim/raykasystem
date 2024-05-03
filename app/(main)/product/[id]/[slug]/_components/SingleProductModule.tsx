@@ -146,6 +146,7 @@ export default function SingleProductModule({ product, related, cook }) {
                     key={key}
                     className="w-full"
                     height={"500"}
+                    loading="eager"
                     src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
                     width="500"
                   />

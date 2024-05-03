@@ -21,7 +21,7 @@ export default function Eav({ params }) {
   const [min, setMin] = useState();
   const [max, setMax] = useState();
   const [attributeTypeId, setAttributeTypeId] = useState(1);
-  const [isRequired, setIsRequired] = useState(null);
+  const [isRequired, setIsRequired] = useState(false);
   const router = useRouter();
 
   const {
@@ -43,10 +43,13 @@ export default function Eav({ params }) {
       setName(attributes.result.name);
       setMin(attributes.result.minLength);
       setMax(attributes.result.maxLength);
-      setAttributeTypeId(attributes.result.setAttributeTypeId);
-      setIsRequired(attributes.result.required);
+      setAttributeTypeId(attributes.result.attributeTypeId);
+      setIsRequired(
+        attributes.result.required === null ? false : attributes.result.required
+      );
     }
   }, [attributesIsLoading]);
+
   const saveField = async () => {
     try {
       const req = await fetcher({
@@ -62,9 +65,9 @@ export default function Eav({ params }) {
         },
       });
       toast.success("موفق");
-      setTimeout(() => {
-        router.push(`/admin/eav/entityTypes/fields/${params.id}`);
-      }, 500);
+      // setTimeout(() => {
+      //   router.push(`/admin/eav/entityTypes/fields/${params.id}`);
+      // }, 500);
     } catch (error) {
       toast.error(error.message);
     }
@@ -136,26 +139,20 @@ export default function Eav({ params }) {
 
           <select
             id="countries_multiple"
+            value={attributeTypeId}
             className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             onChange={(e) => setAttributeTypeId(e.target.value)}
           >
-            {attributeTypesIsLoading ? (
-              <option value="">در حال بارگزاری</option>
-            ) : (
+            {attributeTypes &&
               attributeTypes.result.map((value, key) => {
                 return (
                   <>
-                    <option
-                      selected={attributeTypeId === value.id ? "selected" : ""}
-                      key={key}
-                      value={value.id}
-                    >
+                    <option key={key} value={value.id}>
                       {value.name}
                     </option>
                   </>
                 );
-              })
-            )}
+              })}
           </select>
         </div>
         <div className="w-full flex">
@@ -165,7 +162,7 @@ export default function Eav({ params }) {
           <input
             type="checkbox"
             name=""
-            checked={isRequired === null ? false : true}
+            checked={isRequired}
             onChange={(e) => setIsRequired(e.target.checked)}
             id="required"
           />

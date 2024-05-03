@@ -15,6 +15,8 @@ import Uploader from "@/app/components/global/Uploader";
 import SearchSelect from "@/app/components/global/SearchSelect";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import Link from "next/link";
+import Swal from "sweetalert2";
+
 export default function Orders() {
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
@@ -27,14 +29,27 @@ export default function Orders() {
     });
   }, []);
 
-  const deleteGuarantee = async (id) => {
+  const deleteOrder = async (id) => {
     try {
-      const req = await fetcher({
-        url: `/v1/api/ecommerce/guarantees/${id}`,
-        method: "DELETE",
+      const result = await Swal.fire({
+        title: "مطمئن هستید؟",
+        text: "با حذف این سفارش امکان بازگشت آن وجود ندارد",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله حذفش کن",
+        cancelButtonText: "لغو",
       });
-      toast.success("موفق");
-      setTriggered(!triggered);
+
+      if (result.isConfirmed) {
+        const req = await fetcher({
+          url: `/v1/api/ecommerce/admin/totalOrders/${id}`,
+          method: "DELETE",
+        });
+        toast.success("موفق");
+        setTriggered(!triggered);
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -125,6 +140,10 @@ export default function Orders() {
       },
       Cell: ({ row }) => (
         <>
+          <IconButton onClick={(e) => deleteOrder(row.id)}>
+            <DeleteIcon color="error" />
+          </IconButton>
+
           <IconButton>
             <Link href={`/admin/ecommerce/totalOrders/${row.id}`}>
               <RemoveRedEyeIcon />
