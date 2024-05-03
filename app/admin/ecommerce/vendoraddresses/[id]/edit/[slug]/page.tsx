@@ -158,25 +158,28 @@ export default function VendorAddress({ params }) {
   }
   return (
     <div>
-      <MapClient
-        height={400}
-        onAddressChange={(address) => {
-          if (!isAddressManuallyChanged) {
-            setStreetAndUpdateAddress(address);
-          }
-        }}
-        // defaultLocation={{
-        //   lat: +coordinates.latitude,
-        //   lng: +coordinates.longitude,
-        // }}
-        onLocationChange={(location) => {
-          setCoordinates({
-            latitude: location.lat.toString(),
-            longitude: location.lng.toString(),
-          });
-          setIsAddressManuallyChanged(false);
-        }}
-      />
+      {coordinates.latitude !== null && (
+        <MapClient
+          height={400}
+          onAddressChange={(address) => {
+            if (!isAddressManuallyChanged) {
+              setStreetAndUpdateAddress(address);
+            }
+          }}
+          defaultLocation={{
+            lat: +coordinates.latitude,
+            lng: +coordinates.longitude,
+          }}
+          onLocationChange={(location) => {
+            console.log(location);
+            setCoordinates({
+              latitude: location.lat.toString(),
+              longitude: location.lng.toString(),
+            });
+            setIsAddressManuallyChanged(false);
+          }}
+        />
+      )}
       <div>
         <label
           htmlFor="first_name"

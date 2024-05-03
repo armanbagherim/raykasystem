@@ -3,7 +3,6 @@ import Link from "next/link";
 import React from "react";
 
 export default function OrderModule({ data }) {
-  console.log(data);
   return (
     <>
       <h1 className="text-2xl peyda mb-4">تراکنش ها</h1>

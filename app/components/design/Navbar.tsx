@@ -115,11 +115,11 @@ export default async function NavbarModule() {
                   </li>
                   <li className="">
                     <Link
-                      href="/user/orders"
+                      href="/user/transactions"
                       className="mb-2 text-sm flex justify-between"
                     >
                       {" "}
-                      <span>سفارشات</span>
+                      <span>تراکنش ها</span>
                       <span>
                         <ChevronLeft />
                       </span>

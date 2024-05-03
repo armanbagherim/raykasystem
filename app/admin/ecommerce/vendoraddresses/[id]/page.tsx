@@ -93,7 +93,7 @@ export default function VendorAddress({ params }) {
           {}
 
           <a
-            href={`/admin/ecommerce/vendoraddresses/${params.id}/edit/${row?.original?.address?.id}/${row.original.id}`}
+            href={`/admin/ecommerce/vendoraddresses/${params.id}/edit/${row.original.id}`}
           >
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />

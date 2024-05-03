@@ -34,6 +34,7 @@ const Maps: FunctionComponent<MapProps> = ({
   isAddressManuallyChanged = false,
   height = 200,
 }) => {
+  console.log("default invoked", defaultLocation);
   const mapRef = useRef<NeshanMapRef | null>(null);
   const [ol, setOl] = useState<Ol>();
   const [olMap, setOlMap] = useState<OlMap>();
@@ -42,6 +43,7 @@ const Maps: FunctionComponent<MapProps> = ({
     lat: defaultLocation.lat,
     lng: defaultLocation.lng,
   });
+  const [lastLocation, setLastLocation] = useState<LocationState | null>(null);
 
   const fetchAddress = async (location: LocationState) => {
     try {
@@ -109,14 +111,24 @@ const Maps: FunctionComponent<MapProps> = ({
         const center = olMap.getView().getCenter();
         if (center) {
           const [longitude, latitude] = toLonLat(center);
-          onLocationChange?.({ lat: latitude, lng: longitude });
-          console.log("Latitude:", latitude);
-          console.log("Longitude:", longitude);
-          setCurrentLocation({ lat: latitude, lng: longitude });
+          const newLocation = { lat: latitude, lng: longitude };
+
+          if (
+            !lastLocation ||
+            lastLocation.lat !== newLocation.lat ||
+            lastLocation.lng !== newLocation.lng
+          ) {
+            onLocationChange?.(newLocation);
+            console.log("Latitude:", latitude);
+            console.log("Longitude:", longitude);
+            setCurrentLocation(newLocation);
+            setLastLocation(newLocation);
+            fetchAddress(newLocation);
+          }
         }
       });
     }
-  }, [olMap, marker, ol, onLocationChange]);
+  }, [olMap, marker, ol, onLocationChange, fetchAddress, lastLocation]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
