@@ -8,7 +8,6 @@ import { signOut, useSession } from "next-auth/react";
 
 const SideMenu = () => {
   const { data: session } = useSession();
-  console.log(session);
   const [menuOpen, setMenuOpen] = useState<Boolean>();
   const [subMenuVisibility, setSubMenuVisibility] = useState<any>({});
   const {
@@ -55,7 +54,7 @@ const SideMenu = () => {
         aria-controls="logo-sidebar"
         type="button"
         onClick={() => setMenuOpen(!menuOpen)}
-        className="inline-flex relative z-50 items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:focus:ring-gray-600"
+        className="inline-flex relative z-50 items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 "
       >
         <span className="sr-only">Open sidebar</span>
         <svg
@@ -75,14 +74,14 @@ const SideMenu = () => {
 
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 xs:pt-14 right-0 z-40 w-64 h-screen transition-transform ${
+        className={`fixed top-0 xs:pt-14 right-0 z-40 w-72 h-screen transition-transform ${
           !menuOpen
             ? "-translate-x-full sm:translate-x-0 translate-x-full"
             : "transform-none"
         } `}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 bg-gray-50 flex justify-between flex-col h-full overflow-y-auto">
+        <div className="h-full px-3 py-4 bg-gray-50 flex justify-between flex-col h-full overflow-y-auto custom-scroll">
           <div>
             <div className="flex bg-gray-200 justify-between items-center rounded-xl p-4 mb-5 border-b">
               <a

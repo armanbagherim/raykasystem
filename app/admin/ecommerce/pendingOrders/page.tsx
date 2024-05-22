@@ -82,6 +82,12 @@ export default function Orders() {
     },
 
     {
+      accessorKey: "transactionId",
+      header: "شماره تراکنش",
+      size: 10,
+      maxSize: 10,
+    },
+    {
       accessorKey: "user.phoneNumber",
       header: "شماره موبایل",
       size: 10,
@@ -95,7 +101,7 @@ export default function Orders() {
       size: 100,
       Cell: ({ row }) =>
         `${
-          new Date(row.original?.createdAt).toLocaleDateString({
+          new Date(row.original?.createdAt).toLocaleDateString("fa-IR", {
             hour: "numeric",
             minute: "numeric",
             second: "numeric",
@@ -107,6 +113,8 @@ export default function Orders() {
       header: "مجموع قیمت محصولات",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) =>
+        Number(row.original.totalProductPrice).toLocaleString(),
     },
 
     {
@@ -114,18 +122,22 @@ export default function Orders() {
       header: "مجموع تخفیف",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) => Number(row.original.totalDiscountFee).toLocaleString(),
     },
     {
       accessorKey: "totalShipmentPrice",
       header: "هزینه ارسال",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) =>
+        Number(row.original.totalShipmentPrice).toLocaleString(),
     },
     {
       accessorKey: "totalPrice",
       header: "جمع کل",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) => Number(row.original.totalPrice).toLocaleString(),
     },
     // {
     //   accessorKey: "orderShipmentWay.name",
@@ -138,12 +150,7 @@ export default function Orders() {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
           <IconButton>

@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./../globals.scss";
-import Navbar from "../components/design/Navbar";
+import Navbar from "../components/design/Navbar/Navbar";
 import Footer from "../components/design/Footer";
 import "react-toastify/dist/ReactToastify.css";
-import BottomNav from "../components/design/BottomNav";
+import BottomNav from "../components/design/BottomNav/BottomNav";
 import { ToastContainer } from "react-toastify";
 import { Provider } from "jotai";
 import Providers from "../components/Providers";
 import NextTopLoader from "nextjs-toploader";
+import ThemeRegistry from "./user/Theme";
+import GoogleAnalytics from "./Google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,17 +32,20 @@ export default function RootLayout({
         rel="apple-touch-startup-image"
         href="/apple-launch-1125x2436.png"
       ></link>
-      <body>
-        <Providers>
-          <Provider>
-            <Navbar />
-            <ToastContainer />
-            <BottomNav />
-            <NextTopLoader showSpinner={false} color="#20ac73" />
-            {children}
-            <Footer />
-          </Provider>
-        </Providers>
+      <GoogleAnalytics />
+      <body className="custom-scroll">
+        <ThemeRegistry>
+          <Providers>
+            <Provider>
+              <Navbar />
+              <ToastContainer />
+              <BottomNav />
+              <NextTopLoader showSpinner={false} color="#20ac73" />
+              {children}
+              <Footer />
+            </Provider>
+          </Providers>
+        </ThemeRegistry>
       </body>
     </html>
   );

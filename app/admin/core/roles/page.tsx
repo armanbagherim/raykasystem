@@ -12,6 +12,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { toast } from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ChangeFormatDate from "@/app/components/global/ChangeFormatDate";
+import Swal from "sweetalert2";
 
 export default function Roles() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -27,12 +28,25 @@ export default function Roles() {
 
   const deleteRow = async (id) => {
     try {
-      const req = await fetcher({
-        url: `/v1/api/core/admin/roles/${id}`,
-        method: "DELETE",
+      const result = await Swal.fire({
+        title: "مطمئن هستید؟",
+        text: "با حذف این گزینه امکان بازگشت آن وجود ندارد",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله حذفش کن",
+        cancelButtonText: "لغو",
       });
-      toast.success("موفق");
-      setTriggered(!triggered);
+
+      if (result.isConfirmed) {
+        const req = await fetcher({
+          url: `/v1/api/core/admin/roles/${id}`,
+          method: "DELETE",
+        });
+        toast.success("موفق");
+        setTriggered(!triggered);
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -58,20 +72,17 @@ export default function Roles() {
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
       size: 180, //medium column
-      Cell({row}){
-        return row.original.createdAt && ChangeFormatDate(row.original.createdAt); 
-      }
+      Cell({ row }) {
+        return (
+          row.original.createdAt && ChangeFormatDate(row.original.createdAt)
+        );
+      },
     },
     {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
           <a href={`/admin/core/roles/${row.id}`}>

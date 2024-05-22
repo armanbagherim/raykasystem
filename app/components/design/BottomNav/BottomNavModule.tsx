@@ -8,9 +8,9 @@ import {
   Home,
   Menu,
   Pofile,
-} from "./Icons";
+} from "../Icons";
 import Link from "next/link";
-import CartCount from "./CartCount";
+import CartCount from "../CartCount";
 
 export default function BottomNavModule({ entities }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -66,7 +66,8 @@ export default function BottomNavModule({ entities }) {
         <ul>
           {level === 1
             ? entities.reverse().map((value, key) => {
-                return value.subEntityTypes.length > 0 ? (
+                return value.subEntityTypes &&
+                  value.subEntityTypes.length > 0 ? (
                   <li
                     key={key}
                     onClick={(e) => handleClick(value.id)}
@@ -76,72 +77,75 @@ export default function BottomNavModule({ entities }) {
                     <ChevronLeft />
                   </li>
                 ) : (
-                  <a key={key} href={`/category/${value.slug}`}>
-                    <li
-                      onClick={(e) => handleClick(value.id)}
-                      className="flex justify-between items-center border-b pb-3 mb-6"
-                    >
+                  <Link key={key} href={`/category/${value.slug}`}>
+                    <li className="flex justify-between items-center border-b pb-3 mb-6">
                       <span>{value.name}</span>
-                      <ChevronLeft />
                     </li>
-                  </a>
+                  </Link>
                 );
               })
             : level === 2
             ? subMenuData.reverse().map((value, key) =>
                 value.link ? (
-                  <a key={key} href={value.link}>
+                  <Link
+                    key={key}
+                    onClick={(e) => setIsMenuOpen(false)}
+                    href={value.link}
+                  >
                     <li className="flex justify-between items-center border-b pb-3 mb-6">
                       <span>{value.name}</span>
                     </li>
-                  </a>
-                ) : value.subEntityTypes.length === 0 ? (
-                  <a key={key} href={`/category/${value.slug}`}>
-                    <li
-                      onClick={(e) => handleSubMenuClick(value.id)}
-                      className="flex justify-between items-center border-b pb-3 mb-6"
-                    >
+                  </Link>
+                ) : value.subEntityTypes &&
+                  value.subEntityTypes.length === 0 ? (
+                  <Link
+                    onClick={(e) => setIsMenuOpen(false)}
+                    key={key}
+                    href={`/category/${value.slug}`}
+                  >
+                    <li className="flex justify-between items-center border-b pb-3 mb-6">
                       <span>{value.name}</span>
-                      <ChevronLeft />
                     </li>
-                  </a>
+                  </Link>
                 ) : (
-                  <li
+                  <div
                     key={key}
                     onClick={(e) => handleSubMenuClick(value.id)}
-                    className="flex justify-between items-center border-b pb-3 mb-6"
+                    className="flex justify-between items-center border-b pb-3 mb-6 cursor-pointer"
                   >
                     <span>{value.name}</span>
                     <ChevronLeft />
-                  </li>
+                  </div>
                 )
               )
             : depthSubMenuData.reverse().map((value, key) =>
                 value.link ? (
-                  <a key={key} href={value.link}>
+                  <Link
+                    onClick={(e) => setIsMenuOpen(false)}
+                    key={key}
+                    href={value.link}
+                  >
                     <li className="flex justify-between items-center border-b pb-3 mb-6">
                       <span>{value.name}</span>
                     </li>
-                  </a>
-                ) : value.length === 0 ? (
-                  <a key={key} href={`/category/${value.slug}`}>
-                    <li
-                      onClick={(e) => handleSubMenuClick(value.id)}
-                      className="flex justify-between items-center border-b pb-3 mb-6"
-                    >
+                  </Link>
+                ) : value.subEntityTypes &&
+                  value.subEntityTypes.length === 0 ? (
+                  <Link key={key} href={`/category/${value.slug}`}>
+                    <li className="flex justify-between items-center border-b pb-3 mb-6">
                       <span>{value.name}</span>
-                      <ChevronLeft />
                     </li>
-                  </a>
+                  </Link>
                 ) : (
-                  <li
+                  <Link
                     key={key}
-                    onClick={(e) => handleSubMenuClick(value.id)}
-                    className="flex justify-between items-center border-b pb-3 mb-6"
+                    href={`/category/${value.slug}`}
+                    onClick={(e) => setIsMenuOpen(false)}
+                    className="flex justify-between items-center border-b pb-3 mb-6 cursor-pointer"
                   >
                     <span>{value.name}</span>
                     <ChevronLeft />
-                  </li>
+                  </Link>
                 )
               )}
         </ul>

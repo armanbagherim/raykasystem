@@ -18,7 +18,7 @@ async function getData(session, searchParams) {
       },
     }
   );
-  console.log(res);
+
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     return notFound();
@@ -30,7 +30,7 @@ async function getData(session, searchParams) {
 export default async function page(params) {
   const session = await getServerSession(authOptions);
   const data = await getData(session, params?.searchParams?.transactionId);
-  console.log(data);
+
   return (
     <div>
       <>
@@ -70,13 +70,15 @@ export default async function page(params) {
               <span>&nbsp;</span>
               <span className="text-primary">{data.result.id}</span>
             </div>
-            <div className="text-center mt-8">
-              <Link href={`/user/orders/${data.result.id}`}>
-                <button className="bg-primary hover:bg-green-700 text-customGray p-3 sm:w-56 md:w-60 lg:w-64 rounded-2xl">
-                  پیگیری سفارش
-                </button>
-              </Link>
-            </div>
+            {data.result.paymentStatus.id === 3 && (
+              <div className="text-center mt-8">
+                <Link href={`/user/orders/${data.result.orderId}`}>
+                  <button className="bg-primary hover:bg-green-700 text-customGray p-3 sm:w-56 md:w-60 lg:w-64 rounded-2xl">
+                    پیگیری سفارش
+                  </button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </>

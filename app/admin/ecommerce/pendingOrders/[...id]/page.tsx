@@ -2,23 +2,37 @@
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "@/app/components/global/loading";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import OrderDataTable from "./Datatable";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 export default function PendingOrders({ params }) {
   const router = useRouter();
+  const [orderDetail, setOrderDetail] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    data: orderDetail,
-    isLoading: orderDetailIsLoading,
-    error: orderDetailError,
-    refetch: refetchData,
-  } = useFetcher(
-    `/v1/api/ecommerce/admin/pendingOrders/${params.id[1]}?sortOrder=DESC&vendorId=${params.id[0]}`,
-    "GET"
-  );
+  const getOrders = async () => {
+    setIsLoading(true);
+    try {
+      const req = await fetcher({
+        url: `/v1/api/ecommerce/admin/pendingOrders/${params.id[1]}?sortOrder=DESC&vendorId=${params.id[0]}`,
+        method: "GET",
+      }).then((res) => {
+        if (res.statusCode === 404) {
+          router.push("/admin/ecommerce/pendingOrders");
+        } else {
+          setOrderDetail(res);
+          setIsLoading(false);
+        }
+      });
+    } catch (error) {
+      router.push("/admin/ecommerce/pendingOrders");
+    }
+  };
+  useEffect(() => {
+    getOrders();
+  }, []);
 
   const handleProccess = async (id) => {
     try {
@@ -27,20 +41,20 @@ export default function PendingOrders({ params }) {
         method: "PATCH",
       });
       toast.success("موفق");
-      refetchData();
+      getOrders();
     } catch (error) {
       toast.error(error.message);
     }
   };
-  useEffect(() => {
-    if (!orderDetailIsLoading) {
-      if (orderDetail?.result?.result === null) {
-        router.push("/admin/ecommerce/pendingOrders");
-      }
-    }
-  }, [orderDetail, orderDetailIsLoading, router]);
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     if (orderDetail === undefined) {
+  //       router.push("/admin/ecommerce/pendingOrders");
+  //     }
+  //   }
+  // }, [orderDetail, isLoading, router]);
 
-  if (orderDetailIsLoading) {
+  if (isLoading) {
     return <Loading />;
   }
   return (
@@ -48,11 +62,20 @@ export default function PendingOrders({ params }) {
       <section className=" relative">
         <div className="w-full px-4 md:px-5 lg-6 mx-auto">
           <div className="flex items-start flex-col gap-6">
-            <div className="w-full  flex items-start flex-row gap-8 max-xl:mx-auto mb-8">
+            <div className="w-full mb-8">
+              <div className="grid grid-cols-1 gap-6">
+                <h3>محصولات</h3>
+                <OrderDataTable
+                  data={orderDetail?.result?.details}
+                  handleProccess={handleProccess}
+                />
+              </div>
+            </div>
+            <div className="w-full flex flex-wrap items-start flex-row gap-8 max-xl:mx-auto mb-8">
               <div className="p-6 flex-1 border border-gray-200 rounded-3xl w-full group transition-all duration-500 hover:border-gray-400 ">
                 <div className="flex justify-between border-b border-gray-200 items-center pb-6 ">
                   <h2 className="font-manrope font-bold text-lg leading-10 text-black ">
-                    {`#${orderDetail.result.id}`}
+                    {`#${orderDetail?.result?.id}`}
                   </h2>
                   <span>
                     {new Date(
@@ -69,7 +92,7 @@ export default function PendingOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalProductPrice
                       ).toLocaleString()}{" "}
-                      تومان
+                      تومانء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4 mb-2">
@@ -80,7 +103,7 @@ export default function PendingOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalShipmentPrice
                       ).toLocaleString()}{" "}
-                      تومان
+                      تومانء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -91,7 +114,7 @@ export default function PendingOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalDiscountFee
                       ).toLocaleString()}{" "}
-                      تومان
+                      تومانء
                     </p>
                   </div>
                 </div>
@@ -101,7 +124,7 @@ export default function PendingOrders({ params }) {
                   </p>
                   <h5 className="font-manrope font-bold text-sm leading-9 text-primary">
                     {Number(orderDetail?.result?.totalPrice).toLocaleString()}{" "}
-                    تومان
+                    تومانء
                   </h5>
                 </div>
               </div>
@@ -142,34 +165,25 @@ export default function PendingOrders({ params }) {
                     </p>
                     <p className="text-md leading-8 font-bold">
                       <span>
-                        استان: {orderDetail?.result?.address.province.name}{" "}
+                        استان: {orderDetail?.result?.address?.province?.name}{" "}
                       </span>
                       <span>
-                        شهر: {orderDetail?.result?.address.city.name}{" "}
+                        شهر: {orderDetail?.result?.address?.city?.name}{" "}
                       </span>
                       <span>
                         محله:
-                        {orderDetail?.result?.address.neighborhood.name}{" "}
+                        {orderDetail?.result?.address?.neighborhood?.name}{" "}
                       </span>
                       <span>
-                        خیابان: {orderDetail?.result?.address.street}{" "}
+                        خیابان: {orderDetail?.result?.address?.street}{" "}
                       </span>
-                      <span>پلاک: {orderDetail?.result?.address.plaque} </span>
+                      <span>پلاک: {orderDetail?.result?.address?.plaque} </span>
                       <span>
-                        طبقه: {orderDetail?.result?.address.floorNumber}{" "}
+                        طبقه: {orderDetail?.result?.address?.floorNumber}{" "}
                       </span>
                     </p>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="w-full">
-              <div className="grid grid-cols-1 gap-6">
-                <h3>محصولات</h3>
-                <OrderDataTable
-                  data={orderDetail?.result?.details}
-                  handleProccess={handleProccess}
-                />
               </div>
             </div>
           </div>

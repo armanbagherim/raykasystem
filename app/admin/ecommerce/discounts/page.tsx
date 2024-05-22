@@ -11,6 +11,7 @@ import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ChangeFormatDate from "@/app/components/global/ChangeFormatDate";
+import Swal from "sweetalert2";
 
 export default function Discount() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -26,12 +27,25 @@ export default function Discount() {
 
   const deleteRow = async (id) => {
     try {
-      const req = await fetcher({
-        url: `/v1/api/ecommerce/admin/discounts/${id}`,
-        method: "DELETE",
+      const result = await Swal.fire({
+        title: "مطمئن هستید؟",
+        text: "با حذف این گزینه امکان بازگشت آن وجود ندارد",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله حذفش کن",
+        cancelButtonText: "لغو",
       });
-      toast.success("موفق");
-      setTriggered(!triggered);
+
+      if (result.isConfirmed) {
+        const req = await fetcher({
+          url: `/v1/api/ecommerce/admin/discounts/${id}`,
+          method: "DELETE",
+        });
+        toast.success("موفق");
+        setTriggered(!triggered);
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -84,6 +98,13 @@ export default function Discount() {
       },
     },
     {
+      accessorKey: "used",
+      header: "تعداد استفاده ",
+      minSize: 30,
+      maxSize: 30,
+      size: 30,
+    },
+    {
       accessorKey: "actionRule.name",
       header: "نوع شرط ",
       minSize: 100,
@@ -125,12 +146,7 @@ export default function Discount() {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
           <a href={`/admin/ecommerce/discounts/conditions/${row.id}`}>

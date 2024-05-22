@@ -72,7 +72,6 @@ export default function InventoriesDialouge({
 
   useEffect(() => {
     if (activeSpaceProductsObject) {
-      console.log(activeSpaceProductsObject);
       // Check if activeSpace is null
       if (!activeSpace) {
         // Check if the object already has an ID without the 'new_' prefix
@@ -254,7 +253,7 @@ export default function InventoriesDialouge({
             />
             <div className="text-xs">
               {Number(localTempInventory?.buyPrice || null).toLocaleString()}{" "}
-              تومان
+              تومانء
             </div>
           </div>
         </div>
@@ -271,7 +270,7 @@ export default function InventoriesDialouge({
             />
             <div className="text-xs">
               {Number(localTempInventory?.firstPrice || null).toLocaleString()}{" "}
-              تومان
+              تومانء
             </div>
           </div>
           <div className="flex-1">
@@ -288,7 +287,7 @@ export default function InventoriesDialouge({
               {Number(
                 localTempInventory?.secondaryPrice || null
               ).toLocaleString()}{" "}
-              تومان
+              تومانء
             </div>
           </div>
         </div>
@@ -337,7 +336,6 @@ export default function InventoriesDialouge({
           color="success"
           autoFocus
           onClick={(e) => {
-            console.log(localTempInventory);
             if (!isFormValid()) {
               // Optionally display an error message
               toast.error("لطفا تمام فیلد ها را پر نمایید");

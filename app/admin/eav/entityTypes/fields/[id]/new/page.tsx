@@ -19,10 +19,10 @@ export default function Eav({ params }) {
     });
   }, []);
   const [name, setName] = useState();
-  const [min, setMin] = useState();
-  const [max, setMax] = useState();
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
   const [attributeTypeId, setAttributeTypeId] = useState(1);
-  const [isRequired, setIsRequired] = useState(true);
+  const [isRequired, setIsRequired] = useState(false);
   const router = useRouter();
 
   const {

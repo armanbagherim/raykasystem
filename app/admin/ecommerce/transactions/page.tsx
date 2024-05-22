@@ -12,6 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import Image from "next/image";
 import Uploader from "@/app/components/global/Uploader";
+import StatusLabelChips from "@/app/components/global/StatusLabelChips";
 
 export default function Transactions() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -41,9 +42,39 @@ export default function Transactions() {
   const columns = [
     {
       accessorKey: "id",
-      header: "شناسه",
+      header: "شناسه تراکنش",
       size: 10,
       maxSize: 10,
+    },
+    {
+      accessorKey: "CAt",
+      header: "تاریخ ثبت ",
+      minSize: 100,
+      maxSize: 100,
+      size: 100,
+      Cell: ({ row }) =>
+        `${
+          new Date(row.original?.createdAt).toLocaleDateString("fa-IR", {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+          }) || ""
+        } `,
+    },
+    {
+      accessorKey: "UAt",
+      header: "به روز رسانی",
+      minSize: 100,
+      maxSize: 100,
+      size: 100,
+      Cell: ({ row }) =>
+        `${
+          new Date(row.original?.updatedAt).toLocaleDateString("fa-IR", {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+          }) || ""
+        } `,
     },
     {
       accessorKey: "paymentGateway.name",
@@ -54,17 +85,24 @@ export default function Transactions() {
     },
     {
       accessorKey: "orderId",
-      header: "شناسه سفارش",
+      header: "شماره سفارش",
       minSize: 100,
       maxSize: 100,
       size: 100,
     },
+
     {
-      accessorKey: "paymentStatus.name",
-      header: "وضعیت",
-      minSize: 100,
-      maxSize: 400,
-      size: 180,
+      accessorKey: "orderStatus.name",
+      header: "وضعیت سفارش",
+      size: 10,
+      maxSize: 10,
+      Cell: ({ row }) => (
+        <StatusLabelChips
+          text={row?.original?.paymentStatus?.name}
+          statusId={row?.original?.paymentStatus?.id}
+          isTransaction
+        />
+      ),
     },
     {
       accessorKey: "paymentType.name",
@@ -87,31 +125,18 @@ export default function Transactions() {
       accessorKey: "paymentType.name",
       header: "نوع پرداخت",
       minSize: 100,
-      maxSize: 400,
+      maxSize: 200,
       size: 180,
     },
     {
       accessorKey: "totalprice",
       header: "جمع مبلغ",
       minSize: 100,
-      maxSize: 400,
-      size: 180,
+      maxSize: 150,
+      size: 150,
       Cell({ row }) {
         return Number(row.original.totalprice).toLocaleString();
       },
-    },
-
-    {
-      accessorKey: "Actions",
-      header: "عملیات",
-      size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
-      Cell: ({ row }) => <></>,
     },
   ];
 

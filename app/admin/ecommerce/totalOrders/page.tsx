@@ -16,6 +16,7 @@ import SearchSelect from "@/app/components/global/SearchSelect";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import StatusLabelChips from "@/app/components/global/StatusLabelChips";
 
 export default function Orders() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -62,7 +63,12 @@ export default function Orders() {
       size: 10,
       maxSize: 10,
     },
-
+    {
+      accessorKey: "transactionId",
+      header: "شماره تراکنش",
+      size: 10,
+      maxSize: 10,
+    },
     {
       accessorKey: "paymentGateway.name",
       header: "کاربر",
@@ -81,6 +87,7 @@ export default function Orders() {
       size: 10,
       maxSize: 10,
     },
+
     {
       accessorKey: "paymentGateway.name",
       header: "تاریخ ثبت سفارش",
@@ -89,18 +96,21 @@ export default function Orders() {
       size: 100,
       Cell: ({ row }) =>
         `${
-          new Date(row.original?.createdAt).toLocaleDateString({
+          new Date(row.original?.createdAt).toLocaleDateString("fa-IR", {
             hour: "numeric",
             minute: "numeric",
             second: "numeric",
           }) || ""
         } `,
     },
+
     {
       accessorKey: "totalProductPrice",
       header: "مجموع قیمت محصولات",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) =>
+        Number(row.original.totalProductPrice).toLocaleString(),
     },
 
     {
@@ -108,18 +118,34 @@ export default function Orders() {
       header: "مجموع تخفیف",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) => Number(row.original.totalDiscountFee).toLocaleString(),
     },
     {
       accessorKey: "totalShipmentPrice",
       header: "هزینه ارسال",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) =>
+        Number(row.original.totalShipmentPrice).toLocaleString(),
     },
     {
       accessorKey: "totalPrice",
       header: "جمع کل",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) => Number(row.original.totalPrice).toLocaleString(),
+    },
+    {
+      accessorKey: "orderStatus.name",
+      header: "وضعیت سفارش",
+      size: 10,
+      maxSize: 10,
+      Cell: ({ row }) => (
+        <StatusLabelChips
+          text={row?.original?.orderStatus?.name}
+          statusId={row?.original?.orderStatus?.id}
+        />
+      ),
     },
     // {
     //   accessorKey: "orderShipmentWay.name",
@@ -132,12 +158,7 @@ export default function Orders() {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
           <IconButton onClick={(e) => deleteOrder(row.id)}>

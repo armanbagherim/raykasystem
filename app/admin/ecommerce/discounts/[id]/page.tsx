@@ -34,6 +34,7 @@ export default function NewDiscount({ params }) {
     startDate: "2024-03-26T01:49:58.489Z",
     endDate: "2024-03-26T01:49:58.489Z",
     vendorId: 0,
+    freeShipment: false,
   });
 
   const {
@@ -66,18 +67,24 @@ export default function NewDiscount({ params }) {
         maxValue: discount.result.maxValue,
         discountActionRuleId: discount.result.discountActionRuleId,
         couponCode:
-          discount.result.couponCode === "" ? null : discount.result.couponCode,
+          discount.result.couponCode === null
+            ? null
+            : discount.result.couponCode,
         priority: discount.result.priority,
         limit: discount.result.limit,
         startDate: discount.result.startDate,
         endDate: discount.result.endDate,
+        freeShipment: discount.result.freeShipment,
       }));
     }
   }, [discountIsLoading]);
 
   useEffect(() => {
-    setRequestBody({ ...requestBody, couponCode: null });
+    if (requestBody.discountTypeId !== discount?.result?.discountTypeId) {
+      setRequestBody({ ...requestBody, couponCode: null });
+    }
   }, [requestBody.discountTypeId]);
+
   const {
     data: discountTypes,
     isLoading: discountTypesIsLoading,
@@ -173,37 +180,63 @@ export default function NewDiscount({ params }) {
       </div>
       <div className="flex gap-6 mb-6">
         <div className="flex-1">
+          <label
+            htmlFor="first_name"
+            className="block mb-0 text-sm font-medium text-gray-900 "
+          >
+            تاریخ شروع
+          </label>
           <DatePicker
             format="MM/DD/YYYY HH:mm:ss"
             plugins={[<TimePicker key={1} position="bottom" />]}
             calendar={persian}
+            value={requestBody.startDate}
+            onOpenPickNewDate={false}
             locale={persian_fa}
-            inputClass="w-full border-b outline-none py-4 border-gray-500"
+            inputClass="w-full border-b outline-none py-1 border-gray-500"
             containerClassName="w-full"
-            value={new Date(requestBody.startDate)}
-            onChange={(e) =>
+            onClose={() =>
               setRequestBody({
                 ...requestBody,
-                startDate: e.toDate().toISOString(),
+                startDate: null,
               })
             }
-          />
+            onFocusedDateChange={(dateFocused, dateClicked) => {
+              setRequestBody({
+                ...requestBody,
+                startDate: dateClicked.toDate().toISOString(),
+              });
+            }}
+          ></DatePicker>
         </div>
         <div className="flex-1">
+          <label
+            htmlFor="first_name"
+            className="block mb-0 text-sm font-medium text-gray-900 "
+          >
+            تاریخ پایان
+          </label>
           <DatePicker
             format="MM/DD/YYYY HH:mm:ss"
-            inputClass="w-full border-b outline-none py-4 border-gray-500"
+            inputClass="w-full border-b outline-none py-1 border-gray-500"
             containerClassName="w-full"
+            onOpenPickNewDate={false}
+            value={requestBody.endDate}
             plugins={[<TimePicker key={2} position="bottom" />]}
             calendar={persian}
-            value={new Date(requestBody.endDate)}
             locale={persian_fa}
-            onChange={(e) =>
+            onClose={() =>
               setRequestBody({
                 ...requestBody,
-                endDate: e.toDate().toISOString(),
+                endDate: null,
               })
             }
+            onFocusedDateChange={(dateFocused, dateClicked) => {
+              setRequestBody({
+                ...requestBody,
+                endDate: dateClicked.toDate().toISOString(),
+              });
+            }}
           />
         </div>
       </div>
@@ -303,9 +336,9 @@ export default function NewDiscount({ params }) {
         />
       </div> */}
       <div className="flex gap-6 items-center">
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col">
           <label className="inline-flex items-center cursor-pointer">
-            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+            <span className="ml-3 text-sm font-medium text-gray-900 ">
               فعال؟
             </span>
             <Switch
@@ -314,6 +347,21 @@ export default function NewDiscount({ params }) {
                 setRequestBody({
                   ...requestBody,
                   isActive: !requestBody.isActive,
+                })
+              }
+              inputProps={{ "aria-label": "controlled" }}
+            />
+          </label>
+          <label className="inline-flex items-center cursor-pointer">
+            <span className="ml-3 text-sm font-medium text-gray-900 ">
+              ارسال رایگان
+            </span>
+            <Switch
+              checked={requestBody.freeShipment}
+              onChange={(e) =>
+                setRequestBody({
+                  ...requestBody,
+                  freeShipment: !requestBody.freeShipment,
                 })
               }
               inputProps={{ "aria-label": "controlled" }}

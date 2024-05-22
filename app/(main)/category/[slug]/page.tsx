@@ -9,9 +9,11 @@ import {
   Sorticon,
 } from "@/app/components/design/Icons";
 import Numberpaginate from "@/app/components/design/Slider/Numberpaginate";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../../components/Sidebar";
 import ProductCard from "@/app/components/design/Cards/ProductCard/ProductCard";
 import { Suspense } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 async function getEntity(params) {
   const res = await fetch(
@@ -43,7 +45,7 @@ async function getBrands(entity) {
 
 async function getColors(entity) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/colors?sortOrder=DESC&entityTypeId=${entity}&offset=0&limit=10&orderBy=id&ignorePaging=false`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/colors?sortOrder=DESC&entityTypeId=${entity}&offset=0&limit=10&orderBy=id&ignorePaging=true`,
     {
       cache: "no-store",
     }
@@ -58,7 +60,7 @@ async function getColors(entity) {
 
 async function getAttributes(entity) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/attributes?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false&entityTypeId=${entity}&attributeTypeId=3`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/attributes?sortOrder=DESC&orderBy=id&ignorePaging=false&entityTypeId=${entity}&attributeTypeId=3`,
     {
       cache: "no-store",
     }
@@ -101,13 +103,25 @@ async function getGuarantees() {
   return res.json();
 }
 
+async function getSubEntities(entity) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes?sortOrder=DESC&entityModelId=1&parentEntityTypeId=${entity?.id}&ignorePaging=true`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
 async function getProducts(searchParams, entity) {
-  // Construct the query string from searchParams
   const queryString = Object.entries(searchParams)
-    .map(
-      ([key, value]) =>
-        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
-    )
+    .flatMap(([key, value]) => [value].flat().map((v) => [key, v]))
+    .map((it) => it.join("="))
     .join("&");
 
   // Construct the full URL with the query string
@@ -126,9 +140,8 @@ async function getProducts(searchParams, entity) {
 
 export async function generateMetadata({ params }): Promise<Metadata> {
   const { result: entity } = await getEntity(params);
-  console.log(entity);
   return {
-    title: `جهیزان | ${entity?.name}`,
+    title: `جهیزان | ${entity?.metaTitle ?? entity?.name}`,
     description: entity?.metaDescription,
     keywords: entity?.metaKeywords,
   };
@@ -142,11 +155,42 @@ const Sellerpage = async ({ params, searchParams }) => {
   const { result: attributes } = await getAttributes(entity?.id);
   const { result: guarantees } = await getGuarantees();
   const { result: range } = await getPriceRange(entity);
+  const { result: subEntities } = await getSubEntities(entity);
 
   return (
     <>
-      <div className="container justify-center mx-auto mt-10 mb-64">
-        <div className="text-3xl p-5 pr-7">
+      <div className="container justify-center mx-auto mt-10 mb-20">
+        <div className="flex gap-8 overflow-x-auto custom-scroll mb-10 whitespace-nowrap px-4 pb-6">
+          {subEntities?.map((value) => (
+            <Link
+              href={`/category/${value.slug}`}
+              key={value?.id}
+              className="flex flex-col justify-center text-center "
+            >
+              {value?.attachment ? (
+                <Image
+                  width={80}
+                  height={80}
+                  className="mx-auto mb-4"
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes/image/${value?.attachment?.fileName}`}
+                />
+              ) : (
+                <Image
+                  width={80}
+                  height={80}
+                  className="mx-auto mb-4 rounded-full"
+                  src={`/images/no-photo.png`}
+                />
+              )}
+
+              <span className="block font-bold peyda text-primary">
+                {value.name}
+              </span>
+            </Link>
+          ))}
+        </div>
+        <div className="text-3xl p-5 pr-4 md:pr-7">
+          {" "}
           <h1 className="peyda text-[26px]">{entity?.name}</h1>
         </div>
         <div className="mt-7">
@@ -158,7 +202,7 @@ const Sellerpage = async ({ params, searchParams }) => {
               guarantees={guarantees}
               range={range}
             />
-            <div className="col-span-12 md:col-span-9 p-4">
+            <div className="col-span-12 md:col-span-9 p-0 sm:p-4">
               <div>
                 <div className="p-2 grid grid-cols-1 ">
                   {/* <div className="flex gap-2 col-span-3 whitespace-nowrap overflow-y-scroll md:overflow-y-hidden">
@@ -190,7 +234,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                   </div>
                 </div>
                 <div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6 gap-2">
                     {products?.result?.map((value, key) => (
                       <ProductCard
                         key={key}
@@ -201,10 +245,10 @@ const Sellerpage = async ({ params, searchParams }) => {
                     ))}
                   </div>
                 </div>
-                <div>
-                  <Numberpaginate items={products} />
-                </div>
               </div>
+            </div>
+            <div className="w-full col-span-12 flex justify-center overflow-x-auto">
+              <Numberpaginate items={products} />
             </div>
           </div>
         </div>

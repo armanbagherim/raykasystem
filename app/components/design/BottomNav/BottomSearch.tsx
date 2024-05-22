@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { debounce } from "lodash"; // Import debounce from Lodash
-import { ChevronLeft, Close, Menu } from "./Icons";
+import { ChevronLeft, Close, Menu } from "../Icons";
 import Link from "next/link";
 
 export default function BottomSearch() {
@@ -107,7 +107,10 @@ export default function BottomSearch() {
           <div className="flex justify-between border-b border-b-gray-300 pb-4 mb-4">
             <p className="peyda">در محصولات</p>
             <span className="font-bold text-primary">
-              <Link href={`/search?search=${searchTerm}`}>
+              <Link
+                onClick={(e) => setIsMenuOpen(false)}
+                href={`/search?search=${searchTerm}`}
+              >
                 <span href="">همه {searchTerm || "محصولات"} </span>
               </Link>
             </span>
@@ -115,7 +118,7 @@ export default function BottomSearch() {
           <div className="mb-4">
             {searchTerm ? (
               isLoading ? (
-                <div className="h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
+                <div className="h-2.5 bg-gray-300  w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
               ) : products.length < 1 ? (
                 <div className="flex mb-8 justify-center px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
                   چیزی پیدا نشد !
@@ -126,7 +129,10 @@ export default function BottomSearch() {
                     key={key}
                     className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
                   >
-                    <Link href={`/product/${value.sku}/${value.slug}`}>
+                    <Link
+                      onClick={(e) => setIsMenuOpen(false)}
+                      href={`/product/${value.sku}/${value.slug}`}
+                    >
                       <p>{value.title}</p>
                     </Link>
                   </div>
@@ -147,7 +153,7 @@ export default function BottomSearch() {
           <div className="mb-4 flex gap-2 flex-wrap">
             {searchTerm ? (
               isLoading ? (
-                <div className="h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
+                <div className="h-2.5 bg-gray-300  w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
               ) : brands.length < 1 ? (
                 <div className="flex flex-1 mb-8 justify-center px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
                   چیزی پیدا نشد !
@@ -158,7 +164,10 @@ export default function BottomSearch() {
                     key={key}
                     className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
                   >
-                    <Link href={`/brand/${value.slug}`}>
+                    <Link
+                      onClick={(e) => setIsMenuOpen(false)}
+                      href={`/brand/${value.slug}`}
+                    >
                       <p>{value.name}</p>
                     </Link>
                   </div>
@@ -179,7 +188,7 @@ export default function BottomSearch() {
           <div className="mb-4 flex gap-2">
             {searchTerm ? (
               isLoading ? (
-                <div className="h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
+                <div className="h-2.5 bg-gray-300  w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
               ) : categories.length < 1 ? (
                 <div className="flex flex-1 mb-8 justify-center px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
                   چیزی پیدا نشد !
@@ -190,7 +199,10 @@ export default function BottomSearch() {
                     key={key}
                     className="flex justify-between px-8 py-4 bg-white rounded-2xl border border-gray-300 mb-4"
                   >
-                    <Link href={`/category/${value.slug}`}>
+                    <Link
+                      onClick={(e) => setIsMenuOpen(false)}
+                      href={`/category/${value.slug}`}
+                    >
                       <p>{value.name}</p>
                     </Link>
                   </div>

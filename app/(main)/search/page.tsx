@@ -9,7 +9,7 @@ import {
   Sorticon,
 } from "@/app/components/design/Icons";
 import Numberpaginate from "@/app/components/design/Slider/Numberpaginate";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../../components/Sidebar";
 import ProductCard from "@/app/components/design/Cards/ProductCard/ProductCard";
 import { Suspense } from "react";
 
@@ -82,14 +82,15 @@ const Sellerpage = async ({ params, searchParams }) => {
 
   return (
     <>
-      <div className="container justify-center mx-auto mt-10 mb-64">
-        <div className="text-3xl p-5 pr-7">
+      <div className="container justify-center mx-auto mt-10 mb-20">
+        <div className="text-3xl p-5 pr-4 md:pr-7">
+          {" "}
           <h1 className="peyda text-[26px]">{searchParams.search}</h1>
         </div>
         <div className="mt-7">
           <div className="grid grid-cols-12 h-full">
             <Sidebar colors={colors} range={range} />
-            <div className="col-span-12 md:col-span-9 p-4">
+            <div className="col-span-12 md:col-span-9 p-0 sm:p-4">
               <div>
                 <div className="p-2 grid grid-cols-1 ">
                   {/* <div className="flex gap-2 col-span-3 whitespace-nowrap overflow-y-scroll md:overflow-y-hidden">
@@ -121,7 +122,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                   </div>
                 </div>
                 <div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 sm:gap-6 gap-2">
                     {products?.result?.map((value, key) => (
                       <ProductCard
                         key={key}
@@ -132,10 +133,10 @@ const Sellerpage = async ({ params, searchParams }) => {
                     ))}
                   </div>
                 </div>
-                <div>
-                  <Numberpaginate items={products} />
-                </div>
               </div>
+            </div>
+            <div className="w-full col-span-12 flex justify-items-center overflow-x-auto">
+              <Numberpaginate items={products} />
             </div>
           </div>
         </div>

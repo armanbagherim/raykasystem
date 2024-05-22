@@ -28,7 +28,7 @@ export default function VendorAddress({ params }) {
     try {
       const result = await Swal.fire({
         title: "مطمئن هستید؟",
-        text: "با حذف این سفارش امکان بازگشت آن وجود ندارد",
+        text: "با حذف این گزینه امکان بازگشت آن وجود ندارد",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -82,12 +82,7 @@ export default function VendorAddress({ params }) {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
           {}
@@ -99,7 +94,7 @@ export default function VendorAddress({ params }) {
               <ModeEditIcon />
             </IconButton>
           </a>
-          <a onClick={(e) => deleteAddress(row.original.address.id)}>
+          <a onClick={(e) => deleteAddress(row.original.id)}>
             <IconButton aria-label="delete" color="error">
               <DeleteIcon />
             </IconButton>

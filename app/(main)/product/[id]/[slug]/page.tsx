@@ -3,6 +3,9 @@ import { Metadata } from "next";
 import SingleProductModule from "./_components/SingleProductModule";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+
 const getProduct = async (slug: number) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/${slug}`
@@ -35,19 +38,25 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 
   const product = await getProduct(slug);
   return {
-    title: product?.result?.result?.title,
+    title: product?.result?.result?.metaTitle ?? product?.result?.result?.title,
     description: product?.result?.result?.metaDescription,
     keywords: product?.result?.result?.metaKeywords,
+    twitter: {
+      images:
+        product?.result?.result?.attachments.length > 1
+          ? `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${product?.result?.result?.attachments[0]?.fileName}`
+          : null,
+    },
   };
 }
 
 export default async function SingleProduct({ params, searchParams }) {
   const coo = cookies();
+  const session = await getServerSession(authOptions);
 
   const {
     result: { result: product },
   } = await getProduct(params.slug);
-
   const { result: related } = await getRelated(product.entityTypeId);
 
   return (
@@ -55,6 +64,7 @@ export default async function SingleProduct({ params, searchParams }) {
       cook={coo.get("SessionName")}
       product={product}
       related={related}
+      session={session}
     />
   );
 }

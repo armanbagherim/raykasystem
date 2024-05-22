@@ -13,7 +13,6 @@ import SearchSelect from "@/app/components/global/SearchSelect";
 import { TextField } from "@mui/material";
 
 export default function VendorAddress({ params }) {
-  console.log(params);
   const [title, setTitle] = useAtom(pageTitle);
   const [coordinates, setCoordinates] = useState({
     latitude: null,
@@ -96,7 +95,6 @@ export default function VendorAddress({ params }) {
       url: `/v1/api/ecommerce/neighborhoods?cityId=${cid}`,
       method: "GET",
     }).then((res) => {
-      console.log(res.result.length);
       if (res.result.length !== 0) {
         setNeighberhoods(res.result);
 
@@ -161,17 +159,11 @@ export default function VendorAddress({ params }) {
       {coordinates.latitude !== null && (
         <MapClient
           height={400}
-          onAddressChange={(address) => {
-            if (!isAddressManuallyChanged) {
-              setStreetAndUpdateAddress(address);
-            }
-          }}
           defaultLocation={{
             lat: +coordinates.latitude,
             lng: +coordinates.longitude,
           }}
           onLocationChange={(location) => {
-            console.log(location);
             setCoordinates({
               latitude: location.lat.toString(),
               longitude: location.lng.toString(),

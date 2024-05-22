@@ -349,7 +349,7 @@ export default function Products() {
           </div>
           <div className="flex-1">
             <label className="inline-flex items-center cursor-pointer">
-              <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+              <span className="ml-3 text-sm font-medium text-gray-900 ">
                 فروش بر اساس رنگ؟
               </span>
               <Switch

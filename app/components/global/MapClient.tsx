@@ -34,7 +34,6 @@ const Maps: FunctionComponent<MapProps> = ({
   isAddressManuallyChanged = false,
   height = 200,
 }) => {
-  console.log("default invoked", defaultLocation);
   const mapRef = useRef<NeshanMapRef | null>(null);
   const [ol, setOl] = useState<Ol>();
   const [olMap, setOlMap] = useState<OlMap>();
@@ -44,27 +43,6 @@ const Maps: FunctionComponent<MapProps> = ({
     lng: defaultLocation.lng,
   });
   const [lastLocation, setLastLocation] = useState<LocationState | null>(null);
-
-  const fetchAddress = async (location: LocationState) => {
-    try {
-      const response = await fetch(
-        `https://api.neshan.org/v5/reverse?lat=${location.lat}&lng=${location.lng}`,
-        {
-          method: "GET",
-          headers: {
-            "Api-Key": "service.82262935bb57409f98393c487d373e3e",
-          },
-        }
-      );
-      const data = await response.json();
-
-      const address = data.formatted_address;
-
-      onAddressChange?.(address);
-    } catch {
-      // TODO: should be handled later
-    }
-  };
 
   const onInit = (ol: Ol, map: OlMap) => {
     setOl(ol);
@@ -119,33 +97,23 @@ const Maps: FunctionComponent<MapProps> = ({
             lastLocation.lng !== newLocation.lng
           ) {
             onLocationChange?.(newLocation);
-            console.log("Latitude:", latitude);
-            console.log("Longitude:", longitude);
+
             setCurrentLocation(newLocation);
             setLastLocation(newLocation);
-            fetchAddress(newLocation);
           }
         }
       });
     }
-  }, [olMap, marker, ol, onLocationChange, fetchAddress, lastLocation]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchAddress(currentLocation);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [currentLocation, fetchAddress]);
+  }, [olMap, marker, ol, onLocationChange, lastLocation]);
 
   return (
     <NeshanMap
       mapKey="web.17a0c7f735234ae7acfa9eac73c9ca2e"
       defaultType="neshan"
-      center={{
-        latitude: defaultLocation.lat,
-        longitude: defaultLocation.lng,
-      }}
+      // center={{
+      //   latitude: defaultLocation.lat,
+      //   longitude: defaultLocation.lng,
+      // }}
       style={{ height: `${height}px`, width: "100%" }}
       onInit={onInit}
       zoom={12}

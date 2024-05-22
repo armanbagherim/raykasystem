@@ -1,18 +1,24 @@
 "use client";
 import { getSession, signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  redirect,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import React, { useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import VerificationInput from "react-verification-input";
+
 export default function SignInForm({ session }) {
   const router = useRouter();
   const pathname = useSearchParams();
 
   const [phoneNumber, setPhoneNumber] = useState();
   const [verifyCode, setVerifyCode] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
   const [signUp, setSignUp] = useState(false);
 
@@ -20,7 +26,7 @@ export default function SignInForm({ session }) {
   const [number, setNumber] = useState();
   const [rule, setRule] = useState(false);
   const phoneNumberRegex = /^09\d{9}$/; // الگوی شماره موبایل ایران
-  const verificationCodeRegex = /^\d{6}$/; // الگوی دقیقاً 5 رقم
+  const verificationCodeRegex = /^\d{6}$/; // الگوی دقیقاً 6 رقم
 
   const onSubmit = async (e) => {
     if (!phoneNumberRegex.test(phoneNumber)) {
@@ -69,25 +75,51 @@ export default function SignInForm({ session }) {
           progress: undefined,
           theme: "light",
         });
-
         setLoading(false);
-
         return;
       }
+
+      if (signUp && (firstName.length < 3 || lastName.length < 3)) {
+        toast.error("نام و نام خانوادگی باید حداقل 3 کاراکتر باشد", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setLoading(false);
+        return;
+      }
+
+      const redirectUrl = pathname.get("redirect_back_url")
+        ? pathname.get("redirect_back_url")
+        : "/";
+
       const result = await signIn("credentials", {
         verifyCode: verifyCode,
         phoneNumber: phoneNumber,
         firstName: firstName,
         lastName,
-        redirect: true,
+        redirect: false,
         callbackUrl: `${
           pathname.get("redirect_back_url")
             ? pathname.get("redirect_back_url")
             : "/"
         }`,
       });
+      if (result.status === 401) {
+        toast.error(result.error);
+        setLoading(false);
+      } else {
+        router.push(redirectUrl);
+        router.refresh();
+      }
     }
   };
+
   return (
     <div className="container mx-auto">
       <div className="login">
@@ -127,7 +159,7 @@ export default function SignInForm({ session }) {
                     <div className="flex gap-5">
                       {signUp && (
                         <>
-                          <div>
+                          <div className="w-full">
                             <h4 className="opacity-70 text-xs mb-3">نام</h4>
                             <input
                               className="bg-[#F8F8F8] text-left rounded-2xl py-4 px-6 w-full outline-none mb-8"
@@ -136,7 +168,7 @@ export default function SignInForm({ session }) {
                               onChange={(e) => setFirstName(e.target.value)}
                             />
                           </div>
-                          <div>
+                          <div className="w-full">
                             <h4 className="opacity-70 text-xs mb-3">
                               نام خانوادگی
                             </h4>
@@ -220,10 +252,6 @@ export default function SignInForm({ session }) {
                         }}
                       />
                     </div>
-                    {/* <p className="rule flex opacity-70 text-sm mb-4 justify-between">
-                      <span>ارسال مجدد کد</span>
-                      <span>19:20</span>
-                    </p> */}
                   </div>
                 )}
                 <button
@@ -237,7 +265,7 @@ export default function SignInForm({ session }) {
                   >
                     <svg
                       aria-hidden="true"
-                      className="w-6 h-6 text-primary animate-spin dark:text-gray-600 fill-white"
+                      className="w-6 h-6 text-primary animate-spin  fill-white"
                       viewBox="0 0 100 101"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"

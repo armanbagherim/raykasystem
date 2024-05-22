@@ -15,30 +15,24 @@ function renderer({ hours, minutes, seconds, days, completed }) {
 
     // Display the countdown timer with leading zeros
     return (
-      <div className="flex flex-row-reverse gap-2 text-center ">
-        {/* <div className="flex flex-col">
-          <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center mb-2 rounded-xl">
-            {formattedDays}
-          </span>
-          <span className="text-xs">روز</span>
-        </div> */}
+      <div className="flex flex-col  gap-2 text-center left-4 top-4 bg-[#006A93] p-2 rounded-2xl absolute ">
         <div className="flex flex-col">
           <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center mb-2 rounded-xl">
             {formattedHours}
           </span>
-          <span className="text-xs">ساعت</span>
+          <span className="text-xs text-white">ساعت</span>
         </div>
         <div className="flex flex-col">
           <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center mb-2 rounded-xl">
             {formattedMinutes}
           </span>
-          <span className="text-xs">دقیقه</span>
+          <span className="text-xs text-white">دقیقه</span>
         </div>
         <div className="flex flex-col">
           <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center mb-2 rounded-xl">
             {formattedSeconds}
           </span>
-          <span className="text-xs">ثانیه</span>
+          <span className="text-xs text-white">ثانیه</span>
         </div>
       </div>
     );

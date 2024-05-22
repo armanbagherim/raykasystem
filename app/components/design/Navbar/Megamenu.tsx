@@ -81,7 +81,7 @@ const Megamenu = ({ items }) => {
                     );
                     setGroupName(value.name);
                   }}
-                  className="p-3 cursor-pointer border-l hover:border-l-primary hover:border-l-4 hover:bg-gray-200  rounded-r-xl hover:text-black"
+                  className="px-3 py-2 text-md cursor-pointer border-l hover:border-l-primary hover:border-l-4 hover:bg-gray-200 rounded-r-xl hover:text-black"
                 >
                   {value.name}
                 </p>
@@ -92,15 +92,6 @@ const Megamenu = ({ items }) => {
             className="col-span-4 p-2 pb-0"
             onMouseEnter={(e) => e.stopPropagation()}
           >
-            <Link
-              href={`/category/${
-                activeSubEntities[0]
-                  ? activeSubEntities[0]?.slug
-                  : activeSubEntities?.slug
-              }`}
-            >
-              <div className="p-4 border-b text-primary">همه {groupName} </div>
-            </Link>
             <div className="flex gap-8">
               {renderedItemsWithSubEntities.length ? (
                 <div

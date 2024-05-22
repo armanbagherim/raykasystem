@@ -2,7 +2,7 @@ import React from "react";
 
 const NestedSelect = ({ data, selected, onChange, depth = 0 }) => {
   const renderOptions = (items, depth) => {
-    return items.map((item, index) => {
+    return items?.map((item, index) => {
       const prefix = "--".repeat(depth);
       return (
         <>

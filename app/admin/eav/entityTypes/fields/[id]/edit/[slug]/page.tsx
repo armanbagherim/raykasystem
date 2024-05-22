@@ -18,8 +18,8 @@ export default function Eav({ params }) {
     });
   }, []);
   const [name, setName] = useState();
-  const [min, setMin] = useState();
-  const [max, setMax] = useState();
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
   const [attributeTypeId, setAttributeTypeId] = useState(1);
   const [isRequired, setIsRequired] = useState(false);
   const router = useRouter();
@@ -65,9 +65,9 @@ export default function Eav({ params }) {
         },
       });
       toast.success("موفق");
-      // setTimeout(() => {
-      //   router.push(`/admin/eav/entityTypes/fields/${params.id}`);
-      // }, 500);
+      setTimeout(() => {
+        router.push(`/admin/eav/entityTypes/fields/${params.id}`);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }

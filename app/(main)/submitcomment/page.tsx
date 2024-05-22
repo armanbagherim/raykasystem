@@ -66,25 +66,35 @@ const Submitcomment = () => {
               </div>
             </div>
           </div>
-            <div className="col-span-5">
-              <form>
-                <div className="grid grid-cols-2 pr-5">
-                  <div className="col-span-1 text-sm">آرمان باقری | 22 بهمن 1402</div>
-                  <div className="col-span-1 justify-end flex mb-5">
-                      <div className="flex gap-2 justify-end">
-                        <input type="checkbox" />
-                        <div className="text-xs text-slate-500">دیدگاهم را به صورت ناشناس منتشر کن</div>
-                      </div>
-                  </div>
-                  <div className="col-span-2 mb-5">
-                    <textarea className="bg-customGray w-full text-xs p-4 rounded rounded-3xl" placeholder="دیدگاه خود را بنویسید" rows="12"></textarea>
-                  </div>
-                  <div className="col-span-2 justify-end flex">
-                    <button className="border border-primary text-primary w-40 rounded rounded-2xl pt-3 pb-3 pr-7 pl-7">ثبت نظر</button>
+          <div className="col-span-5">
+            <form>
+              <div className="grid grid-cols-2 pr-5">
+                <div className="col-span-1 text-sm">
+                  آرمان باقری | 22 بهمن 1402
+                </div>
+                <div className="col-span-1 justify-end flex mb-5">
+                  <div className="flex gap-2 justify-end">
+                    <input type="checkbox" />
+                    <div className="text-xs text-slate-500">
+                      دیدگاهم را به صورت ناشناس منتشر کن
+                    </div>
                   </div>
                 </div>
-              </form>
-            </div>
+                <div className="col-span-2 mb-5">
+                  <textarea
+                    className="bg-customGray w-full text-xs p-4 rounded rounded-3xl"
+                    placeholder="دیدگاه خود را بنویسید"
+                    rows="12"
+                  ></textarea>
+                </div>
+                <div className="col-span-2 justify-end flex">
+                  <button className="border border-primary text-primary w-40 rounded rounded-2xl pt-3 pb-3 pr-7 pl-7">
+                    ثبت نظر
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </>

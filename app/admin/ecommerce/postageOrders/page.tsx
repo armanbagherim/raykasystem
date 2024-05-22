@@ -27,19 +27,6 @@ export default function Orders() {
     });
   }, []);
 
-  const deleteGuarantee = async (id) => {
-    try {
-      const req = await fetcher({
-        url: `/v1/api/ecommerce/guarantees/${id}`,
-        method: "DELETE",
-      });
-      toast.success("موفق");
-      setTriggered(!triggered);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
   const columns = [
     {
       accessorKey: "id",
@@ -47,7 +34,12 @@ export default function Orders() {
       size: 10,
       maxSize: 10,
     },
-
+    {
+      accessorKey: "transactionId",
+      header: "شماره تراکنش",
+      size: 10,
+      maxSize: 10,
+    },
     {
       accessorKey: "paymentGateway.name",
       header: "کاربر",
@@ -86,6 +78,8 @@ export default function Orders() {
       header: "مجموع قیمت محصولات",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) =>
+        Number(row.original.totalProductPrice).toLocaleString(),
     },
 
     {
@@ -93,18 +87,22 @@ export default function Orders() {
       header: "مجموع تخفیف",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) => Number(row.original.totalDiscountFee).toLocaleString(),
     },
     {
       accessorKey: "totalShipmentPrice",
       header: "هزینه ارسال",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) =>
+        Number(row.original.totalShipmentPrice).toLocaleString(),
     },
     {
       accessorKey: "totalPrice",
       header: "جمع کل",
       size: 10,
       maxSize: 10,
+      Cell: ({ row }) => Number(row.original.totalPrice).toLocaleString(),
     },
     // {
     //   accessorKey: "orderShipmentWay.name",
@@ -117,12 +115,7 @@ export default function Orders() {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
           <IconButton>

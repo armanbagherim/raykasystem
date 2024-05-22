@@ -11,186 +11,52 @@ import MailIcon from "../icons/mail";
 import Image from "@/node_modules/next/image";
 import DownArrow from "../icons/downArrow";
 import Link from "@/node_modules/next/link";
+import { Aparat, Instagram, Telegram } from "./Icons";
 
 export default function Footer() {
   const [showMore, setShowMore] = useState(false);
 
   return (
     <div
-      className="w-full p-4 md:px-[86px] md:pt-[92px]"
+      className="w-full p-4 md:px-[86px] md:pt-[45px] border-t border-t-gray-200 pb-32 md:pb-0"
       style={{ background: " linear-gradient(180deg, #FFF 0%, #D2D2D2 100%)" }}
     >
-      <div className="flex justify-between p-2 md:p-6 bg-[#20AC73] text-white w-full rounded-[8px] md:rounded-[26px] text-lg font-bold">
-        <text className="text-[12px] md:text-lg ">
-          مارا در شبکه های اجتماعی دنبال کنید
-        </text>
-        <div className="flex gap-[6px] md:gap-[10px]">
-          <Link href={"#"}>
-            <WhatsappIcon />
-          </Link>
-          <Link href={"#"}>
-            <InstagramIcon />
-          </Link>
-          <Link href={"#"}>
-            <Youtube />
-          </Link>
-        </div>
-      </div>
-      <div className="grid-cols-2 gap-6  md:grid-cols-4 grid mt-[40px] md:mt-[86px]">
-        <div>
-          <text className="text-[#20AC73] text-[12px] md:text-xl font-bold">
-            خدمات مشتریان
-          </text>
-          <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
-            <li>سوالات متداول</li>
-            <li>حساب کاربری</li>
-            <li>شرایط استفاده</li>
-            <li>حریم خصوصی</li>
-            <li>فروشنده شوید</li>
-          </ul>
-        </div>
-        <div>
-          <text className="text-[#20AC73]  text-[12px] md:text-xl  font-bold">
-            دسترسی سریع
-          </text>
-          <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6text-black/70 text-[10px] md:text-sm">
-            <li>پیگیری سفارش</li>
-            <li>
-              <Link href="/contactus">مرکز تماس</Link>
-            </li>
-            <li>علاقه مندی ها</li>
-            <li>همکاری در فروش</li>
-            <li>
-              <Link href="/about-us">درباره ما</Link>
-            </li>{" "}
-          </ul>
-        </div>
-        <div>
-          <text className="text-[#20AC73]  text-[12px] md:text-xl  font-bold">
-            هدر تستی
-          </text>
-          <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
-            <li>پیگیری سفارش</li>
-            <li>
-              <Link href="/contactus">مرکز تماس</Link>
-            </li>{" "}
-            <li>علاقه مندی ها</li>
-            <li>همکاری در فروش</li>
-            <li>تماس با ما</li>
-          </ul>
-        </div>
-        <div>
-          <text className="text-[#20AC73]  text-[12px] md:text-xl font-bold">
-            شعبه شوش
-          </text>
-          <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 ext-[10px] text-[10px] md:text-sm">
-            <li className="flex gap-3">
-              <LocationIcon />
-              این یک آدرس تستی است برای فروشگاه جهیزان که نمیدونم چیه دقیقا
-            </li>
-            <li className="flex gap-3">
-              <WorkingHoursIcon />
-              شنبه تا پنج شنبه ۱۱ صبح تا ۸ بعدازظهر
-            </li>
-            <li className="flex gap-[10px]">
-              <TelephoneNumberIcon />
-              ۰۲۱-۲۲۱۴۷۹۱۲
-            </li>
-            <li className="flex gap-[10px]">
-              <MailIcon />
-              info@jahizan.com
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div className="mt-[31px] flex items-end hsba(240, 40%, 33%, 1), hsba(0, 0%, 0%, 0)">
-        <Image
-          alt="Header Offer"
-          src={"/images/logo 1.png"}
-          width={44}
-          height={44}
-        />
-        <text className=" text-black font-normal text-base ">گروه جهیزان</text>
-      </div>
       <div className="relative">
         <div>
+          <h1 className="peyda text-primary text-lg mb-2 font-bold">
+            فروشگاه اینترنتی جهیزان
+          </h1>
           <p
             className={`${
               !showMore ? "line-clamp-6 textGradiant " : ""
             } text-sm md:tex-base`}
           >
-            {/* className={`${showMore ? "line-clamp-6 textGradiant" : "" } textGradiant`} */}
-            جهیزان تمامی محصولات لوازم خانه و آشپزخانه را با کیفیت اصلی و قیمت
-            های شرکتی عرضه میکند. انواع کتری قوری، سماور، سرویس جهیزیه یا سرویس
-            آشپزخانه، سینی و سوفله خوری، اردو خوری، ظروف نگهدارنده، سرویس های
-            چینی جهیزیه، ارکوپال، قاشق چنگال، سرویس قابلمه چدن و ... با بهترین
-            برندهای ایرانی و خارجی مانند لیمون، چینی زرین، یونیک، کاراجا،
-            کرکماز، بی وی کی، زرساب، راکلند، سامسونگ، ام جی اس و ... از جهیزان
-            قابل خرید میباشند.
-            <br />
-            جهیزان تمامی محصولات لوازم خانه و آشپزخانه را با کیفیت اصلی و قیمت
-            های شرکتی عرضه میکند. انواع کتری قوری، سماور، سرویس جهیزیه یا سرویس
-            آشپزخانه، سینی و سوفله خوری، اردو خوری، ظروف نگهدارنده، سرویس های
-            چینی جهیزیه، ارکوپال، قاشق چنگال، سرویس قابلمه چدن و ... با بهترین
-            برندهای ایرانی و خارجی مانند لیمون، چینی زرین، یونیک، کاراجا،
-            کرکماز، بی وی کی، زرساب، راکلند، سامسونگ، ام جی اس و ... از جهیزان
-            قابل خرید میباشند. جهیزان تمامی محصولات لوازم خانه و آشپزخانه را با
-            کیفیت اصلی و قیمت های شرکتی عرضه میکند. انواع کتری قوری، سماور،
-            سرویس جهیزیه یا سرویس آشپزخانه، سینی و سوفله خوری، اردو خوری، ظروف
-            نگهدارنده، سرویس های چینی جهیزیه، ارکوپال، قاشق چنگال، سرویس قابلمه
-            چدن و ... با بهترین برندهای ایرانی و خارجی مانند لیمون، چینی زرین،
-            یونیک، کاراجا، کرکماز، بی وی کی، زرساب، راکلند، سامسونگ، ام جی اس و
-            ... از جهیزان قابل خرید میباشند. جهیزان تمامی محصولات لوازم خانه و
-            آشپزخانه را با کیفیت اصلی و قیمت های شرکتی عرضه میکند. انواع کتری
-            قوری، سماور، سرویس جهیزیه یا سرویس آشپزخانه، سینی و سوفله خوری، اردو
-            خوری، ظروف نگهدارنده، سرویس های چینی جهیزیه، ارکوپال، قاشق چنگال،
-            سرویس قابلمه چدن و ... با بهترین برندهای ایرانی و خارجی مانند لیمون،
-            چینی زرین، یونیک، کاراجا، کرکماز، بی وی کی، زرساب، راکلند، سامسونگ،
-            ام جی اس و ... از جهیزان قابل خرید میباشند. جهیزان تمامی محصولات
-            لوازم خانه و آشپزخانه را با کیفیت اصلی و قیمت های شرکتی عرضه میکند.
-            انواع کتری قوری، سماور، سرویس جهیزیه یا سرویس آشپزخانه، سینی و سوفله
-            خوری، اردو خوری، ظروف نگهدارنده، سرویس های چینی جهیزیه، ارکوپال،
-            قاشق چنگال، سرویس قابلمه چدن و ... با بهترین برندهای ایرانی و خارجی
-            مانند لیمون، چینی زرین، یونیک، کاراجا، کرکماز، بی وی کی، زرساب،
-            راکلند، سامسونگ، ام جی اس و ... از جهیزان قابل خرید میباشند. جهیزان
-            تمامی محصولات لوازم خانه و آشپزخانه را با کیفیت اصلی و قیمت های
-            شرکتی عرضه میکند. انواع کتری قوری، سماور، سرویس جهیزیه یا سرویس
-            آشپزخانه، سینی و سوفله خوری، اردو خوری، ظروف نگهدارنده، سرویس های
-            چینی جهیزیه، ارکوپال، قاشق چنگال، سرویس قابلمه چدن و ... با بهترین
-            برندهای ایرانی و خارجی مانند لیمون، چینی زرین، یونیک، کاراجا،
-            کرکماز، بی وی کی، زرساب، راکلند، سامسونگ، ام جی اس و ... از جهیزان
-            قابل خرید میباشند. جهیزان تمامی محصولات لوازم خانه و آشپزخانه را با
-            کیفیت اصلی و قیمت های شرکتی عرضه میکند. انواع کتری قوری، سماور،
-            سرویس جهیزیه یا سرویس آشپزخانه، سینی و سوفله خوری، اردو خوری، ظروف
-            نگهدارنده، سرویس های چینی جهیزیه، ارکوپال، قاشق چنگال، سرویس قابلمه
-            چدن و ... با بهترین برندهای ایرانی و خارجی مانند لیمون، چینی زرین،
-            یونیک، کاراجا، کرکماز، بی وی کی، زرساب، راکلند، سامسونگ، ام جی اس و
-            ... از جهیزان قابل خرید میباشند. جهیزان تمامی محصولات لوازم خانه و
-            آشپزخانه را با کیفیت اصلی و قیمت های شرکتی عرضه میکند. انواع کتری
-            قوری، سماور، سرویس جهیزیه یا سرویس آشپزخانه، سینی و سوفله خوری، اردو
-            خوری، ظروف نگهدارنده، سرویس های چینی جهیزیه، ارکوپال، قاشق چنگال،
-            سرویس قابلمه چدن و ... با بهترین برندهای ایرانی و خارجی مانند لیمون،
-            چینی زرین، یونیک، کاراجا، کرکماز، بی وی کی، زرساب، راکلند، سامسونگ،
-            ام جی اس و ... از جهیزان قابل خرید میباشند. جهیزان تمامی محصولات
-            لوازم خانه و آشپزخانه را با کیفیت اصلی و قیمت های شرکتی عرضه میکند.
-            انواع کتری قوری، سماور، سرویس جهیزیه یا سرویس آشپزخانه، سینی و سوفله
-            خوری، اردو خوری، ظروف نگهدارنده، سرویس های چینی جهیزیه، ارکوپال،
-            قاشق چنگال، سرویس قابلمه چدن و ... با بهترین برندهای ایرانی و خارجی
-            مانند لیمون، چینی زرین، یونیک، کاراجا، کرکماز، بی وی کی، زرساب،
-            راکلند، سامسونگ، ام جی اس و ... از جهیزان قابل خرید میباشند. جهیزان
-            تمامی محصولات لوازم خانه و آشپزخانه را با کیفیت اصلی و قیمت های
-            شرکتی عرضه میکند. انواع کتری قوری، سماور، سرویس جهیزیه یا سرویس
-            آشپزخانه، سینی و سوفله خوری، اردو خوری، ظروف نگهدارنده، سرویس های
-            چینی جهیزیه، ارکوپال، قاشق چنگال، سرویس قابلمه چدن و ... با بهترین
-            برندهای ایرانی و خارجی مانند لیمون، چینی زرین، یونیک، کاراجا،
-            کرکماز، بی وی کی، زرساب، راکلند، سامسونگ، ام جی اس و ... از جهیزان
-            قابل خرید میباشند. جهیزان تمامی محصولات لوازم خانه و آشپزخانه را با
-            کیفیت اصلی و قیمت های شرکتی عرضه میکند. انواع کتری قوری، سماور،
-            سرویس جهیزیه یا سرویس آشپزخانه، سینی و سوفله خوری، اردو خوری، ظروف
-            نگهدارنده، سرویس های چینی جهیزیه، ارکوپال، قاشق چنگال، سرویس قابلمه
-            چدن و ... با بهترین برندهای ایرانی و خارجی مانند لیمون، چینی زرین،
-            یونیک، کاراجا، کرکماز، بی وی کی، زرساب، راکلند، سامسونگ، ام جی اس و
-            ... از جهیزان قابل خرید میباشند.
+            جهیزان، یک پلتفرم آنلاین معتبر برای خرید لوازم خانگی و آشپزخانه با
+            کیفیت و قیمت‌های رقابتی است. این فروشگاه با ارائه محصولات متنوعی از
+            جمله کتری قوری، سماور، سرویس‌های جهیزیه و آشپزخانه، سینی و
+            سوفله‌خواری، اردوخوری، ظروف نگهدارنده، سرویس‌های چینی جهیزیه،
+            ارکوپال، قاشق و چنگال، و سرویس‌های قابلمه چدنی، به مشتریان امکان
+            می‌دهد تا بر اساس نیازها و ترجیحات خود انتخاب کنند. برندهای معتبری
+            مانند لیمون، چینی زرین، یونیک، کاراجا، کرکماز، بی‌وی‌سی، زرساب،
+            راکلند، سامسونگ، ام‌جی‌اس و دیگر برندهای داخلی و خارجی در این
+            فروشگاه موجود هستند. جهیزان با تمرکز بر کیفیت و قیمت مناسب، تلاش
+            می‌کند تا رضایت مشتریان را افزایش دهد و تجربه خریدی مطلوب را برای
+            آن‌ها ایجاد کند. این فروشگاه با ارائه خدمات پس از فروش و پشتیبانی
+            فنی، اطمینان حاصل می‌کند که مشتریان پس از خرید نیز از خدمات مناسبی
+            برخوردار خواهند بود. جهیزان با استفاده از تکنولوژی پیشرفته،
+            فرآیندهای خرید را ساده‌تر کرده و به مشتریان اجازه می‌دهد تا به راحتی
+            محصولات مورد نظر خود را پیدا و خریداری کنند. همچنین، این فروشگاه با
+            ارائه گارانتی و خدمات تعمیرات، امنیت خرید را برای مشتریان تضمین
+            می‌کند. جهیزان با توجه به تنوع محصولات و برندها، به عنوان یک منبع
+            جامع برای خرید لوازم خانگی و آشپزخانه شناخته شده است. این فروشگاه با
+            ارائه محصولات با کیفیت بالا و قیمت‌های مناسب، به مشتریان کمک می‌کند
+            تا فضاهای زندگی خود را با لوازم مدرن و کاربردی تجهیز کنند. با وجود
+            دسترسی آسان به اطلاعات محصول و توانایی مقایسه قیمت‌ها، مشتریان
+            می‌توانند تصمیمات خرید آگاهانه‌تری بگیرند. در نهایت، جهیزان با ارائه
+            خدمات جامع و کیفیت بالای محصولات، به عنوان یک انتخاب اول برای خرید
+            لوازم خانگی و آشپزخانه در ایران شناخته شده است. این فروشگاه با تمرکز
+            بر رضایت مشتری و ارائه خدمات پس از فروش، به دنبال ایجاد روابط
+            بلندمدت با مشتریان خود است.
           </p>
         </div>
         <button
@@ -203,41 +69,102 @@ export default function Footer() {
           {showMore ? <DownArrow /> : <DownArrow />}
         </button>
       </div>
-      <div className="mt-[28px] flex flex-col md:flex-row justify-between items-center pb-[11px]">
-        <div className="flex flex-col ">
-          <text className="font-bold text-sm  md:text-base text-black mb-[11px]">
-            کلیه حقوق این سایت متعلق به جهیزان می‌باشد.
+      <div className="grid-cols-2 gap-6  md:grid-cols-4 grid mt-[40px] md:mt-[86px]">
+        <div>
+          <text className="text-[#20AC73] text-[12px] md:text-xl font-bold">
+            خدمات مشتریان
           </text>
-          <text className="text-[12px] md:text-base text-black font-[100]">
-            طراحی توسط گروه تست
+          <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
+            <li>
+              <Link href="/contactus">مرکز تماس</Link>
+            </li>
+            <li>
+              <Link href="/about-us">درباره ما</Link>
+            </li>{" "}
+          </ul>
+        </div>
+        <div className="">
+          <text className="text-[#20AC73]  text-[12px] md:text-xl font-bold">
+            مرکز تماس
+          </text>
+          <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
+            <li className="flex gap-[10px]">
+              <TelephoneNumberIcon />
+              ۰۲۱۵۵۳۴۳۸۱۹
+            </li>
+            <li className="flex gap-[10px]">
+              <TelephoneNumberIcon />
+              ۰۹۱۰۲۴۲۱۳۰۵
+            </li>
+          </ul>
+        </div>
+        <div className="">
+          <text className="text-[#20AC73]  text-[12px] md:text-xl font-bold">
+            شعبه شوش
+          </text>
+          <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 ext-[10px] text-[10px] md:text-sm">
+            <li className="flex gap-3">
+              <LocationIcon />
+              تهران میدان شوش خیابان صابونیان مجتمع الماس طبقه سوم پلاک ۷۹۶
+            </li>
+            <li className="flex gap-3">
+              <WorkingHoursIcon />
+              شنبه تا چهارشنبه 10 الی 17 - پنجشنبه 10 الی 13
+            </li>
+          </ul>
+        </div>
+        <div>
+          <text className="text-[#20AC73]  text-[12px] md:text-xl font-bold">
+            شبکه های اجتماعی
+          </text>
+          <ul className="flex flex-row gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
+            <li>
+              <Link href="https://t.me/jahizancom">
+                <Telegram />
+              </Link>
+            </li>
+            <li>
+              <Link href="https://instagram.com/jahizancom">
+                <Instagram />
+              </Link>
+            </li>
+            <li>
+              <Link href="https://aparat.com/jahizan">
+                <Aparat />
+              </Link>
+            </li>
+          </ul>
+          <a
+            referrerpolicy="origin"
+            target="_blank"
+            href="https://trustseal.enamad.ir/?id=281567&Code=gMGXdvTIZekiTfqO9Ocg"
+          >
+            <img
+              referrerpolicy="origin"
+              src="https://trustseal.enamad.ir/logo.aspx?id=281567&Code=gMGXdvTIZekiTfqO9Ocg"
+              alt=""
+              className="cursor-pointer"
+              code="gMGXdvTIZekiTfqO9Ocg"
+            />
+          </a>
+        </div>
+      </div>
+      <div className="mt-[31px] flex hsba(240, 40%, 33%, 1), hsba(0, 0%, 0%, 0) items-center gap-4 justify-between border-t border-t-gray-400 pt-3">
+        <div>
+          <Image
+            alt="Header Offer"
+            src={"/images/logo 1.png"}
+            width={44}
+            height={44}
+            className="bg-white p-2 rounded-md ml-3"
+          />
+          <text className=" text-black font-normal text-base hidden md:inline">
+            گروه جهیزان
           </text>
         </div>
-        <div className="flex mt-4 md:mt-0">
-          <Image
-            alt="firstFlag"
-            src={"/images/firstFlag.png"}
-            width={52}
-            height={104}
-          />
-          <Image
-            alt="secondFlag"
-            src={"/images/secondFlag.png"}
-            width={52}
-            height={104}
-          />
-          <Image
-            alt="ThirdFlag"
-            src={"/images/thirdFlag.png"}
-            width={52}
-            height={104}
-          />
-          <Image
-            alt="fourthFlag"
-            src={"/images/fourthFlag.png"}
-            width={52}
-            height={104}
-          />
-        </div>
+        <text className="text-sm  md:text-base text-gray-600">
+          کلیه حقوق این سایت متعلق به جهیزان می‌باشد.
+        </text>
       </div>
     </div>
   );

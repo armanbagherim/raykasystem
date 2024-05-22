@@ -38,7 +38,7 @@ export const fetcher = async ({
   if (response.ok) {
     return result;
   } else {
-    let errorText;
+    let errorText = "";
     if (typeof result.errors === "string") {
       errorText = result.errors;
     } else {

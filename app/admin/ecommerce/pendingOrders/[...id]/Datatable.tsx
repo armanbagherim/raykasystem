@@ -11,7 +11,6 @@ import Link from "next/link";
 //nested data is ok, see accessorKeys in ColumnDef below
 
 const OrderDataTable = ({ data = [], handleProccess }) => {
-  console.log(data);
   //should be memoized or stable
   const columns = [
     {
@@ -45,7 +44,7 @@ const OrderDataTable = ({ data = [], handleProccess }) => {
         {
           return (
             <Link
-              href={`/product/${row.original.product.sku}/${row.original.product.title}`}
+              href={`/product/${row.original.product.sku}/${row.original.product.slug}`}
               variant="outlined"
             >
               {row.original.product.title}
@@ -62,28 +61,28 @@ const OrderDataTable = ({ data = [], handleProccess }) => {
         {
           return (
             <Link
-              href={`/product/${row.original.product.sku}/${row.original.product.title}`}
+              href={`/product/${row.original.product.sku}/${row.original.product.slug}`}
               variant="outlined"
             >
-              {row.original.product.inventories[0].color.name}
+              {row.original?.product?.inventories[0]?.color?.name}
             </Link>
           );
         }
       },
     },
     {
-      accessorKey: "color",
+      accessorKey: "waranty",
       header: "گارانتی",
       size: 30,
       Cell: ({ row }) => {
         {
           return (
             <Link
-              href={`/product/${row.original.product.sku}/${row.original.product.title}`}
+              href={`/product/${row.original.product.sku}/${row.original.product.slug}`}
               variant="outlined"
             >
-              {row.original.product.inventories[0].guarantee.name}{" "}
-              {row.original.product.inventories[0].guaranteeMonth.name}
+              {row.original.product.inventories[0].guarantee?.name}{" "}
+              {row.original.product.inventories[0].guaranteeMonth?.name}
             </Link>
           );
         }
@@ -134,12 +133,7 @@ const OrderDataTable = ({ data = [], handleProccess }) => {
       header: "عملیات",
       size: 150,
       accessorKey: "Actions",
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => {
         {
           if (row.original.orderDetailStatusId === 1) {

@@ -38,9 +38,10 @@ export default function NewDiscount() {
     priority: null,
     limit: null,
     isActive: true,
-    startDate: "2024-03-26T01:49:58.489Z",
-    endDate: "2024-03-26T01:49:58.489Z",
+    startDate: null,
+    endDate: null,
     vendorId: null,
+    freeShipment: false,
   });
   const {
     data: discountTypes,
@@ -153,16 +154,24 @@ export default function NewDiscount() {
             format="MM/DD/YYYY HH:mm:ss"
             plugins={[<TimePicker key={1} position="bottom" />]}
             calendar={persian}
+            value={requestBody.startDate}
+            onOpenPickNewDate={false}
             locale={persian_fa}
             inputClass="w-full border-b outline-none py-1 border-gray-500"
             containerClassName="w-full"
-            onChange={(e) =>
+            onClose={() =>
               setRequestBody({
                 ...requestBody,
-                startDate: e.toDate().toISOString(),
+                startDate: null,
               })
             }
-          />
+            onFocusedDateChange={(dateFocused, dateClicked) => {
+              setRequestBody({
+                ...requestBody,
+                startDate: dateClicked.toDate().toISOString(),
+              });
+            }}
+          ></DatePicker>
         </div>
         <div className="flex-1">
           <label
@@ -175,15 +184,23 @@ export default function NewDiscount() {
             format="MM/DD/YYYY HH:mm:ss"
             inputClass="w-full border-b outline-none py-1 border-gray-500"
             containerClassName="w-full"
+            onOpenPickNewDate={false}
+            value={requestBody.endDate}
             plugins={[<TimePicker key={2} position="bottom" />]}
             calendar={persian}
             locale={persian_fa}
-            onChange={(e) =>
+            onClose={() =>
               setRequestBody({
                 ...requestBody,
-                endDate: e.toDate().toISOString(),
+                endDate: null,
               })
             }
+            onFocusedDateChange={(dateFocused, dateClicked) => {
+              setRequestBody({
+                ...requestBody,
+                endDate: dateClicked.toDate().toISOString(),
+              });
+            }}
           />
         </div>
       </div>
@@ -279,9 +296,9 @@ export default function NewDiscount() {
         />
       </div>
       <div className="flex gap-6 items-center">
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col">
           <label className="inline-flex items-center cursor-pointer">
-            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+            <span className="ml-3 text-sm font-medium text-gray-900 ">
               فعال؟
             </span>
             <Switch
@@ -290,6 +307,21 @@ export default function NewDiscount() {
                 setRequestBody({
                   ...requestBody,
                   isActive: !requestBody.isActive,
+                })
+              }
+              inputProps={{ "aria-label": "controlled" }}
+            />
+          </label>
+          <label className="inline-flex items-center cursor-pointer">
+            <span className="ml-3 text-sm font-medium text-gray-900 ">
+              ارسال رایگان
+            </span>
+            <Switch
+              checked={requestBody.freeShipment}
+              onChange={(e) =>
+                setRequestBody({
+                  ...requestBody,
+                  freeShipment: !requestBody.freeShipment,
                 })
               }
               inputProps={{ "aria-label": "controlled" }}

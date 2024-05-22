@@ -12,7 +12,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 //nested data is ok, see accessorKeys in ColumnDef below
 
 const OrderDataTable = ({ data = [], decreaseDetail, deleteDetail }) => {
-  console.log(data);
   //should be memoized or stable
   const columns = [
     {
@@ -51,7 +50,7 @@ const OrderDataTable = ({ data = [], decreaseDetail, deleteDetail }) => {
         {
           return (
             <Link
-              href={`/product/${row.original.product.sku}/${row.original.product.title}`}
+              href={`/product/${row.original.product.sku}/${row.original.product.slug}`}
               variant="outlined"
             >
               {row.original.product.title}
@@ -68,7 +67,7 @@ const OrderDataTable = ({ data = [], decreaseDetail, deleteDetail }) => {
         {
           return (
             <Link
-              href={`/product/${row.original.product.sku}/${row.original.product.title}`}
+              href={`/product/${row.original.product.sku}/${row.original.product.slug}`}
               variant="outlined"
             >
               {row.original.product.inventories[0]?.color?.name || ""}
@@ -85,7 +84,7 @@ const OrderDataTable = ({ data = [], decreaseDetail, deleteDetail }) => {
         {
           return (
             <Link
-              href={`/product/${row.original.product.sku}/${row.original.product.title}`}
+              href={`/product/${row.original.product.sku}/${row.original.product.slug}`}
               variant="outlined"
             >
               {row.original.product.inventories[0]?.guarantee?.name}{" "}
@@ -136,12 +135,7 @@ const OrderDataTable = ({ data = [], decreaseDetail, deleteDetail }) => {
       header: "عملیات",
       size: 150,
       accessorKey: "Actions",
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => {
         {
           return (

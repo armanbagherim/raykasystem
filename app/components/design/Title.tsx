@@ -4,7 +4,7 @@ export default function Title({ text, color }) {
   return (
     <div className="mb-9 relative">
       <svg
-        className="absolute right-0 -top-4"
+        className="absolute right-0 -top-4 w-[45px] md:w-auto"
         width="72"
         height="67"
         viewBox="0 0 72 67"
@@ -20,7 +20,7 @@ export default function Title({ text, color }) {
         />
       </svg>
       <h4
-        className={`text-2xl md:text-3xl pr-4  font-black text-${color} peyda`}
+        className={`text-md md:text-2xl md:text-3xl pr-4 font-black text-${color} peyda`}
       >
         {text}
       </h4>

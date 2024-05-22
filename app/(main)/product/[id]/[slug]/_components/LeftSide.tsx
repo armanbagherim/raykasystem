@@ -16,12 +16,9 @@ export default function LeftSide({ product, status, addToCart }) {
     <div className="col-span-12 lg:col-span-3  rounded-3xl bg-customGray">
       <div className="px-4 py-8 mr-0 relative flex h-full flex-col justify-between ">
         <div>
-          <div className="flex justify-end ml-0 mx-auto absolute left-0 top-0">
-            <Espesial />
-          </div>
           <div className="text-primary">
             {product[0] ? (
-              <span>چرا از {product[0].vendor.name} خرید کنم؟</span>
+              <span>چرا از {product[0]?.vendor?.name} خرید کنم؟</span>
             ) : (
               <span>محصول فروشنده ای ندارد</span>
             )}
@@ -32,7 +29,7 @@ export default function LeftSide({ product, status, addToCart }) {
                 <Tickstar />
               </div>
               <div>
-                <span className="font-bold text-primary">
+                <span className="font-bold text-primary text-sm w-1/2">
                   {product[0] ? (
                     <Link href={`/guarantees/${product[0]?.guarantee?.slug}`}>
                       <span>
@@ -66,8 +63,8 @@ export default function LeftSide({ product, status, addToCart }) {
                 <Trucktick />
               </div>
               <div>
-                ارسال تا <span className="font-bold text-primary">3</span> روز
-                آینده
+                تحویل <span className="font-bold text-primary">1 تا 5</span> روز
+                کاری
               </div>
               <div className="my-auto justify-start mx-auto ml-4">
                 <Exclamation />
@@ -81,31 +78,34 @@ export default function LeftSide({ product, status, addToCart }) {
               <div className="pb-0.5">
                 فروشنده:{" "}
                 <span className="font-bold text-primary">
-                  {product[0].vendor?.name}
+                  {product[0]?.vendor?.name}
                 </span>
               </div>
-              {product[0]?.secondaryPrice?.price ? (
+              {/* {product[0]?.secondaryPrice?.price ? (
                 <div
                   className="font-bold justify-start mx-auto ml-2 items-end my-auto"
                   dir="ltr"
                 >
-                  <div className="text-center bg-[#E2F0EB] text-primary text-xs rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
+                  <div className="w-full text-center bg-[#E2F0EB] text-primary text-sm rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
                     قیمت نقدی
                   </div>
-                  <div dir="rtl">
+                  <div
+                    className="text-lg w-full text-left font-bold direction-rtl"
+                    dir="rtl"
+                  >
                     {Number(product[0].secondaryPrice?.price).toLocaleString()}{" "}
-                    تومان
+                    تومانء
                   </div>
                 </div>
               ) : (
                 ""
-              )}
+              )} */}
             </div>
 
             <div className="mt-9 flex gap-3 mb-4">
-              {product[0].firstPrice.appliedDiscount ? (
+              {product[0]?.firstPrice?.appliedDiscount ? (
                 <CountDown
-                  dates={product[0].firstPrice?.appliedDiscount.endDate}
+                  dates={product[0]?.firstPrice?.appliedDiscount?.endDate}
                 />
               ) : (
                 ""
@@ -115,27 +115,32 @@ export default function LeftSide({ product, status, addToCart }) {
                 dir="ltr"
               >
                 <div className="flex items-center my-auto gap-1 flex-col">
-                  {product[0]?.firstPrice.appliedDiscount ? (
+                  {product[0]?.firstPrice?.appliedDiscount ? (
                     <>
-                      <span className="mb-1 block">
-                        <span className="text-xs mr-2  bg-primary text-white rounded-full px-2 py-1">
-                          {product[0]?.firstPrice.appliedDiscount.amount}
-                          {product[0]?.firstPrice.appliedDiscount.actionType ===
-                          1
+                      <div className="w-full text-center animate-bounce bg-[#E2F0EB] text-primary text-sm rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
+                        قیمت اقساطی
+                      </div>
+                      <span className="mb-1 flex items-center w-full">
+                        <span className="text-xs mr-2 bg-primary text-white rounded-full px-2 py-1">
+                          {Number(
+                            product[0]?.firstPrice?.appliedDiscount?.amount
+                          ).toLocaleString()}
+                          {product[0]?.firstPrice?.appliedDiscount
+                            ?.actionType === 1
                             ? "%"
-                            : "تومان"}
+                            : "تومانء"}
                         </span>
                         <span className="opacity-75 text-xs line-through">
                           {Number(
-                            product[0]?.firstPrice.price
+                            product[0]?.firstPrice?.price
                           ).toLocaleString()}
                         </span>
                       </span>
-                      <p className="text-sm">
+                      <p className="text-lg w-full text-left font-bold direction-rtl">
                         {Number(
-                          product[0]?.firstPrice.appliedDiscount.newPrice
+                          product[0]?.firstPrice?.appliedDiscount?.newPrice
                         ).toLocaleString()}{" "}
-                        تومان
+                        تومانء
                       </p>
                     </>
                   ) : (
@@ -143,8 +148,10 @@ export default function LeftSide({ product, status, addToCart }) {
                       <div className="text-center animate-bounce bg-[#E2F0EB] text-primary text-sm rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
                         قیمت اقساطی
                       </div>
-                      {Number(product[0]?.firstPrice.price).toLocaleString()}{" "}
-                      تومان
+                      <div className="text-lg w-full text-left font-bold direction-rtl">
+                        {Number(product[0]?.firstPrice?.price).toLocaleString()}{" "}
+                        تومانء
+                      </div>
                     </p>
                   )}
                 </div>
@@ -153,7 +160,7 @@ export default function LeftSide({ product, status, addToCart }) {
             <div className="text-center">
               <BigAddToCart
                 handleClick={(e) => {
-                  addToCart(product[0].id);
+                  addToCart(product[0]?.id);
                 }}
                 status={true}
               />

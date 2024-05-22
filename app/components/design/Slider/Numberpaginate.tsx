@@ -49,18 +49,20 @@ const Numberpaginate = ({ items }) => {
           <ClientLoading />
         </div>
       )}
-      <ReactPaginate
-        breakLabel="..."
-        className="flex items-center justify-start direction-ltr mt-8 whitespace-nowrap overflow-x-auto"
-        nextLabel="بعدی >"
-        activeLinkClassName="bg-primary outline-none"
-        pageLinkClassName="bg-[#B8B8B8] outline-none w-[37px] h-[37px] flex items-center justify-center rounded-[15px] mx-2 text-white"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={6}
-        pageCount={pageCount}
-        previousLabel="< قبلی"
-        renderOnZeroPageCount={null}
-      />
+      <div className="px-4">
+        <ReactPaginate
+          breakLabel="..."
+          className="flex items-center justify-start direction-ltr mt-8 whitespace-nowrap overflow-x-auto"
+          nextLabel="بعدی >"
+          activeLinkClassName="bg-primary outline-none"
+          pageLinkClassName="bg-[#B8B8B8] outline-none w-[37px] h-[37px] flex items-center justify-center rounded-[15px] mx-2 text-white"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={2}
+          pageCount={pageCount}
+          previousLabel="< قبلی"
+          renderOnZeroPageCount={null}
+        />
+      </div>
     </>
   );
 };

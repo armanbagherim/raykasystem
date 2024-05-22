@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .MuiDataGrid-root,
 .MuiButton-root,
 .MuiFormControl-root *,
@@ -97,6 +98,10 @@ ul.gcd-gl-result {
 
 .direction-ltr {
   direction: ltr;
+}
+
+.direction-rtl {
+  direction: rtl;
 }
 
 @font-face {
@@ -219,7 +224,7 @@ ul.gcd-gl-result {
 }
 
 body {
-  font-family: IRANSansX;
+  font-family: IRANSansX !important;
   -moz-font-feature-settings: "ss02";
   -webkit-font-feature-settings: "ss02";
   font-feature-settings: "ss02";
@@ -605,4 +610,109 @@ img {
   display: flex !important;
   align-items: center;
   justify-content: center;
+}
+
+.SwiperThumbs {
+  width: 100%;
+  .swiper-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8%;
+    justify-content: start;
+  }
+}
+
+@media (max-width: 767px) {
+  .swiper-wrapper {
+    flex-wrap: nowrap !important;
+  }
+}
+.dial {
+  transition: all 0.3s;
+  .swiper-slide {
+    img {
+      border-radius: 28px;
+      filter: grayscale(1) blur(3px);
+    }
+  }
+  .swiper-slide.swiper-slide-visible.swiper-slide-thumb-active {
+    transition: all 0.3s;
+    img {
+      border-radius: 28px;
+      filter: grayscale(0) blur(0);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: #e9f4f6;
+}
+
+.custom-scroll::-webkit-scrollbar-track:hover {
+  background-color: #e9f4f6;
+}
+
+.custom-scroll::-webkit-scrollbar-track:active {
+  background-color: #e9f4f6;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #959595;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #959595;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:active {
+  background-color: #959595;
+}
+
+.MuiSlider-thumb {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+.MuiSlider-rail,
+.MuiSlider-track {
+  height: 2px !important;
+  border: 0 !important;
+}
+
+.fa-classic,
+.fa-regular,
+.fa-solid,
+.far,
+.fas {
+  font-family: "Font Awesome 6 Free" !important;
+}
+
+@media (min-width: 1023px) {
+  .container.mx-auto {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .container {
+    max-width: 1023px;
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 1023px;
+    padding: 0 0;
+  }
 }

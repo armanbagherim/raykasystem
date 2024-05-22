@@ -1,5 +1,6 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { isRedirectError } from "next/dist/client/components/redirect";
 
 export const authOptions = {
   providers: [
@@ -54,13 +55,19 @@ export const authOptions = {
               }),
             }
           );
+          if (res.status === 400) {
+            throw new Error("! کد تایید معتبر نیست");
+          }
         }
         //
         const user = await res.json();
-
         if (res.ok && user) {
           return user;
-        } else return null;
+        } else if (res.status === 400) {
+          return null;
+        } else {
+          return null;
+        }
       },
     }),
   ],

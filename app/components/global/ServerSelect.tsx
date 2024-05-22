@@ -25,7 +25,7 @@ const ServerSelect = ({ type, init, setRequestBody, requestBody }) => {
     if (!session) {
       return callback([]); // or return an empty array if session is not available
     }
-    console.log(inputValue);
+
     const response = await fetch(
       `${
         process.env.NEXT_PUBLIC_BASE_URL

@@ -1,0 +1,37 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import OrderDetailModule from "./OrderDetailModule";
+import { notFound } from "next/navigation";
+
+async function getData(session, params) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/orders/${params.id}?ingorePaging=true`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.token}`,
+      },
+    }
+  );
+  // The return value is *not* serialized
+  // You can return Date, Map, Set, etc.
+
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    return notFound();
+  }
+
+  return res.json();
+}
+
+const Orders = async ({ params }) => {
+  const session = await getServerSession(authOptions);
+
+  const data = await getData(session, params);
+  return (
+    <>
+      <OrderDetailModule data={data} />
+    </>
+  );
+};
+
+export default Orders;

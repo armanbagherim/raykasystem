@@ -1,10 +1,20 @@
 /** @type {import('next').NextConfig} */
+const {
+  withSentryConfig,
+  instrumentOutgoingRequests,
+} = require("@sentry/nextjs");
 
 // const withPWA = require("next-pwa");
 
 const nextConfig = {
   experimental: {
     outputStandalone: true,
+    instrumentationHook: true,
+  },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
   },
   pwa: {
     dest: "public",
@@ -32,4 +42,14 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withSentryConfig(nextConfig, {
+  org: "jahizan",
+  project: "jahizan",
+  authToken:
+    "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",
+  silent: false, // Can be used to suppress logs
+  telemetry: false,
+  sourcemaps: {
+    disable: true,
+  },
+});
