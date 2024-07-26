@@ -71,6 +71,7 @@ export default function Products({ params }) {
   const [vendorId, setVendorId] = useState();
   const [vendorAddresses, setVendorAddresses] = useState();
   const [photos, setPhotos] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [isColoBased, setIsColoBased] = useState(false);
   const [attributes, setAttributes] = useState();
   const [openTab, setOpenTab] = useState(1);
@@ -85,6 +86,7 @@ export default function Products({ params }) {
     description: description,
     colorBased: false,
     photos: photos,
+    videos: videos,
     attributes: [],
     inventories: [],
     metaDescription: null,
@@ -133,6 +135,7 @@ export default function Products({ params }) {
       setEntityTypeId(product.result.entityTypeId);
       setSelectedEav(product.result.entityType.id);
       setPhotos(product.result.attachments);
+      setVideos(product.result.videoAttachments);
       setRequestBody({
         ...requestBody,
         brandId: product.result.brandId,
@@ -337,6 +340,10 @@ export default function Products({ params }) {
     setPhotos(photos.filter((photo) => photo.id !== id));
   };
 
+  const removeVideo = (id) => {
+    setVideos(photos.filter((video) => video.id !== id));
+  };
+
   const removeInventory = (id: number) => {
     setTempInventories((prevInventories) =>
       prevInventories.filter((inventory) => inventory.id !== id)
@@ -348,6 +355,13 @@ export default function Products({ params }) {
       photos: photos,
     }));
   }, [photos]);
+
+  useEffect(() => {
+    setRequestBody((prevState) => ({
+      ...prevState,
+      videos: videos,
+    }));
+  }, [videos]);
 
   useEffect(() => {
     setRequestBody((prevState) => ({
@@ -694,6 +708,15 @@ export default function Products({ params }) {
           removePhoto={removePhoto}
           setPhotos={setPhotos}
           photos={photos}
+          type="image"
+        />
+        <ProductUploader
+          location="v1/api/ecommerce/productVideos/upload"
+          setPhotos={setVideos}
+          removePhoto={removeVideo}
+          photos={videos}
+          type="video"
+          text="آپلود ویدیو"
         />
 
         {/* <button

@@ -45,6 +45,7 @@ export default function Products() {
   const [vendorId, setVendorId] = useState();
   const [vendorAddresses, setVendorAddresses] = useState();
   const [photos, setPhotos] = useState([]);
+  const [videos, setVideos] = useState([]);
   const [isColoBased, setIsColoBased] = useState(false);
   const [attributes, setAttributes] = useState();
   const [openTab, setOpenTab] = useState(1);
@@ -58,6 +59,7 @@ export default function Products() {
     description: description,
     colorBased: false,
     photos: photos,
+    videos: videos,
     attributes: [],
     inventories: [],
     metaDescription: null,
@@ -76,6 +78,9 @@ export default function Products() {
     });
   }, []);
 
+  useEffect(() => {
+    console.log(videos);
+  }, [videos]);
   // Fetch Requests
   const {
     data: parentEntityTypes,
@@ -266,6 +271,13 @@ export default function Products() {
       photos: photos,
     }));
   }, [photos]);
+
+  useEffect(() => {
+    setRequestBody((prevState) => ({
+      ...prevState,
+      videos: videos,
+    }));
+  }, [videos]);
 
   useEffect(() => {
     setRequestBody((prevState) => ({
@@ -549,7 +561,19 @@ export default function Products() {
       </div>
 
       <aside className="w-full rounded-xl p-4 col-span-1 flex items-center justify-start flex-col">
-        <ProductUploader setPhotos={setPhotos} photos={photos} />
+        <ProductUploader
+          location="v1/api/ecommerce/productphotos/image"
+          setPhotos={setPhotos}
+          photos={photos}
+          text="آپلود تصویر"
+        />
+        <ProductUploader
+          location="v1/api/ecommerce/productVideos/upload"
+          setPhotos={setVideos}
+          photos={videos}
+          type="video"
+          text="آپلود ویدیو"
+        />
 
         {/* <button
           onClick={saveProduct}

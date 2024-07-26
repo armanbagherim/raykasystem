@@ -11,23 +11,32 @@ interface Photo {
 interface ProductUploaderProps {
   setPhotos: React.Dispatch<React.SetStateAction<Photo[]>>;
   photos: Photo[];
+  location: string;
+  text: string;
+  type: string;
 }
 
 export default function ProductUploader({
   setPhotos,
   photos,
   removePhoto,
+  location,
+  text,
+  type,
 }: ProductUploaderProps) {
   return (
-    <div className="w-full p-4 border-2 border-dashed border-gray-200 rounded-2xl">
+    <div className="w-full p-4 border-2 border-dashed border-gray-200 rounded-2xl mb-4">
       <Uploader
+        photos={photos}
+        text={text}
         setPhotos={setPhotos}
-        location={"v1/api/ecommerce/productphotos/image"}
+        location={location}
+        type={type}
       />
       <div className="flex pt-4 gap-4 flex-wrap justify-between my-4">
         {photos.map((value, index) => {
           return (
-            <div className="relative group " key={index}>
+            <div className="relative group" key={index}>
               <button
                 onClick={(e) => removePhoto(value.id)}
                 className="bg-red-700 p-1 rounded-md absolute -right-4 -top-2 invisible group-hover:visible transition duration-600"
@@ -76,15 +85,25 @@ export default function ProductUploader({
                   />
                 </svg>
               </button>
-              <Image
-                key={index} // It's a good practice to provide a key when mapping over elements
-                width={70}
-                height={70}
-                crossOrigin="anonymous"
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
-                alt=""
-                className="rounded-2xl"
-              />
+              {type === "image" ? (
+                <Image
+                  key={index} // It's a good practice to provide a key when mapping over elements
+                  width={70}
+                  height={70}
+                  crossOrigin="anonymous"
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
+                  alt=""
+                  className="rounded-2xl"
+                />
+              ) : (
+                <video
+                  height={150}
+                  crossOrigin="anonymous"
+                  className="rounded-2xl"
+                  controls
+                  src={`https://image.jahizan.com/productvideos/${value.fileName}`}
+                ></video>
+              )}
             </div>
           );
         })}

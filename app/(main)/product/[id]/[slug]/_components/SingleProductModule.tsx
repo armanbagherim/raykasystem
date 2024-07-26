@@ -64,6 +64,7 @@ export default function SingleProductModule({
   //   window.scroll(0, 0);
   // }, [pathname]);
   const [open, setOpen] = useState(false);
+  const [videoOpen, setVideoOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const dispatch = useAppDispatch();
   const [localInventories, setLocalInventories] = useState([]);
@@ -165,6 +166,11 @@ export default function SingleProductModule({
   };
   const handleClose = () => {
     setOpen(false);
+    setVideoOpen(false);
+  };
+
+  const handleVideoOpen = () => {
+    setVideoOpen(true);
   };
   return (
     <>
@@ -252,16 +258,18 @@ export default function SingleProductModule({
                 <Zoomin />
               </span>
             </div>
+            <div className="pt-5 mr-3 cursor-pointer" onClick={handleVideoOpen}>
+              <Link href="#">
+                <Play />
+              </Link>
+            </div>
             {/* <div className="pt-5 mr-3">
               <Link href="#">
                 <Heartadd />
               </Link>
             </div>
-            <div className="pt-5 mr-3">
-              <Link href="#">
-                <Play />
-              </Link>
-            </div> */}
+            
+             */}
           </div>
 
           <Dialog
@@ -312,6 +320,42 @@ export default function SingleProductModule({
                   alt=""
                 />
               )}
+            </DialogContent>
+          </Dialog>
+
+          <Dialog
+            onClose={handleClose}
+            aria-labelledby="customized-dialog-title"
+            open={videoOpen}
+            fullScreen
+          >
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                position: "absolute",
+                left: 8,
+                top: 8,
+                zIndex: 2000,
+                color: (theme) => theme.palette.grey[800],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <DialogContent dividers className="flex items-center">
+              <Slider slidesPerView={1}>
+                {product?.videoAttachments.map((value, key) => (
+                  <div key={key} className="text-center mb-8">
+                    <video
+                      className="w-2/3 h-auto mx-auto"
+                      controls
+                      src={`https://image.jahizan.com/productvideos/${
+                        value?.fileName ?? null
+                      }`}
+                    ></video>
+                  </div>
+                ))}
+              </Slider>
             </DialogContent>
           </Dialog>
           <div className="p-3 pt-0 mr-0 pb-6">
