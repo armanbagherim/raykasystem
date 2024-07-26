@@ -62,7 +62,7 @@ export default function Page({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/core/roles");
-      }, 2000);
+      }, 500);
     } catch (err) {
       toast.error(err.message);
     }
@@ -85,14 +85,14 @@ export default function Page({ params }) {
     <div>
       <label
         htmlFor="first_name"
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        className="block mb-2 text-sm font-medium text-gray-900 "
       >
         نام نقش
       </label>
       <input
         type="text"
         id="first_name"
-        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         required
         value={roleName}
         onChange={(e) => setRoleName(e.target.value)}
@@ -104,13 +104,13 @@ export default function Page({ params }) {
           </div>
           <div className="px-5 py-6">
             {group.permissions.map((permission, key) => (
-              <div key={key}>
-                {permission.permissionName}
+              <div key={key} className="flex gap-2 mb-1">
                 <input
                   type="checkbox"
                   checked={isPermissionChecked(permission.id)}
                   onChange={() => handlePermissionChange(permission.id)}
                 />
+                <div>{permission.permissionName}</div>
               </div>
             ))}
           </div>

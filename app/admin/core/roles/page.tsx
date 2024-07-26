@@ -11,9 +11,12 @@ import { IconButton } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { toast } from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ChangeFormatDate from "@/app/components/global/ChangeFormatDate";
+import Swal from "sweetalert2";
 
 export default function Roles() {
   const [title, setTitle] = useAtom(pageTitle);
+  const [triggered, setTriggered] = useState(false);
 
   useEffect(() => {
     setTitle({
@@ -23,63 +26,31 @@ export default function Roles() {
     });
   }, []);
 
-
   const deleteRow = async (id) => {
     try {
-      const req = await fetcher({
-        url: `/v1/api/core/admin/roles/${id}`,
-        method: "DELETE",
+      const result = await Swal.fire({
+        title: "مطمئن هستید؟",
+        text: "با حذف این گزینه امکان بازگشت آن وجود ندارد",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله حذفش کن",
+        cancelButtonText: "لغو",
       });
-      toast.success("موفق");
-      refetch();
+
+      if (result.isConfirmed) {
+        const req = await fetcher({
+          url: `/v1/api/core/admin/roles/${id}`,
+          method: "DELETE",
+        });
+        toast.success("موفق");
+        setTriggered(!triggered);
+      }
     } catch (error) {
       toast.error(error.message);
     }
   };
-
-  // const {
-  //   data: roles,
-  //   isLoading: rolesIsLoading,
-  //   error: rolesError,
-  // } = useFetcher(`/v1/api/core/admin/roles?igonePaging=true`, "GET");
-
-  // const columns: GridColDef[] = [
-  //   {
-  //     field: "id",
-  //     headerName: "شناسه نقش",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "roleName",
-  //     headerName: "نام نقش",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "createdAt",
-  //     headerName: "تاریخ ایجاد",
-  //     width: 150,
-  //     valueFormatter: ({ value }) =>
-  //       new Date(value).toLocaleDateString("fa-IR"),
-  //   },
-  //   {
-  //     field: "list",
-  //     headerName: "ویرایش",
-  //     width: 150,
-  //     renderCell: (row) => (
-  //       <a href={`/admin/core/roles/${row.id}`}>
-  //         <button
-  //           type="button"
-  //           className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-  //         >
-  //           ویرایش
-  //         </button>
-  //       </a>
-  //     ),
-  //   },
-  // ];
-  // if (rolesIsLoading) {
-  //   return <Loading />;
-  // }
 
   const columns = [
     {
@@ -101,17 +72,17 @@ export default function Roles() {
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
       size: 180, //medium column
+      Cell({ row }) {
+        return (
+          row.original.createdAt && ChangeFormatDate(row.original.createdAt)
+        );
+      },
     },
     {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
           <a href={`/admin/core/roles/${row.id}`}>
@@ -120,14 +91,20 @@ export default function Roles() {
             </IconButton>
           </a>
           <a onClick={(e) => deleteRow(row.id)}>
-          <IconButton aria-label="delete" color="error">
-            <DeleteIcon />
-          </IconButton>
-        </a>
+            <IconButton aria-label="delete" color="error">
+              <DeleteIcon />
+            </IconButton>
+          </a>
         </>
       ),
     },
   ];
 
-  return <LightDataGrid url={"/v1/api/core/admin/roles?igonePaging=true"} columns={columns} />;
+  return (
+    <LightDataGrid
+      url={"/v1/api/core/admin/roles?igonePaging=true"}
+      columns={columns}
+      triggered={triggered}
+    />
+  );
 }

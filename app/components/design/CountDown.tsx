@@ -15,30 +15,24 @@ function renderer({ hours, minutes, seconds, days, completed }) {
 
     // Display the countdown timer with leading zeros
     return (
-      <div className="flex flex-row-reverse gap-1 text-center ">
-        <div className="flex flex-col">
-          <span className="bg-[#F5F5F5] w-7 h-7 text-sm font-bold flex items-center justify-center text-center mb-2 rounded-xl">
-            {formattedDays}
-          </span>
-          <span className="text-sm">روز</span>
-        </div>
-        <div className="flex flex-col">
-          <span className="bg-[#F5F5F5] w-7 h-7 text-sm font-bold flex items-center justify-center text-center mb-2 rounded-xl">
+      <div className="flex gap-2 text-center p-2 rounded-2xl">
+        <div className="flex flex-row items-center gap-2">
+          <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center  rounded-xl">
             {formattedHours}
           </span>
-          <span className="text-sm">ساعت</span>
+          <span className="text-xs peyda text-white font-bold">ساعت</span>
         </div>
-        <div className="flex flex-col">
-          <span className="bg-[#F5F5F5] w-7 h-7 text-sm font-bold flex items-center justify-center text-center mb-2 rounded-xl">
+        <div className="flex flex-row items-center gap-2">
+          <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center  rounded-xl">
             {formattedMinutes}
           </span>
-          <span className="text-sm">دقیقه</span>
+          <span className="text-xs peyda text-white font-bold">دقیقه</span>
         </div>
-        <div className="flex flex-col">
-          <span className="bg-[#F5F5F5] w-7 h-7 text-sm font-bold flex items-center justify-center text-center mb-2 rounded-xl">
+        <div className="flex flex-row items-center gap-2">
+          <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center  rounded-xl">
             {formattedSeconds}
           </span>
-          <span className="text-sm">ثانیه</span>
+          <span className="text-xs peyda text-white font-bold">ثانیه</span>
         </div>
       </div>
     );

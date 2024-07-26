@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `جهیزان | سبد خرید`,
+    title: `سبد خرید | جهیزان`,
   };
 }
 
@@ -17,7 +17,6 @@ export async function generateMetadata(): Promise<Metadata> {
 // }
 
 async function getCart(session) {
-  console.log("areeeeeeeeeeeeeeeeeeeeeeeeeeeee", session);
   const res = await Interseptor("/v1/api/ecommerce/user/stocks", session);
   return res.json();
 }

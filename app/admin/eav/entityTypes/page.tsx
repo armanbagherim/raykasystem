@@ -2,7 +2,7 @@
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "@/app/components/global/loading";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { pageTitle } from "../../layout";
 import { useAtom } from "jotai";
 import { toast } from "react-toastify";
@@ -12,9 +12,11 @@ import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import Uploader from "@/app/components/global/Uploader";
+import Swal from "sweetalert2";
 
 export default function Eav() {
   const [title, setTitle] = useAtom(pageTitle);
+  const [triggered, setTriggered] = useState(false);
 
   useEffect(() => {
     setTitle({
@@ -26,12 +28,25 @@ export default function Eav() {
 
   const deleteEavType = async (id) => {
     try {
-      const req = await fetcher({
-        url: `/v1/api/eav/admin/entityTypes/${id}`,
-        method: "DELETE",
+      const result = await Swal.fire({
+        title: "مطمئن هستید؟",
+        text: "با حذف این گزینه امکان بازگشت آن وجود ندارد",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله حذفش کن",
+        cancelButtonText: "لغو",
       });
-      toast.success("موفق");
-      categoriesRefetch();
+
+      if (result.isConfirmed) {
+        const req = await fetcher({
+          url: `/v1/api/eav/admin/entityTypes/${id}`,
+          method: "DELETE",
+        });
+        toast.success("موفق");
+        setTriggered(!triggered);
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -81,12 +96,7 @@ export default function Eav() {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
           <a href={`#`}>
@@ -101,6 +111,14 @@ export default function Eav() {
           >
             <Button variant="outlined" color="success">
               فیلد ها
+            </Button>
+          </a>
+          <a
+            className="ml-1 mr-1"
+            href={`/admin/eav/entityTypes/factors/${row.id}`}
+          >
+            <Button variant="outlined" color="success">
+              فاکتور های کامنت
             </Button>
           </a>
           <a href={`/admin/eav/entityTypes/edit/${row.id}`}>
@@ -120,7 +138,11 @@ export default function Eav() {
 
   return (
     <div>
-      <LightDataGrid url={"/v1/api/eav/admin/entityTypes"} columns={columns} />
+      <LightDataGrid
+        triggered={triggered}
+        url={"/v1/api/eav/admin/entityTypes"}
+        columns={columns}
+      />
     </div>
   );
 }

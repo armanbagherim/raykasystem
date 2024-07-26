@@ -1,6 +1,6 @@
 "use client";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { fetcher, useFetcher } from "../../../components/global/fetcher";
 import Loading from "../../../components/global/loading";
 import { useAtom } from "jotai";
@@ -12,9 +12,11 @@ import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
 import { Button, IconButton } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Swal from "sweetalert2";
 
 export default function Brands() {
   const [title, setTitle] = useAtom(pageTitle);
+  const [triggered, setTriggered] = useState(false);
 
   useEffect(() => {
     setTitle({
@@ -26,93 +28,29 @@ export default function Brands() {
 
   const deleteBrand = async (id) => {
     try {
-      const req = await fetcher({
-        url: `/v1/api/ecommerce/brands/${id}`,
-        method: "DELETE",
+      const result = await Swal.fire({
+        title: "مطمئن هستید؟",
+        text: "با حذف این گزینه امکان بازگشت آن وجود ندارد",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله حذفش کن",
+        cancelButtonText: "لغو",
       });
-      toast.success("موفق");
-      refetchBrands();
+
+      if (result.isConfirmed) {
+        const req = await fetcher({
+          url: `/v1/api/ecommerce/brands/${id}`,
+          method: "DELETE",
+        });
+        toast.success("موفق");
+        setTriggered(!triggered);
+      }
     } catch (error) {
       toast.error(error.message);
     }
   };
-  // const {
-  //   data: brands,
-  //   isLoading: brandsIsLoading,
-  //   error: brandsError,
-  //   refetch: refetchBrands,
-  // } = useFetcher(
-  //   `/v1/api/ecommerce/brands?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
-  //   "GET"
-  // );
-
-  // const columns: GridColDef[] = [
-  //   {
-  //     field: "id",
-  //     headerName: "شناسه",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "name",
-  //     headerName: "نام ",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "slug",
-  //     headerName: "اسلاگ",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "image",
-  //     headerName: "تصویر ",
-  //     width: 50,
-  //     renderCell: ({ row }) => (
-  //       <Image
-  //         loading="eager"
-  //         src={`${
-  //           process.env.NEXT_PUBLIC_BASE_URL
-  //         }/v1/api/ecommerce/brands/image/${row.attachment?.fileName || ""}`}
-  //         width={50}
-  //         height={50}
-  //         onError={(e) => {
-  //           e.target.srcset = "/images/no-photos.png";
-  //           e.target.id = "/images/no-photos.png";
-  //         }}
-  //         alt=""
-  //       />
-  //     ),
-  //   },
-  //   {
-  //     field: "list",
-  //     headerName: "ویرایش",
-  //     width: 400,
-  //     renderCell: (row) => (
-  //       <>
-  //         <a className="ml-4" href={`/admin/ecommerce/brands/${row.id}`}>
-  //           <button
-  //             type="button"
-  //             className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-  //           >
-  //             ویرایش
-  //           </button>
-  //         </a>
-  //         <a className="ml-4" onClick={(e) => deleteBrand(row.id)}>
-  //           <button
-  //             type="button"
-  //             className="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-  //           >
-  //             حذف
-  //           </button>
-  //         </a>
-  //         <Uploader
-  //           refetch={refetchBrands}
-  //           location="v1/api/ecommerce/brands/image"
-  //           id={row.id}
-  //         />
-  //       </>
-  //     ),
-  //   },
-  // ];
 
   const columns = [
     {
@@ -160,12 +98,7 @@ export default function Brands() {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
           <a href="#">
@@ -186,20 +119,13 @@ export default function Brands() {
     },
   ];
 
-  // if (brandsIsLoading) {
-  //   return <Loading />;
-  // }
-  // return (
-  //   <div>
-  //     <DataGrid rows={brands.result} columns={columns} />
-  //   </div>
-  // );
   return (
     <div>
       <LightDataGrid
         url={
           "/v1/api/ecommerce/brands?sortOrder=ASC&offset=0&limit=10&orderBy=id&ignorePaging=false"
         }
+        triggered={triggered}
         columns={columns}
       />
     </div>

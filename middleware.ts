@@ -3,18 +3,16 @@ import { NextRequest, NextResponse } from "next/server";
 export async function middleware(req: NextRequest, res: NextResponse) {
   // Check if the SessionName cookie already exists
   const existingSessionName = req.cookies.get("SessionName");
-  const { pathname } = req.nextUrl
-  
+  const { pathname } = req.nextUrl;
+
   // If the SessionName cookie exists, skip the fetch request
   if (existingSessionName) {
-    console.log("SessionName cookie already exists, skipping fetch request.");
-    console.log(existingSessionName);
     return NextResponse.next(); // Proceed with the request without modifying the response
   }
 
   // If the SessionName cookie does not exist, generate a new session
   const resp = await fetch(
-    "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/sessions/generate",
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/sessions/generate`,
     {
       method: "POST",
     }
@@ -25,22 +23,21 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   }
 
   const data = await resp.json();
-  console.log("arman", data);
-
+  const expireTime = new Date(data.result.expireAt).getTime() + 1000 * 36000
   // Set the SessionName cookie with the new session ID
   const response = NextResponse.next();
   response.cookies.set("SessionName", data.result.id, {
+    expires: new Date().setTime(expireTime),
     path: "/",
     httpOnly: false,
     secure: true, // Set to true if your site is served over HTTPS
     sameSite: "none", // Adjust according to your security requirements
   });
 
-  console.log("SessionName cookie set:", data.result.id);
   return response;
 }
 export const config = {
   matcher: [
-     "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|.*\\..*).*)"
+    "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|.*\\..*).*)",
   ],
- };
+};

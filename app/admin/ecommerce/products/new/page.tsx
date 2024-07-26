@@ -16,7 +16,6 @@ import {
   TextField,
 } from "@mui/material";
 import ProductUploader from "../_components/ProductUploader";
-import SeoBox from "../_components/SeoBox";
 import NestedSelect from "../_components/NestedSelect";
 import GenericInput from "../_components/GenericInput";
 import DataGridLite from "../_components/inventories/Datagrid";
@@ -24,6 +23,9 @@ import InventoriesDialouge from "../_components/inventories/InventoriesDialouge"
 
 import Tab from "../_components/tabs/Tabs";
 import SaveBar from "@/app/components/global/SaveBar";
+import ChangeToNull from "@/app/components/global/ChangeToNull";
+import dynamic from "next/dynamic";
+const SeoBox = dynamic(() => import("../_components/SeoBox"), { ssr: false });
 
 export default function Products() {
   const [open, setOpen] = useState(false);
@@ -48,16 +50,20 @@ export default function Products() {
   const [openTab, setOpenTab] = useState(1);
   const [description, setDescription] = useState("");
   const [requestBody, setRequestBody] = useState<RequestBody>({
-    title: "",
-    slug: "",
-    entityTypeId: "",
-    publishStatusId: "",
-    brandId: "",
+    title: null,
+    slug: null,
+    entityTypeId: null,
+    publishStatusId: null,
+    brandId: null,
     description: description,
-    colorBased: true,
+    colorBased: false,
     photos: photos,
     attributes: [],
     inventories: [],
+    metaDescription: null,
+    metaTitle: null,
+    metaKeywords: null,
+    weight: null,
   });
   const [inventories, setInventories] = useState([]);
   const [tempInventories, setTempInventories] = useState([]);
@@ -278,7 +284,7 @@ export default function Products() {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/products");
-      }, 2000);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
@@ -289,25 +295,35 @@ export default function Products() {
         <div className="flex-1">
           <TextField
             onChange={(e) =>
-              setRequestBody({ ...requestBody, title: e.target.value })
+              setRequestBody({
+                ...requestBody,
+                title: ChangeToNull(e.target.value),
+              })
             }
             required
             id="standard-basic"
             label="نام محصول"
-            variant="standard"
+            fullWidth
+            variant="outlined"
           />
         </div>
         <div className="flex-1">
           <TextField
             onChange={(e) =>
-              setRequestBody({ ...requestBody, slug: e.target.value })
+              setRequestBody({
+                ...requestBody,
+                slug: ChangeToNull(e.target.value),
+              })
             }
+            fullWidth
             required
             id="standard-basic"
             label="لینک محصول"
-            variant="standard"
+            variant="outlined"
           />
         </div>
+      </div>
+      <div className="flex gap-4 col-span-3 flex-wrap">
         <SelectSearch
           loadingState={brandsIsLoading}
           data={brands?.result}
@@ -322,27 +338,33 @@ export default function Products() {
             setRequestBody({ ...requestBody, publishStatusId: e.id })
           }
         />
-        <div className="flex-1">
-          {parentEntityTypesIsLoading ? (
-            "loading"
-          ) : (
-            <NestedSelect
-              data={parentEntityTypes?.result}
-              onChange={(e) => {
-                setEntityTypeId(e.target.value);
-                setRequestBody({
-                  ...requestBody,
-                  entityTypeId: +e.target.value,
-                });
-              }}
-            />
-          )}
-        </div>
-
-        <div className="flex w-full">
+        <TextField
+          value={requestBody.weight}
+          label="وزن"
+          onChange={(e) =>
+            setRequestBody({ ...requestBody, weight: +e.target.value })
+          }
+        />
+        <div className="flex w-full items-center gap-8">
+          <div className="flex-1">
+            {parentEntityTypesIsLoading ? (
+              "loading"
+            ) : (
+              <NestedSelect
+                data={parentEntityTypes?.result}
+                onChange={(e) => {
+                  setEntityTypeId(ChangeToNull(e.target.value));
+                  setRequestBody({
+                    ...requestBody,
+                    entityTypeId: +ChangeToNull(e.target.value),
+                  });
+                }}
+              />
+            )}
+          </div>
           <div className="flex-1">
             <label className="inline-flex items-center cursor-pointer">
-              <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+              <span className="ml-3 text-sm font-medium text-gray-900 ">
                 فروش بر اساس رنگ؟
               </span>
               <Switch
@@ -426,16 +448,14 @@ export default function Products() {
                         className={openTab === 2 ? "block" : "hidden"}
                         id="link2"
                       >
-                        <Button
-                          className="!mb-6"
-                          fullWidth
-                          variant="contained"
+                        <button
+                          className="!mb-6 text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal text-white bg-[#20ac73] w-full block"
                           onClick={(e) => {
                             handleClickOpen(null);
                           }}
                         >
                           افزودن موجودی جدید
-                        </Button>
+                        </button>
                         <DataGridLite
                           handleClickOpen={handleClickOpen}
                           data={tempInventories}
@@ -443,6 +463,7 @@ export default function Products() {
                           key={tempInventories}
                         />
                         <InventoriesDialouge
+                          vendorId={vendorId}
                           colors={colors}
                           colorsIsLoading={colorsIsLoading}
                           handleClose={handleClose}
@@ -468,6 +489,51 @@ export default function Products() {
                         className={openTab === 3 ? "block" : "hidden"}
                         id="link3"
                       >
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaKeywords: ChangeToNull(e.target.value),
+                              })
+                            }
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="کلمات کلیدی"
+                            variant="outlined"
+                          />
+                        </div>
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaDescription: ChangeToNull(e.target.value),
+                              })
+                            }
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="توضیحات متا"
+                            variant="outlined"
+                          />
+                        </div>
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaTitle: ChangeToNull(e.target.value),
+                              })
+                            }
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="عنوان سئو"
+                            variant="outlined"
+                          />
+                        </div>
                         <SeoBox
                           setDescription={setDescription}
                           description={description}
@@ -482,7 +548,7 @@ export default function Products() {
         </div>
       </div>
 
-      <aside className="w-full bg-slate-100 rounded-xl p-4 col-span-1 flex items-center justify-start flex-col">
+      <aside className="w-full rounded-xl p-4 col-span-1 flex items-center justify-start flex-col">
         <ProductUploader setPhotos={setPhotos} photos={photos} />
 
         {/* <button
@@ -492,7 +558,10 @@ export default function Products() {
           ساخت محصول
         </button> */}
       </aside>
-      <SaveBar action={saveProduct} backUrl="/admin/ecommerce/products"></SaveBar>
+      <SaveBar
+        action={saveProduct}
+        backUrl="/admin/ecommerce/products"
+      ></SaveBar>
     </div>
   );
 }

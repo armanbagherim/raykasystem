@@ -2,12 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
-import Loading from "../../../../../components/global/loading";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../../layout";
 import MapComponent from "@/app/components/global/Map";
 import SaveBar from "@/app/components/global/SaveBar";
+import MapClient from "@/app/components/global/MapClient";
+import Loading from "@/app/components/global/loading";
+import SearchSelect from "@/app/components/global/SearchSelect";
+import { TextField } from "@mui/material";
 
 export default function VendorAddress({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -15,6 +18,13 @@ export default function VendorAddress({ params }) {
     latitude: null,
     longitude: null,
   });
+  const [isAddressManuallyChanged, setIsAddressManuallyChanged] =
+    useState(false);
+
+  const setStreetAndUpdateAddress = (value) => {
+    setStreet(value);
+    setIsAddressManuallyChanged(true);
+  };
   useEffect(() => {
     setTitle({
       title: "افزودن آدرس جدید",
@@ -25,72 +35,75 @@ export default function VendorAddress({ params }) {
 
   const [name, setName] = useState();
   const [slug, setSlug] = useState();
-  const [description, setDescription] = useState();
-  const [provinceId, setprovinceId] = useState(0);
+  const [provinces, setProvinces] = useState([]);
+  const [provinceId, setprovinceId] = useState(1);
   const [neighborhoodId, setneighborhoodId] = useState(1);
   const [cities, setCities] = useState([]);
-  const [neghberhoods, setNeighberhoods] = useState();
+  const [neghberhoods, setNeighberhoods] = useState([]);
   const [cityId, setCityId] = useState(1);
   const [street, setStreet] = useState();
   const [alley, setAlley] = useState();
   const [plaque, setPlaque] = useState();
   const [floorNumber, setFloorNumber] = useState();
+  const [postalCode, setPostalCode] = useState();
   const router = useRouter();
-  const { data: provinces, isLoading: provincesIsLoading } = useFetcher(
-    `/v1/api/ecommerce/provinces`,
-    "GET"
-  );
+
+  const getProvinces = async () => {
+    await fetcher({
+      url: `/v1/api/ecommerce/provinces`,
+      method: "GET",
+    }).then((res) => {
+      setProvinces(res.result);
+    });
+  };
 
   const getCities = async (pid) => {
     await fetcher({
       url: `/v1/api/ecommerce/cities?provinceId=${pid}`,
       method: "GET",
     }).then((res) => {
-      setCities(res.result);
       setCityId(res.result[0].id);
-      getNeighberhoods(res.result[0].id);
-      if (res.result[0].neighborhoodBase) {
-        setneighborhoodId(res.result[0].id);
-      } else {
-        setneighborhoodId(null);
-      }
+      setCities(res.result);
     });
   };
 
-  const getNeighberhoods = async (nid) => {
-    if (neighborhoodId !== null) {
-      await fetcher({
-        url: `/v1/api/ecommerce/neighborhoods?cityId=${nid}`,
-        method: "GET",
-      }).then((res) => {
-        if (res.result.length !== 0) {
-          setNeighberhoods(res.result);
-          setneighborhoodId(res.result[0].id);
-        } else {
-          setNeighberhoods(null);
-        }
-      });
-    }
+  const getNeighberhoods = async (cid) => {
+    await fetcher({
+      url: `/v1/api/ecommerce/neighborhoods?cityId=${cid}`,
+      method: "GET",
+    }).then((res) => {
+      if (res.result.length !== 0) {
+        setNeighberhoods(res.result);
+        setneighborhoodId(res.result[0].id);
+        // if (address?.result?.address?.neighborhoodId !== neighborhoodId) {
+        //   setneighborhoodId(res.result[0].id);
+        // }
+      } else {
+        setneighborhoodId(null);
+        setNeighberhoods(null);
+      }
+    });
   };
+  useEffect(() => {
+    getProvinces();
+  }, []);
 
   useEffect(() => {
-    getCities(provinceId);
-  }, [provinces]);
-
-  useEffect(() => {
-    getCities(provinceId);
-    getNeighberhoods(cityId);
+    if (provinceId !== null) {
+      getCities(provinceId);
+    }
   }, [provinceId]);
 
-  // useEffect(() => {
-  //
-  //   getNeighberhoods(neighborhoodId);
-  // }, [neighborhoodId]);
+  useEffect(() => {
+    if (cityId !== null) {
+      getNeighberhoods(cityId);
+    }
+  }, [cityId]);
 
   const save = async () => {
     try {
       const req = await fetcher({
-        url: "/v1/api/ecommerce/vendorAddresses",
+        url: `/v1/api/ecommerce/vendorAddresses`,
         method: "POST",
         body: {
           vendorId: +params.id,
@@ -99,187 +112,161 @@ export default function VendorAddress({ params }) {
           longitude: coordinates.longitude,
           provinceId: +provinceId,
           cityId: +cityId,
-          neighborhoodId: +neighborhoodId,
+          neighborhoodId: neighborhoodId === null ? null : +neighborhoodId,
           street,
           alley,
           plaque,
           floorNumber,
+          postalCode,
         },
       });
       toast.success("موفق");
       setTimeout(() => {
-        router.push("/admin/ecommerce/vendorAddresses");
-      }, 2000);
+        router.push(`/admin/ecommerce/vendoraddresses/${params.id}`);
+      }, 500);
     } catch (error) {
       toast.error(error.message);
     }
   };
-  if (provincesIsLoading) {
-    return <Loading />;
-  }
+
   return (
     <div>
-      <MapComponent coordinates={coordinates} setCoordinates={setCoordinates} />
+      <MapClient
+        height={400}
+        onLocationChange={(location) => {
+          setCoordinates({
+            latitude: location.lat.toString(),
+            longitude: location.lng.toString(),
+          });
+          setIsAddressManuallyChanged(false);
+        }}
+      />
       <div>
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           نام
         </label>
         <input
           type="text"
           id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
+          value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <div className="flex gap-4">
+        <div className="flex gap-4 mb-6">
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              استان
-            </label>
-            <select
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              name=""
-              onChange={(e) => setprovinceId(e.target.value)}
-              id=""
-            >
-              {provinces.result.map((value, key) => (
-                <option key={key} value={value.id}>
-                  {value.name}
-                </option>
-              ))}
-            </select>
+            {provinces && (
+              <SearchSelect
+                onChange={(e) =>
+                  e !== null ? setprovinceId(e.id) : setprovinceId(1)
+                }
+                data={provinces}
+                value={provinceId}
+                defaultValue={provinceId}
+                isDiff={true}
+                diffName="name"
+                label="استان"
+              />
+            )}
           </div>
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              شهر
-            </label>
-            <select
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              name=""
-              id=""
-              onChange={(e) => {
-                setCityId(e.target.value);
-              }}
-            >
-              {cities?.map((value, key) => (
-                <option key={key} value={value.id}>
-                  {value.name}
-                </option>
-              ))}
-            </select>
+            {cities && (
+              <SearchSelect
+                onChange={(e) =>
+                  e !== null ? setCityId(e.id) : setCityId(cities[0].id)
+                }
+                data={cities}
+                value={cityId}
+                defaultValue={cityId}
+                isDiff={true}
+                diffName="name"
+                label="شهر"
+              />
+            )}
           </div>
-
-          {neghberhoods ? (
-            <div className="flex-1">
-              <label
-                htmlFor="first_name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                محله
-              </label>
-              <select
-                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                name=""
-                onChange={(e) => {
-                  setneighborhoodId(e.target.value);
-                }}
-                id=""
-              >
-                {neghberhoods?.map((value, key) => (
-                  <option key={key} value={value.id}>
-                    {value.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          ) : (
-            ""
+          {neghberhoods && (
+            <SearchSelect
+              onChange={(e) =>
+                e !== null
+                  ? setneighborhoodId(e.id)
+                  : setneighborhoodId(neghberhoods[0].id)
+              }
+              data={neghberhoods}
+              value={neighborhoodId}
+              defaultValue={neighborhoodId}
+              // isDiff={true}
+              // diffName="name"
+              label="محله"
+            />
           )}
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 mb-6">
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              خیابان
-            </label>
-            <input
+            <TextField
               type="text"
+              variant="standard"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
-              onChange={(e) => setStreet(e.target.value)}
+              label="خیابان"
+              value={street}
+              onChange={(e) => setStreetAndUpdateAddress(e.target.value)}
             />
           </div>
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              کوچه
-            </label>
-            <input
+            <TextField
               type="text"
+              variant="standard"
+              label="کوچه"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
+              value={alley}
               onChange={(e) => setAlley(e.target.value)}
             />
           </div>
+        </div>
+        <div className="flex gap-4">
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              پلاک
-            </label>
-            <input
+            <TextField
               type="text"
+              variant="standard"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
+              label="پلاک"
+              value={plaque}
               onChange={(e) => setPlaque(e.target.value)}
             />
           </div>
           <div className="flex-1">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              طبقه
-            </label>
-            <input
+            <TextField
               type="text"
+              variant="standard"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
+              label="طبقه"
+              value={floorNumber}
               onChange={(e) => setFloorNumber(e.target.value)}
             />
           </div>
+          <div className="flex-1">
+            <TextField
+              type="text"
+              variant="standard"
+              id="first_name"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              required
+              label="کد پستی"
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+            />
+          </div>
         </div>
-        <label
-          htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          توضیحات
-        </label>
-        <input
-          type="text"
-          id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          required
-          onChange={(e) => setDescription(e.target.value)}
-        />
       </div>
 
       <SaveBar action={save} />

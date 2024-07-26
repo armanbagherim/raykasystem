@@ -1,81 +1,61 @@
 "use client";
-import { useFetcher } from "@/app/components/global/fetcher";
+import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "@/app/components/global/loading";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { pageTitle } from "@/app/admin/layout";
 import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
+  const [triggered, setTriggered] = useState(false);
 
-  useEffect(() => {
-    setTitle({
-      title: "فیلد ها",
-      buttonTitle: "افزودن فیلد",
-      link: `/admin/eav/entityTypes/fields/${params.id}/new`,
-    });
-  }, []);
-
-  const {
-    data: categories,
-    isLoading: categoriesIsLoading,
-    error: categoriesError,
-  } = useFetcher(
-    `/v1/api/eav/admin/attributes?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false&entityTypeId=${+params.id}`,
+  const { data: eav, isLoading: eavIsLoading } = useFetcher(
+    `/v1/api/eav/admin/entityTypes/${params.id}`,
     "GET"
   );
 
-  // const columns: GridColDef[] = [
-  //   {
-  //     field: "id",
-  //     headerName: "شناسه",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "name",
-  //     headerName: "نام ",
-  //     width: 150,
-  //   },
+  useEffect(() => {
+    if (!eavIsLoading) {
+      setTitle({
+        title: `فیلد های دسته ${eav.result.name ?? ""}`,
+        buttonTitle: "افزودن فیلد",
+        link: `/admin/eav/entityTypes/fields/${params.id}/new`,
+      });
+    }
+  }, [eavIsLoading]);
 
-  //   {
-  //     field: "list",
-  //     headerName: "ویرایش",
-  //     width: 400,
-  //     renderCell: ({ row }) => (
-  //       <>
-  //         <a href={`/admin/eav/entityTypes/fields/${params.id}/edit/${row.id}`}>
-  //           <button
-  //             type="button"
-  //             className="focus:outline-none ml-4 text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-  //           >
-  //             ویرایش
-  //           </button>
-  //         </a>
-  //         {row.attributeType.valueBased == true ? (
-  //           <a href={`/admin/eav/entityTypes/fields/${row.id}/values`}>
-  //             <button
-  //               type="button"
-  //               className="focus:outline-none ml-4 text-white bg-cyan-700 hover:bg-cyan-700 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-  //             >
-  //               مقادیر
-  //             </button>
-  //           </a>
-  //         ) : (
-  //           ""
-  //         )}
-  //       </>
-  //     ),
-  //   },
-  // ];
-  // if (categoriesIsLoading) {
-  //   return <Loading />;
-  // }
+  const deleteGuarantee = async (id) => {
+    try {
+      const result = await Swal.fire({
+        title: "مطمئن هستید؟",
+        text: "با حذف این گزینه امکان بازگشت آن وجود ندارد",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله حذفش کن",
+        cancelButtonText: "لغو",
+      });
 
+      if (result.isConfirmed) {
+        const req = await fetcher({
+          url: `/v1/api/eav/admin/attributes/${id}`,
+          method: "DELETE",
+        });
+        toast.success("موفق");
+        setTriggered(!triggered);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   const columns = [
     {
       accessorKey: "id",
@@ -111,22 +91,23 @@ export default function Eav({ params }) {
       maxSize: 200, //max size enforced during resizing
       size: 200, //medium column
       Cell({ row }) {
-        return !row.required ? "غیراجباری" : "اجباری";
+        return !row.original.required ? "غیراجباری" : "اجباری";
       },
+    },
+    {
+      accessorKey: "attributeType.name",
+      header: "نوع فیلد",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 200, //max size enforced during resizing
+      size: 200, //medium column
     },
     {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
-          {console.log(row)}
           {row?.original?.attributeType?.valueBased == true ? (
             <a href={`/admin/eav/entityTypes/fields/${row.id}/values`}>
               <Button type="button" variant="outlined">
@@ -136,6 +117,11 @@ export default function Eav({ params }) {
           ) : (
             ""
           )}
+          <a onClick={(e) => deleteGuarantee(row.id)}>
+            <IconButton aria-label="delete" color="error">
+              <DeleteIcon />
+            </IconButton>
+          </a>
           <a href={`/admin/eav/entityTypes/fields/${params.id}/edit/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
@@ -151,6 +137,7 @@ export default function Eav({ params }) {
       <LightDataGrid
         url={`/v1/api/eav/admin/attributes?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false&entityTypeId=${+params.id}`}
         columns={columns}
+        triggered={triggered}
       />
     </div>
   );

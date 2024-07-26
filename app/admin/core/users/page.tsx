@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
 import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ChangeFormatDate from "@/app/components/global/ChangeFormatDate";
 
@@ -56,20 +56,15 @@ export default function Users() {
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
       size: 180, //medium column
-      Cell({row}){
-        return ChangeFormatDate(row.original.updatedAt); 
-      }
+      Cell({ row }) {
+        return ChangeFormatDate(row.original.updatedAt);
+      },
     },
     {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
           <a href={`/admin/core/users/${row.id}`}>
@@ -77,11 +72,11 @@ export default function Users() {
               <ModeEditIcon />
             </IconButton>
           </a>
-          {/* <a onClick={(e) => deleteEavType(row.id)}>
-          <IconButton aria-label="delete" color="error">
-            <DeleteIcon />
-          </IconButton>
-        </a> */}
+          <Link
+            href={`/admin/ecommerce/totalOrders?phoneNumber=${row.original.phoneNumber}`}
+          >
+            <Button variant="outlined">سفارشات این کاربر</Button>
+          </Link>
         </>
       ),
     },

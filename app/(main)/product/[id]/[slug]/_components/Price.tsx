@@ -1,17 +1,16 @@
 import React from "react";
 
 export default function Price({ data }) {
-  console.log(data);
   return data ? (
     <div className="text-left text-base">
-      {data?.firstPrice.appliedDiscount ? (
+      {data?.firstPrice?.appliedDiscount ? (
         <>
           <span className="mb-1 block">
             <span className="text-xs mr-2  bg-primary text-white rounded-full px-2 py-1">
-              {data?.firstPrice.appliedDiscount?.amount}
-              {data?.firstPrice.appliedDiscount?.actionType === 1
+              {data?.firstPrice?.appliedDiscount?.amount}
+              {data?.firstPrice?.appliedDiscount?.actionType === 1
                 ? "%"
-                : "تومان"}
+                : "ءتء"}
             </span>
             <span className="opacity-75 text-xs line-through">
               {Number(data?.firstPrice?.price).toLocaleString()}
@@ -21,12 +20,12 @@ export default function Price({ data }) {
             {Number(
               data?.firstPrice?.appliedDiscount?.newPrice
             ).toLocaleString()}{" "}
-            تومان
+            ءتء
           </p>
         </>
       ) : (
         <p className="text-sm">
-          {Number(data?.firstPrice?.price).toLocaleString()} تومان
+          {Number(data?.firstPrice?.price).toLocaleString()} ءتء
         </p>
       )}
     </div>

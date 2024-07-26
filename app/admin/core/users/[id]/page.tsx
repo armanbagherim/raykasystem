@@ -104,7 +104,7 @@ export default function Users({ params }: PageProps): JSX.Element {
         toast.success("موفق");
         setTimeout(() => {
           router.push("/admin/core/users");
-        }, 2000);
+        }, 500);
       })
       .catch((err) => {
         toast.error(err);
@@ -131,7 +131,7 @@ export default function Users({ params }: PageProps): JSX.Element {
         <div className="mb-5 flex-1">
           <label
             htmlFor="firstname"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             نام
           </label>
@@ -141,14 +141,14 @@ export default function Users({ params }: PageProps): JSX.Element {
             name="firstname"
             value={formData.firstname}
             onChange={handleInputChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             placeholder="نام"
           />
         </div>
         <div className="mb-5 flex-1">
           <label
             htmlFor="lastname"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             نام خانوادگی
           </label>
@@ -158,14 +158,14 @@ export default function Users({ params }: PageProps): JSX.Element {
             name="lastname"
             value={formData.lastname}
             onChange={handleInputChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             placeholder="نام خانوادگی"
           />
         </div>
         <div className="mb-5 flex-1">
           <label
             htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             ایمیل
           </label>
@@ -175,14 +175,14 @@ export default function Users({ params }: PageProps): JSX.Element {
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             placeholder="ایمیل"
           />
         </div>
         <div className="mb-5 flex-1">
           <label
             htmlFor="phoneNumber"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             شماره موبایل
           </label>
@@ -192,7 +192,7 @@ export default function Users({ params }: PageProps): JSX.Element {
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={handleInputChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             placeholder="شماره موبایل"
           />
         </div>
@@ -214,12 +214,12 @@ export default function Users({ params }: PageProps): JSX.Element {
                     onChange={() => handleRoleChange(role.id)}
                   />
                 </div>
-              </div> 
+              </div>
             </div>
           ))}
         </div>
       </div>
-      <SaveBar action={save}  backUrl={'/admin/core/users/'} />
+      <SaveBar action={save} backUrl={"/admin/core/users/"} />
     </div>
   );
 }

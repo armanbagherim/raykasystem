@@ -9,8 +9,6 @@ export const store = configureStore({
   },
 });
 
-console.log(fetchAndSetInitialState());
-
 store.dispatch(fetchAndSetInitialState());
 
 export type RootState = ReturnType<typeof store.getState>;

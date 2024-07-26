@@ -11,18 +11,20 @@ const GenericInput = ({
 }) => {
   if (type === "select") {
     return (
-      <SelectSearch
-        isDiff={true}
-        diffName={"value"}
-        data={options}
-        onChange={onChange}
-        label={label}
-        defaultValue={defaultValue}
-      />
+      <div className="flex-1 mb-8">
+        <SelectSearch
+          isDiff={true}
+          diffName={"value"}
+          data={options}
+          onChange={onChange}
+          label={label}
+          defaultValue={defaultValue}
+        />
+      </div>
     );
   } else if (type === "text") {
     return (
-      <div className="flex-1 mb-6">
+      <div className="flex-1 mb-4">
         <TextField
           onChange={(e) => onChange(e.target.value)}
           required
@@ -30,7 +32,7 @@ const GenericInput = ({
           size="small"
           id="outlined-basic"
           label={label}
-          variant="standard"
+          variant="outlined"
           fullWidth
           value={defaultValue}
         />

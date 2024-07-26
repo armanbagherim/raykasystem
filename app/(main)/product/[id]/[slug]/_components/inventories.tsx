@@ -6,9 +6,8 @@ import { Cart } from "@/app/components/design/Icons";
 import Link from "next/link";
 
 export default function Inventories({ product, addToCart, inventoryStatusId }) {
-  console.log(product);
   return (
-    <div className="container mx-auto mt-10  gap-10 bg-customGray rounded-3xl p-5">
+    <div className="container mx-auto mt-10  gap-10 bg-customGray rounded-3xl !p-5">
       {product[0] !== "" ? (
         <>
           <h4 className="font-bold  mb-4">فروشندگان این کالا</h4>
@@ -16,25 +15,29 @@ export default function Inventories({ product, addToCart, inventoryStatusId }) {
             return (
               <div key={key} className="mb-5 text-xl flex">
                 <div className="bg-white flex flex-wrap md:flex-nowrap rounded-2xl p-3 px-6 gap-14 items-center justify-between w-full">
-                  <div className="flex justify-between w-full">
+                  <div className="flex flex-wrap justify-start md:justify-between w-full ">
                     <div className="text-base mb-2">
-                      <p className="mb-2 font-bold text-primary">
+                      <Link
+                        href={`/sellers/${value?.vendor?.slug}`}
+                        className="mb-2 font-bold text-primary block"
+                      >
                         فروشنده: {value?.vendor?.name || "فعالی وجود ندارد"}
-                      </p>
+                      </Link>
                       <Link href={`/guarantees/${value?.guarantee?.slug}`}>
                         {value?.guarantee?.name} {value?.guaranteeMonth?.name}
                       </Link>
                     </div>
                     <div className="flex flex-col md:flex-row gap-4 items-end md:items-center">
-                      {value.inventoryStatusId === 1 ? (
-                        <div className="text-sm bg-green-100 px-3 py-2 rounded-2xl text-green-800">
-                          موجود
+                      {value?.qty < 10 ? (
+                        <div className="bg-[#ffe6f6] p-4 rounded-3xl text-xs text-[#fa0057]">
+                          فقط <span className="font-bold">{value?.qty}</span>{" "}
+                          عدد باقی مانده
                         </div>
                       ) : (
-                        <div className="text-sm">ناموجود</div>
+                        ""
                       )}
 
-                      {value.onlyProvince && (
+                      {value?.onlyProvince && (
                         <div className="bg-[#E6F3FF] p-4 rounded-3xl text-xs text-[#008AFA]">
                           ارسال فقط به شهر{" "}
                           <span className="font-bold">
@@ -47,12 +50,12 @@ export default function Inventories({ product, addToCart, inventoryStatusId }) {
 
                   <div className="flex text-left mx-auto justify-between md:justify-end w-full">
                     <div className="items-center my-auto">
-                      <Price data={value} />
+                      <Price data={value ?? null} />
                     </div>
                     <div>
                       <button
                         onClick={(e) => {
-                          addToCart(value.id);
+                          addToCart(value?.id);
                         }}
                         className="bg-primary mr-4 text-slate-100 p-3 text-sm rounded-2xl items-center my-auto"
                       >

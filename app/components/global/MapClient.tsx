@@ -1,19 +1,12 @@
-import type { FunctionComponent } from "react";
-
-import mapboxgl from "mapbox-gl";
-import React, { memo, useEffect, useState } from "react";
-
-import "mapbox-gl/dist/mapbox-gl.css";
-import { Box } from "@mui/material";
-
-mapboxgl.accessToken =
-  "pk.eyJ1IjoicmFtaW5tb2hhIiwiYSI6ImNscnc1dGU1aTEwMDEyam1yMXRnbmVqYzEifQ.OKYpf7J9BpjWYLZDOGUX1Q";
-
-mapboxgl.setRTLTextPlugin(
-  "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js",
-  () => {},
-  true // Lazy load the plugin
-);
+import React, { memo, useEffect, useState, useRef } from "react";
+import { Map, Overlay, Feature } from "ol";
+import { Point } from "ol/geom";
+import { fromLonLat, toLonLat } from "ol/proj";
+import NeshanMap, {
+  NeshanMapRef,
+  Ol,
+  OlMap,
+} from "@neshan-maps-platform/react-openlayers";
 
 const DEFAULT_LOCATION = {
   lat: 35.65326,
@@ -21,8 +14,8 @@ const DEFAULT_LOCATION = {
 };
 
 interface LocationState {
-  lat: number;
-  lng: number;
+  lat: number | null;
+  lng: number | null;
 }
 
 export interface MapProps {
@@ -30,111 +23,102 @@ export interface MapProps {
   defaultLocation?: LocationState;
   onAddressChange?: (address: string) => void;
   onLocationChange?: (location: LocationState) => void;
+  isAddressManuallyChanged?: boolean;
 }
-const Map: FunctionComponent<MapProps> = ({
+
+const Maps: React.FunctionComponent<MapProps> = ({
   defaultLocation = DEFAULT_LOCATION,
   onAddressChange,
   onLocationChange,
+  isAddressManuallyChanged = false,
   height = 200,
 }) => {
-  const [location, setLocation] = useState<LocationState>(defaultLocation);
-  const [isTouched, setIsTouched] = useState<boolean>(false);
+  const mapRef = useRef<NeshanMapRef | null>(null);
+  const [ol, setOl] = useState<Ol>();
+  const [olMap, setOlMap] = useState<OlMap>();
+  const [marker, setMarker] = useState<Overlay | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<LocationState>({
+    lat: null,
+    lng: null,
+  });
+  const [lastLocation, setLastLocation] = useState<LocationState | null>(null);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
 
-  useEffect(() => {
-    setLocation(defaultLocation);
-  }, [defaultLocation]);
+  const onInit = (ol: Ol, map: OlMap) => {
+    setOl(ol);
+    setOlMap(map);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        `https://api.teh-1.snappmaps.ir/reverse/v1/?lat=${location.lat}&lon=${location.lng}&type=driver&display=false`,
-        {
-          method: "GET",
-          headers: {
-            "X-Smapp-Key": "214906b54f2b776d0fcd5ef52b128c11",
-          },
-        }
-      );
-      const data = await response.json();
-      console.log(data);
-      const address = (
-        data.result.components as {
-          name: string;
-          type: string;
-        }[]
-      )
-        .filter((item) => {
-          return (
-            !!item.name &&
-            item.type !== "city" &&
-            item.type !== "province" &&
-            item.type !== "poi"
-          );
-        })
-        .map((item) => {
-          return item.name;
-        })
-        .reverse()
-        .join("، ");
+    const markerElement = document.createElement("div");
+    markerElement.className = "marker";
+    markerElement.style.width = "114px";
+    markerElement.style.height = "114px";
+    markerElement.style.backgroundImage = "url('/assets/map/img_pin.png')";
+    markerElement.style.backgroundSize = "contain";
 
-      onAddressChange?.(address);
-    } catch {
-      // TODO: should be handled later
-    }
+    const markerFeature = new Feature({
+      geometry: new Point(
+        fromLonLat([defaultLocation.lng, defaultLocation.lat])
+      ),
+    });
+
+    const markerOverlay = new Overlay({
+      element: markerElement,
+      positioning: "bottom-center",
+      stopEvent: false,
+      feature: markerFeature,
+    });
+
+    map.addOverlay(markerOverlay);
+    setMarker(markerOverlay);
+
+    setTimeout(() => {
+      const view = map.getView();
+      view.animate({
+        center: fromLonLat([defaultLocation.lng, defaultLocation.lat]),
+        zoom: 12,
+        duration: 1000,
+      });
+    }, 2000);
   };
 
   useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: "map",
-      style: "https://tile.snappmaps.ir/styles/snapp-style/style.json",
-      center: [location.lng, location.lat],
-      zoom: 12,
-    });
+    if (olMap && marker) {
+      olMap.on("moveend", () => {
+        const center = olMap.getView().getCenter();
+        if (center) {
+          const [longitude, latitude] = toLonLat(center);
+          const newLocation = { lat: latitude, lng: longitude };
 
-    const mapMarker = document.createElement("img");
-    mapMarker.src = "/assets/map/img_pin.png";
-    mapMarker.style.width = "144px";
-    mapMarker.style.height = "158px";
-
-    const marker = new mapboxgl.Marker({
-      element: mapMarker,
-    })
-      .setLngLat([location.lng, location.lat])
-      .addTo(map);
-
-    map.on("move", () => {
-      const center = map.getCenter();
-      const newLocation: LocationState = {
-        lat: +center.lat.toFixed(6),
-        lng: +center.lng.toFixed(6),
-      };
-
-      setLocation(newLocation);
-
-      onLocationChange?.(newLocation);
-
-      setIsTouched(true);
-      marker.setLngLat([center.lng, center.lat]);
-    });
-  }, [defaultLocation]);
-
-  useEffect(() => {
-    if (!isTouched) {
-      return;
+          if (
+            !lastLocation ||
+            lastLocation.lat !== newLocation.lat ||
+            lastLocation.lng !== newLocation.lng
+          ) {
+            onLocationChange?.(newLocation);
+            setCurrentLocation(newLocation);
+            setLastLocation(newLocation);
+            setHasUserInteracted(true); // User has interacted with the map
+          }
+        }
+      });
     }
+  }, [olMap, marker, ol, onLocationChange, lastLocation]);
 
-    const timeOut = setTimeout(fetchData, 500);
-
-    return () => {
-      clearTimeout(timeOut);
-    };
-  }, [location]);
+  // Reset logic can be added here if needed, e.g., button click to reset map position
 
   return (
-    <Box className="relative w-[950px] h-96">
-      <Box id="map" style={{ width: "100%", height: "100%" }} />
-    </Box>
+    <NeshanMap
+      mapKey="web.17a0c7f735234ae7acfa9eac73c9ca2e"
+      defaultType="neshan"
+      center={{
+        latitude: defaultLocation.lat ?? currentLocation.lat,
+        longitude: defaultLocation.lng ?? currentLocation.lng,
+      }}
+      style={{ height: `${height}px`, width: "100%" }}
+      onInit={onInit}
+      zoom={12}
+    />
   );
 };
 
-export default memo(Map);
+export default memo(Maps);

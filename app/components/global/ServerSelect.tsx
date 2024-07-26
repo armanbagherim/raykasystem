@@ -10,10 +10,26 @@ const ServerSelect = ({ type, init, setRequestBody, requestBody }) => {
     label: item.value,
     value: item.key,
   }));
+  const debounce = (fn, delay) => {
+    let timeoutId;
+    return (...args) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        fn(...args);
+      }, delay);
+    };
+  };
+  const loadOptions = debounce(async (inputValue, callback) => {
+    if (!session) {
+      return callback([]); // or return an empty array if session is not available
+    }
 
-  const loadOptions = async (inputValue, callback) => {
     const response = await fetch(
-      `https://nest-jahizan.chbk.run/v1/api/ecommerce/admin/discountConditionValues?conditionTypeId=${type}&orderBy=id&search=${encodeURIComponent(
+      `${
+        process.env.NEXT_PUBLIC_BASE_URL
+      }/v1/api/ecommerce/admin/discountConditionValues?conditionTypeId=${type}&orderBy=id&search=${encodeURIComponent(
         inputValue
       )}`,
       {
@@ -28,7 +44,7 @@ const ServerSelect = ({ type, init, setRequestBody, requestBody }) => {
       value: item.key,
     }));
     callback(transformedData);
-  };
+  }, 400);
 
   const handleChange = (selectedOption) => {
     setRequestBody({ ...requestBody, conditionValue: selectedOption.value });
@@ -40,7 +56,7 @@ const ServerSelect = ({ type, init, setRequestBody, requestBody }) => {
       defaultOptions
       loadOptions={loadOptions}
       onChange={handleChange}
-      placeholder="Search..."
+      placeholder="جست و جو ..."
       defaultValue={initialData} // Set the initial data
     />
   );

@@ -1,56 +1,34 @@
-const Orders = () => {
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import UserOrderModule from "./UserOrderModule";
+
+async function getData(session) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/orders?ingorePaging=true`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.token}`,
+      },
+    }
+  );
+  // The return value is *not* serialized
+  // You can return Date, Map, Set, etc.
+
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+const Orders = async () => {
+  const session = await getServerSession(authOptions);
+
+  const data = await getData(session);
   return (
     <>
-      <div className="md:col-span-3">
-        <div className="grid grid-cols-5 mt-5 text-[12px] font-bold p-5">
-          <div className="col-span-1 font-bold text-sm">شماره سفارش</div>
-          <div className="col-span-1 font-bold text-sm">کد رهگیری</div>
-          <div className="col-span-1 font-bold text-sm">تاریخ سفارش</div>
-          <div className="col-span-1 font-bold text-sm">مبلغ پرداختی</div>
-        </div>
-        <div className="grid grid-cols-5 shadow-lg bg-customGray text-xs rounded-3xl mt-2 p-5">
-          <div className="col-span-1 text-sm">111222333</div>
-          <div className="col-span-1 text-sm">998877445</div>
-          <div className="col-span-1 text-sm">1403/01/02</div>
-          <div className="col-span-1 text-sm">{Number(124666).toLocaleString()} تومان</div>
-          <div className="col-span-1 text-sm text-left pl-2">
-            <a
-              className="bg-primary p-3 rounded rounded-xl text-white"
-              href="#"
-            >
-              نمایش جزئیات
-            </a>
-          </div>
-        </div>
-        <div className="grid grid-cols-5 shadow-lg bg-customGray text-xs rounded-3xl mt-2 p-5">
-          <div className="col-span-1 text-sm">251478461</div>
-          <div className="col-span-1 text-sm">147852369</div>
-          <div className="col-span-1 text-sm">1403/01/05</div>
-          <div className="col-span-1 text-sm">{Number(124666).toLocaleString()} تومان</div>
-          <div className="col-span-1 text-sm text-left pl-2">
-            <a
-              className="bg-primary p-3 rounded rounded-xl text-white"
-              href="#"
-            >
-              نمایش جزئیات
-            </a>
-          </div>
-        </div>
-        <div className="grid grid-cols-5 shadow-lg bg-customGray text-xs rounded-3xl mt-2 p-5">
-          <div className="col-span-1 text-sm">111222333</div>
-          <div className="col-span-1 text-sm">998877445</div>
-          <div className="col-span-1 text-sm">1403/01/02</div>
-          <div className="col-span-1 text-sm">{Number(124666).toLocaleString()} تومان</div>
-          <div className="col-span-1 text-sm text-left pl-2">
-            <a
-              className="bg-primary p-3 rounded rounded-xl text-white"
-              href="#"
-            >
-              نمایش جزئیات
-            </a>
-          </div>
-        </div>
-      </div>
+      <UserOrderModule data={data} />
     </>
   );
 };

@@ -1,6 +1,32 @@
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
+import { useMemo } from "react";
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef,
+} from "material-react-table";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { Button, IconButton } from "@mui/material";
+import Link from "next/link";
+interface InventoryItem {
+  id: string;
+  vendorName: string;
+  vendor: { name: string };
+  vendorAddressName: string;
+  vendorAddress: { address: { name: string } };
+  colorName: string;
+  color: { name: string };
+  guaranteeName: string;
+  guarantee: { name: string };
+  guaranteeMonthName: string;
+  guaranteeMonth: { name: string };
+  onlyProvinceName: string;
+  onlyProvince: { name: string };
+  qty: number;
+  firstPrice: { price: number } | number;
+  secondaryPrice: { price: number } | number;
+  buyPrice: number;
+}
 
 export default function DataGridLite({
   data,
@@ -8,138 +34,139 @@ export default function DataGridLite({
   removeInventory,
   key,
 }) {
-  const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "id",
-    },
-    {
-      field: "vendorName",
-      headerName: "نام فروشگاه",
-      width: 100,
-      valueGetter({ row }) {
-        return !row.vendorName ? row.vendor.name : row.vendorName;
+  const columns = useMemo<MRT_ColumnDef<InventoryItem>[]>(
+    () => [
+      {
+        accessorKey: "id",
+        header: "ID",
+        maxSize: 30,
       },
-    },
-    {
-      field: "vendorAddressName",
-      headerName: "نام آدرس",
-      width: 100,
-      valueGetter({ row }) {
-        return !row.vendorAddressName
-          ? row.vendorAddress.address.name
-          : row.vendorAddressName;
+      {
+        accessorKey: "vendorName",
+        header: "نام فروشگاه",
+        maxSize: 50,
+        Cell: ({ row }) =>
+          !row.original.vendorName
+            ? row.original.vendor.name
+            : row.original.vendorName,
       },
-    },
-    {
-      field: "colorName",
-      headerName: "رنگ",
-      width: 100,
-      valueGetter({ row }) {
-        return !row.colorName ? row.color.name : row.colorName;
+      {
+        accessorKey: "vendorAddressName",
+        header: "نام آدرس",
+        Cell: ({ row }) =>
+          !row.original.vendorAddressName
+            ? row.original.vendorAddress?.address?.name
+            : row.original.vendorAddressName,
       },
-    },
-    {
-      field: "guaranteeName",
-      headerName: "نام گارانتی",
-      width: 100,
-      valueGetter({ row }) {
-        return !row.guaranteeName ? row.guarantee.name : row.guaranteeName;
+      {
+        accessorKey: "colorName",
+        header: "رنگ",
+        Cell: ({ row }) =>
+          !row.original.colorName
+            ? row.original.color?.name
+            : row.original.colorName,
       },
-    },
-    {
-      field: "guaranteeMonthName",
-      headerName: "تعداد ماه گارانتی",
-      width: 100,
-      valueGetter({ row }) {
-        return !row.guaranteeMonthName
-          ? row.guaranteeMonth.name
-          : row.guaranteeMonthName;
+      {
+        accessorKey: "guaranteeName",
+        header: "نام گارانتی",
+        Cell: ({ row }) =>
+          !row.original.guaranteeName
+            ? row.original.guarantee?.name
+            : row.original.guaranteeName,
       },
-    },
-    {
-      field: "onlyProvinceName",
-      headerName: "استان فروش",
-      width: 100,
-      valueGetter({ row }) {
-        return !row.onlyProvinceName
-          ? row.onlyProvince?.name || "-"
-          : row.onlyProvinceName || "-";
+      {
+        accessorKey: "guaranteeMonthName",
+        header: "تعداد ماه گارانتی",
+        Cell: ({ row }) =>
+          !row.original.guaranteeMonthName
+            ? row.original.guaranteeMonth?.name
+            : row.original.guaranteeMonthName,
       },
-    },
+      {
+        accessorKey: "onlyProvinceName",
+        header: "استان فروش",
+        Cell: ({ row }) =>
+          !row.original.onlyProvinceName
+            ? row.original.onlyProvince?.name || "-"
+            : row.original.onlyProvinceName || "-",
+      },
+      {
+        accessorKey: "qty",
+        header: "تعداد",
+      },
 
-    {
-      field: "qty",
-      headerName: "تعداد",
-      width: 100,
-    },
-    {
-      field: "weight",
-      headerName: "وزن",
-      width: 100,
-    },
-
-    {
-      field: "firstPrice",
-      headerName: "قیمت اقساطی",
-      width: 100,
-      valueGetter({ row }) {
-        return row.firstPrice.price ? row.firstPrice.price : row.firstPrice;
+      {
+        accessorKey: "firstPrice",
+        header: "قیمت اقساطی",
+        Cell: ({ row }) =>
+          row.original.firstPrice.price
+            ? row.original.firstPrice.price
+            : row.original.firstPrice,
       },
-    },
-    {
-      field: "secondaryPrice",
-      headerName: "قیمت نقدی",
-      width: 100,
-      valueGetter({ row }) {
-        return row.secondaryPrice.price
-          ? row.secondaryPrice.price || "-"
-          : row.secondaryPrice || "-";
+      {
+        accessorKey: "secondaryPrice",
+        header: "قیمت نقدی",
+        Cell: ({ row }) =>
+          row.original.secondaryPrice.price
+            ? row.original.secondaryPrice.price || "-"
+            : row.original.secondaryPrice || "-",
       },
-    },
-    {
-      field: "buyPrice",
-      headerName: "قیمت خرید",
-      width: 100,
-      valueGetter({ row }) {
-        return !row.buyPrice ? row.buyPrice : row.buyPrice;
+      {
+        accessorKey: "buyPrice",
+        header: "قیمت خرید",
+        Cell: ({ row }) =>
+          !row.original.buyPrice
+            ? row.original.buyPrice
+            : row.original.buyPrice,
       },
-    },
+      {
+        header: "عملیات",
+        size: 90,
 
-    {
-      field: "Actions",
-      headerName: "عملیات",
-      width: 200,
-      renderCell: ({ row }) => (
-        <>
-          <button
-            type="button"
-            className="ml-4 focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-            onClick={(e) => handleClickOpen(row.id)}
-          >
-            ویرایش
-          </button>
-
-          <button
-            type="button"
-            className="ml-4 focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-            onClick={(e) => removeInventory(row.id)}
-          >
-            حذف
-          </button>
-        </>
-      ),
-    },
-  ];
-
-  return (
-    <div>
-      <DataGrid
-        getRowId={(row) => Math.random()}
-        key={key}
-        rows={data}
-        columns={columns}
-      />
-    </div>
+        Cell: ({ row }) => (
+          <>
+            <IconButton
+              onClick={(e) => {
+                handleClickOpen(row.original.id);
+              }}
+              aria-label="delete"
+              color="primary"
+            >
+              <ModeEditIcon />
+            </IconButton>
+            <IconButton
+              onClick={(e) => removeInventory(row.original.id)}
+              aria-label="delete"
+              color="error"
+            >
+              <DeleteIcon />
+            </IconButton>
+            <Link
+              target="_blank"
+              href={`/admin/ecommerce/products/history/${row.original.id}`}
+            >
+              <Button variant="contained">گردش</Button>
+            </Link>
+          </>
+        ),
+      },
+    ],
+    []
   );
+
+  const table = useMaterialReactTable({
+    columns,
+    data,
+    enableColumnOrdering: true,
+    enableGlobalFilter: false,
+    enableColumnPinning: true,
+    initialState: {
+      expanded: true,
+      showColumnFilters: false,
+      columnPinning: { right: ["Actions"] },
+      density: "compact",
+    },
+  });
+
+  return <MaterialReactTable table={table} />;
 }

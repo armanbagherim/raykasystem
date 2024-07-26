@@ -9,7 +9,7 @@ import {
   Sorticon,
 } from "@/app/components/design/Icons";
 import Numberpaginate from "@/app/components/design/Slider/Numberpaginate";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../../components/Sidebar";
 import ProductCard from "@/app/components/design/Cards/ProductCard/ProductCard";
 import { Suspense } from "react";
 
@@ -17,7 +17,7 @@ async function getBrand(params) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/brands/slug/${params.slug}`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
 
@@ -27,7 +27,7 @@ async function getColors() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/colors?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
 
@@ -42,7 +42,7 @@ async function getPriceRange() {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/priceRange`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     }
   );
 
@@ -66,7 +66,7 @@ async function getProducts(searchParams, brand) {
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?${queryString}&brands=${brand}&limit=12`;
 
   const res = await fetch(url, {
-    cache: "force-cache",
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -78,8 +78,16 @@ async function getProducts(searchParams, brand) {
 
 export async function generateMetadata({ params }): Promise<Metadata> {
   const { result: brand } = await getBrand(params);
+
   return {
-    title: `جهیزان | ${brand.name}`,
+    title: `جهیزان | ${brand.metaTitle ? brand.metaTitle : brand?.name}`,
+    description: brand?.metaDescription,
+    keywords: brand?.metaKeywords,
+    twitter: {
+      images: brand.attachment
+        ? `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/brands/image/${brand?.attachment?.fileName}`
+        : null,
+    },
   };
 }
 
@@ -92,17 +100,18 @@ const Sellerpage = async ({ params, searchParams }) => {
 
   return (
     <>
-      <div className="container justify-center mx-auto mt-10 mb-64">
-        <div className="text-3xl p-5 pr-7">
+      <div className="container justify-center mx-auto mt-10 mb-20">
+        <div className="text-3xl p-5 pr-4 md:pr-7">
+          {" "}
           <h1 className="peyda text-[26px]">{brand.name}</h1>
         </div>
         <div className="mt-7">
-          <div className="grid grid-cols-12">
+          <div className="grid grid-cols-12 h-full">
             <Sidebar colors={colors} range={range} />
-            <div className="col-span-12 md:col-span-9 p-4">
+            <div className="col-span-12 md:col-span-9 p-0 sm:p-4">
               <div>
-                <div className="p-2 grid grid-cols-4 ">
-                  <div className="flex gap-2 col-span-3 whitespace-nowrap overflow-y-scroll md:overflow-y-hidden">
+                <div className="p-2 grid grid-cols-1 ">
+                  {/* <div className="flex gap-2 col-span-3 whitespace-nowrap overflow-y-scroll md:overflow-y-hidden">
                     <span className="items-center flex">
                       <Sorticon />
                     </span>
@@ -123,7 +132,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                         <a href="#">محبوبیت</a>
                       </span>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-span-1 items-center flex justify-end">
                     <div className="text-xs text-slate-500">
                       {products?.total} کالا
@@ -131,7 +140,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                   </div>
                 </div>
                 <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 sm:gap-6 gap-2">
                     {products?.result?.map((value, key) => (
                       <ProductCard
                         key={key}
@@ -142,13 +151,19 @@ const Sellerpage = async ({ params, searchParams }) => {
                     ))}
                   </div>
                 </div>
-                <div>
-                  <Numberpaginate items={products} />
-                </div>
+              </div>
+              <div className="w-full col-span-12 flex justify-center overflow-x-auto">
+                <Numberpaginate items={products} />
               </div>
             </div>
           </div>
         </div>
+        {brand?.description && (
+          <div
+            className="contentLong"
+            dangerouslySetInnerHTML={{ __html: brand?.description }}
+          ></div>
+        )}
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -6,9 +6,9 @@ import {
 import { MRT_Localization_FA } from "material-react-table/locales/fa";
 import { useSession } from "next-auth/react";
 
-const LightDataGrid = ({ url, columns }) => {
+const LightDataGrid = ({ url, columns, triggered }) => {
   const { data: session } = useSession();
-  console.log(url);
+
   //data and fetching state
   const [data, setData] = useState([]);
   const [isError, setIsError] = useState(false);
@@ -24,15 +24,16 @@ const LightDataGrid = ({ url, columns }) => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const addressInitialized = useRef(false);
 
   const fetchData = async () => {
-    if (!data.length) {
+    if (!data?.length) {
       setIsLoading(true);
     } else {
       setIsRefetching(true);
     }
 
-    const urls = new URL(`${url}`, "https://nest-jahizan.chbk.run");
+    const urls = new URL(`${url}`, process.env.NEXT_PUBLIC_BASE_URL);
     urls.searchParams.set(
       "offset",
       `${pagination.pageIndex * pagination.pageSize}`
@@ -41,8 +42,6 @@ const LightDataGrid = ({ url, columns }) => {
     urls.searchParams.set("filters", JSON.stringify(columnFilters ?? []));
     urls.searchParams.set("search", globalFilter ?? "");
     urls.searchParams.set("sorting", JSON.stringify(sorting ?? []));
-
-    console.log(urls);
 
     try {
       const response = await fetch(urls.href, {
@@ -66,7 +65,12 @@ const LightDataGrid = ({ url, columns }) => {
 
   //if you want to avoid useEffect, look at the React Query example instead
   useEffect(() => {
-    if (session) fetchData();
+    if (!addressInitialized.current && session) {
+      fetchData();
+      addressInitialized.current = true;
+    } else {
+      fetchData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     columnFilters,
@@ -74,7 +78,8 @@ const LightDataGrid = ({ url, columns }) => {
     pagination.pageIndex,
     pagination.pageSize,
     sorting,
-    session,
+    // session,
+    triggered,
   ]);
 
   const table = useMaterialReactTable({
@@ -86,8 +91,8 @@ const LightDataGrid = ({ url, columns }) => {
       columnPinning: { right: ["Actions"] },
       density: "compact",
     },
-    data,
-    getRowId: (row) => row.id,
+    data: data || [],
+    getRowId: (row) => row?.id,
 
     // initialState: {  }, // Disable column filters
     manualFiltering: false, // Disable manual filtering
@@ -117,7 +122,14 @@ const LightDataGrid = ({ url, columns }) => {
     muiBottomToolbarProps: {
       className: "bottomToolbar",
     },
-
+    muiTableBodyProps: {
+      sx: {
+        //stripe the rows, make odd rows a darker color
+        "& tr:nth-of-type(odd) > td": {
+          backgroundColor: "#f5f5f5",
+        },
+      },
+    },
     localization: MRT_Localization_FA,
   });
 

@@ -1,7 +1,7 @@
 "use client";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import React, { useEffect } from "react";
-import { useFetcher } from "../../../components/global/fetcher";
+import React, { useEffect, useState } from "react";
+import { fetcher, useFetcher } from "../../../components/global/fetcher";
 import Loading from "../../../components/global/loading";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
@@ -10,9 +10,11 @@ import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 export default function Colors() {
   const [title, setTitle] = useAtom(pageTitle);
+  const [triggered, setTriggered] = useState(false);
 
   useEffect(() => {
     setTitle({
@@ -24,70 +26,29 @@ export default function Colors() {
 
   const deleteRow = async (id) => {
     try {
-      const req = await fetcher({
-        url: `/v1/api/ecommerce/colors/${id}`,
-        method: "DELETE",
+      const result = await Swal.fire({
+        title: "مطمئن هستید؟",
+        text: "با حذف این گزینه امکان بازگشت آن وجود ندارد",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله حذفش کن",
+        cancelButtonText: "لغو",
       });
-      toast.success("موفق");
-      refetchProducts();
+
+      if (result.isConfirmed) {
+        const req = await fetcher({
+          url: `/v1/api/ecommerce/colors/${id}`,
+          method: "DELETE",
+        });
+        toast.success("موفق");
+        setTriggered(!triggered);
+      }
     } catch (error) {
       toast.error(error.message);
     }
   };
-
-  // const {
-  //   data: colors,
-  //   isLoading: colorsIsLoading,
-  //   error: colorsError,
-  // } = useFetcher(
-  //   `/v1/api/ecommerce/colors?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
-  //   "GET"
-  // );
-
-  // const columns: GridColDef[] = [
-  //   {
-  //     field: "id",
-  //     headerName: "شناسه",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "name",
-  //     headerName: "نام ",
-  //     width: 150,
-  //   },
-  //   {
-  //     field: "hexCode",
-  //     headerName: "کد رنگ ",
-  //     width: 150,
-  //     renderCell: ({ row }) => (
-  //       <div className="flex items-center">
-  //         <span
-  //           style={{ background: row.hexCode }}
-  //           className={`w-5 h-5 ml-2 rounded-sm`}
-  //         ></span>
-  //         {row.hexCode}
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     field: "list",
-  //     headerName: "ویرایش",
-  //     width: 150,
-  //     renderCell: (row) => (
-  //       <a href={`/admin/ecommerce/colors/${row.id}`}>
-  //         <button
-  //           type="button"
-  //           className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-  //         >
-  //           ویرایش
-  //         </button>
-  //       </a>
-  //     ),
-  //   },
-  // ];
-  // if (colorsIsLoading) {
-  //   return <Loading />;
-  // }
 
   const columns = [
     {
@@ -121,18 +82,11 @@ export default function Colors() {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-      muiTableHeadCellProps: {
-        align: "right",
-      },
-      muiTableBodyCellProps: {
-        align: "right",
-      },
+
       Cell: ({ row }) => (
         <>
-        {
-        console.log(row)
-        }
-        
+          {}
+
           <a href={`/admin/ecommerce/colors/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
@@ -150,7 +104,13 @@ export default function Colors() {
 
   return (
     <div>
-      <LightDataGrid url={"/v1/api/ecommerce/colors?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false"} columns={columns} />
+      <LightDataGrid
+        url={
+          "/v1/api/ecommerce/colors?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false"
+        }
+        triggered={triggered}
+        columns={columns}
+      />
     </div>
   );
 }

@@ -24,6 +24,7 @@ import InventoriesDialouge from "../_components/inventories/InventoriesDialouge"
 import Tab from "../_components/tabs/Tabs";
 import Loading from "@/app/components/global/loading";
 import SaveBar from "@/app/components/global/SaveBar";
+import ChangeToNull from "@/app/components/global/ChangeToNull";
 
 interface ProductProps {
   params: {
@@ -76,27 +77,23 @@ export default function Products({ params }) {
   const [description, setDescription] = useState("");
   const [selectedEav, setSelectedEav] = useState();
   const [requestBody, setRequestBody] = useState<RequestBody>({
-    title: "",
-    slug: "",
-    entityTypeId: "",
-    publishStatusId: "",
-    brandId: "",
+    title: null,
+    slug: null,
+    entityTypeId: null,
+    publishStatusId: null,
+    brandId: null,
     description: description,
-    colorBased: true,
+    colorBased: false,
     photos: photos,
     attributes: [],
     inventories: [],
+    metaDescription: null,
+    metaTitle: null,
+    metaKeywords: null,
+    weight: null,
   });
   const [inventories, setInventories] = useState([]);
   const [tempInventories, setTempInventories] = useState([]);
-
-  useEffect(() => {
-    setTitle({
-      title: "ویرایش محصول",
-      buttonTitle: "",
-      link: "",
-    });
-  }, []);
 
   const {
     data: product,
@@ -127,13 +124,12 @@ export default function Products({ params }) {
           description: value?.description,
           firstPrice: +value?.firstPrice?.price,
           secondaryPrice: +value?.secondaryPrice?.price,
+          colorBased: value.isColorBased,
         };
       });
 
       setTempInventories(inventory);
       setInventories(inventory);
-      //
-
       setEntityTypeId(product.result.entityTypeId);
       setSelectedEav(product.result.entityType.id);
       setPhotos(product.result.attachments);
@@ -144,6 +140,17 @@ export default function Products({ params }) {
         title: product.result.title,
         slug: product.result.slug,
         entityTypeId: product.result.entityTypeId,
+        metaDescription: product.result?.metaDescription,
+        metaKeywords: product.result?.metaKeywords,
+        metaTitle: product.result?.metaTitle,
+        weight: product.result?.weight,
+        colorBased: product.result?.colorBased,
+      });
+
+      setTitle({
+        title: "ویرایش محصول",
+        buttonTitle: "مشاهده محصول",
+        link: `/product/${product?.result?.sku}/${product?.result?.slug}`,
       });
       setDescription(product.result.description);
       const attrs = product.result.productAttributeValues.map((attrValues) => {
@@ -362,10 +369,9 @@ export default function Products({ params }) {
       toast.success("موفق");
       setTimeout(() => {
         router.push("/admin/ecommerce/products");
-      }, 2000);
+      }, 500);
     } catch (error) {
       setLoading(false);
-
       toast.error(error.message);
     }
   };
@@ -378,7 +384,7 @@ export default function Products({ params }) {
     return <Loading />;
   }
   return (
-    <div className="grid grid-cols-4 gap-4 relative">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
       <div
         className={`w-full h-screen bg-gray-200/20 backdrop-blur-sm rounded-lg z-50 flex items-center justify-center absolute right-0 top-0 ${
           loading ? "visible" : "hidden"
@@ -387,7 +393,7 @@ export default function Products({ params }) {
         <div role="status">
           <svg
             aria-hidden="true"
-            className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-700"
+            className="w-8 h-8 text-gray-200 animate-spin  fill-blue-700"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -404,47 +410,75 @@ export default function Products({ params }) {
           <span className="sr-only">Loading...</span>
         </div>{" "}
       </div>
-      <div className="flex gap-4 p-6 col-span-3 flex-wrap">
-        <div className="flex-1">
-          <TextField
-            onChange={(e) =>
-              setRequestBody({ ...requestBody, title: e.target.value })
-            }
-            required
-            id="standard-basic"
-            label="نام محصول"
-            defaultValue={requestBody.title}
-            variant="standard"
-          />
+      <div className="flex gap-4 p-1 md:p-6 col-span-3 flex-wrap">
+        <div className="flex w-full gap-4">
+          <div className="flex-1 w-full">
+            <TextField
+              onChange={(e) =>
+                setRequestBody({
+                  ...requestBody,
+                  title: ChangeToNull(e.target.value),
+                })
+              }
+              fullWidth
+              required
+              id="standard-basic"
+              label="نام محصول"
+              defaultValue={requestBody.title}
+              variant="outlined"
+            />
+          </div>
+          <div className="flex-1 w-full">
+            <TextField
+              onChange={(e) =>
+                setRequestBody({
+                  ...requestBody,
+                  slug: ChangeToNull(e.target.value),
+                })
+              }
+              fullWidth
+              required
+              id="standard-basic"
+              label="لینک محصول"
+              defaultValue={requestBody.slug}
+              variant="outlined"
+            />
+          </div>
         </div>
-        <div className="flex-1">
-          <TextField
-            onChange={(e) =>
-              setRequestBody({ ...requestBody, slug: e.target.value })
-            }
-            required
-            id="standard-basic"
-            label="لینک محصول"
-            defaultValue={requestBody.slug}
-            variant="standard"
-          />
+        <div className="flex w-full gap-4">
+          <div className="flex-1 w-full">
+            <SelectSearch
+              loadingState={brandsIsLoading}
+              data={brands?.result}
+              label="برند"
+              defaultValue={requestBody.brandId}
+              onChange={(e) =>
+                setRequestBody({ ...requestBody, brandId: e.id })
+              }
+            />
+          </div>
+          <div className="flex-1 w-full ">
+            <SelectSearch
+              loadingState={publishStatusesIsLoading}
+              data={publishStatuses?.result}
+              label="وضعیت انتشار"
+              defaultValue={requestBody.publishStatusId}
+              onChange={(e) =>
+                setRequestBody({ ...requestBody, publishStatusId: e.id })
+              }
+            />
+          </div>
+          <div className="flex-1 w-full">
+            <TextField
+              value={requestBody.weight}
+              label="وزن"
+              fullWidth
+              onChange={(e) =>
+                setRequestBody({ ...requestBody, weight: +e.target.value })
+              }
+            />
+          </div>
         </div>
-        <SelectSearch
-          loadingState={brandsIsLoading}
-          data={brands?.result}
-          label="برند"
-          defaultValue={requestBody.brandId}
-          onChange={(e) => setRequestBody({ ...requestBody, brandId: e.id })}
-        />
-        <SelectSearch
-          loadingState={publishStatusesIsLoading}
-          data={publishStatuses?.result}
-          label="وضعیت انتشار"
-          defaultValue={requestBody.publishStatusId}
-          onChange={(e) =>
-            setRequestBody({ ...requestBody, publishStatusId: e.id })
-          }
-        />
         <div className="flex-1">
           {parentEntityTypesIsLoading && !selectedEav ? (
             "در حال بارگزاری"
@@ -453,10 +487,10 @@ export default function Products({ params }) {
               data={parentEntityTypes?.result}
               selected={selectedEav}
               onChange={(e) => {
-                setEntityTypeId(e.target.value);
+                setEntityTypeId(ChangeToNull(e.target.value));
                 setRequestBody({
                   ...requestBody,
-                  entityTypeId: +e.target.value,
+                  entityTypeId: +ChangeToNull(e.target.value),
                   attributes: [],
                 });
               }}
@@ -467,7 +501,7 @@ export default function Products({ params }) {
         <div className="flex w-full">
           <div className="flex-1">
             <label className="inline-flex items-center cursor-pointer">
-              <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+              <span className="ml-3 text-sm font-medium text-gray-900 ">
                 فروش بر اساس رنگ؟
               </span>
               <Switch
@@ -552,24 +586,23 @@ export default function Products({ params }) {
                         className={openTab === 2 ? "block" : "hidden"}
                         id="link2"
                       >
-                        <Button
-                          className="!mb-6"
-                          fullWidth
-                          variant="contained"
+                        <button
+                          className="!mb-6 text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal text-white bg-[#20ac73] w-full block"
                           onClick={(e) => {
                             handleClickOpen(null);
                           }}
                         >
                           افزودن موجودی جدید
-                        </Button>
+                        </button>
                         <DataGridLite
-                          handleClickOpen={handleClickOpen}
                           data={tempInventories}
                           removeInventory={removeInventory}
                           key={tempInventories}
+                          handleClickOpen={handleClickOpen}
                         />
                         <InventoriesDialouge
                           colors={colors}
+                          vendorId={vendorId}
                           colorsIsLoading={colorsIsLoading}
                           handleClose={handleClose}
                           setVendorId={setVendorId}
@@ -594,6 +627,54 @@ export default function Products({ params }) {
                         className={openTab === 3 ? "block" : "hidden"}
                         id="link3"
                       >
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaKeywords: ChangeToNull(e.target.value),
+                              })
+                            }
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="کلمات کلیدی"
+                            defaultValue={requestBody.metaKeywords}
+                            variant="outlined"
+                          />
+                        </div>
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaDescription: ChangeToNull(e.target.value),
+                              })
+                            }
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="توضیحات متا"
+                            variant="outlined"
+                            defaultValue={requestBody.metaDescription}
+                          />
+                        </div>
+                        <div className="mb-8">
+                          <TextField
+                            onChange={(e) =>
+                              setRequestBody({
+                                ...requestBody,
+                                metaTitle: ChangeToNull(e.target.value),
+                              })
+                            }
+                            defaultValue={requestBody.metaTitle}
+                            fullWidth
+                            required
+                            id="standard-basic"
+                            label="عنوان سئو"
+                            variant="outlined"
+                          />
+                        </div>
                         <SeoBox
                           setDescription={setDescription}
                           description={description}
@@ -608,7 +689,7 @@ export default function Products({ params }) {
         </div>
       </div>
 
-      <aside className="w-full bg-slate-100 rounded-xl p-4 col-span-1 flex items-center justify-start flex-col">
+      <aside className="w-full rounded-xl p-4 col-span-1 flex items-center justify-start flex-col">
         <ProductUploader
           removePhoto={removePhoto}
           setPhotos={setPhotos}
@@ -622,7 +703,10 @@ export default function Products({ params }) {
           ساخت محصول
         </button> */}
       </aside>
-      <SaveBar action={saveProduct} backUrl="/admin/ecommerce/products"></SaveBar>
+      <SaveBar
+        action={saveProduct}
+        backUrl="/admin/ecommerce/products"
+      ></SaveBar>
     </div>
   );
 }
