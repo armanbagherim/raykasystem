@@ -28,6 +28,9 @@ interface UploaderProps {
   location: string;
   refetch?: () => void;
   setPhotos: React.Dispatch<React.SetStateAction<Photo[]>>;
+  text: string;
+  photos: any;
+  type: string;
 }
 
 const Uploader: React.FC<UploaderProps> = ({
@@ -35,7 +38,11 @@ const Uploader: React.FC<UploaderProps> = ({
   location,
   refetch,
   setPhotos,
+  text = "آپلود تصویر",
+  photos,
+  type = "image",
 }) => {
+  console.log(photos);
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<FileObject[]>([]);
@@ -51,12 +58,12 @@ const Uploader: React.FC<UploaderProps> = ({
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: "image/*",
+    accept: "*",
     multiple: true,
     minSize: 0,
     maxSize: 5242880,
   });
-
+  console.log(previewUrls);
   const uploadFilesSequentially = async () => {
     setUploading(true); // Start uploading
     for (const file of selectedFiles) {
@@ -80,6 +87,7 @@ const Uploader: React.FC<UploaderProps> = ({
         if (response.ok) {
           toast.success("موفق");
           if (refetch) refetch();
+          console.log(result);
           setPhotos((prev) => [
             ...prev,
             {
@@ -112,7 +120,7 @@ const Uploader: React.FC<UploaderProps> = ({
         onClick={() => setOpen(true)}
         className="bg-primary text-white px-6 py-3 rounded-lg"
       >
-        آپلود تصویر
+        {text}
       </button>
 
       <Dialog
@@ -131,13 +139,17 @@ const Uploader: React.FC<UploaderProps> = ({
           <div className="flex">
             {previewUrls.map((url, index) => (
               <div key={index} className="mt-4">
-                <img
-                  src={url}
-                  alt={`Selected ${index}`}
-                  className=" h-auto"
-                  height={100}
-                  width={100}
-                />
+                {type === "image" ? (
+                  <img
+                    src={url}
+                    alt={`Selected ${index}`}
+                    className=" h-auto"
+                    height={100}
+                    width={100}
+                  />
+                ) : (
+                  <video src={url} controls></video>
+                )}
               </div>
             ))}
           </div>

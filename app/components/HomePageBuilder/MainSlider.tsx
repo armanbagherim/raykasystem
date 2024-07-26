@@ -26,7 +26,7 @@ export default function MainSlider({ data }) {
                   height={300}
                   quality={100}
                   layout="responsive"
-                  className=""
+                  className="md:rounded-3xl"
                 />
               </picture>
             </Link>
