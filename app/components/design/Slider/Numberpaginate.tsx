@@ -13,6 +13,16 @@ const Numberpaginate = ({ items }) => {
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
+  const [forcePage, setForcePage] = useState(0);
+
+  useEffect(() => {
+    const offset = searchParams.get("offset");
+
+    if (offset === "0") {
+      setItemOffset(0);
+      setForcePage(0); // Update the forcePage state to 0
+    }
+  }, [searchParams]);
 
   // Simulate fetching items from another resources.
   // (This could be items from props; or items loaded in a local state
@@ -26,19 +36,21 @@ const Numberpaginate = ({ items }) => {
   const handlePageClick = (event) => {
     const newOffset = (event.selected * 12) % items.total;
 
-    `User requested page number ${event.selected}, which is offset ${newOffset}`;
-
-    // Use startTransition for state updates that you want to transition smoothly
-    startTransition(() => {
+    if (newOffset === 0) {
+      setItemOffset(0);
+    } else {
       setItemOffset(newOffset);
-    });
+    }
 
     // Navigation and scrolling logic
     const current = new URLSearchParams(Array.from(searchParams.entries()));
     current.delete("offset");
     current.set("offset", newOffset.toString());
     const query = current.toString() ? `?${current.toString()}` : "";
-    router.push(`${pathname}${query}`);
+    startTransition(() => {
+      router.push(`${pathname}${query}`);
+    });
+
     window.scrollTo({ top: 250, behavior: "smooth" });
   };
 
@@ -53,14 +65,16 @@ const Numberpaginate = ({ items }) => {
         <ReactPaginate
           breakLabel="..."
           className="flex items-center justify-start direction-ltr mt-8 whitespace-nowrap overflow-x-auto"
-          nextLabel="بعدی >"
+          nextLabel="بعدی"
           activeLinkClassName="bg-primary outline-none"
           pageLinkClassName="bg-[#B8B8B8] outline-none w-[37px] h-[37px] flex items-center justify-center rounded-[15px] mx-2 text-white"
           onPageChange={handlePageClick}
           pageRangeDisplayed={2}
           pageCount={pageCount}
-          previousLabel="< قبلی"
+          forcePage={forcePage}
+          previousLabel="قبلی"
           renderOnZeroPageCount={null}
+          disabledClassName="hidden" // Add this prop
         />
       </div>
     </>

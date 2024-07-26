@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../layout";
 import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ChangeFormatDate from "@/app/components/global/ChangeFormatDate";
 
@@ -72,6 +72,11 @@ export default function Users() {
               <ModeEditIcon />
             </IconButton>
           </a>
+          <Link
+            href={`/admin/ecommerce/totalOrders?phoneNumber=${row.original.phoneNumber}`}
+          >
+            <Button variant="outlined">سفارشات این کاربر</Button>
+          </Link>
         </>
       ),
     },

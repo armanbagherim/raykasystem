@@ -92,7 +92,7 @@ export default function PendingOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalProductPrice
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4 mb-2">
@@ -103,7 +103,7 @@ export default function PendingOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalShipmentPrice
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -114,7 +114,7 @@ export default function PendingOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalDiscountFee
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                 </div>
@@ -124,7 +124,7 @@ export default function PendingOrders({ params }) {
                   </p>
                   <h5 className="font-manrope font-bold text-sm leading-9 text-primary">
                     {Number(orderDetail?.result?.totalPrice).toLocaleString()}{" "}
-                    تومانء
+                    ءتء
                   </h5>
                 </div>
               </div>
@@ -180,6 +180,9 @@ export default function PendingOrders({ params }) {
                       <span>پلاک: {orderDetail?.result?.address?.plaque} </span>
                       <span>
                         طبقه: {orderDetail?.result?.address?.floorNumber}{" "}
+                      </span>
+                      <span>
+                        کدپستی : {orderDetail?.result?.address?.postalCode}{" "}
                       </span>
                     </p>
                   </div>

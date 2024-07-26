@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@mui/material";
 import SweetAlert2 from "react-sweetalert2";
 import SearchSelect from "@/app/components/global/SearchSelect";
+import FactorGenerator from "../../totalOrders/[...id]/FactorGenerator";
 
 export default function PostageOrders({ params }) {
   const router = useRouter();
@@ -81,7 +82,13 @@ export default function PostageOrders({ params }) {
   }
   return (
     <div>
-      <div className="flex mb-6 gap-4">
+      <div
+        style={{ width: "100%", margin: "0 auto" }}
+        className="pdf flex gap-4 print bg-gray-200 p-2 rounded-lg !mb-8"
+      >
+        <FactorGenerator data={orderDetail?.result} />
+      </div>
+      <div className="flex mb-6 gap-4 no-print">
         {!couriersIsLoading ? (
           <SearchSelect
             diffKey="userId"
@@ -103,14 +110,6 @@ export default function PostageOrders({ params }) {
       </div>
       <section className=" relative">
         <div className="mb-8">
-          <Button
-            className="mb-6"
-            onClick={(e) => handleProccess()}
-            variant="contained"
-            fullWidth
-          >
-            ارسال با پست
-          </Button>
           <SweetAlert2
             {...swalProps}
             onConfirm={(postReceipt) => handleSwalConfirm(postReceipt)}
@@ -118,9 +117,9 @@ export default function PostageOrders({ params }) {
           />
         </div>
 
-        <div className="w-full px-4 md:px-5 lg-6 mx-auto">
+        <div className="w-full px-4 md:px-5 lg-6 mx-auto no-print">
           <div className="flex items-start flex-col ">
-            <div className="w-full  flex items-start flex-row gap-8 max-xl:mx-auto mb-8">
+            <div className="w-full  flex items-start flex-row gap-8 max-xl:mx-auto mb-8 flex-wrap">
               <div className="p-6 flex-1 border border-gray-200 rounded-3xl w-full group transition-all duration-500 hover:border-gray-400 ">
                 <div className="flex justify-between border-b border-gray-200 items-center pb-6 ">
                   <h2 className="font-manrope font-bold text-lg leading-10 text-black ">
@@ -141,7 +140,7 @@ export default function PostageOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalProductPrice
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4 mb-2">
@@ -152,7 +151,7 @@ export default function PostageOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalShipmentPrice
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -163,7 +162,7 @@ export default function PostageOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalDiscountFee
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                 </div>
@@ -173,7 +172,7 @@ export default function PostageOrders({ params }) {
                   </p>
                   <h5 className="font-manrope font-bold text-sm leading-9 text-primary">
                     {Number(orderDetail?.result?.totalPrice).toLocaleString()}{" "}
-                    تومانء
+                    ءتء
                   </h5>
                 </div>
               </div>
@@ -214,21 +213,24 @@ export default function PostageOrders({ params }) {
                     </p>
                     <p className="text-md leading-8 font-bold">
                       <span>
-                        استان: {orderDetail?.result?.address.province.name}{" "}
+                        استان: {orderDetail?.result?.address?.province?.name}{" "}
                       </span>
                       <span>
-                        شهر: {orderDetail?.result?.address.city.name}{" "}
+                        شهر: {orderDetail?.result?.address?.city?.name}{" "}
                       </span>
                       <span>
                         محله:
-                        {orderDetail?.result?.address.neighborhood.name}{" "}
+                        {orderDetail?.result?.address?.neighborhood?.name}{" "}
                       </span>
                       <span>
-                        خیابان: {orderDetail?.result?.address.street}{" "}
+                        خیابان: {orderDetail?.result?.address?.street}{" "}
                       </span>
-                      <span>پلاک: {orderDetail?.result?.address.plaque} </span>
+                      <span>پلاک: {orderDetail?.result?.address?.plaque} </span>
                       <span>
-                        طبقه: {orderDetail?.result?.address.floorNumber}{" "}
+                        طبقه: {orderDetail?.result?.address?.floorNumber}
+                      </span>
+                      <span>
+                        کدپستی : {orderDetail?.result?.address?.postalCode}{" "}
                       </span>
                     </p>
                   </div>

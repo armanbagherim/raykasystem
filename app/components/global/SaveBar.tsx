@@ -4,7 +4,7 @@ import React from "react";
 
 export default function SaveBar({ action, backUrl = "" }) {
   return (
-    <div className="fixed bottom-0 left-0 px-8 py-4  bg-slate-50 border-t w-full text-left">
+    <div className="fixed bottom-0 left-0 px-8 py-4  bg-slate-50 border-t w-full text-left z-10">
       <button
         type="submit"
         // onClick={() => window.location.replace(backUrl)}

@@ -51,7 +51,7 @@ export default function SearchSelect({
           disabled
           id="first_name"
           label={label}
-          variant="standard"
+          variant="outlined"
           fullWidth
         />
       </div>
@@ -71,7 +71,7 @@ export default function SearchSelect({
         options={options}
         getOptionLabel={(option) => option.name}
         renderInput={(params) => (
-          <TextField {...params} label={label} variant="standard" fullWidth />
+          <TextField {...params} label={label} variant="outlined" fullWidth />
         )}
         onChange={(event, newValue) => {
           setCurrentValue(newValue ? newValue[diffKey] : null);

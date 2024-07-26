@@ -134,9 +134,9 @@ const Sellerpage = async ({ params, searchParams }) => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="w-full col-span-12 flex justify-items-center overflow-x-auto">
-              <Numberpaginate items={products} />
+              <div className="w-full col-span-12 flex justify-center overflow-x-auto">
+                <Numberpaginate items={products} />
+              </div>
             </div>
           </div>
         </div>

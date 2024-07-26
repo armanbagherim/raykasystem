@@ -2,15 +2,47 @@
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "@/app/components/global/loading";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import OrderDataTable from "./Datatable";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import FactorGenerator from "./FactorGenerator";
 import Swal from "sweetalert2";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import SearchSelect from "@/app/components/global/SearchSelect";
 
 export default function TotalOrders({ params }) {
   const router = useRouter();
+  const [openOrderStatus, setOpenOrderStatus] = useState(false);
+  const [openOrderShipping, setOpenOrderShipping] = useState(false);
+
+  const [orderStatusId, setOrderStatusId] = useState(null);
+  const [orderShipmentId, setOrderShipmentId] = useState(null);
+
+  const {
+    data: orderStatuses,
+    isLoading: orderStatusesIsLoading,
+    error: orderStatusesError,
+  } = useFetcher(
+    `/v1/api/ecommerce/admin/orderStatuses?sortOrder=DESC&offset=0&limit=20&orderBy=id`,
+    "GET"
+  );
+
+  const {
+    data: orderShipmentWays,
+    isLoading: orderShipmentWaysIsLoading,
+    error: orderShipmentWaysError,
+  } = useFetcher(
+    `/v1/api/ecommerce/admin/orderShipmentWays?sortOrder=DESC&offset=0&limit=20&orderBy=id`,
+    "GET"
+  );
 
   const {
     data: orderDetail,
@@ -21,6 +53,40 @@ export default function TotalOrders({ params }) {
     `/v1/api/ecommerce/admin/totalOrders/${params.id[0]}?sortOrder=DESC`,
     "GET"
   );
+  const handleChangeOrderStatus = async () => {
+    try {
+      const req = await fetcher({
+        url: `/v1/api/ecommerce/admin/totalOrders/changeOrderStatus/${params.id[0]}`,
+        body: {
+          orderStatusId,
+        },
+        method: "PATCH",
+      });
+      toast.success("موفق");
+      setOrderStatusId(null);
+      setOpenOrderStatus(false);
+    } catch (errors) {
+      toast.error("ناموفق");
+    }
+  };
+
+  const handleChangeShipingMethod = async () => {
+    try {
+      const req = await fetcher({
+        url: `/v1/api/ecommerce/admin/totalOrders/changeShipmentWay/${params.id[0]}`,
+        body: {
+          shipmentWayId: orderShipmentId,
+        },
+        method: "PATCH",
+      });
+      toast.success("موفق");
+      setOrderShipmentId(null);
+      setOpenOrderShipping(false);
+    } catch (errors) {
+      toast.error("ناموفق");
+    }
+  };
+
   const decreaseDetail = async (id) => {
     try {
       const result = await Swal.fire({
@@ -76,9 +142,143 @@ export default function TotalOrders({ params }) {
   if (orderDetailIsLoading) {
     return <Loading />;
   }
+
+  const handleClickOpen = (type) => {
+    if (type === "orderStatus") {
+      setOpenOrderStatus(true);
+    } else if (type === "orderShipping") {
+      setOpenOrderShipping(true);
+    }
+  };
+
+  const handleClose = (type) => {
+    if (type === "orderStatus") {
+      setOpenOrderStatus(false);
+    } else if (type === "orderShipping") {
+      setOpenOrderShipping(false);
+    }
+  };
+
   return (
     <div>
-      <FactorGenerator data={orderDetail?.result} />
+      <Dialog
+        open={openOrderStatus}
+        onClose={(e) => handleClose("orderStatus")}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          "& .MuiDialog-container": {
+            "& .MuiPaper-root": {
+              width: "100%",
+              maxWidth: "500px", // Set your width here
+              borderRadius: "15px",
+            },
+          },
+        }}
+      >
+        <DialogTitle id="alert-dialog-title">تغییر وضعیت سفارش به</DialogTitle>
+        <DialogContent>
+          <SearchSelect
+            onChange={(e) => {
+              if (e !== null) {
+                setOrderStatusId(e.id);
+              }
+            }}
+            loadingState={orderStatusesIsLoading}
+            data={orderStatuses?.result}
+            value={orderStatusId}
+            defaultValue={orderStatusId}
+            // isDiff={true}
+            // diffName="name"
+            label="وضعیت سفارش"
+            nullable
+          />
+        </DialogContent>
+        <DialogActions className="!flex justify-between">
+          <Button onClick={handleClose}>انصراف</Button>
+          <Button onClick={handleChangeOrderStatus} autoFocus>
+            تغییر وضعیت
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openOrderShipping}
+        onClose={(e) => handleClose("orderShipping")}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          "& .MuiDialog-container": {
+            "& .MuiPaper-root": {
+              width: "100%",
+              maxWidth: "500px", // Set your width here
+              borderRadius: "15px",
+            },
+          },
+        }}
+      >
+        <DialogTitle id="alert-dialog-title">تغییر نحوه ارسال به</DialogTitle>
+        <DialogContent>
+          <SearchSelect
+            onChange={(e) => {
+              if (e !== null) {
+                setOrderShipmentId(e.id);
+              }
+            }}
+            loadingState={orderShipmentWaysIsLoading}
+            data={orderShipmentWays?.result}
+            value={orderShipmentId}
+            defaultValue={orderShipmentId}
+            // isDiff={true}
+            // diffName="name"
+            label="روش ارسال"
+            nullable
+          />
+        </DialogContent>
+        <DialogActions className="!flex justify-between">
+          <Button onClick={handleClose}>انصراف</Button>
+          <Button onClick={handleChangeShipingMethod} autoFocus>
+            تغییر وضعیت
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <div
+        style={{ width: "100%", margin: "0 auto" }}
+        className="pdf flex gap-4 print bg-gray-200 p-2 rounded-lg !mb-8"
+      >
+        <FactorGenerator data={orderDetail?.result} />
+        <Link
+          target="_blank"
+          href={`https://www.google.com/maps?q=${orderDetail?.result?.address?.latitude},${orderDetail?.result?.address.longitude}`}
+        >
+          <Button
+            variant="contained"
+            color="secondary"
+            className={"no-print mb-8"}
+          >
+            لوکیشن در گوگل مپ
+          </Button>
+        </Link>
+        <Button
+          onClick={() => handleClickOpen("orderStatus")}
+          variant="contained"
+          color="primary"
+          className={"no-print mb-8"}
+        >
+          تغییر وضعیت سفارش
+        </Button>
+        <Button
+          onClick={() => handleClickOpen("orderShipping")}
+          variant="contained"
+          color="primary"
+          className={"no-print mb-8"}
+        >
+          تغییر وضعیت ارسال
+        </Button>
+      </div>
+      <span className="no-print bg-gray-100 border border-gray-200 rounded-lg mr-4 p-3 block mb-4">
+        کد رهگیری پست: {orderDetail?.result?.postReceipt}
+      </span>
       <section className="relative no-print mb-8">
         <div className="w-full px-4 md:px-5 lg-6 mx-auto">
           <div className="flex items-start flex-col ">
@@ -113,7 +313,7 @@ export default function TotalOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalProductPrice
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4 mb-2">
@@ -124,7 +324,7 @@ export default function TotalOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalShipmentPrice
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -135,7 +335,7 @@ export default function TotalOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalDiscountFee
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                 </div>
@@ -145,7 +345,7 @@ export default function TotalOrders({ params }) {
                   </p>
                   <h5 className="font-manrope font-bold text-sm leading-9 text-primary">
                     {Number(orderDetail?.result?.totalPrice).toLocaleString()}{" "}
-                    تومانء
+                    ءتء
                   </h5>
                 </div>
               </div>
@@ -200,7 +400,11 @@ export default function TotalOrders({ params }) {
                       </span>
                       <span>پلاک: {orderDetail?.result?.address?.plaque} </span>
                       <span>
-                        طبقه: {orderDetail?.result?.address?.floorNumber}{" "}
+                        طبقه: {orderDetail?.result?.address?.floorNumber}
+                        {"  "}
+                      </span>
+                      <span>
+                        کدپستی : {orderDetail?.result?.address?.postalCode}{" "}
                       </span>
                     </p>
                   </div>

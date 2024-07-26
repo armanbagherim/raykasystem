@@ -15,11 +15,14 @@ export default function Inventories({ product, addToCart, inventoryStatusId }) {
             return (
               <div key={key} className="mb-5 text-xl flex">
                 <div className="bg-white flex flex-wrap md:flex-nowrap rounded-2xl p-3 px-6 gap-14 items-center justify-between w-full">
-                  <div className="flex flex-wrap justify-end md:justify-between w-full ">
+                  <div className="flex flex-wrap justify-start md:justify-between w-full ">
                     <div className="text-base mb-2">
-                      <p className="mb-2 font-bold text-primary">
+                      <Link
+                        href={`/sellers/${value?.vendor?.slug}`}
+                        className="mb-2 font-bold text-primary block"
+                      >
                         فروشنده: {value?.vendor?.name || "فعالی وجود ندارد"}
-                      </p>
+                      </Link>
                       <Link href={`/guarantees/${value?.guarantee?.slug}`}>
                         {value?.guarantee?.name} {value?.guaranteeMonth?.name}
                       </Link>

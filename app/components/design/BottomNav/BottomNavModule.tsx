@@ -63,9 +63,9 @@ export default function BottomNavModule({ entities }) {
             ""
           )}
         </div>
-        <ul>
+        <ul className="flex flex-col-reverse">
           {level === 1
-            ? entities.reverse().map((value, key) => {
+            ? entities.map((value, key) => {
                 return value.subEntityTypes &&
                   value.subEntityTypes.length > 0 ? (
                   <li
@@ -85,7 +85,7 @@ export default function BottomNavModule({ entities }) {
                 );
               })
             : level === 2
-            ? subMenuData.reverse().map((value, key) =>
+            ? subMenuData.map((value, key) =>
                 value.link ? (
                   <Link
                     key={key}
@@ -118,7 +118,7 @@ export default function BottomNavModule({ entities }) {
                   </div>
                 )
               )
-            : depthSubMenuData.reverse().map((value, key) =>
+            : depthSubMenuData.map((value, key) =>
                 value.link ? (
                   <Link
                     onClick={(e) => setIsMenuOpen(false)}
@@ -150,7 +150,7 @@ export default function BottomNavModule({ entities }) {
               )}
         </ul>
       </div>
-      <div className="fixed z-50 bottom-0 left-0 right-0 bg-[#FAFAFA] w-full h-20 px-8 block md:hidden lg:hidden xl:hidden border-t">
+      <div className="fixed z-[10] bottom-0 left-0 right-0 bg-[#FAFAFA] w-full h-20 px-8 block md:hidden lg:hidden xl:hidden border-t">
         <div className="flex items-center justify-between h-full">
           <a href="/" className="flex flex-col text-center items-center">
             <Home />

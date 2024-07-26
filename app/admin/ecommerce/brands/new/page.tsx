@@ -8,7 +8,11 @@ import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 import { HexColorPicker } from "react-colorful";
 import SaveBar from "@/app/components/global/SaveBar";
-
+import ChangeToNull from "@/app/components/global/ChangeToNull";
+import dynamic from "next/dynamic";
+const SeoBox = dynamic(() => import("../../products/_components/SeoBox"), {
+  ssr: false,
+});
 export default function Brands() {
   const [title, setTitle] = useAtom(pageTitle);
 
@@ -22,9 +26,12 @@ export default function Brands() {
 
   const [name, setName] = useState();
   const [slug, setSlug] = useState();
+  const [description, setDescription] = useState();
   const [metaDescription, setMetaDescription] = useState();
   const [metaKeywords, setMetaKeywords] = useState();
   const [metaTitle, setMetaTitle] = useState();
+  const [priority, setPriority] = useState();
+
   const router = useRouter();
 
   const save = async () => {
@@ -38,6 +45,8 @@ export default function Brands() {
           metaKeywords,
           metaDescription,
           metaTitle,
+          description,
+          priority: priority === "null" ? null : +priority,
         },
       });
       toast.success("موفق");
@@ -71,14 +80,30 @@ export default function Brands() {
         >
           لینک برند
         </label>
+        <label
+          htmlFor="first_name"
+          className="block mb-2 text-sm font-medium text-gray-900 "
+        >
+          اولویت
+        </label>
         <input
           type="text"
           id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          required
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+        />
+        <input
+          type="text"
+          id="first_name"
+          className="bg-gray-50 border border-gray-300 text-gray-900 mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
           onChange={(e) => setSlug(e.target.value)}
         />
       </div>
+      <label htmlFor="">توضیحات</label>
+      <SeoBox setDescription={setDescription} description={description} />
       <label
         htmlFor="first_name"
         className="block mb-2 text-sm font-medium text-gray-900 "
@@ -91,7 +116,7 @@ export default function Brands() {
         className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         required
         value={metaTitle}
-        onChange={(e) => setMetaTitle(e.target.value)}
+        onChange={(e) => setMetaTitle(ChangeToNull(e.target.value))}
       />
       <label
         htmlFor="first_name"
@@ -105,7 +130,7 @@ export default function Brands() {
         className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         required
         value={metaDescription}
-        onChange={(e) => setMetaDescription(e.target.value)}
+        onChange={(e) => setMetaDescription(ChangeToNull(e.target.value))}
       />
 
       <label
@@ -120,7 +145,7 @@ export default function Brands() {
         className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         required
         value={metaKeywords}
-        onChange={(e) => setMetaKeywords(e.target.value)}
+        onChange={(e) => setMetaKeywords(ChangeToNull(e.target.value))}
       />
       <SaveBar action={save} backUrl={"/admin/ecommerce/brands/"} />
     </div>

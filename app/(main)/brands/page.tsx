@@ -3,7 +3,7 @@ import BrandModule from "./BrandModule";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `جهیزان | برند ها`,
+    title: `برند ها | جهیزان`,
   };
 }
 

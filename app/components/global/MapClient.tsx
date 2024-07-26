@@ -1,4 +1,3 @@
-import type { FunctionComponent } from "react";
 import React, { memo, useEffect, useState, useRef } from "react";
 import { Map, Overlay, Feature } from "ol";
 import { Point } from "ol/geom";
@@ -15,8 +14,8 @@ const DEFAULT_LOCATION = {
 };
 
 interface LocationState {
-  lat: number;
-  lng: number;
+  lat: number | null;
+  lng: number | null;
 }
 
 export interface MapProps {
@@ -27,7 +26,7 @@ export interface MapProps {
   isAddressManuallyChanged?: boolean;
 }
 
-const Maps: FunctionComponent<MapProps> = ({
+const Maps: React.FunctionComponent<MapProps> = ({
   defaultLocation = DEFAULT_LOCATION,
   onAddressChange,
   onLocationChange,
@@ -39,16 +38,16 @@ const Maps: FunctionComponent<MapProps> = ({
   const [olMap, setOlMap] = useState<OlMap>();
   const [marker, setMarker] = useState<Overlay | null>(null);
   const [currentLocation, setCurrentLocation] = useState<LocationState>({
-    lat: defaultLocation.lat,
-    lng: defaultLocation.lng,
+    lat: null,
+    lng: null,
   });
   const [lastLocation, setLastLocation] = useState<LocationState | null>(null);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
 
   const onInit = (ol: Ol, map: OlMap) => {
     setOl(ol);
     setOlMap(map);
 
-    // Create the marker
     const markerElement = document.createElement("div");
     markerElement.className = "marker";
     markerElement.style.width = "114px";
@@ -72,7 +71,6 @@ const Maps: FunctionComponent<MapProps> = ({
     map.addOverlay(markerOverlay);
     setMarker(markerOverlay);
 
-    // Animate the map to the default location
     setTimeout(() => {
       const view = map.getView();
       view.animate({
@@ -97,23 +95,25 @@ const Maps: FunctionComponent<MapProps> = ({
             lastLocation.lng !== newLocation.lng
           ) {
             onLocationChange?.(newLocation);
-
             setCurrentLocation(newLocation);
             setLastLocation(newLocation);
+            setHasUserInteracted(true); // User has interacted with the map
           }
         }
       });
     }
   }, [olMap, marker, ol, onLocationChange, lastLocation]);
 
+  // Reset logic can be added here if needed, e.g., button click to reset map position
+
   return (
     <NeshanMap
       mapKey="web.17a0c7f735234ae7acfa9eac73c9ca2e"
       defaultType="neshan"
-      // center={{
-      //   latitude: defaultLocation.lat,
-      //   longitude: defaultLocation.lng,
-      // }}
+      center={{
+        latitude: defaultLocation.lat ?? currentLocation.lat,
+        longitude: defaultLocation.lng ?? currentLocation.lng,
+      }}
       style={{ height: `${height}px`, width: "100%" }}
       onInit={onInit}
       zoom={12}

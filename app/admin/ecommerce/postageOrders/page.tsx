@@ -123,6 +123,11 @@ export default function Orders() {
               <RemoveRedEyeIcon />
             </Link>
           </IconButton>
+          <a
+            href={`/admin/ecommerce/totalOrders?phoneNumber=${row.original?.user?.phoneNumber}`}
+          >
+            <Button variant="outlined">سفارشات این کاربر</Button>
+          </a>
         </>
       ),
     },

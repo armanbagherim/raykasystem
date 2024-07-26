@@ -15,24 +15,24 @@ function renderer({ hours, minutes, seconds, days, completed }) {
 
     // Display the countdown timer with leading zeros
     return (
-      <div className="flex flex-col  gap-2 text-center left-4 top-4 bg-[#006A93] p-2 rounded-2xl absolute ">
-        <div className="flex flex-col">
-          <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center mb-2 rounded-xl">
+      <div className="flex gap-2 text-center p-2 rounded-2xl">
+        <div className="flex flex-row items-center gap-2">
+          <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center  rounded-xl">
             {formattedHours}
           </span>
-          <span className="text-xs text-white">ساعت</span>
+          <span className="text-xs peyda text-white font-bold">ساعت</span>
         </div>
-        <div className="flex flex-col">
-          <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center mb-2 rounded-xl">
+        <div className="flex flex-row items-center gap-2">
+          <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center  rounded-xl">
             {formattedMinutes}
           </span>
-          <span className="text-xs text-white">دقیقه</span>
+          <span className="text-xs peyda text-white font-bold">دقیقه</span>
         </div>
-        <div className="flex flex-col">
-          <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center mb-2 rounded-xl">
+        <div className="flex flex-row items-center gap-2">
+          <span className="bg-[#F5F5F5] w-7 h-7 text-xs font-bold flex items-center justify-center text-center  rounded-xl">
             {formattedSeconds}
           </span>
-          <span className="text-xs text-white">ثانیه</span>
+          <span className="text-xs peyda text-white font-bold">ثانیه</span>
         </div>
       </div>
     );

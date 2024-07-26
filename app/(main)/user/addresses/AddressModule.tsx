@@ -1,5 +1,5 @@
 "use client";
-import { PlusSmall, Trash } from "@/app/components/design/Icons";
+import { Edit, PlusSmall, Trash } from "@/app/components/design/Icons";
 import { useTheme } from "@mui/material/styles";
 import {
   Button,
@@ -24,16 +24,24 @@ export default function AddressModule({ cookies, session }) {
   const [addresses, setAddresses] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+  const [level, setLevel] = useState(1);
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    setActiveSpace(null);
+    setLevel(1);
+    setCoordinates({
+      latitude: null,
+      longitude: null,
+    });
   };
   const getAddress = async () => {
+    setLoading(true);
     try {
       await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/addresses?sortOrder=DESC&offset=0&limit=30&orderBy=id`,
@@ -51,6 +59,7 @@ export default function AddressModule({ cookies, session }) {
         })
         .then((data) => {
           setAddresses(data.result);
+          setLoading(false);
         });
     } catch (error) {}
     if (session == null) {
@@ -68,11 +77,6 @@ export default function AddressModule({ cookies, session }) {
   const [isAddressManuallyChanged, setIsAddressManuallyChanged] =
     useState(false);
 
-  const setStreetAndUpdateAddress = (value) => {
-    setStreet(value);
-    setIsAddressManuallyChanged(true);
-  };
-
   const [name, setName] = useState();
   const [provinces, setProvinces] = useState([]);
   const [provinceId, setprovinceId] = useState(1);
@@ -85,23 +89,29 @@ export default function AddressModule({ cookies, session }) {
   const [plaque, setPlaque] = useState();
   const [floorNumber, setFloorNumber] = useState();
   const [postalCode, setPostalCode] = useState();
+  const [activeSpace, setActiveSpace] = useState(null);
+  const [fetchingData, setFetchingData] = useState(false);
 
   const getProvinces = async () => {
+    setFetchingData(true);
     await fetcher({
       url: `/v1/api/ecommerce/provinces`,
       method: "GET",
     }).then((res) => {
       setProvinces(res.result);
+      setFetchingData(false);
     });
   };
 
   const getCities = async (pid) => {
+    setFetchingData(true);
     await fetcher({
       url: `/v1/api/ecommerce/cities?provinceId=${pid}`,
       method: "GET",
     }).then((res) => {
       setCityId(res.result[0].id);
       setCities(res.result);
+      setFetchingData(false);
     });
   };
 
@@ -112,7 +122,9 @@ export default function AddressModule({ cookies, session }) {
     }).then((res) => {
       if (res.result.length !== 0) {
         setNeighberhoods(res.result);
-        setneighborhoodId(res.result[0].id);
+        setneighborhoodId(null);
+        setFetchingData(false);
+
         // if (address?.result?.address?.neighborhoodId !== neighborhoodId) {
         //   setneighborhoodId(res.result[0].id);
         // }
@@ -164,38 +176,87 @@ export default function AddressModule({ cookies, session }) {
     }
   };
 
-  const save = async () => {
-    try {
-      const req = await fetcher({
-        url: `/v1/api/ecommerce/user/addresses`,
-        method: "POST",
-        body: {
-          name: name,
-          latitude: coordinates.latitude,
-          longitude: coordinates.longitude,
-          provinceId: +provinceId,
-          cityId: +cityId,
-          neighborhoodId: neighborhoodId === null ? null : +neighborhoodId,
-          street,
-          alley,
-          plaque,
-          floorNumber,
-          postalCode,
-        },
-      });
+  const EditAddress = (id) => {
+    const address = addresses.filter((value) => value.id == id);
+    setActiveSpace(address[0]);
+    setprovinceId(address[0].provinceId);
+    setLevel(1);
 
-      toast.success("موفق");
-      getAddress();
-      setOpen(false);
-    } catch (error) {
-      toast.error(error.message);
+    setOpen(true);
+  };
+
+  const save = async () => {
+    if (activeSpace === null) {
+      try {
+        const req = await fetcher({
+          url: `/v1/api/ecommerce/user/addresses`,
+          method: "POST",
+          body: {
+            name: name,
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude,
+            provinceId: +provinceId,
+            cityId: +cityId,
+            neighborhoodId: neighborhoodId === null ? null : +neighborhoodId,
+            street,
+            alley,
+            plaque,
+            floorNumber,
+            postalCode,
+          },
+        });
+
+        toast.success("موفق");
+        getAddress();
+        setOpen(false);
+        setActiveSpace(null);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    } else {
+      try {
+        const req = await fetcher({
+          url: `/v1/api/ecommerce/user/addresses/${activeSpace.id}`,
+          method: "PUT",
+          body: {
+            name: activeSpace.name,
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude,
+            provinceId: +activeSpace.provinceId,
+            cityId: +activeSpace.cityId,
+            neighborhoodId:
+              neighborhoodId === null ? null : +activeSpace.neighborhoodId,
+            street: activeSpace.street,
+            alley: activeSpace.alley,
+            plaque: activeSpace.plaque,
+            floorNumber: activeSpace.floorNumber,
+            postalCode: activeSpace.postalCode,
+          },
+        });
+
+        toast.success("موفق");
+        getAddress();
+        setOpen(false);
+        setLevel(1);
+        setActiveSpace(null);
+      } catch (error) {
+        toast.error(error.message);
+      }
     }
   };
 
-  return (
+  const checkLocation = () => {
+    if (coordinates.latitude !== null && coordinates.longitude !== null) {
+      setLevel(2);
+    }
+  };
+
+  return loading ? (
+    "loading"
+  ) : (
     <div className="w-full">
       <div className="flex justify-between mb-6 items-center mb-4 border-b border-b-gray-200 pb-4">
-        <h1 className="text-2xl peyda ">آدرس های شما</h1>
+        <h1 className="text-2xl peyda">آدرس های شما</h1>
         <button
           variant="outlined"
           onClick={handleClickOpen}
@@ -214,155 +275,284 @@ export default function AddressModule({ cookies, session }) {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
+        {" "}
         <DialogTitle id="responsive-dialog-title">ثبت آدرس جدید</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <div>
-              <MapClient
-                height={400}
-                onLocationChange={(location) => {
-                  setCoordinates({
-                    latitude: location.lat.toString(),
-                    longitude: location.lng.toString(),
-                  });
-                  setIsAddressManuallyChanged(false);
-                }}
-              />
-              <div className="">
-                <div className="mb-8">
-                  <TextField
-                    type="text"
-                    id="first_name"
-                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                    required
-                    label="نام آدرس: مثال خانه"
-                    value={name}
-                    fullWidth
-                    variant="standard"
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div className="">
-                    {provinces && (
-                      <SearchSelect
-                        onChange={(e) =>
-                          e !== null ? setprovinceId(e.id) : setprovinceId(1)
-                        }
-                        data={provinces}
-                        value={provinceId}
-                        defaultValue={provinceId}
-                        isDiff={true}
-                        diffName="name"
-                        label="استان"
-                      />
-                    )}
-                  </div>
-                  <div className="">
-                    {cities && (
-                      <SearchSelect
-                        onChange={(e) =>
-                          e !== null ? setCityId(e.id) : setCityId(cities[0].id)
-                        }
-                        data={cities}
-                        value={cityId}
-                        defaultValue={cityId}
-                        isDiff={true}
-                        diffName="name"
-                        label="شهر"
-                      />
-                    )}
-                  </div>
-                  {neghberhoods && (
-                    <SearchSelect
-                      onChange={(e) =>
-                        e !== null
-                          ? setneighborhoodId(e.id)
-                          : setneighborhoodId(neghberhoods[0].id)
-                      }
-                      data={neghberhoods}
-                      value={neighborhoodId}
-                      defaultValue={neighborhoodId}
-                      // isDiff={true}
-                      // diffName="name"
-                      label="محله"
-                    />
-                  )}
-                </div>
-                <div className="flex gap-4 mb-6">
-                  <div className="w-full flex-1">
-                    <TextField
-                      type="text"
-                      variant="standard"
-                      id="first_name"
-                      className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                      required
-                      label="آدرس"
-                      fullWidth
-                      value={street}
-                      onChange={(e) => setStreet(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="flex-1">
-                    <TextField
-                      type="text"
-                      variant="standard"
-                      id="first_name"
-                      className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                      required
-                      label="پلاک"
-                      value={plaque}
-                      onChange={(e) => setPlaque(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <TextField
-                      type="text"
-                      variant="standard"
-                      id="first_name"
-                      className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                      required
-                      label="طبقه"
-                      value={floorNumber}
-                      onChange={(e) => setFloorNumber(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <TextField
-                      type="text"
-                      variant="standard"
-                      id="first_name"
-                      className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                      required
-                      label="کد پستی"
-                      value={postalCode}
-                      onChange={(e) => setPostalCode(e.target.value)}
-                    />
-                  </div>
-                </div>
-              </div>
+        <DialogContent className="w-full md:w-[600px]">
+          {fetchingData ? (
+            <div className="w-full h-full absolute z-[99999] top-0 right-0 bottom-0 left-0 flex justify-center items-center bg-white">
+              <CircularProgress />
             </div>
-          </DialogContentText>
+          ) : (
+            <DialogContentText>
+              <div>
+                {level === 1 ? (
+                  <MapClient
+                    height={400}
+                    defaultLocation={{
+                      lat: activeSpace?.latitude ?? 35.65326,
+                      lng: activeSpace?.longitude ?? 51.35471,
+                    }}
+                    onLocationChange={(location) => {
+                      setCoordinates({
+                        latitude: location.lat.toString(),
+                        longitude: location.lng.toString(),
+                      });
+
+                      setIsAddressManuallyChanged(false);
+                    }}
+                  />
+                ) : (
+                  <div className="">
+                    <div className="mb-8">
+                      <TextField
+                        type="text"
+                        id="first_name"
+                        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                        required
+                        label="نام آدرس: مثال خانه"
+                        value={activeSpace !== null ? activeSpace.name : name}
+                        fullWidth
+                        variant="standard"
+                        onChange={(e) => {
+                          setName(e.target.value);
+                          if (activeSpace !== null) {
+                            setActiveSpace({
+                              ...activeSpace,
+                              name: e.target.value,
+                            });
+                          }
+                        }}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                      <div className="">
+                        {provinces && (
+                          <SearchSelect
+                            onChange={(e) => {
+                              if (e !== null) {
+                                setprovinceId(e.id);
+                                if (activeSpace !== null) {
+                                  setActiveSpace({
+                                    ...activeSpace,
+                                    provinceId: e.id,
+                                  });
+                                }
+                              } else {
+                                setprovinceId(1);
+                              }
+                            }}
+                            data={provinces}
+                            value={
+                              activeSpace !== null
+                                ? activeSpace.provinceId
+                                : provinceId
+                            }
+                            defaultValue={
+                              activeSpace !== null
+                                ? activeSpace.provinceId
+                                : provinceId
+                            }
+                            isDiff={true}
+                            diffName="name"
+                            label="استان"
+                          />
+                        )}
+                      </div>
+                      <div className="">
+                        {cities && (
+                          <SearchSelect
+                            onChange={(e) => {
+                              if (e !== null) {
+                                setCityId(e.id);
+
+                                if (activeSpace !== null) {
+                                  setActiveSpace({
+                                    ...activeSpace,
+                                    cityId: e.id,
+                                  });
+                                }
+                              } else {
+                                setCityId(cities[0].id);
+                              }
+                            }}
+                            data={cities}
+                            value={
+                              activeSpace !== null ? activeSpace.cityId : cityId
+                            }
+                            defaultValue={
+                              activeSpace !== null ? activeSpace.cityId : cityId
+                            }
+                            isDiff={true}
+                            diffName="name"
+                            label="شهر"
+                          />
+                        )}
+                      </div>
+                      {neghberhoods && (
+                        <SearchSelect
+                          nullable={true}
+                          onChange={(e) => {
+                            if (e !== null) {
+                              setneighborhoodId(e.id);
+
+                              if (activeSpace !== null) {
+                                setActiveSpace({
+                                  ...activeSpace,
+                                  neighborhoodId: e.id,
+                                });
+                              }
+                            } else {
+                              setneighborhoodId(neghberhoods[0].id);
+                            }
+                          }}
+                          data={neghberhoods}
+                          value={
+                            activeSpace !== null
+                              ? activeSpace.neighborhoodId
+                              : neighborhoodId
+                          }
+                          defaultValue={
+                            activeSpace !== null
+                              ? activeSpace.neighborhoodId
+                              : neighborhoodId
+                          }
+                          label="محله"
+                        />
+                      )}
+                    </div>
+                    <div className="flex gap-4 mb-6">
+                      <div className="w-full flex-1">
+                        <TextField
+                          type="text"
+                          variant="standard"
+                          id="first_name"
+                          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                          required
+                          label="آدرس"
+                          fullWidth
+                          value={
+                            activeSpace !== null ? activeSpace.street : street
+                          }
+                          onChange={(e) => {
+                            setStreet(e.target.value);
+                            if (activeSpace !== null) {
+                              setActiveSpace({
+                                ...activeSpace,
+                                street: e.target.value,
+                              });
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="flex-1">
+                        <TextField
+                          type="text"
+                          variant="standard"
+                          id="first_name"
+                          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                          required
+                          label="پلاک"
+                          value={
+                            activeSpace !== null ? activeSpace.plaque : plaque
+                          }
+                          onChange={(e) => {
+                            setPlaque(e.target.value);
+                            if (activeSpace !== null) {
+                              setActiveSpace({
+                                ...activeSpace,
+                                plaque: e.target.value,
+                              });
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <TextField
+                          type="text"
+                          variant="standard"
+                          id="first_name"
+                          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                          required
+                          label="طبقه"
+                          value={
+                            activeSpace !== null
+                              ? activeSpace.floorNumber
+                              : floorNumber
+                          }
+                          onChange={(e) => {
+                            setFloorNumber(e.target.value);
+                            if (activeSpace !== null) {
+                              setActiveSpace({
+                                ...activeSpace,
+                                floorNumber: e.target.value,
+                              });
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <TextField
+                          type="text"
+                          variant="standard"
+                          id="first_name"
+                          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                          required
+                          label="کد پستی"
+                          value={
+                            activeSpace !== null
+                              ? activeSpace.postalCode
+                              : postalCode
+                          }
+                          onChange={(e) => {
+                            setPostalCode(e.target.value);
+                            if (activeSpace !== null) {
+                              setActiveSpace({
+                                ...activeSpace,
+                                postalCode: e.target.value,
+                              });
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </DialogContentText>
+          )}
         </DialogContent>
         <DialogActions className="!pt-4 border-t border-t-gray-300 !justify-between">
-          <Button autoFocus onClick={handleClose}>
-            انصراف
+          <Button
+            autoFocus
+            onClick={(e) => (level === 1 ? handleClose() : setLevel(1))}
+          >
+            {level === 1 ? "انصراف" : "مرحله قبل"}
           </Button>
           <Button
             variant="outlined"
             color="success"
-            onClick={save}
+            onClick={level === 1 ? checkLocation : save}
             autoFocus
-            disabled={isLoading} // Disable button while isLoading
+            disabled={
+              coordinates.latitude === "35.65326" &&
+              coordinates.longitude === "51.354710000000004"
+                ? true
+                : false
+            } // Disable button while isLoading
           >
-            {isLoading ? <CircularProgress size={24} /> : "ذخیره"}
+            {isLoading ? (
+              <CircularProgress size={24} />
+            ) : level === 1 ? (
+              "مرحله بعدی"
+            ) : (
+              "ذخیره"
+            )}
           </Button>
         </DialogActions>
       </Dialog>
       <div className="grid grid-cols-1 w-full gap-4  md:grid-cols-12">
-        {console.log(addresses)}
         {addresses === "undefined" || addresses?.length === 0 ? (
           <div className="text-center col-span-12">
             <svg
@@ -379,123 +569,123 @@ export default function AddressModule({ cookies, session }) {
                     id="Stroke 1"
                     d="M34.8164 399V408"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <g id="Group 8">
                     <path
                       id="Stroke 2"
                       d="M14.6016 403.875L21.9558 411.446"
                       stroke="#D2D8DF"
-                      stroke-width="2.921"
-                      stroke-linecap="round"
+                      strokeWidth="2.921"
+                      strokeLinecap="round"
                     />
                     <path
                       id="Stroke 4"
                       d="M6 424.028H16.3989"
                       stroke="#D2D8DF"
-                      stroke-width="2.921"
-                      stroke-linecap="round"
+                      strokeWidth="2.921"
+                      strokeLinecap="round"
                     />
                     <path
                       id="Stroke 6"
                       d="M13.7578 444.539L21.1121 436.969"
                       stroke="#D2D8DF"
-                      stroke-width="2.921"
-                      stroke-linecap="round"
+                      strokeWidth="2.921"
+                      strokeLinecap="round"
                     />
                   </g>
                   <path
                     id="Stroke 9"
                     d="M34.8164 447V438"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <path
                     id="Stroke 10"
                     d="M49.8164 441L43.8164 435"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <path
                     id="Stroke 11"
                     d="M61.8164 426H52.8164"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <path
                     id="Stroke 12"
                     d="M55.8164 405L49.8164 411"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <path
                     id="Stroke 13"
                     d="M517.816 6V12"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <path
                     id="Stroke 15"
                     d="M499.816 24H505.816"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <path
                     id="Stroke 16"
                     d="M517.816 42V36"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <path
                     id="Stroke 17"
                     d="M532.816 24H526.816"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <path
                     id="Stroke 18"
                     d="M169.816 258V267"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <path
                     id="Stroke 19"
                     d="M142.816 285H151.816"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <path
                     id="Stroke 20"
                     d="M169.816 309V300"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <path
                     id="Stroke 21"
                     d="M193.816 285H184.816"
                     stroke="#D2D8DF"
-                    stroke-width="2.921"
-                    stroke-linecap="round"
+                    strokeWidth="2.921"
+                    strokeLinecap="round"
                   />
                   <g id="Group 42">
                     <path
                       id="Stroke 22"
                       d="M815.578 585.118C822.747 585.118 828.562 590.934 828.562 598.105C828.562 605.279 822.747 611.092 815.578 611.092C808.408 611.092 802.594 605.279 802.594 598.105"
                       stroke="#D2D8DF"
-                      stroke-width="2.921"
-                      stroke-linecap="round"
+                      strokeWidth="2.921"
+                      strokeLinecap="round"
                     />
                     <path
                       id="Fill 26"
@@ -538,8 +728,8 @@ export default function AddressModule({ cookies, session }) {
                       clip-rule="evenodd"
                       d="M343.347 768.803C343.347 773.452 339.58 777.22 334.932 777.22C330.286 777.22 326.52 773.452 326.52 768.803C326.52 764.154 330.286 760.386 334.932 760.386C339.58 760.386 343.347 764.154 343.347 768.803Z"
                       stroke="#D2D8DF"
-                      stroke-width="2.921"
-                      stroke-linecap="round"
+                      strokeWidth="2.921"
+                      strokeLinecap="round"
                     />
                     <path
                       id="Stroke 38"
@@ -547,8 +737,8 @@ export default function AddressModule({ cookies, session }) {
                       clip-rule="evenodd"
                       d="M338.341 99.0952C338.341 104.659 333.833 109.166 328.273 109.166C322.713 109.166 318.205 104.659 318.205 99.0952C318.205 93.5339 322.713 89.0248 328.273 89.0248C333.833 89.0248 338.341 93.5339 338.341 99.0952Z"
                       stroke="#D2D8DF"
-                      stroke-width="2.921"
-                      stroke-linecap="round"
+                      strokeWidth="2.921"
+                      strokeLinecap="round"
                     />
                     <path
                       id="Stroke 40"
@@ -556,8 +746,8 @@ export default function AddressModule({ cookies, session }) {
                       clip-rule="evenodd"
                       d="M595.149 862.009C588.716 864.457 581.516 861.224 579.068 854.792C576.621 848.356 579.85 841.152 586.286 838.706C592.717 836.258 599.917 839.488 602.364 845.924C604.814 852.359 601.582 859.561 595.149 862.009Z"
                       stroke="#D2D8DF"
-                      stroke-width="2.921"
-                      stroke-linecap="round"
+                      strokeWidth="2.921"
+                      strokeLinecap="round"
                     />
                   </g>
                 </g>
@@ -726,11 +916,21 @@ export default function AddressModule({ cookies, session }) {
             >
               <div className="flex justify-between mb-4">
                 <span className="font-bold text-primary"> {value.name}</span>
-                <span
-                  className="cursor-pointer"
-                  onClick={(e) => deleteOrder(value.id)}
-                >
-                  <Trash />
+                <span className="cursor-pointer">
+                  <div className="flex flex-col gap-2">
+                    <span
+                      className="flex justify-end"
+                      onClick={(e) => deleteOrder(value.id)}
+                    >
+                      <Trash />
+                    </span>
+                    <span
+                      className="cursor-pointer"
+                      onClick={(e) => EditAddress(value.id)}
+                    >
+                      <Edit />
+                    </span>
+                  </div>
                 </span>
               </div>
               <div className="text-sm leading-7">
@@ -745,6 +945,5 @@ export default function AddressModule({ cookies, session }) {
         )}
       </div>
     </div>
-    // </CacheProvider>
   );
 }

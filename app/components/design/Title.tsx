@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Title({ text, color }) {
   return (
-    <div className="mb-9 relative">
+    <div className="relative">
       <svg
         className="absolute right-0 -top-4 w-[45px] md:w-auto"
         width="72"

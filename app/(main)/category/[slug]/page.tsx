@@ -141,7 +141,7 @@ async function getProducts(searchParams, entity) {
 export async function generateMetadata({ params }): Promise<Metadata> {
   const { result: entity } = await getEntity(params);
   return {
-    title: `جهیزان | ${entity?.metaTitle ?? entity?.name}`,
+    title: `${entity?.metaTitle ?? entity?.name} | جهیزان`,
     description: entity?.metaDescription,
     keywords: entity?.metaKeywords,
   };
@@ -160,35 +160,39 @@ const Sellerpage = async ({ params, searchParams }) => {
   return (
     <>
       <div className="container justify-center mx-auto mt-10 mb-20">
-        <div className="flex gap-8 overflow-x-auto custom-scroll mb-10 whitespace-nowrap px-4 pb-6">
-          {subEntities?.map((value) => (
-            <Link
-              href={`/category/${value.slug}`}
-              key={value?.id}
-              className="flex flex-col justify-center text-center "
-            >
-              {value?.attachment ? (
-                <Image
-                  width={80}
-                  height={80}
-                  className="mx-auto mb-4"
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes/image/${value?.attachment?.fileName}`}
-                />
-              ) : (
-                <Image
-                  width={80}
-                  height={80}
-                  className="mx-auto mb-4 rounded-full"
-                  src={`/images/no-photo.png`}
-                />
-              )}
+        {subEntities.length > 1 && (
+          <div className="flex gap-8 overflow-x-auto custom-scroll mb-10 whitespace-nowrap px-4 pb-6">
+            {subEntities?.map((value) => (
+              <Link
+                href={`/category/${value.slug}`}
+                key={value?.id}
+                className="flex flex-col justify-center text-center flex-1"
+              >
+                {value?.attachment ? (
+                  <Image
+                    alt={value.name}
+                    width={96}
+                    height={96}
+                    className="mx-auto mb-4 !w-[96px] !max-w-[unset] !h-[96px]"
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes/image/${value?.attachment?.fileName}`}
+                  />
+                ) : (
+                  <Image
+                    width={96}
+                    height={96}
+                    className="mx-auto mb-4 !w-[96px] !max-w-[unset] !h-[96px] rounded-full"
+                    src={`/images/no-photo.png`}
+                    alt="بدون عکس"
+                  />
+                )}
 
-              <span className="block font-bold peyda text-primary">
-                {value.name}
-              </span>
-            </Link>
-          ))}
-        </div>
+                <span className="block font-bold peyda text-primary">
+                  {value.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        )}
         <div className="text-3xl p-5 pr-4 md:pr-7">
           {" "}
           <h1 className="peyda text-[26px]">{entity?.name}</h1>
@@ -238,7 +242,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                     {products?.result?.map((value, key) => (
                       <ProductCard
                         key={key}
-                        data={value}
+                        data={value ?? null}
                         type="main"
                         className="w-full sm:w-1/2 md:w-1/3"
                       />
@@ -246,11 +250,17 @@ const Sellerpage = async ({ params, searchParams }) => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="w-full col-span-12 flex justify-center overflow-x-auto">
-              <Numberpaginate items={products} />
+              <div className="w-full col-span-12 flex justify-center overflow-x-auto">
+                <Numberpaginate items={products} />
+              </div>
             </div>
           </div>
+          {entity?.description && (
+            <div
+              className="contentLong"
+              dangerouslySetInnerHTML={{ __html: entity?.description }}
+            ></div>
+          )}
         </div>
       </div>
     </>

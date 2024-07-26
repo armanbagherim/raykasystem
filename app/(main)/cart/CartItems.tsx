@@ -295,7 +295,7 @@ export default function CartItems({
                   item?.product?.inventories[0]?.firstPrice?.appliedDiscount
                     .newPrice || 0
                 ).toLocaleString()}{" "}
-                تومانء
+                ءتء
               </span>
             </div> */}
 
@@ -308,14 +308,14 @@ export default function CartItems({
                     {Number(
                       item?.product?.inventories[0]?.firstPrice?.price || 0
                     ).toLocaleString()}{" "}
-                    تومانء
+                    ءتء
                   </div>
                   <div className="text-md text-gray-700">
                     {Number(
                       item?.product?.inventories[0]?.firstPrice?.appliedDiscount
                         ?.newPrice || 0
                     ).toLocaleString()}{" "}
-                    تومانء
+                    ءتء
                   </div>
                 </>
               ) : (
@@ -323,7 +323,7 @@ export default function CartItems({
                   {Number(
                     item?.product?.inventories[0]?.firstPrice?.price || 0
                   ).toLocaleString()}{" "}
-                  تومانء
+                  ءتء
                 </span>
               )}
             </span>
@@ -346,7 +346,7 @@ export default function CartItems({
                     (item?.product?.inventories[0]?.firstPrice?.price || 0) *
                       itemCount
                   ).toLocaleString()}{" "}
-              تومانء
+              ءتء
             </span>
           </div>
         </div>

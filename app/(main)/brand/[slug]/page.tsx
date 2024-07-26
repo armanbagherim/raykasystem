@@ -80,7 +80,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   const { result: brand } = await getBrand(params);
 
   return {
-    title: `جهیزان | ${brand.name}`,
+    title: `جهیزان | ${brand.metaTitle ? brand.metaTitle : brand?.name}`,
     description: brand?.metaDescription,
     keywords: brand?.metaKeywords,
     twitter: {
@@ -152,12 +152,18 @@ const Sellerpage = async ({ params, searchParams }) => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="w-full col-span-12 flex justify-center overflow-x-auto">
-              <Numberpaginate items={products} />
+              <div className="w-full col-span-12 flex justify-center overflow-x-auto">
+                <Numberpaginate items={products} />
+              </div>
             </div>
           </div>
         </div>
+        {brand?.description && (
+          <div
+            className="contentLong"
+            dangerouslySetInnerHTML={{ __html: brand?.description }}
+          ></div>
+        )}
       </div>
     </>
   );

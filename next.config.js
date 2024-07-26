@@ -1,16 +1,11 @@
 /** @type {import('next').NextConfig} */
-const {
-  withSentryConfig,
-  instrumentOutgoingRequests,
-} = require("@sentry/nextjs");
-
 // const withPWA = require("next-pwa");
 
 const nextConfig = {
   experimental: {
     outputStandalone: true,
-    instrumentationHook: true,
   },
+
   logging: {
     fetches: {
       fullUrl: true,
@@ -25,11 +20,19 @@ const nextConfig = {
   urlImports: [
     "https://static.neshan.org/sdk/leaflet/v1.9.4/neshan-sdk/v1.0.8/index.js",
   ],
+  httpAgentOptions: {
+    keepAlive: true,
+    keepAliveMsecs: 100000, // 100 seconds
+  },
   images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "service.jahizan.com",
+      },
+      {
+        protocol: "https",
+        hostname: "minio-jahizan.chbk.run",
       },
     ],
   },
@@ -40,16 +43,7 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  reactStrictMode: false,
 };
 
-module.exports = withSentryConfig(nextConfig, {
-  org: "jahizan",
-  project: "jahizan",
-  authToken:
-    "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",
-  silent: false, // Can be used to suppress logs
-  telemetry: false,
-  sourcemaps: {
-    disable: true,
-  },
-});
+module.exports = nextConfig;

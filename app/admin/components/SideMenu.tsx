@@ -81,9 +81,9 @@ const SideMenu = () => {
         } `}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 bg-gray-50 flex justify-between flex-col h-full overflow-y-auto custom-scroll">
+        <div className="h-full px-3 py-4 bg-[#20ac73] flex justify-between flex-col h-full overflow-y-auto custom-scroll">
           <div>
-            <div className="flex bg-gray-200 justify-between items-center rounded-xl p-4 mb-5 border-b">
+            <div className="flex bg-white justify-between items-center rounded-xl p-4 mb-5 border-b">
               <a
                 href="https://flowbite.com/"
                 className="flex items-center ps-2.5"
@@ -106,7 +106,7 @@ const SideMenu = () => {
                 <li key={key}>
                   <button
                     type="button"
-                    className={`flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-gray-100 ${
+                    className={`flex items-center w-full p-2 text-base transition duration-75 rounded-lg group ${
                       isActive(menu.url)
                         ? "text-blue-500 bg-gray-700"
                         : "text-gray-900"
@@ -116,7 +116,7 @@ const SideMenu = () => {
                     aria-expanded="true"
                     onClick={() => toggleSubMenu(menu.id)}
                   >
-                    <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                    <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap text-white">
                       {menu.title}
                     </span>
                     <svg
@@ -127,7 +127,7 @@ const SideMenu = () => {
                       viewBox="0 0 10 6"
                     >
                       <path
-                        stroke="currentColor"
+                        stroke="white"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
@@ -144,10 +144,10 @@ const SideMenu = () => {
                       <li key={key}>
                         <Link href={submenu.url}>
                           <p
-                            className={`flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 ${
+                            className={`flex items-center w-full px-4 py-3  text-white transition duration-75 rounded-xl pl-11 group ${
                               isActive(submenu.url)
-                                ? "text-blue-500 bg-gray-200 font-bold"
-                                : "text-gray-900 "
+                                ? "!text-[#20ac73] bg-white"
+                                : "!text-white"
                             }`}
                           >
                             {submenu.title}
@@ -160,7 +160,7 @@ const SideMenu = () => {
               ))}
             </ul>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between text-white items-center">
             <span>
               <span> سلام </span>
               {session?.result?.firstname} {session?.result?.lastname}
@@ -175,24 +175,24 @@ const SideMenu = () => {
               >
                 <path
                   d="M8.90002 7.55999C9.21002 3.95999 11.06 2.48999 15.11 2.48999H15.24C19.71 2.48999 21.5 4.27999 21.5 8.74999V15.27C21.5 19.74 19.71 21.53 15.24 21.53H15.11C11.09 21.53 9.24002 20.08 8.91002 16.54"
-                  stroke="#000"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  stroke="#fff"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 ></path>
                 <path
                   d="M15 12H3.62"
-                  stroke="#000"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  stroke="#fff"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 ></path>
                 <path
                   d="M5.85 8.6499L2.5 11.9999L5.85 15.3499"
-                  stroke="#000"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  stroke="#fff"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 ></path>
               </svg>
             </span>

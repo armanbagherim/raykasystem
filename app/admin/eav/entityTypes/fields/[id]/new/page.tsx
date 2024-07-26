@@ -11,13 +11,20 @@ import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
+  const { data: eav, isLoading: eavIsLoading } = useFetcher(
+    `/v1/api/eav/admin/entityTypes/${params.id}`,
+    "GET"
+  );
+
   useEffect(() => {
-    setTitle({
-      title: "افزودن فیلد",
-      buttonTitle: "",
-      link: "",
-    });
-  }, []);
+    if (!eavIsLoading) {
+      setTitle({
+        title: `افزودن فیلد برای دسته ${eav.result.name ?? ""}`,
+        buttonTitle: "افزودن فیلد",
+        link: `/admin/eav/entityTypes/fields/${params.id}/new`,
+      });
+    }
+  }, [eavIsLoading]);
   const [name, setName] = useState();
   const [min, setMin] = useState(null);
   const [max, setMax] = useState(null);

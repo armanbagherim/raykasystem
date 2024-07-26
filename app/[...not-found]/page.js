@@ -3,53 +3,9 @@ import "./../globals.scss";
 import localFont from "next/font/local";
 import Link from "next/link";
 
-const IRANSansX = localFont({
-  src: [
-    {
-      path: "./../assets/IRANSansX/IRANSansX-Thin.woff2",
-      weight: "100",
-      style: "normal",
-    },
-    {
-      path: "./../assets/IRANSansX/IRANSansX-Light.woff2",
-      weight: "200",
-      style: "normal",
-    },
-    {
-      path: "./../assets/IRANSansX/IRANSansX-UltraLight.woff2",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "./../assets/IRANSansX/IRANSansX-Medium.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./../assets/IRANSansX/IRANSansX-Light.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "./../assets/IRANSansX/IRANSansX-Bold.woff2",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "./../assets/IRANSansX/IRANSansX-ExtraBold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "./../assets/IRANSansX/IRANSansX-Black.woff2",
-      weight: "800",
-      style: "normal",
-    },
-  ],
-});
 export default function page() {
   return (
-    <section className={`bg-white  ${IRANSansX.className}`} dir="rtl">
+    <section className={`bg-white`} dir="rtl">
       <div className="container min-h-screen px-6 py-12 mx-auto lg:flex lg:items-center lg:gap-12">
         <div className="wf-ull lg:w-1/2">
           <p className="text-sm font-medium text-primary">ارور 404 خوردی که!</p>

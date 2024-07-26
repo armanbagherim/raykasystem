@@ -29,12 +29,15 @@ import Breadcrumb from "@/app/components/design/Breadcrumb";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { setQty } from "@/store/features/cartSlice";
 import {
-  decrement,
-  increment,
-  productQtyInCartSelector,
-  setQty,
-} from "@/store/features/cartSlice";
+  Link as Links,
+  Element,
+  Events,
+  animateScroll as scroll,
+  scrollSpy,
+} from "react-scroll";
+
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import Comments from "./Comments";
 import Dialog from "@mui/material/Dialog";
@@ -44,14 +47,22 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import ProductGallary from "@/app/components/ProductGallary";
+import { usePathname, useRouter } from "next/navigation";
+import CountDown from "@/app/components/design/CountDown";
 export default function SingleProductModule({
   product,
   related,
   cook,
   session,
+  comments,
 }) {
+  // const pathname = usePathname();
+  //
+  // useEffect(() => {
+  //   window.scroll(0, 0);
+  // }, [pathname]);
   const [open, setOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const dispatch = useAppDispatch();
@@ -60,9 +71,9 @@ export default function SingleProductModule({
   // const qty = useAppSelector((state) =>
   //   productQtyInCartSelector(state, inventory.id)
   // );
-
+  const router = useRouter();
   const handleVariantChange = (colorId: number) => {
-    const filtered = product.inventories.filter(
+    const filtered = product?.inventories?.filter(
       (inventory, index, self) => inventory.colorId === colorId
     );
 
@@ -72,19 +83,19 @@ export default function SingleProductModule({
   useEffect(() => {}, [localInventories]);
 
   useEffect(() => {
-    const uniqueInventories = product.inventories.filter(
+    const uniqueInventories = product?.inventories?.filter(
       (inventory, index, self) =>
         index === self.findIndex((t) => t.vendor.id === inventory.vendor.id)
     );
 
     setLocalInventories(uniqueInventories); // Ensure immutability
-  }, [product.inventories]);
+  }, [product?.inventories]);
 
   const addToCart = (inventoryId) => {
     const id = toast.loading("در حال افزودن موجودی");
     const method = "POST";
     const headers = {
-      "x-session-id": cook.value,
+      "x-session-id": cook?.value,
       "Content-Type": "application/json",
     };
 
@@ -103,7 +114,7 @@ export default function SingleProductModule({
       headers: headers,
       body: body,
     };
-    //do something else
+
     try {
       fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks`,
@@ -117,7 +128,6 @@ export default function SingleProductModule({
             autoClose: 3000,
             closeButton: true,
           });
-          //   throw Error(res.errors);
         } else {
           fetch(
             `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
@@ -159,16 +169,16 @@ export default function SingleProductModule({
   return (
     <>
       {showModal && (
-        <div className="bg-black/40 fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center">
+        <div className="bg-black/40 fixed top-0 bottom-0 left-0 right-0 z-[999999] flex items-center justify-center">
           <div className="bg-white !p-4 rounded-2xl w-3/4 sm:w-2/4">
             <div className="flex flex-wrap flex-col gap-5">
               <div className="flex gap-4 mb-4 items-center">
                 <Image
                   className=""
                   height={"50"}
-                  alt="تصویر بنر"
+                  alt={product?.title}
                   loading="eager"
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${product?.attachments[0].fileName}`}
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${product?.attachments[0]?.fileName}`}
                   width="50"
                 />
                 <span className="text-sm sm:text-lg">
@@ -184,10 +194,12 @@ export default function SingleProductModule({
                 >
                   بستن
                 </Link>
-                <Link
+                <a
                   className="bg-primary block w-full flex-1 !p-3 text-center text-white rounded-xl"
                   href="/cart"
-                  onClick={(e) => setLoading(true)}
+                  onClick={(e) => {
+                    setLoading(true);
+                  }}
                 >
                   {loading ? (
                     <svg
@@ -209,22 +221,38 @@ export default function SingleProductModule({
                   ) : (
                     " سبد خرید"
                   )}
-                </Link>
+                </a>
               </div>
             </div>
           </div>
         </div>
       )}
       <Breadcrumb product={product} />
+      <div className="container mx-auto">
+        {product.inventories[0]?.firstPrice?.appliedDiscount ? (
+          <div className="flex justify-between bg-primary items-center rounded-xl p-2 pr-4">
+            <h5 className="text-white peyda text-lg font-bold">
+              تخفیف شگفت انگیز
+            </h5>
+            <CountDown
+              dates={
+                product.inventories[0]?.firstPrice?.appliedDiscount?.endDate
+              }
+            />
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
       <div className="container justify-center mx-auto mt-3 grid grid-cols-12 gap-8 !p-8 lg:p-0">
         <div className="col-span-12 lg:col-span-4 border-0 rounded-lg relative">
-          <div className="w-10 h-32 absolute opacity-0 lg:opacity-100 r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-20">
+          <div className="w-10 pb-4 absolute opacity-0 lg:opacity-100 r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-20">
             <div className="pt-3.5 mr-3">
               <span className="cursor-pointer" onClick={handleClickOpen}>
                 <Zoomin />
               </span>
             </div>
-            <div className="pt-5 mr-3">
+            {/* <div className="pt-5 mr-3">
               <Link href="#">
                 <Heartadd />
               </Link>
@@ -233,7 +261,7 @@ export default function SingleProductModule({
               <Link href="#">
                 <Play />
               </Link>
-            </div>
+            </div> */}
           </div>
 
           <Dialog
@@ -263,9 +291,13 @@ export default function SingleProductModule({
                       <Image
                         className="mx-auto"
                         height={"600"}
-                        alt="تصویر بنر"
+                        alt={product?.title}
                         loading="eager"
-                        src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
+                        src={`${
+                          process.env.NEXT_PUBLIC_BASE_URL
+                        }/v1/api/ecommerce/productphotos/image/${
+                          value?.fileName ?? null
+                        }`}
                         width="600"
                       />
                     </div>
@@ -282,7 +314,7 @@ export default function SingleProductModule({
               )}
             </DialogContent>
           </Dialog>
-          <div className="p-3  pt-0 mr-0 pb-6">
+          <div className="p-3 pt-0 mr-0 pb-6">
             {product?.attachments.length ? (
               <Slider slidesPerView={1}>
                 {product?.attachments.map((value, key) => (
@@ -291,9 +323,13 @@ export default function SingleProductModule({
                     key={key}
                     className="w-full"
                     height={"500"}
-                    alt="تصویر بنر"
+                    alt={product?.title}
                     loading="eager"
-                    src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
+                    src={`${
+                      process.env.NEXT_PUBLIC_BASE_URL
+                    }/v1/api/ecommerce/productphotos/image/${
+                      value?.fileName ?? null
+                    }`}
                     width="500"
                   />
                 ))}
@@ -311,13 +347,12 @@ export default function SingleProductModule({
         </div>
 
         <div className="col-span-12 lg:col-span-5 rounded-lg">
-          <h1 className="text-right font-normal text-2xl text-slate-500">
-            {product.title}
+          <h1 className="text-right peyda font-normal text-2xl text-slate-500">
+            {product?.title}
           </h1>
           <div className="text-right font-normal text-sm mt-2 text-slate-400">
-            {product.slug.replace(/-/g, " ")}
+            {product?.slug?.replace(/-/g, " ")}
           </div>
-
           <div>
             <div className="flex gap-4 justify-center mx-auto">
               <div className="mt-5 w-60 bg-customGray rounded-2xl">
@@ -325,7 +360,11 @@ export default function SingleProductModule({
                   <div className="pt-0.5">
                     <Goldstart />
                   </div>
-                  <div>4.75 از 4240 نظر</div>
+                  <div>
+                    {" "}
+                    {Number(product?.score ?? 0).toFixed(1)} از{" "}
+                    {product?.cntComment ?? 0} نظر
+                  </div>
                 </div>
               </div>
               <div className="mt-5 w-2/3  bg-customGray rounded-2xl">
@@ -341,16 +380,11 @@ export default function SingleProductModule({
                       </Link>
                     </div>
                   </div>
-                  <div className="justify-start mx-auto ml-2">
-                    <div className="pt-0.5 justify-center flex mx-auto w-12 bg-slate-50 rounded-xl">
-                      <Smallcat />
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-5 w-auto  bg-customGray rounded-2xl">
+            <div className="mt-5 w-auto mb-8 bg-customGray rounded-2xl">
               <div className="py-4 mr-3 flex gap-2 text-slate-500">
                 <div className="pt-0.5">
                   <Category2 />
@@ -358,74 +392,160 @@ export default function SingleProductModule({
                 <div className="flex gap-1">
                   <div className="font-bold">دسته: </div>
                   <div>
-                    <Link href={`/category/${product.entityType.slug}`}>
-                      {product.entityType.name}
+                    <Link href={`/category/${product?.entityType?.slug}`}>
+                      {product?.entityType?.name}
                     </Link>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
           <Variants
             handleVariantChange={handleVariantChange}
             product={product}
           />
+          {product?.productAttributeValues ? (
+            <div>
+              <p className="mb-4 peyda text-lg font-bold">مشخصات مفید</p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {product?.productAttributeValues
+                  .slice(0, 5)
+                  .map((value, index) => {
+                    // Render the first 5 items normally
+                    return (
+                      <span
+                        className="flex flex-col py-4 px-4 flex-1 bg-[#f8f8f8] rounded-xl"
+                        key={index}
+                      >
+                        <div className="text-sm">
+                          {value?.attribute?.name ?? ""}
+                        </div>
+                        <div className="text-green-500 text-sm font-bold">
+                          {value?.val ?? "-"}
+                        </div>
+                      </span>
+                    );
+                  })}
+                {product?.productAttributeValues.length > 5 && (
+                  // Add this only if there are more than 5 items
+                  <a
+                    href={"#attributes"}
+                    className="flex flex-col py-4 items-center justify-center cursor-pointer px-4 flex-1 bg-[#f1f1f1] rounded-xl"
+                  >
+                    <div className="text-sm text-center">موارد بیشتر</div>
+                  </a>
+                )}
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         <LeftSide
           product={localInventories}
-          status={product.inventoryStatus.id}
+          status={product?.inventoryStatus?.id}
           addToCart={addToCart}
         />
       </div>
 
       <Inventories
         addToCart={addToCart}
-        inventoryStatusId={product.inventoryStatus}
+        inventoryStatusId={product?.inventoryStatus}
         product={localInventories}
       />
 
-      <div className="container mx-auto mt-5 gap-10 border-[#F4F4F4] whitespace-nowrap overflow-x-auto shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl !p-5 flex">
-        <div className="mr-3">
-          <a href="#review">نقد و بررسی محصول</a>
-        </div>
-        <div>
-          <a href="#attributes">مشخصات محصول</a>
-        </div>
-        {/* <div>نظرات</div> */}
-      </div>
+      <div className="container mx-auto mt-5">
+        <div className="border border-[#e8e8e8] gap-10 rounded-3xl whitespace-nowrap overflow-x-auto sticky top-0 bg-white z-[8] !p-5 flex">
+          {product?.description ? (
+            <Links
+              activeClass="text-red-500 border-b border-b-red-500 pb-2 font-bold"
+              className="text-gray-500 cursor-pointer"
+              to="review"
+              spy={true}
+              smooth={true}
+              offset={-100}
+              duration={500}
+            >
+              نقد و بررسی محصول
+            </Links>
+          ) : (
+            ""
+          )}
 
-      <div
-        id="review"
-        className="container mx-auto mt-5 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl !p-8 w-auto"
-      >
-        <div className="flex gap-7">
-          <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
+          <Links
+            activeClass="text-red-500 border-b border-b-red-500 pb-2 font-bold"
+            className="text-gray-500 cursor-pointer"
+            to="attributes"
+            spy={true}
+            smooth={true}
+            offset={-100}
+            duration={500}
+          >
+            مشخصات محصول
+          </Links>
+          <Links
+            activeClass="text-red-500 border-b border-b-red-500 pb-2 font-bold"
+            className="text-gray-500 cursor-pointer"
+            to="commentSection"
+            spy={true}
+            smooth={true}
+            offset={-100}
+            duration={500}
+          >
+            نظرات
+          </Links>
         </div>
-      </div>
 
-      <div
-        id="attributes"
-        className="container mx-auto mt-8 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl !p-8"
-      >
-        <div>مشخصات کامل محصول</div>
-        <div className="mt-8 text-sm">
-          {product.productAttributeValues.map((value, key) => {
-            return (
+        {product?.description ? (
+          <div
+            id="review"
+            className="container mx-auto mt-5 border border-[#e8e8e8] rounded-3xl  !p-8 w-auto"
+          >
+            <div className="flex gap-7">
               <div
-                className="flex justify-between pt-3 pb-3 border-b"
-                key={key}
-              >
-                <div className="text-green-500">{value.attribute.name}</div>
-                <div className="mr-10 text-slate-600">{value.val}</div>
-              </div>
-            );
-          })}
+                dangerouslySetInnerHTML={{ __html: product?.description }}
+              ></div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+        <div
+          id="attributes"
+          className=" mt-8 gap-10 border border-[#e8e8e8] rounded-3xl"
+        >
+          <div className="p-8">
+            <div>مشخصات کامل محصول</div>
+            <div className="mt-8 text-sm">
+              {product?.productAttributeValues.map((value, key) => {
+                return (
+                  <div
+                    className="flex justify-between md:justify-normal pt-3 pb-3 border-b border-b-[#f0f0f1]"
+                    key={key}
+                  >
+                    <div className="text-green-500 min-w-56">
+                      {value?.attribute?.name ?? ""}
+                    </div>
+                    <div className="mr-10 text-slate-600">
+                      {value?.val ?? "-"}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
+
+        <Comments
+          comments={comments?.result}
+          total={comments?.total}
+          product={product}
+          session={session}
+        />
       </div>
 
-      {/* <Comments /> */}
-      <div className="relative container mx-auto mt-8 gap-10 border-[#F4F4F4] shadow-[0_3px_8px+1px_#F8F8F8] rounded-3xl !p-8">
+      <div className="relative container mx-auto mt-8 gap-10 border border-[#e8e8e8] rounded-3xl  !p-8">
         <div className="flex pb-5 relative">
           <div className="absolute">
             <Backtitle />
@@ -439,7 +559,7 @@ export default function SingleProductModule({
           {related.map((value, key) => (
             <ProductCard
               key={key}
-              data={value}
+              data={value ?? null}
               type="main"
               className="w-full sm:w-1/2 lg:w-1/3"
             />

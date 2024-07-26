@@ -54,13 +54,28 @@ export default function TotalOrders({ params }) {
   }
   return (
     <div>
-      <FactorGenerator data={orderDetail?.result} />
+      <div
+        style={{ width: "100%", margin: "0 auto" }}
+        className="pdf flex gap-4 print bg-gray-200 p-2 rounded-lg !mb-8"
+      >
+        <FactorGenerator data={orderDetail?.result} />
 
-      <div className="mb-8">
+        <Link
+          target="_blank"
+          href={`https://www.google.com/maps?q=${orderDetail?.result?.address?.latitude},${orderDetail?.result?.address.longitude}`}
+          className="no-print"
+        >
+          <Button variant="contained" fullWidth color="secondary">
+            لوکیشن در گوگل مپ
+          </Button>
+        </Link>
+      </div>
+      <div className="mb-8 no-print">
         <Button fullWidth variant="contained" onClick={deliverOrder}>
           تحویل به مشتری
         </Button>
       </div>
+
       <section className="relative no-print">
         <div className="w-full px-4 md:px-5 lg-6 mx-auto">
           <div className="flex items-start flex-col">
@@ -91,7 +106,7 @@ export default function TotalOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalProductPrice
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4 mb-2">
@@ -102,7 +117,7 @@ export default function TotalOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalShipmentPrice
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -113,7 +128,7 @@ export default function TotalOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalDiscountFee
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                 </div>
@@ -123,7 +138,7 @@ export default function TotalOrders({ params }) {
                   </p>
                   <h5 className="font-manrope font-bold text-sm leading-9 text-primary">
                     {Number(orderDetail?.result?.totalPrice).toLocaleString()}{" "}
-                    تومانء
+                    ءتء
                   </h5>
                 </div>
               </div>
@@ -154,9 +169,11 @@ export default function TotalOrders({ params }) {
                     <p className="font-normal text-sm leading-8 text-gray-400 transition-all duration-500 group-hover:text-gray-700 ">
                       شماره تماس
                     </p>
-                    <p className="font-medium text-sm leading-8 text-emerald-500">
-                      {orderDetail?.result?.user.phoneNumber}
-                    </p>
+                    <a href={`tel:${orderDetail?.result?.user.phoneNumber}`}>
+                      <p className="font-medium text-sm leading-8 text-emerald-500">
+                        {orderDetail?.result?.user.phoneNumber}
+                      </p>
+                    </a>
                   </div>
                   <div className="flex items-center justify-between gap-4 ">
                     <p className="font-bold text-md leading-8 text-gray-400 transition-all duration-500 group-hover:text-gray-700 ">
@@ -179,6 +196,9 @@ export default function TotalOrders({ params }) {
                       <span>پلاک: {orderDetail?.result?.address?.plaque} </span>
                       <span>
                         طبقه: {orderDetail?.result?.address?.floorNumber}{" "}
+                      </span>
+                      <span>
+                        کدپستی : {orderDetail?.result?.address?.postalCode}{" "}
                       </span>
                     </p>
                   </div>

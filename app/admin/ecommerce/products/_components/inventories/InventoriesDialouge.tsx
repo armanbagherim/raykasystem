@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 
 export default function InventoriesDialouge({
   handleClose,
+  vendorId,
   vendorAddresses,
   setVendorId,
   colorsIsLoading,
@@ -31,6 +32,8 @@ export default function InventoriesDialouge({
   activeSpace,
   setActiveSpace,
 }) {
+  const [comissionAmount, setComissionAmount] = useState(null);
+
   const [localTempInventory, setLocalTempInventory] = useState({
     id: activeSpace === null && Math.random(),
     vendorId: "",
@@ -40,7 +43,6 @@ export default function InventoriesDialouge({
     guaranteeId: "",
     guaranteeName: "",
     guaranteeMonthId: "",
-    weight: "",
     guaranteeMonthName: "",
     buyPrice: "",
     onlyProvinceId: "",
@@ -110,7 +112,6 @@ export default function InventoriesDialouge({
       "guaranteeName",
       "guaranteeMonthId",
       "guaranteeMonthName",
-      "weight",
       "qty",
       "firstPrice",
     ];
@@ -153,11 +154,24 @@ export default function InventoriesDialouge({
       }
     });
   };
+  //
+  useEffect(() => {
+    if (
+      userVendors !== "undefined" &&
+      !userVendorsIsLoading &&
+      vendorId !== null
+    ) {
+      const coms = userVendors?.result?.filter(
+        (value) => value.id === vendorId
+      );
 
+      setComissionAmount(coms[0]?.commissions);
+    }
+  }, [vendorId]);
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>ساخت موجودی</DialogTitle>
-      <DialogContent className="w-full">
+      <DialogContent className="w-full custom-scroll">
         <div className="mb-4">
           <SelectSearch
             loadingState={userVendorsIsLoading}
@@ -237,72 +251,93 @@ export default function InventoriesDialouge({
               id="standard-basic"
               label="تعداد"
               defaultValue={localTempInventory?.qty}
-              variant="standard"
+              variant="outlined"
               onChange={(e) => handleSelectChange(e, "qty")}
             />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 ">
             <TextField
               autoComplete="off"
-              // required
               id="standard-basic"
               label="قیمت خرید"
-              variant="standard"
+              variant="outlined"
               defaultValue={localTempInventory?.buyPrice || null}
               onChange={(e) => handleSelectChange(e, "buyPrice")}
             />
-            <div className="text-xs">
+            <div className="text-sm font-medium">
               {Number(localTempInventory?.buyPrice || null).toLocaleString()}{" "}
-              تومانء
+              ءتء
             </div>
           </div>
         </div>
-        <div className="flex gap-4 mb-4" dir="rtl">
-          <div className="flex-1">
+        <div className="flex gap-4 flex-col mb-4" dir="rtl">
+          <div className="flex-1 bg-gray-100 p-2">
             <TextField
               autoComplete="off"
-              // required
               id="standard-basic"
               label="قیمت اقساطی"
-              variant="standard"
+              variant="outlined"
+              fullWidth
               defaultValue={localTempInventory?.firstPrice}
               onChange={(e) => handleSelectChange(e, "firstPrice")}
             />
-            <div className="text-xs">
-              {Number(localTempInventory?.firstPrice || null).toLocaleString()}{" "}
-              تومانء
+            <div className="flex justify-between mt-4">
+              <div className="text-sm font-medium">
+                {Number(
+                  localTempInventory?.firstPrice || null
+                ).toLocaleString()}{" "}
+                ءتء
+              </div>
+              <div className="text-sm font-medium">
+                {" "}
+                کمیسیون{" "}
+                {comissionAmount &&
+                comissionAmount.length > 0 &&
+                comissionAmount[0]?.amount
+                  ? Number(
+                      ((localTempInventory?.firstPrice || null) *
+                        comissionAmount[0].amount) /
+                        100
+                    ).toLocaleString()
+                  : ""}{" "}
+                تومان
+              </div>
             </div>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 bg-gray-100 p-2">
             <TextField
               autoComplete="off"
-              // required
+              fullWidth
               id="standard-basic"
               label="قیمت نقدی"
-              variant="standard"
+              className="mb-2"
+              variant="outlined"
               defaultValue={localTempInventory?.secondaryPrice || null}
               onChange={(e) => handleSelectChange(e, "secondaryPrice")}
             />
-            <div className="text-xs">
-              {Number(
-                localTempInventory?.secondaryPrice || null
-              ).toLocaleString()}{" "}
-              تومانء
+            <div className="flex justify-between mt-2">
+              <div className="text-sm font-medium">
+                {Number(
+                  localTempInventory?.secondaryPrice || null
+                ).toLocaleString()}{" "}
+                ءتء
+              </div>
+              <div className="text-sm font-medium">
+                {" "}
+                کمیسیون{" "}
+                {comissionAmount &&
+                comissionAmount.length > 0 &&
+                comissionAmount[0]?.amount
+                  ? Number(
+                      ((localTempInventory?.secondaryPrice || null) *
+                        comissionAmount[1]?.amount) /
+                        100
+                    ).toLocaleString()
+                  : ""}{" "}
+                تومان{" "}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mb-6">
-          <TextField
-            autoComplete="off"
-            required
-            fullWidth
-            id="standard-basic"
-            defaultValue={localTempInventory?.weight}
-            label="وزن (گرم)"
-            nullable={true}
-            variant="standard"
-            onChange={(e) => handleSelectChange(e, "weight")}
-          />
         </div>
         <label
           htmlFor="message"
@@ -321,7 +356,7 @@ export default function InventoriesDialouge({
       </DialogContent>
       <DialogActions className="flex w-full justify-between">
         <Button
-          variant="standard"
+          variant="outlined"
           color="error"
           onClick={() => {
             setOpen(false);
@@ -332,7 +367,7 @@ export default function InventoriesDialouge({
           لغو
         </Button>
         <Button
-          variant="standard"
+          variant="outlined"
           color="success"
           autoFocus
           onClick={(e) => {

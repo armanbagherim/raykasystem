@@ -20,123 +20,123 @@ export default function OrderModule({ data }) {
                 id="Stroke 1"
                 d="M34.8164 399V408"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <g id="Group 8">
                 <path
                   id="Stroke 2"
                   d="M14.6016 403.875L21.9558 411.446"
                   stroke="#D2D8DF"
-                  stroke-width="2.921"
-                  stroke-linecap="round"
+                  strokeWidth="2.921"
+                  strokeLinecap="round"
                 />
                 <path
                   id="Stroke 4"
                   d="M6 424.028H16.3989"
                   stroke="#D2D8DF"
-                  stroke-width="2.921"
-                  stroke-linecap="round"
+                  strokeWidth="2.921"
+                  strokeLinecap="round"
                 />
                 <path
                   id="Stroke 6"
                   d="M13.7578 444.539L21.1121 436.969"
                   stroke="#D2D8DF"
-                  stroke-width="2.921"
-                  stroke-linecap="round"
+                  strokeWidth="2.921"
+                  strokeLinecap="round"
                 />
               </g>
               <path
                 id="Stroke 9"
                 d="M34.8164 447V438"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <path
                 id="Stroke 10"
                 d="M49.8164 441L43.8164 435"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <path
                 id="Stroke 11"
                 d="M61.8164 426H52.8164"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <path
                 id="Stroke 12"
                 d="M55.8164 405L49.8164 411"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <path
                 id="Stroke 13"
                 d="M517.816 6V12"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <path
                 id="Stroke 15"
                 d="M499.816 24H505.816"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <path
                 id="Stroke 16"
                 d="M517.816 42V36"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <path
                 id="Stroke 17"
                 d="M532.816 24H526.816"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <path
                 id="Stroke 18"
                 d="M169.816 258V267"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <path
                 id="Stroke 19"
                 d="M142.816 285H151.816"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <path
                 id="Stroke 20"
                 d="M169.816 309V300"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <path
                 id="Stroke 21"
                 d="M193.816 285H184.816"
                 stroke="#D2D8DF"
-                stroke-width="2.921"
-                stroke-linecap="round"
+                strokeWidth="2.921"
+                strokeLinecap="round"
               />
               <g id="Group 42">
                 <path
                   id="Stroke 22"
                   d="M815.578 585.118C822.747 585.118 828.562 590.934 828.562 598.105C828.562 605.279 822.747 611.092 815.578 611.092C808.408 611.092 802.594 605.279 802.594 598.105"
                   stroke="#D2D8DF"
-                  stroke-width="2.921"
-                  stroke-linecap="round"
+                  strokeWidth="2.921"
+                  strokeLinecap="round"
                 />
                 <path
                   id="Fill 26"
@@ -179,8 +179,8 @@ export default function OrderModule({ data }) {
                   clip-rule="evenodd"
                   d="M343.347 768.803C343.347 773.452 339.58 777.22 334.932 777.22C330.286 777.22 326.52 773.452 326.52 768.803C326.52 764.154 330.286 760.386 334.932 760.386C339.58 760.386 343.347 764.154 343.347 768.803Z"
                   stroke="#D2D8DF"
-                  stroke-width="2.921"
-                  stroke-linecap="round"
+                  strokeWidth="2.921"
+                  strokeLinecap="round"
                 />
                 <path
                   id="Stroke 38"
@@ -188,8 +188,8 @@ export default function OrderModule({ data }) {
                   clip-rule="evenodd"
                   d="M338.341 99.0952C338.341 104.659 333.833 109.166 328.273 109.166C322.713 109.166 318.205 104.659 318.205 99.0952C318.205 93.5339 322.713 89.0248 328.273 89.0248C333.833 89.0248 338.341 93.5339 338.341 99.0952Z"
                   stroke="#D2D8DF"
-                  stroke-width="2.921"
-                  stroke-linecap="round"
+                  strokeWidth="2.921"
+                  strokeLinecap="round"
                 />
                 <path
                   id="Stroke 40"
@@ -197,8 +197,8 @@ export default function OrderModule({ data }) {
                   clip-rule="evenodd"
                   d="M595.149 862.009C588.716 864.457 581.516 861.224 579.068 854.792C576.621 848.356 579.85 841.152 586.286 838.706C592.717 836.258 599.917 839.488 602.364 845.924C604.814 852.359 601.582 859.561 595.149 862.009Z"
                   stroke="#D2D8DF"
-                  stroke-width="2.921"
-                  stroke-linecap="round"
+                  strokeWidth="2.921"
+                  strokeLinecap="round"
                 />
               </g>
             </g>
@@ -408,7 +408,7 @@ export default function OrderModule({ data }) {
                 <td className="px-6 py-4">{value?.paymentType?.name}</td>
                 <td className="px-6 py-4">{value?.paymentGateway?.name}</td>
                 <td className="px-6 py-4">
-                  {Number(value?.totalprice).toLocaleString()}
+                  {Number(value?.totalprice / 10).toLocaleString()} تومان
                 </td>
                 <td className="px-6 py-4">
                   {new Date(value?.createdAt).toLocaleDateString("fa-IR")}

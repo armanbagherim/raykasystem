@@ -5,12 +5,16 @@ import {
   Exclamation,
   Exclamationitalic,
   Lineonnum,
+  SnapPaySingle,
   Tickstar,
   Trucktick,
 } from "@/app/components/design/Icons";
 import Link from "next/link";
 import React from "react";
-
+enum InventoryStatusEnum {
+  available = 1,
+  unavailable = 2,
+}
 export default function LeftSide({ product, status, addToCart }) {
   return (
     <div className="col-span-12 lg:col-span-3  rounded-3xl bg-customGray">
@@ -42,9 +46,6 @@ export default function LeftSide({ product, status, addToCart }) {
                   )}
                 </span>
               </div>
-              <div className="my-auto justify-start mx-auto ml-4">
-                <Exclamation />
-              </div>
             </div>
             <div className="flex gap-1 mb-4">
               <div>
@@ -53,9 +54,6 @@ export default function LeftSide({ product, status, addToCart }) {
               <div>
                 امکان خرید در{" "}
                 <span className="font-bold text-primary">4 قسط</span>
-              </div>
-              <div className="my-auto justify-start mx-auto ml-4">
-                <Exclamation />
               </div>
             </div>
             <div className="flex gap-1 mb-4">
@@ -66,109 +64,112 @@ export default function LeftSide({ product, status, addToCart }) {
                 تحویل <span className="font-bold text-primary">1 تا 5</span> روز
                 کاری
               </div>
-              <div className="my-auto justify-start mx-auto ml-4">
-                <Exclamation />
-              </div>
             </div>
+            {status == InventoryStatusEnum.available ? (
+              <div className="flex gap-1 mb-4 bg-[#008efa] p-2 rounded-xl items-center">
+                <div>
+                  <SnapPaySingle />
+                </div>
+                <div className="text-white">
+                  خرید در ۴ قسط ماهانه{" "}
+                  <div className="font-bold text-white">
+                    {status == InventoryStatusEnum.available
+                      ? product[0]?.firstPrice?.appliedDiscount?.newPrice
+                        ? Math.round(
+                            product[0].firstPrice.appliedDiscount.newPrice / 4
+                          ).toLocaleString()
+                        : product[0]?.firstPrice?.price
+                        ? Math.round(
+                            product[0].firstPrice.price / 4
+                          ).toLocaleString()
+                        : "0"
+                      : "0"}{" "}
+                    تومان
+                  </div>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
-        {status === 1 ? (
-          <>
-            <div className="mt-20 flex items-end">
-              <div className="pb-0.5">
-                فروشنده:{" "}
-                <span className="font-bold text-primary">
-                  {product[0]?.vendor?.name}
-                </span>
-              </div>
-              {/* {product[0]?.secondaryPrice?.price ? (
-                <div
-                  className="font-bold justify-start mx-auto ml-2 items-end my-auto"
-                  dir="ltr"
-                >
-                  <div className="w-full text-center bg-[#E2F0EB] text-primary text-sm rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
-                    قیمت نقدی
-                  </div>
-                  <div
-                    className="text-lg w-full text-left font-bold direction-rtl"
-                    dir="rtl"
-                  >
-                    {Number(product[0].secondaryPrice?.price).toLocaleString()}{" "}
-                    تومانء
+        <div className="fixed md:static bottom-20 left-0 bg-white md:bg-transparent w-full flex justify-between px-4 md:px-0 items-center z-[15] border-t boerder-t-gray-300 md:flex-col md:justify-start md:items-start py-4 md:py-0 gap-4 md:gap-0">
+          {status === 1 ? (
+            <>
+              <div className="w-full">
+                <div className="md:mt-10 flex items-end">
+                  <div className="pb-0.5">
+                    فروشنده:{" "}
+                    <span className="font-bold text-primary">
+                      {product[0]?.vendor?.name}
+                    </span>
                   </div>
                 </div>
-              ) : (
-                ""
-              )} */}
-            </div>
 
-            <div className="mt-9 flex gap-3 mb-4">
-              {product[0]?.firstPrice?.appliedDiscount ? (
-                <CountDown
-                  dates={product[0]?.firstPrice?.appliedDiscount?.endDate}
-                />
-              ) : (
-                ""
-              )}
-              <div
-                className="font-bold justify-start mx-auto ml-2 items-end my-auto"
-                dir="ltr"
-              >
-                <div className="flex items-center my-auto gap-1 flex-col">
-                  {product[0]?.firstPrice?.appliedDiscount ? (
-                    <>
-                      <div className="w-full text-center animate-bounce bg-[#E2F0EB] text-primary text-sm rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
-                        قیمت اقساطی
-                      </div>
-                      <span className="mb-1 flex items-center w-full">
-                        <span className="text-xs mr-2 bg-primary text-white rounded-full px-2 py-1">
-                          {Number(
-                            product[0]?.firstPrice?.appliedDiscount?.amount
-                          ).toLocaleString()}
-                          {product[0]?.firstPrice?.appliedDiscount
-                            ?.actionType === 1
-                            ? "%"
-                            : "تومانء"}
-                        </span>
-                        <span className="opacity-75 text-xs line-through">
-                          {Number(
-                            product[0]?.firstPrice?.price
-                          ).toLocaleString()}
-                        </span>
-                      </span>
-                      <p className="text-lg w-full text-left font-bold direction-rtl">
-                        {Number(
-                          product[0]?.firstPrice?.appliedDiscount?.newPrice
-                        ).toLocaleString()}{" "}
-                        تومانء
-                      </p>
-                    </>
-                  ) : (
-                    <p className="text-sm">
-                      <div className="text-center animate-bounce bg-[#E2F0EB] text-primary text-sm rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
-                        قیمت اقساطی
-                      </div>
-                      <div className="text-lg w-full text-left font-bold direction-rtl">
-                        {Number(product[0]?.firstPrice?.price).toLocaleString()}{" "}
-                        تومانء
-                      </div>
-                    </p>
-                  )}
+                <div className="md:mt-9 flex gap-3 md:mb-4 justify-start md:justify-end">
+                  <div
+                    className="font-bold justify-start  ml-2 items-end md:my-auto"
+                    dir="ltr"
+                  >
+                    <div className="flex items-center my-auto gap-1 flex-col">
+                      {product[0]?.firstPrice?.appliedDiscount ? (
+                        <>
+                          <div className="w-full hidden md:block text-center animate-bounce bg-[#E2F0EB] text-primary text-sm rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
+                            قیمت
+                          </div>
+                          <span className="mb-1 flex items-center w-full">
+                            <span className="text-xs mr-2 bg-primary text-white rounded-full px-2 py-1">
+                              {Number(
+                                product[0]?.firstPrice?.appliedDiscount?.amount
+                              ).toLocaleString()}
+                              {product[0]?.firstPrice?.appliedDiscount
+                                ?.actionType === 1
+                                ? "%"
+                                : "ءتء"}
+                            </span>
+                            <span className="opacity-75 text-xs line-through">
+                              {Number(
+                                product[0]?.firstPrice?.price
+                              ).toLocaleString()}
+                            </span>
+                          </span>
+                          <p className="text-sm md:text-lg w-full text-right md:text-left font-bold direction-rtl">
+                            {Number(
+                              product[0]?.firstPrice?.appliedDiscount?.newPrice
+                            ).toLocaleString()}{" "}
+                            ءتء
+                          </p>
+                        </>
+                      ) : (
+                        <p className="text-sm">
+                          <div className="text-center hidden md:block animate-bounce bg-[#E2F0EB] text-primary text-sm rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
+                            قیمت
+                          </div>
+                          <div className="text-sm md:text-lg w-full text-right md:text-left font-bold direction-rtl">
+                            {Number(
+                              product[0]?.firstPrice?.price
+                            ).toLocaleString()}{" "}
+                            ءتء
+                          </div>
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="text-center">
-              <BigAddToCart
-                handleClick={(e) => {
-                  addToCart(product[0]?.id);
-                }}
-                status={true}
-              />
-            </div>
-          </>
-        ) : (
-          <BigAddToCart status={false} />
-        )}
+              <div className="text-center w-full">
+                <BigAddToCart
+                  handleClick={(e) => {
+                    addToCart(product[0]?.id);
+                  }}
+                  status={true}
+                />
+              </div>
+            </>
+          ) : (
+            <BigAddToCart status={false} />
+          )}
+        </div>
       </div>
     </div>
   );

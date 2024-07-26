@@ -18,7 +18,7 @@ export default function Footer() {
 
   return (
     <div
-      className="w-full p-4 md:px-[86px] md:pt-[45px] border-t border-t-gray-200 pb-32 md:pb-0"
+      className="w-full p-4 md:px-[86px] md:pt-[45px] border-t border-t-gray-200 pb-32 md:pb-0 mt-8"
       style={{ background: " linear-gradient(180deg, #FFF 0%, #D2D2D2 100%)" }}
     >
       <div className="relative">
@@ -81,6 +81,12 @@ export default function Footer() {
             <li>
               <Link href="/about-us">درباره ما</Link>
             </li>{" "}
+            <li>
+              <Link href="/pages/rules">قوانین و مقررات</Link>
+            </li>{" "}
+            <li>
+              <Link href="/brands">برند ها</Link>
+            </li>{" "}
           </ul>
         </div>
         <div className="">
@@ -88,13 +94,26 @@ export default function Footer() {
             مرکز تماس
           </text>
           <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
-            <li className="flex gap-[10px]">
-              <TelephoneNumberIcon />
-              ۰۲۱۵۵۳۴۳۸۱۹
+            <li>
+              <Link className="flex gap-[10px]" href="tel:02155343819">
+                <TelephoneNumberIcon />
+                ۰۲۱۵۵۳۴۳۸۱۹
+              </Link>
             </li>
-            <li className="flex gap-[10px]">
-              <TelephoneNumberIcon />
-              ۰۹۱۰۲۴۲۱۳۰۵
+            <li>
+              <Link className="flex gap-[10px]" href="tel:09102421305">
+                <TelephoneNumberIcon />
+                ۰۹۱۰۲۴۲۱۳۰۵
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="flex gap-[10px]"
+                href="https://t.me/Jahizan_admin"
+              >
+                <TelephoneNumberIcon />
+                پشتیبانی تلگرام
+              </Link>
             </li>
           </ul>
         </div>
@@ -107,9 +126,8 @@ export default function Footer() {
               <LocationIcon />
               تهران میدان شوش خیابان صابونیان مجتمع الماس طبقه سوم پلاک ۷۹۶
             </li>
-            <li className="flex gap-3">
-              <WorkingHoursIcon />
-              شنبه تا چهارشنبه 10 الی 17 - پنجشنبه 10 الی 13
+            <li className="flex gap-3 text-[#0272c8] font-bold">
+              ساعت پاسخگویی ۱۰ الی ۱۷
             </li>
           </ul>
         </div>
@@ -135,12 +153,12 @@ export default function Footer() {
             </li>
           </ul>
           <a
-            referrerpolicy="origin"
+            referrerPolicy="origin"
             target="_blank"
             href="https://trustseal.enamad.ir/?id=281567&Code=gMGXdvTIZekiTfqO9Ocg"
           >
             <img
-              referrerpolicy="origin"
+              referrerPolicy="origin"
               src="https://trustseal.enamad.ir/logo.aspx?id=281567&Code=gMGXdvTIZekiTfqO9Ocg"
               alt=""
               className="cursor-pointer"

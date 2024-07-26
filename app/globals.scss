@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.MuiDataGrid-root,
-.MuiButton-root,
-.MuiFormControl-root *,
-.base-Popper-root *,
-.MuiPaper-root * {
-  font-family: inherit !important;
-}
-
 .scrollItems::-webkit-scrollbar {
   width: 5px;
 }
@@ -108,69 +100,97 @@ ul.gcd-gl-result {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 100;
-  src: url("./assets/IRANSansX/IRANSansX-Thin.woff") format("woff");
+  font-kerning: none;
+  src: url("./assets/IRANSansX/IRANSansXFaNum-Thin.woff") format("woff"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Thin.woff2") format("woff2"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Thin.ttf") format("truetype");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 200;
-  src: url("./assets/IRANSansX/IRANSansX-UltraLight.woff") format("woff");
+  font-kerning: none;
+  src: url("./assets/IRANSansX/IRANSansXFaNum-UltraLight.woff") format("woff"),
+    url("./assets/IRANSansX/IRANSansXFaNum-UltraLight.woff2") format("woff2"),
+    url("./assets/IRANSansX/IRANSansXFaNum-UltraLight.ttf") format("truetype");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 300;
-  src: url("./assets/IRANSansX/IRANSansX-Light.woff") format("woff");
+  font-kerning: none;
+  src: url("./assets/IRANSansX/IRANSansXFaNum-Light.woff") format("woff"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Light.woff2") format("woff2"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Light.ttf") format("truetype");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 500;
-  src: url("./assets/IRANSansX/IRANSansX-Medium.woff") format("woff");
+  font-kerning: none;
+  src: url("./assets/IRANSansX/IRANSansXFaNum-Medium.woff") format("woff"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Medium.woff2") format("woff2"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Medium.ttf") format("truetype");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 600;
-  src: url("./assets/IRANSansX/IRANSansX-DemiBold.woff") format("woff");
+  font-kerning: none;
+  src: url("./assets/IRANSansX/IRANSansXFaNum-DemiBold.woff") format("woff"),
+    url("./assets/IRANSansX/IRANSansXFaNum-DemiBold.woff2") format("woff2"),
+    url("./assets/IRANSansX/IRANSansXFaNum-DemiBold.ttf") format("truetype");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 800;
-  src: url("./assets/IRANSansX/IRANSansX-ExtraBold.woff") format("woff");
+  font-kerning: none;
+  src: url("./assets/IRANSansX/IRANSansXFaNum-ExtraBold.woff") format("woff"),
+    url("./assets/IRANSansX/IRANSansXFaNum-ExtraBold.woff2") format("woff2"),
+    url("./assets/IRANSansX/IRANSansXFaNum-ExtraBold.ttf") format("truetype");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: 900;
-  src: url("./assets/IRANSansX/IRANSansX-Black.woff") format("woff");
+  font-kerning: none;
+  src: url("./assets/IRANSansX/IRANSansXFaNum-Black.woff") format("woff"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Black.woff2") format("woff2"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Black.ttf") format("truetype");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: bold;
-  src: url("./assets/IRANSansX/IRANSansX-Bold.woff") format("woff");
+  font-kerning: none;
+  src: url("./assets/IRANSansX/IRANSansXFaNum-Bold.woff") format("woff"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Bold.woff2") format("woff2"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Bold.ttf") format("truetype");
 }
 
 @font-face {
   font-family: IRANSansX;
   font-style: normal;
   font-weight: normal;
-  src: url("./assets/IRANSansX/IRANSansX-Regular.woff") format("woff");
+  font-kerning: none;
+  src: url("./assets/IRANSansX/IRANSansXFaNum-Regular.woff") format("woff"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Regular.woff2") format("woff2"),
+    url("./assets/IRANSansX/IRANSansXFaNum-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: Peyda;
   font-style: normal;
   font-weight: 100;
+  font-kerning: none;
   src: url("./assets/peyda/PeydaWeb-Thin.woff") format("woff");
 }
 
@@ -178,6 +198,7 @@ ul.gcd-gl-result {
   font-family: Peyda;
   font-style: normal;
   font-weight: 300;
+  font-kerning: none;
   src: url("./assets/peyda/peydaWeb-light.woff") format("woff");
 }
 
@@ -185,6 +206,7 @@ ul.gcd-gl-result {
   font-family: Peyda;
   font-style: normal;
   font-weight: 500;
+  font-kerning: none;
   src: url("./assets/peyda/PeydaWeb-Medium.woff") format("woff");
 }
 
@@ -192,6 +214,7 @@ ul.gcd-gl-result {
   font-family: Peyda;
   font-style: normal;
   font-weight: 800;
+  font-kerning: none;
   src: url("./assets/peyda/PeydaWeb-ExtraBold.woff") format("woff");
 }
 
@@ -199,6 +222,7 @@ ul.gcd-gl-result {
   font-family: Peyda;
   font-style: normal;
   font-weight: 900;
+  font-kerning: none;
   src: url("./assets/peyda/PeydaWeb-Black.woff") format("woff");
 }
 
@@ -206,6 +230,7 @@ ul.gcd-gl-result {
   font-family: Peyda;
   font-style: normal;
   font-weight: bold;
+  font-kerning: none;
   src: url("./assets/peyda/PeydaWeb-Bold.woff") format("woff");
 }
 
@@ -213,6 +238,7 @@ ul.gcd-gl-result {
   font-family: Peyda;
   font-style: normal;
   font-weight: normal;
+  font-kerning: none;
   src: url("./assets/peyda/PeydaWeb-Regular.woff") format("woff");
 }
 
@@ -221,6 +247,7 @@ ul.gcd-gl-result {
   -moz-font-feature-settings: "ss02";
   -webkit-font-feature-settings: "ss02";
   font-feature-settings: "ss02";
+  font-kerning: none;
 }
 
 body {
@@ -228,6 +255,15 @@ body {
   -moz-font-feature-settings: "ss02";
   -webkit-font-feature-settings: "ss02";
   font-feature-settings: "ss02";
+  font-kerning: none;
+}
+
+.iranSans {
+  font-family: IRANSansX !important;
+  -moz-font-feature-settings: "ss02";
+  -webkit-font-feature-settings: "ss02";
+  font-feature-settings: "ss02";
+  font-kerning: none;
 }
 
 .st0 {
@@ -235,7 +271,7 @@ body {
   clip-rule: evenodd;
   fill: none;
   stroke: #22ac74;
-  stroke-width: 4.0071;
+  strokewidth: 4.0071;
   stroke-miterlimit: 10;
 }
 .st1 {
@@ -632,7 +668,6 @@ img {
   .swiper-slide {
     img {
       border-radius: 28px;
-      filter: grayscale(1) blur(3px);
     }
   }
   .swiper-slide.swiper-slide-visible.swiper-slide-thumb-active {
@@ -715,4 +750,67 @@ html {
     max-width: 1023px;
     padding: 0 0;
   }
+}
+
+.paginate-disabled {
+  display: none;
+}
+
+.next,
+.previous {
+  font-size: 14px;
+  padding: 9px 11px;
+  background: #ededed;
+  border-radius: 11px;
+}
+
+.contentLong {
+  border-top: 1px solid #e2e2e2;
+  padding: 1.5em 15px;
+  margin-top: 3em;
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    font-family: peyda;
+    margin-bottom: 15px;
+  }
+  p {
+    margin: 0 0 12px;
+    text-align: justify !important;
+  }
+}
+
+.swiper-pagination {
+  position: relative !important;
+  bottom: -20px !important;
+  left: 0 !important;
+  text-align: left !important;
+  height: 30px;
+  transform: unset !important;
+}
+
+@media (max-width: 768px) {
+  .swiper-pagination {
+    left: 15px !important;
+  }
+}
+
+.swiper-pagination-bullet-active {
+  background: #20ac73 !important;
+}
+
+.swiper-pagination-bullet {
+  width: 12px !important;
+  border-radius: 4px !important;
+}
+
+.ck {
+  direction: rtl !important;
+}
+.MuiDataGrid-root,
+.MuiButton-root,
+.MuiFormControl-root *,
+.base-Popper-root *,
+.MuiPaper-root * {
+  font-family: IRANSansX !important;
 }

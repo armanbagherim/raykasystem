@@ -6,7 +6,7 @@ import BottomNavModule from "./BottomNavModule";
 
 async function getEntity() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes?ignoreChilds=true`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes?ignoreChilds=true&?sortOrder=ASC`,
     {
       cache: "no-store",
     }

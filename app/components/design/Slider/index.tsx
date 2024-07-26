@@ -23,6 +23,7 @@ export default function Slider({
   const swiperOptions: SwiperOptions = {
     spaceBetween: 25,
     navigation: true,
+    loop: true,
     autoplay: {
       delay: 2000,
     },

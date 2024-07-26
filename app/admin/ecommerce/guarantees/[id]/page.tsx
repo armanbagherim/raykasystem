@@ -9,6 +9,7 @@ import { pageTitle } from "../../../layout";
 import { HexColorPicker } from "react-colorful";
 import SaveBar from "@/app/components/global/SaveBar";
 import SeoBox from "../../products/_components/SeoBox";
+import ChangeToNull from "@/app/components/global/ChangeToNull";
 
 export default function Guarantees({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -39,7 +40,11 @@ export default function Guarantees({ params }) {
     if (guaranteesIsLoading === false) {
       setName(guaranteesData.result.name);
       setSlug(guaranteesData.result.slug);
-      setDescription(guaranteesData.result.description);
+      setDescription(
+        guaranteesData.result.description
+          ? guaranteesData.result.description
+          : ""
+      );
       setMetaDescription(guaranteesData.result.metaDescription);
       setMetaKeywords(guaranteesData.result.metaKeywords);
       setMetaTitle(guaranteesData.result.metaTitle);
@@ -54,7 +59,7 @@ export default function Guarantees({ params }) {
         body: {
           name,
           slug,
-          description,
+          description: ChangeToNull(description),
           metaKeywords,
           metaDescription,
           metaTitle,
@@ -86,7 +91,7 @@ export default function Guarantees({ params }) {
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setName(ChangeToNull(e.target.value))}
         />
         <label
           htmlFor="first_name"
@@ -100,7 +105,7 @@ export default function Guarantees({ params }) {
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
           value={slug}
-          onChange={(e) => setSlug(e.target.value)}
+          onChange={(e) => setSlug(ChangeToNull(e.target.value))}
         />
 
         <label
@@ -109,7 +114,10 @@ export default function Guarantees({ params }) {
         >
           توضیحات
         </label>
-        <SeoBox setDescription={setDescription} description={description} />
+        <SeoBox
+          setDescription={setDescription}
+          description={description ?? ""}
+        />
       </div>
 
       <label
@@ -124,7 +132,7 @@ export default function Guarantees({ params }) {
         className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         required
         value={metaTitle}
-        onChange={(e) => setMetaTitle(e.target.value)}
+        onChange={(e) => setMetaTitle(ChangeToNull(e.target.value))}
       />
       <label
         htmlFor="first_name"
@@ -138,7 +146,7 @@ export default function Guarantees({ params }) {
         className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         required
         value={metaDescription}
-        onChange={(e) => setMetaDescription(e.target.value)}
+        onChange={(e) => setMetaDescription(ChangeToNull(e.target.value))}
       />
 
       <label
@@ -153,7 +161,7 @@ export default function Guarantees({ params }) {
         className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         required
         value={metaKeywords}
-        onChange={(e) => setMetaKeywords(e.target.value)}
+        onChange={(e) => setMetaKeywords(ChangeToNull(e.target.value))}
       />
 
       <SaveBar action={save} backUrl={"/admin/ecommerce/guarantees/"} />

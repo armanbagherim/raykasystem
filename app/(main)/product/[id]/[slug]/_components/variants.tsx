@@ -23,12 +23,12 @@ export default function Variants({ product, handleVariantChange }) {
   return (
     <>
       {product.colorBased && product.inventoryStatusId === 1 ? (
-        <h4 className="mt-7 mb-7 font-bold text-lg">انتخاب رنگ</h4>
+        <h4 className="mt-7 mb-4 font-bold text-lg peyda">انتخاب رنگ</h4>
       ) : (
         ""
       )}
 
-      <div className="flex gap-2 md:gap-4 flex-wrap">
+      <div className="flex gap-2 md:gap-4 flex-wrap mb-8">
         {product.colorBased
           ? uniqueColors.map((value, key) => (
               <div

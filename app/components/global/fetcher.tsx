@@ -4,7 +4,7 @@ import { getSession } from "next-auth/react";
 interface FetcherParams {
   url: string;
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
-  body?: Record<string, FormData>;
+  body?: Record<any>;
   isFile?: boolean;
 }
 
@@ -24,6 +24,7 @@ export const fetcher = async ({
 
   const requestOptions: RequestInit = {
     method: method,
+    keepalive: true,
     headers: {
       "Content-Type": `${isFile ? "multipart/form-data" : "application/json"}`,
       Authorization: `Bearer ${session?.token || ""}`,

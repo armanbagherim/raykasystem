@@ -6,7 +6,8 @@ import {
 } from "material-react-table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
+import Link from "next/link";
 interface InventoryItem {
   id: string;
   vendorName: string;
@@ -22,7 +23,6 @@ interface InventoryItem {
   onlyProvinceName: string;
   onlyProvince: { name: string };
   qty: number;
-  weight: number;
   firstPrice: { price: number } | number;
   secondaryPrice: { price: number } | number;
   buyPrice: number;
@@ -94,10 +94,7 @@ export default function DataGridLite({
         accessorKey: "qty",
         header: "تعداد",
       },
-      {
-        accessorKey: "weight",
-        header: "وزن",
-      },
+
       {
         accessorKey: "firstPrice",
         header: "قیمت اقساطی",
@@ -125,13 +122,7 @@ export default function DataGridLite({
       {
         header: "عملیات",
         size: 90,
-        accessorKey: "Actions",
-        muiTableHeadCellProps: {
-          align: "right",
-        },
-        muiTableBodyCellProps: {
-          align: "right",
-        },
+
         Cell: ({ row }) => (
           <>
             <IconButton
@@ -150,6 +141,12 @@ export default function DataGridLite({
             >
               <DeleteIcon />
             </IconButton>
+            <Link
+              target="_blank"
+              href={`/admin/ecommerce/products/history/${row.original.id}`}
+            >
+              <Button variant="contained">گردش</Button>
+            </Link>
           </>
         ),
       },

@@ -32,6 +32,7 @@ import { idID } from "@mui/material/locale";
 import { useRouter } from "next/navigation";
 import MapClient from "@/app/components/global/MapClient";
 import SearchSelect from "@/app/components/global/SearchSelect";
+import { Delete } from "@mui/icons-material";
 
 const CartModule = ({ cartItems, session, cookies }) => {
   const router = useRouter();
@@ -72,6 +73,13 @@ const CartModule = ({ cartItems, session, cookies }) => {
   const addressInitialized = useRef(false);
   const addressFetched = useRef(false);
   const priceInitialized = useRef(false);
+  const [activeSpace, setActiveSpace] = useState(null);
+  const [level, setLevel] = useState(1);
+  const checkLocation = () => {
+    if (coordinates.latitude !== null && coordinates.longitude !== null) {
+      setLevel(2);
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -80,7 +88,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
     priceCalculate();
   };
   const getAddress = async () => {
-    console.log("get address called");
     setLoading(true);
     if (session == null) {
       setLoading(false);
@@ -89,7 +96,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
     }
     try {
       await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/addresses?sortOrder=DESC&offset=0&limit=200&orderBy=id`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/addresses?sortOrder=DESC&offset=0&orderBy=id`,
         {
           method: "GET",
           headers: {
@@ -106,7 +113,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
           setLoading(false);
           setAddresses(data?.result ?? []);
           if (data?.result?.length > 0) {
-            console.log("addressId", data?.result[0]?.id);
             setAddressId(data?.result[0]?.id);
           }
           addressFetched.current = true;
@@ -163,7 +169,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
           body: JSON.stringify({
             addressId: +addressId,
             couponCode: copunValue == "" ? null : copunValue,
-            paymentId: defaultPayment?.payments[0].id,
+            paymentId: paymentMethod,
             variationPriceId: defaultPayment?.variationPriceId,
           }),
         }
@@ -211,7 +217,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
     if (!priceInitialized.current) {
       priceInitialized.current = true;
     }
-    console.log("price called");
+
     priceCalculate();
   }, [addressId]);
 
@@ -241,10 +247,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
     }).then((res) => {
       if (res.result.length !== 0) {
         setNeighberhoods(res.result);
-        setneighborhoodId(res.result[0].id);
-        // if (address?.result?.address?.neighborhoodId !== neighborhoodId) {
-        //   setneighborhoodId(res.result[0].id);
-        // }
+        setneighborhoodId(null);
       } else {
         setneighborhoodId(null);
         setNeighberhoods(null);
@@ -291,6 +294,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
       setIsLoading(false);
       setOpen(false);
       getAddress();
+      setLevel(1);
     } catch (error) {
       toast.error(error.message);
       setIsLoading(false);
@@ -300,6 +304,12 @@ const CartModule = ({ cartItems, session, cookies }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (copunValue == null) {
+      priceCalculate();
+    }
+  }, [copunValue]);
 
   return (
     <>
@@ -385,9 +395,9 @@ const CartModule = ({ cartItems, session, cookies }) => {
                   <path
                     d="M51 76.6926V39.5C51 19.3416 67.3416 3 87.5 3C107.658 3 124 19.3416 124 39.5V76.6926"
                     stroke="#5E7085"
-                    stroke-width="5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                   <g filter="url(#filter1_d_48_9314)">
                     <circle
@@ -476,7 +486,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                 </h4>
                 <a
                   className="inline-block border border-primary text-primary rounded-2xl py-4 px-8 hover:text-white hover:bg-primary transition-all"
-                  href=""
+                  href="/search"
                 >
                   همه محصولات
                 </a>
@@ -553,159 +563,194 @@ const CartModule = ({ cartItems, session, cookies }) => {
                     onClose={handleClose}
                     aria-labelledby="responsive-dialog-title"
                   >
+                    {" "}
                     <DialogTitle id="responsive-dialog-title">
                       ثبت آدرس جدید
                     </DialogTitle>
-                    <DialogContent>
+                    <DialogContent className="w-full md:w-[600px]">
                       <DialogContentText>
                         <div>
-                          <MapClient
-                            height={400}
-                            onLocationChange={(location) => {
-                              setCoordinates({
-                                latitude: location.lat.toString(),
-                                longitude: location.lng.toString(),
-                              });
-                            }}
-                          />
-                          <div className="">
-                            <div className="mb-8">
-                              <TextField
-                                type="text"
-                                id="first_name"
-                                className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                required
-                                label="نام آدرس: مثال خانه"
-                                value={name}
-                                fullWidth
-                                variant="standard"
-                                onChange={(e) => setName(e.target.value)}
-                              />
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                              <div className="">
-                                {provinces && (
-                                  <SearchSelect
-                                    onChange={(e) =>
-                                      e !== null
-                                        ? setprovinceId(e.id)
-                                        : setprovinceId(1)
-                                    }
-                                    data={provinces}
-                                    value={provinceId}
-                                    defaultValue={provinceId}
-                                    isDiff={true}
-                                    diffName="name"
-                                    label="استان"
-                                  />
-                                )}
-                              </div>
-                              <div className="">
-                                {cities && (
-                                  <SearchSelect
-                                    onChange={(e) =>
-                                      e !== null
-                                        ? setCityId(e.id)
-                                        : setCityId(cities[0].id)
-                                    }
-                                    data={cities}
-                                    value={cityId}
-                                    defaultValue={cityId}
-                                    isDiff={true}
-                                    diffName="name"
-                                    label="شهر"
-                                  />
-                                )}
-                              </div>
-                              {neghberhoods && (
-                                <SearchSelect
-                                  onChange={(e) =>
-                                    e !== null
-                                      ? setneighborhoodId(e.id)
-                                      : setneighborhoodId(neghberhoods[0].id)
-                                  }
-                                  data={neghberhoods}
-                                  value={neighborhoodId}
-                                  defaultValue={neighborhoodId}
-                                  // isDiff={true}
-                                  // diffName="name"
-                                  label="محله"
-                                />
-                              )}
-                            </div>
-                            <div className="flex gap-4 mb-6">
-                              <div className="w-full flex-1">
+                          {level === 1 ? (
+                            <MapClient
+                              height={400}
+                              defaultLocation={{
+                                lat: coordinates?.latitude ?? 35.65326,
+                                lng: coordinates?.longitude ?? 51.35471,
+                              }}
+                              onLocationChange={(location) => {
+                                setCoordinates({
+                                  latitude: location.lat.toString(),
+                                  longitude: location.lng.toString(),
+                                });
+                              }}
+                            />
+                          ) : (
+                            <div className="">
+                              <div className="mb-8">
                                 <TextField
                                   type="text"
-                                  variant="standard"
                                   id="first_name"
-                                  className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                  className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                                   required
-                                  label="آدرس"
+                                  label="نام آدرس: مثال خانه"
+                                  value={name}
                                   fullWidth
-                                  value={street}
-                                  onChange={(e) => setStreet(e.target.value)}
+                                  variant="standard"
+                                  onChange={(e) => {
+                                    setName(e.target.value);
+                                  }}
                                 />
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                <div className="">
+                                  {provinces && (
+                                    <SearchSelect
+                                      onChange={(e) => {
+                                        if (e !== null) {
+                                          setprovinceId(e.id);
+                                        } else {
+                                          setprovinceId(1);
+                                        }
+                                      }}
+                                      data={provinces}
+                                      value={provinceId}
+                                      defaultValue={provinceId}
+                                      isDiff={true}
+                                      diffName="name"
+                                      label="استان"
+                                    />
+                                  )}
+                                </div>
+                                <div className="">
+                                  {cities && (
+                                    <SearchSelect
+                                      onChange={(e) => {
+                                        if (e !== null) {
+                                          setCityId(e.id);
+                                        } else {
+                                          setCityId(cities[0].id);
+                                        }
+                                      }}
+                                      data={cities}
+                                      value={cityId}
+                                      defaultValue={cityId}
+                                      isDiff={true}
+                                      diffName="name"
+                                      label="شهر"
+                                    />
+                                  )}
+                                </div>
+                                {neghberhoods && (
+                                  <SearchSelect
+                                    nullable={true}
+                                    onChange={(e) => {
+                                      if (e !== null) {
+                                        setneighborhoodId(e.id);
+                                      } else {
+                                        setneighborhoodId(neghberhoods[0].id);
+                                      }
+                                    }}
+                                    data={neghberhoods}
+                                    value={neighborhoodId}
+                                    defaultValue={neighborhoodId}
+                                    label="محله"
+                                  />
+                                )}
+                              </div>
+                              <div className="flex gap-4 mb-6">
+                                <div className="w-full flex-1">
+                                  <TextField
+                                    type="text"
+                                    variant="standard"
+                                    id="first_name"
+                                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                    required
+                                    label="آدرس"
+                                    fullWidth
+                                    value={street}
+                                    onChange={(e) => {
+                                      setStreet(e.target.value);
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                              <div className="flex gap-4">
+                                <div className="flex-1">
+                                  <TextField
+                                    type="text"
+                                    variant="standard"
+                                    id="first_name"
+                                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                    required
+                                    label="پلاک"
+                                    value={plaque}
+                                    onChange={(e) => {
+                                      setPlaque(e.target.value);
+                                    }}
+                                  />
+                                </div>
+                                <div className="flex-1">
+                                  <TextField
+                                    type="text"
+                                    variant="standard"
+                                    id="first_name"
+                                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                    required
+                                    label="طبقه"
+                                    value={floorNumber}
+                                    onChange={(e) => {
+                                      setFloorNumber(e.target.value);
+                                    }}
+                                  />
+                                </div>
+                                <div className="flex-1">
+                                  <TextField
+                                    type="text"
+                                    variant="standard"
+                                    id="first_name"
+                                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                    required
+                                    label="کد پستی"
+                                    value={postalCode}
+                                    onChange={(e) => {
+                                      setPostalCode(e.target.value);
+                                    }}
+                                  />
+                                </div>
                               </div>
                             </div>
-                            <div className="flex gap-4">
-                              <div className="flex-1">
-                                <TextField
-                                  type="text"
-                                  variant="standard"
-                                  id="first_name"
-                                  className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                  required
-                                  label="پلاک"
-                                  value={plaque}
-                                  onChange={(e) => setPlaque(e.target.value)}
-                                />
-                              </div>
-                              <div className="flex-1">
-                                <TextField
-                                  type="text"
-                                  variant="standard"
-                                  id="first_name"
-                                  className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                  required
-                                  label="طبقه"
-                                  value={floorNumber}
-                                  onChange={(e) =>
-                                    setFloorNumber(e.target.value)
-                                  }
-                                />
-                              </div>
-                              <div className="flex-1">
-                                <TextField
-                                  type="text"
-                                  variant="standard"
-                                  id="first_name"
-                                  className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                  required
-                                  label="کد پستی"
-                                  value={postalCode}
-                                  onChange={(e) =>
-                                    setPostalCode(e.target.value)
-                                  }
-                                />
-                              </div>
-                            </div>
-                          </div>
+                          )}
                         </div>
                       </DialogContentText>
                     </DialogContent>
                     <DialogActions className="!pt-4 border-t border-t-gray-300 !justify-between">
-                      <Button autoFocus onClick={handleClose}>
-                        انصراف
+                      <Button
+                        autoFocus
+                        onClick={(e) =>
+                          level === 1 ? handleClose() : setLevel(1)
+                        }
+                      >
+                        {level === 1 ? "انصراف" : "مرحله قبل"}
                       </Button>
                       <Button
                         variant="outlined"
                         color="success"
-                        onClick={save}
+                        onClick={level === 1 ? checkLocation : save}
                         autoFocus
-                        disabled={isLoading} // Disable button while isLoading
+                        disabled={
+                          coordinates.latitude === "35.65326" &&
+                          coordinates.longitude === "51.354710000000004"
+                            ? true
+                            : false
+                        } // Disable button while isLoading
                       >
-                        {isLoading ? <CircularProgress size={24} /> : "ذخیره"}
+                        {isLoading ? (
+                          <CircularProgress size={24} />
+                        ) : level === 1 ? (
+                          "مرحله بعدی"
+                        ) : (
+                          "ذخیره"
+                        )}
                       </Button>
                     </DialogActions>
                   </Dialog>
@@ -745,14 +790,31 @@ const CartModule = ({ cartItems, session, cookies }) => {
                     className="text-sm bg-customGray p-4 w-full rounded-xl outline-none"
                     type="text"
                     placeholder="کد تخفیف"
-                    onChange={(e) => setCopunValue(e.target.value)}
+                    value={copunValue ?? null}
+                    onChange={(e) =>
+                      setCopunValue(
+                        e.target.value !== "" ? e.target.value : null
+                      )
+                    }
                   />
-                  <button
-                    onClick={(e) => checkCopun()}
-                    className="bg-primary absolute left-2 top-2 hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-white"
-                  >
-                    بررسی کد
-                  </button>
+                  <div className="absolute left-2 top-2">
+                    {copunValue !== null && (
+                      <button
+                        className="outline-none text-red-900"
+                        onClick={() => {
+                          setCopunValue(null);
+                        }}
+                      >
+                        <Delete fontSize="medium" />
+                      </button>
+                    )}
+                    <button
+                      onClick={(e) => checkCopun()}
+                      className="bg-primary  hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-white"
+                    >
+                      بررسی کد
+                    </button>
+                  </div>
                 </div>
                 <div className="mt-5 text-sm">روش پرداخت</div>
                 {calculateErrors !== "" ? (
@@ -773,8 +835,8 @@ const CartModule = ({ cartItems, session, cookies }) => {
                       <div className="flex-1 w-full h-2.5 bg-gray-300  mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
                     </>
                   ) : (
-                    calculate.paymentOptions.map((value, key) => {
-                      return value.payments.map((payments, pKey) => (
+                    calculate.paymentOptions.map((paymentOption, key) => {
+                      return paymentOption.payments.map((payment, pKey) => (
                         <div
                           key={pKey}
                           className="flex-1 w-full whitespace-nowrap text-sm bg-customGray p-4 rounded-xl mb-2"
@@ -782,38 +844,29 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           <div className="flex justify-between items-center my-auto h-full">
                             <div>
                               <div className="font-bold text-md">
-                                <label htmlFor={`${payments.id}-radio`}>
+                                <label htmlFor={`${payment.id}-radio`}>
                                   <div className="flex">
                                     <span>
                                       <div className="bg-white ml-2 rounded-md">
-                                        {value?.variationPriceId === 1 ? (
-                                          <img
-                                            className="w-10 h-auto"
-                                            src="/images/spanPay.png"
-                                            alt=""
-                                          />
-                                        ) : (
-                                          <img
-                                            className="w-10 h-auto"
-                                            src="/images/zarin.png"
-                                            alt=""
-                                          />
-                                        )}
+                                        <img
+                                          className="w-10 h-auto"
+                                          src={payment.imageUrl}
+                                          alt=""
+                                        />
                                       </div>
                                     </span>
                                     <div className="">
                                       <div>
-                                        {value.payments[0]?.titleMessage ??
-                                          payments.name}
+                                        {payment?.titleMessage ?? payment.name}
                                       </div>
                                       <div className="whitespace-break-spaces font-medium my-2">
-                                        {value.payments[0]?.description}
+                                        {payment?.description}
                                       </div>
                                       <p className="text-primary">
                                         {Number(
-                                          value.totalPrice
+                                          paymentOption.totalPrice
                                         ).toLocaleString()}{" "}
-                                        <span>تومانء</span>
+                                        <span>ءتء</span>
                                       </p>
                                     </div>
                                   </div>
@@ -821,12 +874,12 @@ const CartModule = ({ cartItems, session, cookies }) => {
                               </div>
                             </div>
                             <input
-                              id={`${payments.id}-radio`}
+                              id={`${payment.id}-radio`}
                               type="radio"
-                              value={payments.id}
+                              value={payment.id}
                               name="paymentMethod"
-                              onChange={(e) => setPaymentMethod(payments.id)}
-                              checked={payments.id === paymentMethod}
+                              onChange={(e) => setPaymentMethod(payment.id)}
+                              checked={payment.id === paymentMethod}
                             />
                           </div>
                         </div>
@@ -847,7 +900,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           {Number(
                             defaultPayment?.totalProductPrice
                           ).toLocaleString()}{" "}
-                          تومانء
+                          ءتء
                         </span>
                       )}
                     </span>
@@ -863,7 +916,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           {Number(
                             defaultPayment?.totalDiscount
                           ).toLocaleString()}{" "}
-                          تومانء
+                          ءتء
                         </span>
                       )}
                     </span>
@@ -879,7 +932,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           {Number(
                             defaultPayment?.totalShipmentPrice
                           ).toLocaleString()}{" "}
-                          تومانء
+                          ءتء
                         </span>
                       )}
                     </span>
@@ -893,7 +946,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                       ) : (
                         <span>
                           {Number(defaultPayment?.totalPrice).toLocaleString()}{" "}
-                          تومانء
+                          ءتء
                         </span>
                       )}
                     </span>

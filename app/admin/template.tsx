@@ -11,13 +11,12 @@ export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <SideMenu />
-
-      <div className="p-4 pb-36 sm:mr-72 print:p-0 print:m-0 print:w-full print:mr-0 ">
-        <div className="flex justify-between px-3 mb-5 items-center h-16 bg-gray-100 py-2 rounded-2xl pl-2 no-print">
-          <div className="text-lg font-bold">{atom.title}</div>
+      <div className=" sm:mr-72 print:p-0 print:m-0 print:w-full print:mr-0">
+        <div className="flex justify-between  items-center h-20 bg-[#008d54] px-4 no-print">
+          <div className="text-lg font-bold text-white">{atom.title}</div>
           {atom.link !== "" ? (
             <Link href={atom.link}>
-              <button className="bg-blue-700 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl">
+              <button className="bg-white text-[#008d54] px-8 hover:bg-transparent hover:border hover:border-white hover:text-white transition-all py-3 border border-transparent rounded-2xl">
                 {atom.buttonTitle}
               </button>
             </Link>
@@ -25,6 +24,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
             ""
           )}
         </div>
+      </div>
+      <div className="p-4 pb-36 sm:mr-72 print:p-0 print:m-0 print:w-full print:mr-0 ">
         <div className="mb-16">{children}</div>
       </div>
     </div>

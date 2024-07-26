@@ -68,7 +68,12 @@ export default function PostageOrders({ params }) {
   }
   return (
     <div>
-      <FactorGenerator data={orderDetail?.result} />
+      <div
+        style={{ width: "100%", margin: "0 auto" }}
+        className="pdf flex gap-4 print bg-gray-200 p-2 rounded-lg !mb-8"
+      >
+        <FactorGenerator data={orderDetail?.result} />
+      </div>
       <section className="relative no-print">
         <div className="mb-8">
           <Button
@@ -115,7 +120,7 @@ export default function PostageOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalProductPrice
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4 mb-2">
@@ -126,7 +131,7 @@ export default function PostageOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalShipmentPrice
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -137,7 +142,7 @@ export default function PostageOrders({ params }) {
                       {Number(
                         orderDetail?.result?.totalDiscountFee
                       ).toLocaleString()}{" "}
-                      تومانء
+                      ءتء
                     </p>
                   </div>
                 </div>
@@ -147,7 +152,7 @@ export default function PostageOrders({ params }) {
                   </p>
                   <h5 className="font-manrope font-bold text-sm leading-9 text-primary">
                     {Number(orderDetail?.result?.totalPrice).toLocaleString()}{" "}
-                    تومانء
+                    ءتء
                   </h5>
                 </div>
               </div>
@@ -203,6 +208,9 @@ export default function PostageOrders({ params }) {
                       <span>پلاک: {orderDetail?.result?.address?.plaque} </span>
                       <span>
                         طبقه: {orderDetail?.result?.address?.floorNumber}{" "}
+                      </span>
+                      <span>
+                        کدپستی : {orderDetail?.result?.address?.postalCode}{" "}
                       </span>
                     </p>
                   </div>

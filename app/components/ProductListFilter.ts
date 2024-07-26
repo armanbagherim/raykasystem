@@ -5,5 +5,6 @@ export default interface ProductListFilter {
   offset?: number;
   limit?: number;
   orderBy?: string;
+  sortOrder?: string;
   discountTypeId: number;
 }

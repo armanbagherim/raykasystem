@@ -8,6 +8,9 @@ import { HexColorPicker } from "react-colorful";
 import { pageTitle } from "@/app/admin/layout";
 import Loading from "@/app/components/global/loading";
 import SaveBar from "@/app/components/global/SaveBar";
+import SeoBox from "@/app/admin/ecommerce/products/_components/SeoBox";
+import ChangeToNull from "@/app/components/global/ChangeToNull";
+import { setPriority } from "os";
 
 export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -22,10 +25,12 @@ export default function Eav({ params }) {
 
   const [name, setName] = useState();
   const [slug, setSlug] = useState();
+  const [description, setDescription] = useState();
   const [metaDescription, setMetaDescription] = useState();
   const [metaKeywords, setMetaKeywords] = useState();
   const [metaTitle, setMetaTitle] = useState();
   const [parentEntityTypeId, setParentEntityTypeId] = useState();
+  const [priority, setPriority] = useState();
   const router = useRouter();
 
   const {
@@ -50,9 +55,14 @@ export default function Eav({ params }) {
     if (entityTypeIsLoading === false) {
       setName(entityType.result.name);
       setSlug(entityType.result.slug);
+      setDescription(
+        entityType.result.description ? entityType.result.description : ""
+      );
       setMetaDescription(entityType.result.metaDescription);
       setMetaKeywords(entityType.result.metaKeywords);
       setMetaTitle(entityType.result.metaTitle);
+      setParentEntityTypeId(entityType.result.parentEntityTypeId);
+      setPriority(entityType.result.priority);
     }
   }, [entityTypeIsLoading]);
 
@@ -69,7 +79,9 @@ export default function Eav({ params }) {
           entityModelId: 1,
           metaKeywords,
           metaDescription,
+          description: ChangeToNull(description),
           metaTitle,
+          priority: priority === "null" ? null : +priority,
         },
       });
       toast.success("موفق");
@@ -115,6 +127,10 @@ export default function Eav({ params }) {
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
         />
+      </div>
+      <div>
+        <label htmlFor="">توضیحات</label>
+        <SeoBox setDescription={setDescription} description={description} />
       </div>
       <label
         htmlFor="countries_multiple"
@@ -166,7 +182,20 @@ export default function Eav({ params }) {
           })}
         </select>
       )}
-
+      <label
+        htmlFor="first_name"
+        className="block mb-2 text-sm font-medium text-gray-900 "
+      >
+        اولویت
+      </label>
+      <input
+        type="text"
+        id="first_name"
+        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+        required
+        value={priority}
+        onChange={(e) => setPriority(e.target.value)}
+      />
       <label
         htmlFor="first_name"
         className="block mb-2 text-sm font-medium text-gray-900 "

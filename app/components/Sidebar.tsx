@@ -27,7 +27,14 @@ function valuetext(value) {
   return `${value}`;
 }
 
-const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
+const Sidebar = ({
+  brands,
+  colors,
+  attributes,
+  guarantees,
+  range,
+  showAmazing = true,
+}) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -327,7 +334,7 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
       )}
 
       <div
-        className={`md:block col-span-3 p-4 fixed z-[30] top-0 left-0 w-full h-full md:w-auto md:h-auto md:static bg-white ${
+        className={`md:block col-span-3 rounded-2xl p-4 fixed z-[30] top-0 left-0 w-full h-full md:w-auto md:h-auto md:static bg-white ${
           isOpen ? "block" : "hidden"
         }`}
       >
@@ -521,25 +528,30 @@ const Sidebar = ({ brands, colors, attributes, guarantees, range }) => {
             </AccordionSummary>
             <AccordionDetails>
               <>
-                <div className="flex items-center justify-between mb-4">
-                  <span
-                    onClick={(e) => {
-                      setAmazings(!amazings);
-                      onSelect("2", "discountTypeId");
-                    }}
-                    className="cursor-pointer"
-                  >
-                    فقط کالا های شگفت انگیز
-                  </span>
-                  <Switch
-                    color="success"
-                    checked={amazings}
-                    onClick={(e) => {
-                      setAmazings(!amazings);
-                      onSelect("2", "discountTypeId");
-                    }}
-                  />
-                </div>
+                {showAmazing ? (
+                  <div className="flex items-center justify-between mb-4">
+                    <span
+                      onClick={(e) => {
+                        setAmazings(!amazings);
+                        onSelect("2", "discountTypeId");
+                      }}
+                      className="cursor-pointer"
+                    >
+                      فقط کالا های شگفت انگیز
+                    </span>
+                    <Switch
+                      color="success"
+                      checked={amazings}
+                      onClick={(e) => {
+                        setAmazings(!amazings);
+                        onSelect("2", "discountTypeId");
+                      }}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
+
                 <div className="flex items-center justify-between">
                   <span
                     onClick={(e) => {

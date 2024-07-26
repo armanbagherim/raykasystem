@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -24,9 +24,10 @@ const LightDataGrid = ({ url, columns, triggered }) => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const addressInitialized = useRef(false);
 
   const fetchData = async () => {
-    if (!data.length) {
+    if (!data?.length) {
       setIsLoading(true);
     } else {
       setIsRefetching(true);
@@ -64,7 +65,12 @@ const LightDataGrid = ({ url, columns, triggered }) => {
 
   //if you want to avoid useEffect, look at the React Query example instead
   useEffect(() => {
-    if (session) fetchData();
+    if (!addressInitialized.current && session) {
+      fetchData();
+      addressInitialized.current = true;
+    } else {
+      fetchData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     columnFilters,
@@ -72,7 +78,7 @@ const LightDataGrid = ({ url, columns, triggered }) => {
     pagination.pageIndex,
     pagination.pageSize,
     sorting,
-    session,
+    // session,
     triggered,
   ]);
 

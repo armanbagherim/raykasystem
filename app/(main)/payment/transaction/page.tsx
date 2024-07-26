@@ -5,10 +5,6 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 async function getData(session, searchParams) {
-  console.log(
-    "this",
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/transactions/${searchParams}`
-  );
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/transactions/${searchParams}`,
     {
@@ -30,7 +26,6 @@ async function getData(session, searchParams) {
 export default async function page(params) {
   const session = await getServerSession(authOptions);
   const data = await getData(session, params?.searchParams?.transactionId);
-
   return (
     <div>
       <>

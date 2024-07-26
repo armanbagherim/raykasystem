@@ -16,13 +16,20 @@ export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
 
+  const { data: eav, isLoading: eavIsLoading } = useFetcher(
+    `/v1/api/eav/admin/entityTypes/${params.id}`,
+    "GET"
+  );
+
   useEffect(() => {
-    setTitle({
-      title: "فیلد ها",
-      buttonTitle: "افزودن فیلد",
-      link: `/admin/eav/entityTypes/fields/${params.id}/new`,
-    });
-  }, []);
+    if (!eavIsLoading) {
+      setTitle({
+        title: `فیلد های دسته ${eav.result.name ?? ""}`,
+        buttonTitle: "افزودن فیلد",
+        link: `/admin/eav/entityTypes/fields/${params.id}/new`,
+      });
+    }
+  }, [eavIsLoading]);
 
   const deleteGuarantee = async (id) => {
     try {

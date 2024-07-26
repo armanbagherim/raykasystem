@@ -10,7 +10,7 @@ export default function Price({ data }) {
               {data?.firstPrice?.appliedDiscount?.amount}
               {data?.firstPrice?.appliedDiscount?.actionType === 1
                 ? "%"
-                : "تومانء"}
+                : "ءتء"}
             </span>
             <span className="opacity-75 text-xs line-through">
               {Number(data?.firstPrice?.price).toLocaleString()}
@@ -20,12 +20,12 @@ export default function Price({ data }) {
             {Number(
               data?.firstPrice?.appliedDiscount?.newPrice
             ).toLocaleString()}{" "}
-            تومانء
+            ءتء
           </p>
         </>
       ) : (
         <p className="text-sm">
-          {Number(data?.firstPrice?.price).toLocaleString()} تومانء
+          {Number(data?.firstPrice?.price).toLocaleString()} ءتء
         </p>
       )}
     </div>

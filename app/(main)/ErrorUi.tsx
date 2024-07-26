@@ -192,31 +192,31 @@ export default function ErrorUi({ error, reset }) {
                     d="M52.5154 167.645C52.5154 167.645 78.7021 177.082 150.12 186.518"
                     stroke="white"
                     stroke-opacity="0.215806"
-                    stroke-width="3"
+                    strokeWidth="3"
                   />
                   <path
                     d="M70.7201 140.652C70.7201 140.652 78.0865 148.329 150.802 168.36"
                     stroke="white"
                     stroke-opacity="0.215806"
-                    stroke-width="3"
+                    strokeWidth="3"
                   />
                   <path
                     d="M84.0061 119.488C84.0061 119.488 138.517 146.936 156.423 147.159"
                     stroke="white"
                     stroke-opacity="0.215806"
-                    stroke-width="3"
+                    strokeWidth="3"
                   />
                   <path
                     d="M120.658 95.3721C120.658 95.3721 158.497 135.68 175.92 135.612"
                     stroke="white"
                     stroke-opacity="0.215806"
-                    stroke-width="3"
+                    strokeWidth="3"
                   />
                   <path
                     d="M157.658 96.3767C157.658 96.3767 195.497 136.685 212.92 136.617"
                     stroke="white"
                     stroke-opacity="0.215806"
-                    stroke-width="3"
+                    strokeWidth="3"
                   />
                 </g>
                 <path
@@ -241,37 +241,37 @@ export default function ErrorUi({ error, reset }) {
                     d="M167.66 158.079C169.307 150.054 184.11 130.072 198.187 127.971"
                     stroke="white"
                     stroke-opacity="0.215806"
-                    stroke-width="3"
+                    strokeWidth="3"
                   />
                   <path
                     d="M160.18 136.591C160.18 125.896 169.682 100.335 234.67 95.459"
                     stroke="white"
                     stroke-opacity="0.215806"
-                    stroke-width="3"
+                    strokeWidth="3"
                   />
                   <path
                     d="M172.052 180.378C174.959 174.144 189.335 157.801 199.944 153.305"
                     stroke="white"
                     stroke-opacity="0.215806"
-                    stroke-width="3"
+                    strokeWidth="3"
                   />
                   <path
                     d="M214.948 187.577C210.084 182.713 199.644 163.614 199.048 152.107"
                     stroke="white"
                     stroke-opacity="0.215806"
-                    stroke-width="3"
+                    strokeWidth="3"
                   />
                   <path
                     d="M224.885 163.477C219.129 159.784 201.448 148.132 201.111 141.631"
                     stroke="white"
                     stroke-opacity="0.215806"
-                    stroke-width="3"
+                    strokeWidth="3"
                   />
                   <path
                     d="M239.064 135.01C229.392 141.291 210.68 132.231 208.724 127.597"
                     stroke="white"
                     stroke-opacity="0.215806"
-                    stroke-width="3"
+                    strokeWidth="3"
                   />
                 </g>
                 <path

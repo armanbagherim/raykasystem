@@ -113,6 +113,14 @@ export default function Eav() {
               فیلد ها
             </Button>
           </a>
+          <a
+            className="ml-1 mr-1"
+            href={`/admin/eav/entityTypes/factors/${row.id}`}
+          >
+            <Button variant="outlined" color="success">
+              فاکتور های کامنت
+            </Button>
+          </a>
           <a href={`/admin/eav/entityTypes/edit/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />

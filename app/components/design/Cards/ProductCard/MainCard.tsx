@@ -4,6 +4,7 @@ import CountDown from "../../CountDown";
 import Price from "./Price";
 import Image from "next/image";
 import Link from "next/link";
+import { SpecDiscount } from "../../Icons";
 
 export default function MainCard({ data }) {
   const uniqueColorsMap = new Map(
@@ -19,9 +20,14 @@ export default function MainCard({ data }) {
           <Image
             width={200}
             height={200}
+            alt={data?.title}
             className="mx-auto h-auto object-contain rounded-3xl w-full"
             priority
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${data?.attachments[0].fileName}`}
+            src={`${
+              process.env.NEXT_PUBLIC_BASE_URL
+            }/v1/api/ecommerce/productphotos/image/${
+              data?.attachments[0]?.fileName ?? null
+            }`}
           />
         ) : (
           <Image
@@ -38,28 +44,32 @@ export default function MainCard({ data }) {
             <h3 className="mb-2 w-full h-auto whitespace-break-spaces mt-3 text-sm">
               {data?.title}
             </h3>
-            <div className="flex mt-2 mb-6 flex-col absolute top-0 right-[10px] bg-white pt-[8px] pb-[14px] px-1 rounded-full">
-              {data.colorBased
-                ? uniqueColorsArray.map((value, key) => (
-                    <VariantsCard
-                      key={key}
-                      isSelected={false}
-                      color={value?.color?.hexCode}
-                      name={value?.color?.name}
-                    />
-                  ))
-                : ""}
-            </div>
+            {data.colorBased ? (
+              <div className="flex mt-2 mb-6 flex-col absolute top-0 right-[10px] bg-white pt-[4px] pb-[9px] px-1 rounded-full">
+                {uniqueColorsArray.map((value, key) => (
+                  <VariantsCard
+                    key={key}
+                    isSelected={false}
+                    color={value?.color?.hexCode}
+                    name={value?.color?.name}
+                  />
+                ))}
+              </div>
+            ) : (
+              ""
+            )}
+
             {/* <div className="h-8"></div> */}
           </div>
 
           <div className="p-2 sm:p-4 flex flex-col md:flex-row justify-end">
-            {data.inventories[0]?.firstPrice?.appliedDiscount ? (
-              <CountDown
-                dates={
-                  data.inventories[0]?.firstPrice?.appliedDiscount?.endDate
-                }
-              />
+            {data?.inventories[0]?.firstPrice?.appliedDiscount ? (
+              // <CountDown
+              //   dates={
+              //     data.inventories[0]?.firstPrice?.appliedDiscount?.endDate
+              //   }
+              // />
+              <SpecDiscount />
             ) : (
               ""
             )}
