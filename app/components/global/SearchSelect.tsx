@@ -16,12 +16,12 @@ const getNestedProperty = (obj, path, defaultValue = undefined) => {
   return current;
 };
 
-const formatOptions = (data, isDiff, diffName, nullable) => {
+const formatOptions = (data, isDiff, diffName, nullable, diffKey) => {
   if (nullable) {
-    data = [{ id: null, name: "بدون انتخاب" }, ...data];
+    data = [{ [diffKey]: null, name: "بدون انتخاب" }, ...data];
   }
   return data?.map((item) => ({
-    id: item.id,
+    [diffKey]: item[diffKey],
     name: isDiff ? getNestedProperty(item, diffName) : item.name,
   }));
 };
@@ -36,6 +36,7 @@ export default function SearchSelect({
   diffName,
   nullable,
   defaultValue,
+  diffKey = "id", // default diffKey is 'id'
 }) {
   const [currentValue, setCurrentValue] = useState(defaultValue);
 
@@ -50,18 +51,18 @@ export default function SearchSelect({
           disabled
           id="first_name"
           label={label}
-          variant="standard"
+          variant="outlined"
           fullWidth
         />
       </div>
     );
   }
 
-  const options = formatOptions(data, isDiff, diffName, nullable);
+  const options = formatOptions(data, isDiff, diffName, nullable, diffKey);
 
   // Ensure the currentValue matches one of the options
   const currentValueObject =
-    options.find((option) => option.id === currentValue) || null;
+    options.find((option) => option[diffKey] === currentValue) || null;
 
   return (
     <div className="flex-1">
@@ -70,10 +71,10 @@ export default function SearchSelect({
         options={options}
         getOptionLabel={(option) => option.name}
         renderInput={(params) => (
-          <TextField {...params} label={label} variant="standard" fullWidth />
+          <TextField {...params} label={label} variant="outlined" fullWidth />
         )}
         onChange={(event, newValue) => {
-          setCurrentValue(newValue ? newValue.id : null);
+          setCurrentValue(newValue ? newValue[diffKey] : null);
           onChange(newValue ? newValue : null);
         }}
         value={currentValueObject} // Ensure this matches one of the options

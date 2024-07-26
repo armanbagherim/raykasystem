@@ -1,101 +1,116 @@
 "use client";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { fetcher, useFetcher } from "../../../../components/global/fetcher";
-import Loading from "../../../../components/global/loading";
+import Loading from "../../../../../components/global/loading";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 import { toast } from "react-toastify";
+import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
+import { IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import Swal from "sweetalert2";
 
 export default function VendorAddress({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
+  const [triggered, setTriggered] = useState(false);
 
   useEffect(() => {
     setTitle({
       title: "آدرس های فروشگاه",
-      buttonTitle: "افزودن فروشگاه جدید",
-      link: `/admin/ecommerce/vendorAddresses/${params.id}/new`,
+      buttonTitle: "افزودن آدرس جدید",
+      link: `/admin/ecommerce/vendoraddresses/${params.id}/new`,
     });
   }, []);
 
-  const deleteGuarantee = async (id) => {
+  const deleteAddress = async (id) => {
     try {
-      const req = await fetcher({
-        url: `/v1/api/ecommerce/vendorAddresses/${id}`,
-        method: "DELETE",
+      const result = await Swal.fire({
+        title: "مطمئن هستید؟",
+        text: "با حذف این گزینه امکان بازگشت آن وجود ندارد",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله حذفش کن",
+        cancelButtonText: "لغو",
       });
-      toast.success("موفق");
-      refetchAddresses();
+
+      if (result.isConfirmed) {
+        const req = await fetcher({
+          url: `/v1/api/ecommerce/vendorAddresses/${id}`,
+          method: "DELETE",
+        });
+        toast.success("موفق");
+        setTriggered(!triggered);
+      }
     } catch (error) {
       toast.error(error.message);
     }
   };
-  const {
-    data: addresses,
-    isLoading: addressesIsLoading,
-    error: addressesError,
-    refetch: refetchAddresses,
-  } = useFetcher(
-    `/v1/api/ecommerce/vendorAddresses?sortOrder=DESC&offset=0&limit=10&orderBy=id&vendorId=${params.id}`,
-    "GET"
-  );
+  const columns = [
+    {
+      accessorKey: "id",
+      header: "شناسه",
+      size: 20,
+    },
+    {
+      accessorKey: "address.name",
+      header: "نام آدرس ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
+    },
+    {
+      accessorKey: "vendor.name",
+      header: "نام فروشگاه ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
+    },
 
-  const columns: GridColDef[] = [
     {
-      field: "id",
-      headerName: "شناسه",
-      width: 150,
+      accessorKey: "address.street",
+      header: "خیابان ",
+      minSize: 100, //min size enforced during resizing
+      maxSize: 400, //max size enforced during resizing
+      size: 180, //medium column
     },
+
     {
-      field: "name",
-      headerName: "نام ",
-      width: 150,
-      valueGetter: ({ row }) => {
-        return row.address.name;
-      },
-    },
-    {
-      field: "slug",
-      headerName: "اسلاگ",
-      width: 150,
-    },
-    {
-      field: "list",
-      headerName: "ویرایش",
-      width: 150,
-      renderCell: (row) => (
-        <a href={`/admin/ecommerce/vendoraddresses/${row.id}/new`}>
-          <button
-            type="button"
-            className="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+      accessorKey: "Actions",
+      header: "عملیات",
+      size: 200,
+
+      Cell: ({ row }) => (
+        <>
+          {}
+
+          <a
+            href={`/admin/ecommerce/vendoraddresses/${params.id}/edit/${row.original.id}`}
           >
-            آدرس ها
-          </button>
-        </a>
-      ),
-    },
-    {
-      field: "delete",
-      headerName: "حذف",
-      width: 150,
-      renderCell: ({ row }) => (
-        <a onClick={(e) => deleteGuarantee(row.id)}>
-          <button
-            type="button"
-            className="focus:outline-none text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
-          >
-            حذف
-          </button>
-        </a>
+            <IconButton aria-label="delete" color="primary">
+              <ModeEditIcon />
+            </IconButton>
+          </a>
+          <a onClick={(e) => deleteAddress(row.original.id)}>
+            <IconButton aria-label="delete" color="error">
+              <DeleteIcon />
+            </IconButton>
+          </a>
+        </>
       ),
     },
   ];
-  if (addressesIsLoading) {
-    return <Loading />;
-  }
+
   return (
     <div>
-      <DataGrid rows={addresses.result} columns={columns} />
+      <LightDataGrid
+        url={`/v1/api/ecommerce/vendorAddresses?sortOrder=DESC&offset=0&limit=10&orderBy=id&vendorId=${params.id}`}
+        columns={columns}
+        triggered={triggered}
+      />
     </div>
   );
 }

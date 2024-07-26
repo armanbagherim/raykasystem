@@ -23,19 +23,18 @@ export default function Slider({
   const swiperOptions: SwiperOptions = {
     spaceBetween: 25,
     navigation: true,
-    freeMode: {
-      enabled: slidesPerView === 1 ? false : true,
-      sticky: false,
+    loop: true,
+    autoplay: {
+      delay: 2000,
     },
-
     breakpoints: {
       320: {
-        slidesPerView: slidesPerView ? slidesPerView : 1.1,
+        slidesPerView: slidesPerView ? slidesPerView : 1.5,
         spaceBetween: 20,
       },
       // Mobile
       640: {
-        slidesPerView: slidesPerView ? slidesPerView : 2.2,
+        slidesPerView: slidesPerView ? slidesPerView : 2.5,
         spaceBetween: 10,
       },
       // Tablet
@@ -63,7 +62,7 @@ export default function Slider({
 
   return (
     <Swiper
-      className="container mx-auto relative mb-20"
+      className="container mx-auto relative mb-8"
       {...swiperOptions}
       modules={[EffectFade, Navigation, FreeMode]}
     >

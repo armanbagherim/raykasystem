@@ -1,18 +1,27 @@
 "use client";
 import { signOut } from "next-auth/react";
 import { ChevronLeft } from "./design/Icons";
+import { deleteCookie } from "cookies-next";
 
-const SignOutButton = () => {
+const SignOutButton = ({ hasIcon = true }) => {
+  const handleSignOut = () => {
+    deleteCookie("SessionName");
+    signOut();
+  };
   return (
     <>
       <li
         className="mb-2 text-sm flex justify-between cursor-pointer"
-        onClick={() => signOut()}
+        onClick={() => handleSignOut()}
       >
         <span>خروج</span>
-        <span>
-          <ChevronLeft />
-        </span>
+        {hasIcon ? (
+          <span>
+            <ChevronLeft />
+          </span>
+        ) : (
+          ""
+        )}
       </li>
     </>
   );

@@ -1,14 +1,14 @@
 image: node:18-alpine
 
 stages:
-  - update-production
+  - update-service
 
 deploy:
-  stage: update-production
+  stage: update-service
   only:
     - main
   script:
-    - npm i -g @liara/cli@5 --force --verbos
-    - npm config set legacy-peer-deps true
-    - export http_proxy=http://proxy.liara.ir:6666
-    - liara deploy --app jahizan --api-token $TOKEN --no-app-logs
+    - npm install -g @chabokan.net/cli
+    - export CHABOK_API_URL=https://apihub2.chabokan.net/fa/api/v1/
+    - chabok login -t $CHABOKAN_TOKEN
+    - chabok deploy -s jahizan

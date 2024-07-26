@@ -8,6 +8,9 @@ import { HexColorPicker } from "react-colorful";
 import { pageTitle } from "@/app/admin/layout";
 import Loading from "@/app/components/global/loading";
 import SaveBar from "@/app/components/global/SaveBar";
+import SeoBox from "@/app/admin/ecommerce/products/_components/SeoBox";
+import ChangeToNull from "@/app/components/global/ChangeToNull";
+import { setPriority } from "os";
 
 export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
@@ -22,7 +25,12 @@ export default function Eav({ params }) {
 
   const [name, setName] = useState();
   const [slug, setSlug] = useState();
+  const [description, setDescription] = useState();
+  const [metaDescription, setMetaDescription] = useState();
+  const [metaKeywords, setMetaKeywords] = useState();
+  const [metaTitle, setMetaTitle] = useState();
   const [parentEntityTypeId, setParentEntityTypeId] = useState();
+  const [priority, setPriority] = useState();
   const router = useRouter();
 
   const {
@@ -47,6 +55,14 @@ export default function Eav({ params }) {
     if (entityTypeIsLoading === false) {
       setName(entityType.result.name);
       setSlug(entityType.result.slug);
+      setDescription(
+        entityType.result.description ? entityType.result.description : ""
+      );
+      setMetaDescription(entityType.result.metaDescription);
+      setMetaKeywords(entityType.result.metaKeywords);
+      setMetaTitle(entityType.result.metaTitle);
+      setParentEntityTypeId(entityType.result.parentEntityTypeId);
+      setPriority(entityType.result.priority);
     }
   }, [entityTypeIsLoading]);
 
@@ -61,6 +77,11 @@ export default function Eav({ params }) {
           parentEntityTypeId:
             parentEntityTypeId === "null" ? null : +parentEntityTypeId,
           entityModelId: 1,
+          metaKeywords,
+          metaDescription,
+          description: ChangeToNull(description),
+          metaTitle,
+          priority: priority === "null" ? null : +priority,
         },
       });
       toast.success("موفق");
@@ -80,36 +101,40 @@ export default function Eav({ params }) {
       <div>
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           نام
         </label>
         <input
           type="text"
           id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           لینک
         </label>
         <input
           type="text"
           id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
         />
       </div>
+      <div>
+        <label htmlFor="">توضیحات</label>
+        <SeoBox setDescription={setDescription} description={description} />
+      </div>
       <label
         htmlFor="countries_multiple"
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        className="block mb-2 text-sm font-medium text-gray-900 "
       >
         دسته بندی پدر
       </label>
@@ -118,7 +143,7 @@ export default function Eav({ params }) {
       ) : (
         <select
           id="countries_multiple"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           onChange={(e) => setParentEntityTypeId(e.target.value)}
         >
           <option value={null}>بدون پدر</option>
@@ -157,6 +182,63 @@ export default function Eav({ params }) {
           })}
         </select>
       )}
+      <label
+        htmlFor="first_name"
+        className="block mb-2 text-sm font-medium text-gray-900 "
+      >
+        اولویت
+      </label>
+      <input
+        type="text"
+        id="first_name"
+        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+        required
+        value={priority}
+        onChange={(e) => setPriority(e.target.value)}
+      />
+      <label
+        htmlFor="first_name"
+        className="block mb-2 text-sm font-medium text-gray-900 "
+      >
+        عنوان سئو
+      </label>
+      <input
+        type="text"
+        id="first_name"
+        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+        required
+        value={metaTitle}
+        onChange={(e) => setMetaTitle(e.target.value)}
+      />
+      <label
+        htmlFor="first_name"
+        className="block mb-2 text-sm font-medium text-gray-900 "
+      >
+        توضیحات سئو
+      </label>
+      <input
+        type="text"
+        id="first_name"
+        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+        required
+        value={metaDescription}
+        onChange={(e) => setMetaDescription(e.target.value)}
+      />
+
+      <label
+        htmlFor="first_name"
+        className="block mb-2 text-sm font-medium text-gray-900 "
+      >
+        کلمات کلیدی (با کاما جدا شود)
+      </label>
+      <input
+        type="text"
+        id="first_name"
+        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+        required
+        value={metaKeywords}
+        onChange={(e) => setMetaKeywords(e.target.value)}
+      />
 
       <SaveBar action={save} backUrl={"/admin/eav/entityTypes/"} />
     </div>

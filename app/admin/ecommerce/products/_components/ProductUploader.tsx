@@ -19,12 +19,12 @@ export default function ProductUploader({
   removePhoto,
 }: ProductUploaderProps) {
   return (
-    <div className="w-full p-4 border-2 border-dashed border-gray-400 rounded-2xl">
+    <div className="w-full p-4 border-2 border-dashed border-gray-200 rounded-2xl">
       <Uploader
         setPhotos={setPhotos}
         location={"v1/api/ecommerce/productphotos/image"}
       />
-      <div className="flex pt-4 gap-4 flex-wrap my-4">
+      <div className="flex pt-4 gap-4 flex-wrap justify-between my-4">
         {photos.map((value, index) => {
           return (
             <div className="relative group " key={index}>
@@ -78,8 +78,8 @@ export default function ProductUploader({
               </button>
               <Image
                 key={index} // It's a good practice to provide a key when mapping over elements
-                width={50}
-                height={50}
+                width={70}
+                height={70}
                 crossOrigin="anonymous"
                 src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
                 alt=""

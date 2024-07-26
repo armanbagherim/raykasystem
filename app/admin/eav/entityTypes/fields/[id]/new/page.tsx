@@ -11,18 +11,25 @@ import SaveBar from "@/app/components/global/SaveBar";
 
 export default function Eav({ params }) {
   const [title, setTitle] = useAtom(pageTitle);
+  const { data: eav, isLoading: eavIsLoading } = useFetcher(
+    `/v1/api/eav/admin/entityTypes/${params.id}`,
+    "GET"
+  );
+
   useEffect(() => {
-    setTitle({
-      title: "افزودن فیلد",
-      buttonTitle: "",
-      link: "",
-    });
-  }, []);
+    if (!eavIsLoading) {
+      setTitle({
+        title: `افزودن فیلد برای دسته ${eav.result.name ?? ""}`,
+        buttonTitle: "افزودن فیلد",
+        link: `/admin/eav/entityTypes/fields/${params.id}/new`,
+      });
+    }
+  }, [eavIsLoading]);
   const [name, setName] = useState();
-  const [min, setMin] = useState();
-  const [max, setMax] = useState();
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
   const [attributeTypeId, setAttributeTypeId] = useState(1);
-  const [isRequired, setIsRequired] = useState();
+  const [isRequired, setIsRequired] = useState(false);
   const router = useRouter();
 
   const {
@@ -61,14 +68,14 @@ export default function Eav({ params }) {
       <div>
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           نام
         </label>
         <input
           type="text"
           id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
           onChange={(e) => setName(e.target.value)}
         />
@@ -76,14 +83,14 @@ export default function Eav({ params }) {
           <div className="w-full">
             <label
               htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               حداقل طول کارکتر
             </label>
             <input
               type="text"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
               onChange={(e) => setMin(e.target.value)}
             />
@@ -92,14 +99,14 @@ export default function Eav({ params }) {
           <div className="w-full">
             <label
               htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               حداکثر طول کارکتر
             </label>
             <input
               type="text"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               required
               onChange={(e) => setMax(e.target.value)}
             />
@@ -110,14 +117,14 @@ export default function Eav({ params }) {
         <div className="w-full">
           <label
             htmlFor="countries_multiple"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             نوع فیلد
           </label>
 
           <select
             id="countries_multiple"
-            className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             onChange={(e) => setAttributeTypeId(e.target.value)}
           >
             {attributeTypesIsLoading ? (

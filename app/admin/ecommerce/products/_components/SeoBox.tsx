@@ -1,26 +1,38 @@
+"use client";
 import React, { useEffect, useState, useRef } from "react";
-import { Editor } from "@tinymce/tinymce-react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import "ckeditor5/ckeditor5.css";
+
+import {
+  ClassicEditor,
+  Bold,
+  Essentials,
+  Italic,
+  Mention,
+  Paragraph,
+  Undo,
+  Alignment,
+  RemoveFormat,
+  Link,
+  Underline,
+  Subscript,
+  Superscript,
+  BlockQuote,
+  FontColor,
+  FontFamily,
+  FontSize,
+  FontBackgroundColor,
+  Heading,
+  FontSizeUI,
+  CodeEditing,
+  LanguageDirection,
+} from "ckeditor5";
 import { useSession } from "next-auth/react";
 
 export default function SeoBox({ setDescription, description }) {
   const { data: session } = useSession();
   const [sessionToken, setSessionToken] = useState(null);
   const editorRef = useRef(null); // Use ref to store editor instance
-
-  const handleEditorInit = (evt, editor) => {
-    editorRef.current = editor; // Store editor instance in ref
-  };
-
-  const updateDescription = () => {
-    if (editorRef.current) {
-      const content = editorRef.current.getContent();
-      setDescription(content);
-    }
-  };
-
-  const handleImageUpload = async (blobInfo, success, failure) => {
-    // Your existing image upload logic
-  };
 
   useEffect(() => {
     if (session) {
@@ -30,31 +42,83 @@ export default function SeoBox({ setDescription, description }) {
     }
   }, [session]);
 
+  const handleEditorChange = (event, editor) => {
+    const content = editor.getData(); // Get the editor content
+    setDescription(content); // Update the description state
+  };
+
   return (
-    <div>
-      <Editor
-        onInit={handleEditorInit}
-        onEditorChange={(content, editor) => {
-          setDescription(content);
+    <div className="mt-4 mb-6">
+      <CKEditor
+        editor={ClassicEditor}
+        data={description}
+        onInit={(editor) => {
+          editorRef.current = editor; // Store editor instance in ref
         }}
-        value={description}
-        apiKey="xd8f03g5flw9hewuembu8yofhsaq5ca5hkggdlg9qvmkmq64"
-        init={{
-          height: 500,
-          menubar: true,
+        onChange={handleEditorChange}
+        config={{
+          toolbar: {
+            items: [
+              "undo",
+              "redo",
+              "|",
+              "bold",
+              "italic",
+              "underline",
+              "subscript",
+              "superscript",
+              "removeFormat",
+              "formatBlock",
+              "fontFamily",
+              "fontSize",
+              "fontColor",
+              "backgroundColor",
+              "borderColor",
+              "alignment",
+              "numberedList",
+              "bulletedList",
+              "imageTextAlternative",
+              "imageStyle:alignLeft",
+              "imageStyle:alignCenter",
+              "imageStyle:alignRight",
+              "imageStyle:resizeHorizontallyOnly",
+              "link",
+              "blockQuote",
+              "embedAnsweredQuestion",
+              "specialChar",
+              "pageBreak",
+              "print",
+              "mediaEmbed",
+              "findReplace",
+              "languageSelection",
+              "heading",
+              "codeEditing",
+            ],
+          },
           plugins: [
-            "advlist autolink lists link image charmap print preview anchor",
-            "searchreplace visualblocks code fullscreen",
-            "insertdatetime media table paste code help wordcount",
-            "emoticons template textpattern imagetools",
-            "table", // Add the table plugin here
+            Bold,
+            Essentials,
+            Italic,
+            Mention,
+            Paragraph,
+            Undo,
+            Alignment,
+            RemoveFormat,
+            Link,
+            Underline,
+            Subscript,
+            Superscript,
+            BlockQuote,
+            FontColor,
+            FontFamily,
+            FontSize,
+            FontBackgroundColor,
+            Heading,
+            FontSizeUI,
+            CodeEditing,
           ],
-          toolbar:
-            "undo redo | styles | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | table", // Add table to the toolbar
-          images_upload_url: "http://localhost:8000/server.php",
-          automatic_uploads: true,
-          images_reuse_filename: true,
-          images_upload_handler: handleImageUpload,
+          language: "fa",
+          initialData: null,
         }}
       />
     </div>

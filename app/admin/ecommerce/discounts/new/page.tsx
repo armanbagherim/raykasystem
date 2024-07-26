@@ -27,20 +27,21 @@ export default function NewDiscount() {
   }, []);
 
   const [requestBody, setRequestBody] = useState({
-    name: "",
-    description: "",
-    discountTypeId: 0,
-    discountActionTypeId: 0,
-    discountActionRuleId: 0,
-    discountValue: 0,
-    maxValue: 0,
-    couponCode: "",
-    priority: 0,
-    limit: 0,
+    name: null,
+    description: null,
+    discountTypeId: null,
+    discountActionTypeId: null,
+    discountActionRuleId: null,
+    discountValue: null,
+    maxValue: null,
+    couponCode: null,
+    priority: null,
+    limit: null,
     isActive: true,
-    startDate: "2024-03-26T01:49:58.489Z",
-    endDate: "2024-03-26T01:49:58.489Z",
-    vendorId: 0,
+    startDate: null,
+    endDate: null,
+    vendorId: null,
+    freeShipment: false,
   });
   const {
     data: discountTypes,
@@ -68,7 +69,9 @@ export default function NewDiscount() {
     `/v1/api/ecommerce/user/vendors?sortOrder=DESC&offset=0&orderBy=id`,
     "GET"
   );
-
+  useEffect(() => {
+    setRequestBody({ ...requestBody, couponCode: null });
+  }, [requestBody.discountTypeId]);
   const save = async () => {
     try {
       const req = await fetcher({
@@ -90,7 +93,7 @@ export default function NewDiscount() {
       <div className="mb-6">
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           نام
         </label>
@@ -103,7 +106,7 @@ export default function NewDiscount() {
           onChange={(e) =>
             setRequestBody((prevState) => ({
               ...prevState,
-              name: e.target.value,
+              name: e.target.value === "" ? null : e.target.value,
             }))
           }
         />
@@ -111,7 +114,7 @@ export default function NewDiscount() {
       <div className="mb-6">
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           توضیحات
         </label>
@@ -124,7 +127,7 @@ export default function NewDiscount() {
           onChange={(e) =>
             setRequestBody((prevState) => ({
               ...prevState,
-              description: e.target.value,
+              description: e.target.value === "" ? null : e.target.value,
             }))
           }
         />
@@ -143,7 +146,7 @@ export default function NewDiscount() {
         <div className="flex-1">
           <label
             htmlFor="first_name"
-            className="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-0 text-sm font-medium text-gray-900 "
           >
             تاریخ شروع
           </label>
@@ -151,21 +154,29 @@ export default function NewDiscount() {
             format="MM/DD/YYYY HH:mm:ss"
             plugins={[<TimePicker key={1} position="bottom" />]}
             calendar={persian}
+            value={requestBody.startDate}
+            onOpenPickNewDate={false}
             locale={persian_fa}
             inputClass="w-full border-b outline-none py-1 border-gray-500"
             containerClassName="w-full"
-            onChange={(e) =>
+            onClose={() =>
               setRequestBody({
                 ...requestBody,
-                startDate: e.toDate().toISOString(),
+                startDate: null,
               })
             }
-          />
+            onFocusedDateChange={(dateFocused, dateClicked) => {
+              setRequestBody({
+                ...requestBody,
+                startDate: dateClicked.toDate().toISOString(),
+              });
+            }}
+          ></DatePicker>
         </div>
         <div className="flex-1">
           <label
             htmlFor="first_name"
-            className="block mb-0 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-0 text-sm font-medium text-gray-900 "
           >
             تاریخ پایان
           </label>
@@ -173,15 +184,23 @@ export default function NewDiscount() {
             format="MM/DD/YYYY HH:mm:ss"
             inputClass="w-full border-b outline-none py-1 border-gray-500"
             containerClassName="w-full"
+            onOpenPickNewDate={false}
+            value={requestBody.endDate}
             plugins={[<TimePicker key={2} position="bottom" />]}
             calendar={persian}
             locale={persian_fa}
-            onChange={(e) =>
+            onClose={() =>
               setRequestBody({
                 ...requestBody,
-                endDate: e.toDate().toISOString(),
+                endDate: null,
               })
             }
+            onFocusedDateChange={(dateFocused, dateClicked) => {
+              setRequestBody({
+                ...requestBody,
+                endDate: dateClicked.toDate().toISOString(),
+              });
+            }}
           />
         </div>
       </div>
@@ -218,7 +237,10 @@ export default function NewDiscount() {
         <div className="mb-6 flex-1">
           <TextField
             onChange={(e) =>
-              setRequestBody({ ...requestBody, discountValue: +e.target.value })
+              setRequestBody({
+                ...requestBody,
+                discountValue: e.target.value === "" ? null : +e.target.value,
+              })
             }
             label="میزان تخفیف"
             variant="standard"
@@ -228,7 +250,10 @@ export default function NewDiscount() {
         <div className="mb-6 flex-1">
           <TextField
             onChange={(e) =>
-              setRequestBody({ ...requestBody, maxValue: +e.target.value })
+              setRequestBody({
+                ...requestBody,
+                maxValue: e.target.value === "" ? null : +e.target.value,
+              })
             }
             label="سقف تخفیف"
             variant="standard"
@@ -239,7 +264,10 @@ export default function NewDiscount() {
           <TextField
             type="number"
             onChange={(e) =>
-              setRequestBody({ ...requestBody, limit: +e.target.value })
+              setRequestBody({
+                ...requestBody,
+                limit: e.target.value === "" ? null : +e.target.value,
+              })
             }
             label="محدودیت استفاده"
             variant="standard"
@@ -257,7 +285,7 @@ export default function NewDiscount() {
           }
         />
       </div>
-      {/* <div className="mb-6">
+      <div className="mb-6">
         <SearchSelect
           loadingState={vendorsIsLoading}
           data={vendors?.result}
@@ -266,11 +294,11 @@ export default function NewDiscount() {
           label="فروشگاه"
           onChange={(e) => setRequestBody({ ...requestBody, vendorId: e.id })}
         />
-      </div> */}
+      </div>
       <div className="flex gap-6 items-center">
-        <div className="flex-1">
+        <div className="flex-1 flex flex-col">
           <label className="inline-flex items-center cursor-pointer">
-            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+            <span className="ml-3 text-sm font-medium text-gray-900 ">
               فعال؟
             </span>
             <Switch
@@ -284,12 +312,30 @@ export default function NewDiscount() {
               inputProps={{ "aria-label": "controlled" }}
             />
           </label>
+          <label className="inline-flex items-center cursor-pointer">
+            <span className="ml-3 text-sm font-medium text-gray-900 ">
+              ارسال رایگان
+            </span>
+            <Switch
+              checked={requestBody.freeShipment}
+              onChange={(e) =>
+                setRequestBody({
+                  ...requestBody,
+                  freeShipment: !requestBody.freeShipment,
+                })
+              }
+              inputProps={{ "aria-label": "controlled" }}
+            />
+          </label>
         </div>
         <div className="mb-6 flex-1">
           <TextField
             type="number"
             onChange={(e) =>
-              setRequestBody({ ...requestBody, priority: +e.target.value })
+              setRequestBody({
+                ...requestBody,
+                priority: e.target.value === "" ? null : +e.target.value,
+              })
             }
             label="اولویت"
             variant="standard"

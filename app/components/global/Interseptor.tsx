@@ -9,10 +9,9 @@ export default async function Interseptor(url, session) {
     cache: "no-store",
     headers: {
       "x-session-id": cookieStore.get("SessionName")?.value,
-      Authorization: `  Bearer ${session?.token}`,
+      Authorization: `Bearer ${session?.token}`,
     },
   });
-
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }

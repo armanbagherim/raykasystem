@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `جهیزان | سبد خرید`,
+    title: `سبد خرید | جهیزان`,
   };
 }
 

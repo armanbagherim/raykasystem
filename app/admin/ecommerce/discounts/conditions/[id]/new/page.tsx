@@ -43,7 +43,7 @@ export default function NewDiscount({ params }) {
     isLoading: conditionsIsLoading,
     error: conditionsError,
   } = useFetcher(
-    `/v1/api/ecommerce/admin/discountConditionValues?sortOrder=ASC&conditionTypeId=${requestBody.conditionType}&offset=0&limit=10&orderBy=id`,
+    `/v1/api/ecommerce/admin/discountConditionValues?sortOrder=ASC&conditionTypeId=${requestBody.conditionTypeId}&offset=0&limit=10&orderBy=id`,
     "GET"
   );
 
@@ -69,7 +69,7 @@ export default function NewDiscount({ params }) {
         <SearchSelect
           loadingState={discountConditionsIsLoading}
           data={discountConditions?.result}
-          label="فروشگاه"
+          label="نوع شرط اعمالی"
           defaultValue={1}
           onChange={(e) =>
             setRequestBody({ ...requestBody, conditionTypeId: e.id })

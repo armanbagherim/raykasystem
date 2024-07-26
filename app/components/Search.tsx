@@ -1,10 +1,18 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { debounce } from "lodash"; // Import debounce from Lodash
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
+function debounce(func, timeout = 300) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
+  };
+}
 export default function Search() {
-  const [searchTerm, setSearchTerm] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const searchContainerRef = useRef(null); // Step 1: Create a ref for the search container
   const [products, setProducts] = useState([]);
@@ -12,10 +20,20 @@ export default function Search() {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const debouncedUpdateSearchTerm = debounce((value) => {
-    setSearchTerm(value);
-  }, 1000); // 1000ms = 1 second
+  const debouncedUpdateSearchTerm = useCallback(
+    debounce((value) => {
+      setSearchTerm(value);
+    }, 2000),
+    []
+  );
 
+  const handleInputChange = useCallback(
+    (value) => {
+      setIsLoading(true);
+      debouncedUpdateSearchTerm(value);
+    },
+    [debouncedUpdateSearchTerm]
+  );
   const getProduct = () => {
     const res = fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?search=${searchTerm}&limit=5`
@@ -50,7 +68,7 @@ export default function Search() {
         searchContainerRef.current &&
         !searchContainerRef.current.contains(event.target)
       ) {
-        setIsOpen(false); // Close the search box if the click is outside
+        setIsOpen(false);
       }
     };
 
@@ -68,28 +86,6 @@ export default function Search() {
     }
   }, [searchTerm]);
 
-  // const getData = () => {
-  //
-  //   const res = fetch(
-  //     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/price`,
-  //     {
-  //       headers: {
-  //         "x-session-id": cookies.value,
-  //       },
-  //     }
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) =>
-  // };
-  // useEffect(() => {
-  //   getData();
-  // }, []);
-
-  // useEffect(() => {
-  //   // This code runs after `calculates` state has been updated
-  //
-  // }, [calculates]); // Depend on `calculates` to run this effect
-
   return (
     <div className="relative" ref={searchContainerRef}>
       {" "}
@@ -97,12 +93,11 @@ export default function Search() {
       <input
         onFocus={(e) => setIsOpen(true)}
         onChange={(e) => {
-          setIsLoading(true);
-          debouncedUpdateSearchTerm(e.target.value);
+          handleInputChange(e.target.value);
         }}
-        placeholder="جستجو کنید"
+        placeholder="جست و جو میان هزاران محصول"
         type="text"
-        className="border rounded-2xl hidden md:block p-4 pr-12 outline-none w-full bg-[#FBFBFB]"
+        className="border rounded-2xl text-sm hidden md:block p-4 pr-12 outline-none w-full bg-[#FBFBFB]"
       />
       <div
         className={`${
@@ -112,15 +107,18 @@ export default function Search() {
         <div className="flex justify-between border-b border-b-gray-300 pb-4 mb-4">
           <p className="peyda">در محصولات</p>
           <span className="font-bold text-primary text-sm">
-            <Link href={`/search?search=${searchTerm}`}>
-              <span href="">همه {searchTerm || "محصولات"} </span>
+            <Link
+              onClick={(e) => setIsOpen(false)}
+              href={`/search?search=${searchTerm}`}
+            >
+              <span>همه {searchTerm || "محصولات"} </span>
             </Link>
           </span>
         </div>
         <div className="mb-4">
           {searchTerm ? (
             isLoading ? (
-              <div className="h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
+              <div className="h-2.5 bg-gray-300  w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
             ) : products.length < 1 ? (
               <div className="flex flex-1 mb-8 text-sm justify-center px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
                 چیزی پیدا نشد !
@@ -131,7 +129,10 @@ export default function Search() {
                   key={key}
                   className="flex justify-center px-3 py-2 bg-white rounded-2xl border border-gray-300 mb-1 text-sm"
                 >
-                  <Link href={`/product/${value.sku}/${value.slug}`}>
+                  <Link
+                    onClick={(e) => setIsOpen(false)}
+                    href={`/product/${value.sku}/${value.slug}`}
+                  >
                     <p>{value.title}</p>
                   </Link>
                 </div>
@@ -149,7 +150,7 @@ export default function Search() {
         <div className="mb-4 flex gap-2">
           {searchTerm ? (
             isLoading ? (
-              <div className="h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
+              <div className="h-2.5 bg-gray-300  w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
             ) : brands.length < 1 ? (
               <div className="flex  flex-1 mb-8 text-sm px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
                 چیزی پیدا نشد !
@@ -160,7 +161,10 @@ export default function Search() {
                   key={key}
                   className="flex justify-center px-3 py-2 bg-white rounded-2xl border border-gray-300 mb-1 text-sm"
                 >
-                  <Link href={`/brand/${value.slug}`}>
+                  <Link
+                    onClick={(e) => setIsOpen(false)}
+                    href={`/brand/${value.slug}`}
+                  >
                     <p>{value.name}</p>
                   </Link>
                 </div>
@@ -178,7 +182,7 @@ export default function Search() {
         <div className="mb-4 flex gap-2 flex-wrap whitespace-nowrap">
           {searchTerm ? (
             isLoading ? (
-              <div className="h-2.5 bg-gray-300 dark:bg-gray-600 w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
+              <div className="h-2.5 bg-gray-300  w-24 mb-2.5 rounded-2xl animate-pulse h-[58px] w-full"></div>
             ) : categories.length < 1 ? (
               <div className="flex flex-1  text-sm  px-8 py-4 bg-red-100 text-red-600 text-center justify-center rounded-2xl border border-red-200 font-bold mb-4">
                 چیزی پیدا نشد !
@@ -189,7 +193,10 @@ export default function Search() {
                   key={key}
                   className="flex justify-center px-3 py-2 bg-white rounded-2xl border border-gray-300 mb-1 text-sm"
                 >
-                  <Link href={`/category/${value.slug}`}>
+                  <Link
+                    onClick={(e) => setIsOpen(false)}
+                    href={`/category/${value.slug}`}
+                  >
                     <p>{value.name}</p>
                   </Link>
                 </div>

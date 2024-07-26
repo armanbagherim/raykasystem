@@ -18,10 +18,10 @@ export default function Eav({ params }) {
     });
   }, []);
   const [name, setName] = useState();
-  const [min, setMin] = useState();
-  const [max, setMax] = useState();
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
   const [attributeTypeId, setAttributeTypeId] = useState(1);
-  const [isRequired, setIsRequired] = useState(null);
+  const [isRequired, setIsRequired] = useState(false);
   const router = useRouter();
 
   const {
@@ -43,10 +43,13 @@ export default function Eav({ params }) {
       setName(attributes.result.name);
       setMin(attributes.result.minLength);
       setMax(attributes.result.maxLength);
-      setAttributeTypeId(attributes.result.setAttributeTypeId);
-      setIsRequired(attributes.result.required);
+      setAttributeTypeId(attributes.result.attributeTypeId);
+      setIsRequired(
+        attributes.result.required === null ? false : attributes.result.required
+      );
     }
   }, [attributesIsLoading]);
+
   const saveField = async () => {
     try {
       const req = await fetcher({
@@ -77,14 +80,14 @@ export default function Eav({ params }) {
       <div>
         <label
           htmlFor="first_name"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
         >
           نام
         </label>
         <input
           type="text"
           id="first_name"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
           onChange={(e) => setName(e.target.value)}
           value={name}
@@ -93,14 +96,14 @@ export default function Eav({ params }) {
           <div className="w-full">
             <label
               htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               حداقل طول کارکتر
             </label>
             <input
               type="text"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               // required
               onChange={(e) => setMin(e.target.value)}
               value={min}
@@ -110,14 +113,14 @@ export default function Eav({ params }) {
           <div className="w-full">
             <label
               htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 "
             >
               حداکثر طول کارکتر
             </label>
             <input
               type="text"
               id="first_name"
-              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               // required
               value={max}
               onChange={(e) => setMax(e.target.value)}
@@ -129,33 +132,27 @@ export default function Eav({ params }) {
         <div className="w-full">
           <label
             htmlFor="countries_multiple"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             نوع فیلد
           </label>
 
           <select
             id="countries_multiple"
-            className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            value={attributeTypeId}
+            className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             onChange={(e) => setAttributeTypeId(e.target.value)}
           >
-            {attributeTypesIsLoading ? (
-              <option value="">در حال بارگزاری</option>
-            ) : (
+            {attributeTypes &&
               attributeTypes.result.map((value, key) => {
                 return (
                   <>
-                    <option
-                      selected={attributeTypeId === value.id ? "selected" : ""}
-                      key={key}
-                      value={value.id}
-                    >
+                    <option key={key} value={value.id}>
                       {value.name}
                     </option>
                   </>
                 );
-              })
-            )}
+              })}
           </select>
         </div>
         <div className="w-full flex">
@@ -165,7 +162,7 @@ export default function Eav({ params }) {
           <input
             type="checkbox"
             name=""
-            checked={isRequired === null ? false : true}
+            checked={isRequired}
             onChange={(e) => setIsRequired(e.target.checked)}
             id="required"
           />

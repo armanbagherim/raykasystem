@@ -16,13 +16,13 @@ export default function LongCard({ border, data }) {
       className="flex-auto h-auto"
     >
       <div
-        className={`flex w-full h-full flex-col md:flex-col lg:flex-col xl:flex-row items-center 2xl:flex-row gap-5 border border-${border} rounded-3xl p-4`}
+        className={`flex w-full h-full flex-col md:flex-col lg:flex-col xl:flex-row items-center 2xl:flex-row border border-${border} rounded-3xl p-4`}
       >
         {data?.attachments[0]?.fileName ? (
           <Image
-            width="200"
-            height="400"
-            className="mx-auto h-full"
+            width="500"
+            height="500"
+            className="mx-auto w-full xl:w-32 h-full object-contain"
             priority
             alt=""
             src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${data?.attachments[0].fileName}`}
@@ -36,8 +36,8 @@ export default function LongCard({ border, data }) {
             alt=""
           />
         )}
-        <div className="flex flex-col justify-between w-full">
-          <h3 className="mb-2 w-60 h-14 pl-4 whitespace-break-spaces">
+        <div className="flex flex-col justify-between w-full pr-4">
+          <h3 className="mb-2 h-14 pl-4 whitespace-break-spaces">
             {data?.title}
           </h3>
           <div className="flex mt-2 mb-6">

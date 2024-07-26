@@ -1,10 +1,15 @@
 /** @type {import('next').NextConfig} */
-
 // const withPWA = require("next-pwa");
 
 const nextConfig = {
   experimental: {
     outputStandalone: true,
+  },
+
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
   },
   pwa: {
     dest: "public",
@@ -12,11 +17,22 @@ const nextConfig = {
     skipWaiting: true,
     disable: process.env.NODE_ENV === "development",
   },
+  urlImports: [
+    "https://static.neshan.org/sdk/leaflet/v1.9.4/neshan-sdk/v1.0.8/index.js",
+  ],
+  httpAgentOptions: {
+    keepAlive: true,
+    keepAliveMsecs: 100000, // 100 seconds
+  },
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "nest-jahizan.chbk.run",
+        hostname: "service.jahizan.com",
+      },
+      {
+        protocol: "https",
+        hostname: "minio-jahizan.chbk.run",
       },
     ],
   },
@@ -27,6 +43,7 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  reactStrictMode: false,
 };
 
 module.exports = nextConfig;

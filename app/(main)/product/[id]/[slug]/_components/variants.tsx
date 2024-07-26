@@ -23,12 +23,12 @@ export default function Variants({ product, handleVariantChange }) {
   return (
     <>
       {product.colorBased && product.inventoryStatusId === 1 ? (
-        <h4 className="mt-7 mb-7 font-bold text-lg">انتخاب رنگ</h4>
+        <h4 className="mt-7 mb-4 font-bold text-lg peyda">انتخاب رنگ</h4>
       ) : (
         ""
       )}
 
-      <div className="flex gap-6">
+      <div className="flex gap-2 md:gap-4 flex-wrap mb-8">
         {product.colorBased
           ? uniqueColors.map((value, key) => (
               <div
@@ -39,15 +39,15 @@ export default function Variants({ product, handleVariantChange }) {
                 }}
                 className={`flex items-center my-auto cursor-pointer gap-2 ${
                   activeColorId === value?.color?.id
-                    ? "border px-4 py-2 border-primary rounded-xl"
-                    : "border border-white px-4 py-2"
+                    ? "border px-4 py-2 border-primary bg-primary/5 border-solid rounded-xl"
+                    : "border rounded-xl px-4 border-dashed border-gray-400 py-2"
                 }`}
               >
                 <div
                   style={{ backgroundColor: `${value?.color?.hexCode}` }}
-                  className={`w-8 h-8 rounded-full inline`}
+                  className={`w-4 h-4 md:w-4 md:h-4  rounded-full inline border border-gray-300`}
                 ></div>
-                <div>{value?.color?.name}</div>
+                <div className="text-sm font-medium">{value?.color?.name}</div>
               </div>
             ))
           : ""}

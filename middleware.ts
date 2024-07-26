@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
 
   // If the SessionName cookie does not exist, generate a new session
   const resp = await fetch(
-    "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/sessions/generate",
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/sessions/generate`,
     {
       method: "POST",
     }
@@ -23,10 +23,11 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   }
 
   const data = await resp.json();
-
+  const expireTime = new Date(data.result.expireAt).getTime() + 1000 * 36000
   // Set the SessionName cookie with the new session ID
   const response = NextResponse.next();
   response.cookies.set("SessionName", data.result.id, {
+    expires: new Date().setTime(expireTime),
     path: "/",
     httpOnly: false,
     secure: true, // Set to true if your site is served over HTTPS

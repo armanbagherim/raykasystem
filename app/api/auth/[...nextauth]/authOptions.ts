@@ -1,5 +1,6 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { isRedirectError } from "next/dist/client/components/redirect";
 
 export const authOptions = {
   providers: [
@@ -24,7 +25,7 @@ export const authOptions = {
         if (phoneNumber && !verifyCode) {
           try {
             res = await fetch(
-              "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/login",
+              `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/login`,
               {
                 method: "POST",
                 headers: {
@@ -40,7 +41,7 @@ export const authOptions = {
           }
         } else if (verifyCode) {
           res = await fetch(
-            "https://nest-jahizan.chbk.run/v1/api/ecommerce/user/login/verifyCode",
+            `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/login/verifyCode`,
             {
               method: "POST",
               headers: {
@@ -54,13 +55,19 @@ export const authOptions = {
               }),
             }
           );
+          if (res.status === 400) {
+            throw new Error("! کد تایید معتبر نیست");
+          }
         }
         //
         const user = await res.json();
-
         if (res.ok && user) {
           return user;
-        } else return null;
+        } else if (res.status === 400) {
+          return null;
+        } else {
+          return null;
+        }
       },
     }),
   ],

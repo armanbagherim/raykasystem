@@ -2,7 +2,7 @@ import React from "react";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `جهیزان | درباره ما`,
+    title: "درباره ما | جهیزان",
   };
 }
 
