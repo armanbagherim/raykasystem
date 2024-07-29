@@ -69,7 +69,7 @@ const Uploader: React.FC<UploaderProps> = ({
     for (const file of selectedFiles) {
       const formData = new FormData();
       formData.append("file", file);
-
+      console.log(location);
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/${location}${
