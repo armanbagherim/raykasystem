@@ -566,6 +566,7 @@ export default function Products() {
           setPhotos={setPhotos}
           photos={photos}
           text="آپلود تصویر"
+          type="image"
         />
         <ProductUploader
           location="v1/api/ecommerce/productVideos/upload"

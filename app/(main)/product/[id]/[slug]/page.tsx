@@ -2,7 +2,7 @@ import React from "react";
 import { Metadata } from "next";
 import SingleProductModule from "./_components/SingleProductModule";
 import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
@@ -16,6 +16,11 @@ const getProduct = async (slug: number) => {
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/${slug}`
   );
   const response = await res.json();
+  console.log(response);
+
+  if (response.statusCode === 302) {
+    permanentRedirect(encodeURI(response?.message));
+  }
 
   if (response.statusCode === 404) {
     return notFound();
@@ -28,6 +33,24 @@ async function getRelated(entity) {
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products?sortOrder=DESC&offset=0&limit=10&orderBy=id&entityTypeId=${entity}`,
     {
       cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+async function favoriteStatus(productId, session) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/productFavorites/status/${productId}`,
+    {
+      cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${session?.token}`,
+      },
     }
   );
 
@@ -94,12 +117,16 @@ const getComments = async (id: number) => {
 export default async function SingleProduct({ params, searchParams }) {
   const coo = cookies();
   const session = await getServerSession(authOptions);
-
+  console.log(session);
   const {
     result: { result: product },
   } = await getProduct(params.slug);
   const { result: related } = await getRelated(product.entityTypeId);
   const comments = await getComments(product?.id);
+  let favStatus;
+  if (session) {
+    favStatus = await favoriteStatus(product?.id, session);
+  }
 
   return (
     <SingleProductModule
@@ -108,6 +135,7 @@ export default async function SingleProduct({ params, searchParams }) {
       related={related}
       session={session}
       comments={comments}
+      favStatus={favStatus}
     />
   );
 }

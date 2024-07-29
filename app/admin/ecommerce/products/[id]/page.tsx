@@ -705,6 +705,7 @@ export default function Products({ params }) {
 
       <aside className="w-full rounded-xl p-4 col-span-1 flex items-center justify-start flex-col">
         <ProductUploader
+          location="v1/api/ecommerce/productphotos/image"
           removePhoto={removePhoto}
           setPhotos={setPhotos}
           photos={photos}

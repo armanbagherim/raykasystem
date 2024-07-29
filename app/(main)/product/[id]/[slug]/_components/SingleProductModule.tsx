@@ -16,6 +16,8 @@ import {
   Exclamationreport,
   Like,
   Unlike,
+  BookmarkAdd,
+  BookmarkRemove,
 } from "@/app/components/design/Icons";
 import ReactImageZoom from "react-image-zoom";
 
@@ -47,7 +49,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import { Button, Divider } from "@mui/material";
+import { Button, CircularProgress, Divider } from "@mui/material";
 import ProductGallary from "@/app/components/ProductGallary";
 import { usePathname, useRouter } from "next/navigation";
 import CountDown from "@/app/components/design/CountDown";
@@ -57,7 +59,10 @@ export default function SingleProductModule({
   cook,
   session,
   comments,
+  favStatus,
 }) {
+  console.log(favStatus);
+
   // const pathname = usePathname();
   //
   // useEffect(() => {
@@ -69,6 +74,8 @@ export default function SingleProductModule({
   const dispatch = useAppDispatch();
   const [localInventories, setLocalInventories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isBookmark, setIsBookmark] = useState(favStatus?.result);
+  const [favLoading, setFavLoading] = useState(false);
   // const qty = useAppSelector((state) =>
   //   productQtyInCartSelector(state, inventory.id)
   // );
@@ -172,6 +179,68 @@ export default function SingleProductModule({
   const handleVideoOpen = () => {
     setVideoOpen(true);
   };
+
+  const AddToBookmark = async () => {
+    if (!session) {
+      router.push(
+        `/login?redirect_back_url=/product/${product?.sku}/${product?.slug}`
+      );
+      return;
+    }
+    setFavLoading(true);
+    try {
+      fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/productFavorites`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${session?.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productId: +product.id,
+          }),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setIsBookmark(true);
+          setFavLoading(false);
+        });
+    } catch (error) {
+      throw Error("bye");
+    }
+  };
+
+  const RemoveBookmark = async () => {
+    if (!session) {
+      router.push(
+        `/login?redirect_back_url=/product/${product?.sku}/${product?.slug}`
+      );
+      return;
+    }
+    setFavLoading(true);
+    try {
+      fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/productFavorites/product/${product?.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${session?.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setIsBookmark(false);
+          setFavLoading(false);
+        });
+    } catch (error) {
+      throw Error("bye");
+    }
+  };
+
   return (
     <>
       {showModal && (
@@ -391,9 +460,36 @@ export default function SingleProductModule({
         </div>
 
         <div className="col-span-12 lg:col-span-5 rounded-lg">
-          <h1 className="text-right peyda font-normal text-2xl text-slate-500">
-            {product?.title}
-          </h1>
+          <div className="flex justify-between items-center">
+            <h1 className="text-right peyda font-normal text-2xl text-slate-500">
+              {product?.title}
+            </h1>
+            <div className="relative">
+              {favLoading && (
+                <div className="absolute right-0 top-[0px] p-2 bg-white">
+                  <CircularProgress color="success" size="25px" />
+                </div>
+              )}
+
+              {isBookmark ? (
+                <span
+                  className="cursor-pointer"
+                  onClick={(e) => RemoveBookmark()}
+                >
+                  <BookmarkRemove />
+                </span>
+              ) : (
+                <span
+                  className="cursor-pointer"
+                  onClick={(e) => AddToBookmark()}
+                >
+                  {" "}
+                  <BookmarkAdd />
+                </span>
+              )}
+            </div>
+          </div>
+
           <div className="text-right font-normal text-sm mt-2 text-slate-400">
             {product?.slug?.replace(/-/g, " ")}
           </div>

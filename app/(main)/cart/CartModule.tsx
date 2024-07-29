@@ -816,6 +816,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                     </button>
                   </div>
                 </div>
+
                 <div className="mt-5 text-sm">روش پرداخت</div>
                 {calculateErrors !== "" ? (
                   <div
@@ -918,6 +919,22 @@ const CartModule = ({ cartItems, session, cookies }) => {
                           ).toLocaleString()}{" "}
                           ءتء
                         </span>
+                      )}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="flex-1">روش ارسال</span>
+
+                    <span className="flex-1 text-left font-bold text-primary">
+                      {calculate?.paymentOptions ? (
+                        <>
+                          <span className="text-primary">
+                            {calculate.paymentOptions[0]?.shipmentTypeName}
+                          </span>
+                        </>
+                      ) : (
+                        ""
                       )}
                     </span>
                   </div>
