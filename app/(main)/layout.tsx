@@ -33,6 +33,7 @@ export default function RootLayout({
         href="/apple-launch-1125x2436.png"
       ></link>
       <GoogleAnalytics />
+
       <body className="custom-scroll">
         <ThemeRegistry>
           <Providers>

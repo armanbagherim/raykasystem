@@ -332,6 +332,30 @@ export default function SingleProductModule({
                 <Play />
               </Link>
             </div>
+            <div className="relative pt-5 mr-3 cursor-pointer">
+              {favLoading && (
+                <div className="absolute -right-[4px] top-[13px]  bg-customGray ">
+                  <CircularProgress color="success" size="25px" />
+                </div>
+              )}
+
+              {isBookmark ? (
+                <span
+                  className="cursor-pointer"
+                  onClick={(e) => RemoveBookmark()}
+                >
+                  <BookmarkRemove />
+                </span>
+              ) : (
+                <span
+                  className="cursor-pointer"
+                  onClick={(e) => AddToBookmark()}
+                >
+                  {" "}
+                  <BookmarkAdd />
+                </span>
+              )}
+            </div>
             {/* <div className="pt-5 mr-3">
               <Link href="#">
                 <Heartadd />
@@ -464,30 +488,6 @@ export default function SingleProductModule({
             <h1 className="text-right peyda font-normal text-2xl text-slate-500">
               {product?.title}
             </h1>
-            <div className="relative">
-              {favLoading && (
-                <div className="absolute right-0 top-[0px] p-2 bg-white">
-                  <CircularProgress color="success" size="25px" />
-                </div>
-              )}
-
-              {isBookmark ? (
-                <span
-                  className="cursor-pointer"
-                  onClick={(e) => RemoveBookmark()}
-                >
-                  <BookmarkRemove />
-                </span>
-              ) : (
-                <span
-                  className="cursor-pointer"
-                  onClick={(e) => AddToBookmark()}
-                >
-                  {" "}
-                  <BookmarkAdd />
-                </span>
-              )}
-            </div>
           </div>
 
           <div className="text-right font-normal text-sm mt-2 text-slate-400">
