@@ -1,14 +1,17 @@
+"use client";
 import React from "react";
 import Script from "next/script";
-
+import RayChat from "raychat-react";
 const GoogleAnalytics = () => {
+  const token = "9c8d7aa9-4267-42a6-9322-15fdfa26204d";
+
   return (
     <>
+      <RayChat rayToken={token} />
       <Script
         strategy="lazyOnload"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_MEASUREMENT_ID}`}
       />
-
       <Script id="" strategy="lazyOnload">
         {`
               window.dataLayer = window.dataLayer || [];
