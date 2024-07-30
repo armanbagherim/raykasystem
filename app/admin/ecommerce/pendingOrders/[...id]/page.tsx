@@ -186,6 +186,14 @@ export default function PendingOrders({ params }) {
                       </span>
                     </p>
                   </div>
+                  <div className="">
+                    <p className="font-normal text-sm leading-8 text-gray-400 transition-all duration-500 group-hover:text-gray-700 ">
+                      یادداشت سفارش
+                    </p>
+                    <p className="font-medium text-sm leading-8 text-black">
+                      {orderDetail?.result?.noteDescription}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

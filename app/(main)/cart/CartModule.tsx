@@ -17,6 +17,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  TextareaAutosize,
   TextField,
 } from "@mui/material";
 import Link from "next/link";
@@ -65,6 +66,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
   const [addresses, setAddresses] = useState([]);
   const [calculateErrors, setCalculateErrors] = useState("");
   const [copunValue, setCopunValue] = useState(null);
+  const [noteDescription, setNoteDescription] = useState(null);
   const [postalCode, setPostalCode] = useState();
   const [coordinates, setCoordinates] = useState({
     latitude: null,
@@ -163,7 +165,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
           method: "POST",
           headers: {
             "x-session-id": cookies.value,
-            Authorization: `  Bearer ${session?.token}`,
+            Authorization: `Bearer ${session?.token}`,
             "Content-type": "application/json",
           },
           body: JSON.stringify({
@@ -171,6 +173,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
             couponCode: copunValue == "" ? null : copunValue,
             paymentId: paymentMethod,
             variationPriceId: defaultPayment?.variationPriceId,
+            noteDescription: noteDescription,
           }),
         }
       )
@@ -785,7 +788,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                     </div>
                   </div>
                 </div>
-                <div className="mt-4 relative">
+                <div className="mt-4 relative mb-4">
                   <input
                     className="text-sm bg-customGray p-4 w-full rounded-xl outline-none"
                     type="text"
@@ -816,7 +819,18 @@ const CartModule = ({ cartItems, session, cookies }) => {
                     </button>
                   </div>
                 </div>
-
+                <TextareaAutosize
+                  className="text-sm bg-customGray p-4 w-full rounded-xl outline-none"
+                  type="text"
+                  minRows={3}
+                  placeholder="یادداشت سفارش"
+                  value={noteDescription ?? null}
+                  onChange={(e) =>
+                    setNoteDescription(
+                      e.target.value !== "" ? e.target.value : null
+                    )
+                  }
+                ></TextareaAutosize>
                 <div className="mt-5 text-sm">روش پرداخت</div>
                 {calculateErrors !== "" ? (
                   <div
