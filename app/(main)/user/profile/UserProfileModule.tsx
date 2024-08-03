@@ -3,8 +3,10 @@ import { fetcher } from "@/app/components/global/fetcher";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
+import DatePicker from "react-multi-date-picker";
 import { toast } from "react-toastify";
-
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 export default function UserProfileModule({ user }) {
   const { data: session, update } = useSession();
   const router = useRouter();
@@ -21,6 +23,7 @@ export default function UserProfileModule({ user }) {
         body: {
           firstname: userDataLocal.firstname,
           lastname: userDataLocal.lastname,
+          birthDate: userDataLocal.birthDate,
         },
       });
 
@@ -32,6 +35,7 @@ export default function UserProfileModule({ user }) {
           lastname: userDataLocal.lastname,
           username: userDataLocal.username,
           phoneNumber: userDataLocal.phoneNumber,
+          birthDate: userDataLocal.birthDate,
         },
       });
       setTimeout(function () {
@@ -86,6 +90,27 @@ export default function UserProfileModule({ user }) {
                 placeholder="موبایل"
               />
             </div>
+            <DatePicker
+              format="MM/DD/YYYY HH:mm:ss"
+              calendar={persian}
+              value={userDataLocal.birthDate}
+              onOpenPickNewDate={false}
+              locale={persian_fa}
+              inputClass="w-full  text-gray-700 bg-[#F8F8F8]  rounded-2xl py-4 border border-gray-200 px-4 mb-3 focus:outline-none"
+              containerClassName="w-full"
+              onClose={() =>
+                setUserDataLocal({
+                  ...userDataLocal,
+                  birthDate: null,
+                })
+              }
+              onFocusedDateChange={(dateFocused, dateClicked) => {
+                setUserDataLocal({
+                  ...userDataLocal,
+                  birthDate: dateClicked.toDate().toISOString(),
+                });
+              }}
+            ></DatePicker>
           </div>
           <div className="text-left">
             <button

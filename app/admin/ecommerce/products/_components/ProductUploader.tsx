@@ -14,6 +14,7 @@ interface ProductUploaderProps {
   location: string;
   text: string;
   type: string;
+  disabled: boolean;
 }
 
 export default function ProductUploader({
@@ -23,9 +24,13 @@ export default function ProductUploader({
   location,
   text,
   type,
+  disabled = false,
 }: ProductUploaderProps) {
   return (
-    <div className="w-full p-4 border-2 border-dashed border-gray-200 rounded-2xl mb-4">
+    <div className="w-full p-4 border-2 border-dashed border-gray-200 rounded-2xl mb-4 relative">
+      {disabled && (
+        <div className="absolute w-full h-full bg-black/20 left-0 top-0 z-50"></div>
+      )}
       <Uploader
         photos={photos}
         text={text}

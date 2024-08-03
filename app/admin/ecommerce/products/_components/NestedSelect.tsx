@@ -1,6 +1,12 @@
 import React from "react";
 
-const NestedSelect = ({ data, selected, onChange, depth = 0 }) => {
+const NestedSelect = ({
+  data,
+  selected,
+  onChange,
+  depth = 0,
+  disabled = false,
+}) => {
   const renderOptions = (items, depth) => {
     return items?.map((item, index) => {
       const prefix = "--".repeat(depth);
@@ -31,6 +37,7 @@ const NestedSelect = ({ data, selected, onChange, depth = 0 }) => {
         className="bg-transparent  border-b mb-6 border-gray-400 text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-0 "
         onChange={onChange}
         value={undefined}
+        disabled={disabled}
       >
         {renderOptions(data, depth)}
       </select>

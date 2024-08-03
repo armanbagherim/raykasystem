@@ -42,7 +42,14 @@ export default function NewDiscount({ params }) {
     isLoading: discountIsLoading,
     error: discountError,
   } = useFetcher(`/v1/api/ecommerce/admin/discounts/${params.id}`, "GET");
-
+  const {
+    data: hasPermission,
+    isLoading: hasPermissionIsLoading,
+    error: hasPermissionError,
+  } = useFetcher(
+    `/v1/api/core/user/permissions/isAccess/ecommerce.admin.discounts`,
+    "GET"
+  );
   useEffect(() => {
     setTitle({
       title: "ویرایش تخفیف",
@@ -357,6 +364,7 @@ export default function NewDiscount({ params }) {
               ارسال رایگان
             </span>
             <Switch
+              disabled={!hasPermission?.result}
               checked={requestBody.freeShipment}
               onChange={(e) =>
                 setRequestBody({

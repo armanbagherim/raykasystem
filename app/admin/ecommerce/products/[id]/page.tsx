@@ -103,6 +103,15 @@ export default function Products({ params }) {
     error: productError,
   } = useFetcher(`/v1/api/ecommerce/admin/products/${id}`, "GET");
 
+  const {
+    data: hasPermission,
+    isLoading: hasPermissionIsLoading,
+    error: hasPermissionError,
+  } = useFetcher(
+    `/v1/api/core/user/permissions/isAccess/ecommerce.admin.products.superedit`,
+    "GET"
+  );
+
   useEffect(() => {
     if (!productIsLoading) {
       const inventory = product.result.inventories.map((value) => {
@@ -229,8 +238,8 @@ export default function Products({ params }) {
 
   useEffect(() => {
     if (!userVendorsIsLoading) {
-      setVendorId(userVendors.result[0].id);
-      fetchVendorAddresses(userVendors.result[0].id);
+      setVendorId(userVendors?.result[0]?.id);
+      fetchVendorAddresses(userVendors?.result[0]?.id);
     }
   }, [userVendorsIsLoading]);
 
@@ -428,6 +437,7 @@ export default function Products({ params }) {
         <div className="flex w-full gap-4">
           <div className="flex-1 w-full">
             <TextField
+              disabled={!hasPermission?.result}
               onChange={(e) =>
                 setRequestBody({
                   ...requestBody,
@@ -444,6 +454,7 @@ export default function Products({ params }) {
           </div>
           <div className="flex-1 w-full">
             <TextField
+              disabled={!hasPermission?.result}
               onChange={(e) =>
                 setRequestBody({
                   ...requestBody,
@@ -462,6 +473,7 @@ export default function Products({ params }) {
         <div className="flex w-full gap-4">
           <div className="flex-1 w-full">
             <SelectSearch
+              disabled={!hasPermission?.result}
               loadingState={brandsIsLoading}
               data={brands?.result}
               label="برند"
@@ -473,6 +485,7 @@ export default function Products({ params }) {
           </div>
           <div className="flex-1 w-full ">
             <SelectSearch
+              disabled={!hasPermission?.result}
               loadingState={publishStatusesIsLoading}
               data={publishStatuses?.result}
               label="وضعیت انتشار"
@@ -484,6 +497,7 @@ export default function Products({ params }) {
           </div>
           <div className="flex-1 w-full">
             <TextField
+              disabled={!hasPermission?.result}
               value={requestBody.weight}
               label="وزن"
               fullWidth
@@ -498,6 +512,7 @@ export default function Products({ params }) {
             "در حال بارگزاری"
           ) : (
             <NestedSelect
+              disabled={!hasPermission?.result}
               data={parentEntityTypes?.result}
               selected={selectedEav}
               onChange={(e) => {
@@ -519,6 +534,7 @@ export default function Products({ params }) {
                 فروش بر اساس رنگ؟
               </span>
               <Switch
+                disabled={!hasPermission?.result}
                 checked={requestBody.colorBased}
                 onChange={(e) =>
                   setRequestBody({
@@ -582,6 +598,7 @@ export default function Products({ params }) {
                                 return (
                                   <GenericInput
                                     key={index}
+                                    disabled={!hasPermission?.result}
                                     type={valueType}
                                     defaultValue={defaultValueChecker(value)}
                                     value={value.val}
@@ -643,6 +660,7 @@ export default function Products({ params }) {
                       >
                         <div className="mb-8">
                           <TextField
+                            disabled={!hasPermission?.result}
                             onChange={(e) =>
                               setRequestBody({
                                 ...requestBody,
@@ -659,6 +677,7 @@ export default function Products({ params }) {
                         </div>
                         <div className="mb-8">
                           <TextField
+                            disabled={!hasPermission?.result}
                             onChange={(e) =>
                               setRequestBody({
                                 ...requestBody,
@@ -675,6 +694,7 @@ export default function Products({ params }) {
                         </div>
                         <div className="mb-8">
                           <TextField
+                            disabled={!hasPermission?.result}
                             onChange={(e) =>
                               setRequestBody({
                                 ...requestBody,
@@ -690,6 +710,7 @@ export default function Products({ params }) {
                           />
                         </div>
                         <SeoBox
+                          disabled={!hasPermission?.result}
                           setDescription={setDescription}
                           description={description}
                         />
@@ -705,6 +726,7 @@ export default function Products({ params }) {
 
       <aside className="w-full rounded-xl p-4 col-span-1 flex items-center justify-start flex-col">
         <ProductUploader
+          disabled={!hasPermission?.result}
           location="v1/api/ecommerce/productphotos/image"
           removePhoto={removePhoto}
           setPhotos={setPhotos}
@@ -712,6 +734,7 @@ export default function Products({ params }) {
           type="image"
         />
         <ProductUploader
+          disabled={!hasPermission?.result}
           location="v1/api/ecommerce/productVideos/upload"
           setPhotos={setVideos}
           removePhoto={removeVideo}
