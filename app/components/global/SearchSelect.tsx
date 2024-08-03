@@ -37,6 +37,7 @@ export default function SearchSelect({
   nullable,
   defaultValue,
   diffKey = "id", // default diffKey is 'id'
+  disabled = false,
 }) {
   const [currentValue, setCurrentValue] = useState(defaultValue);
 
@@ -67,11 +68,18 @@ export default function SearchSelect({
   return (
     <div className="flex-1">
       <Autocomplete
+        disabled={disabled}
         id="first_name"
         options={options}
         getOptionLabel={(option) => option.name}
         renderInput={(params) => (
-          <TextField {...params} label={label} variant="outlined" fullWidth />
+          <TextField
+            disabled={disabled}
+            {...params}
+            label={label}
+            variant="outlined"
+            fullWidth
+          />
         )}
         onChange={(event, newValue) => {
           setCurrentValue(newValue ? newValue[diffKey] : null);

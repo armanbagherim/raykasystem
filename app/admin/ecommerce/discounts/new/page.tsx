@@ -15,7 +15,14 @@ import { pageTitle } from "../../../layout";
 
 export default function NewDiscount() {
   const router = useRouter();
-
+  const {
+    data: hasPermission,
+    isLoading: hasPermissionIsLoading,
+    error: hasPermissionError,
+  } = useFetcher(
+    `/v1/api/core/user/permissions/isAccess/ecommerce.admin.discounts`,
+    "GET"
+  );
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {
@@ -317,6 +324,7 @@ export default function NewDiscount() {
               ارسال رایگان
             </span>
             <Switch
+              disabled={!hasPermission?.result}
               checked={requestBody.freeShipment}
               onChange={(e) =>
                 setRequestBody({
