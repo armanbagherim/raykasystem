@@ -8,11 +8,13 @@ const GenericInput = ({
   options,
   label,
   defaultValue,
+  disabled = false,
 }) => {
   if (type === "select") {
     return (
       <div className="flex-1 mb-8">
         <SelectSearch
+          disabled={disabled}
           isDiff={true}
           diffName={"value"}
           data={options}
@@ -28,6 +30,7 @@ const GenericInput = ({
         <TextField
           onChange={(e) => onChange(e.target.value)}
           required
+          disabled={disabled}
           className=""
           size="small"
           id="outlined-basic"

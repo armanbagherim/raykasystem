@@ -29,7 +29,11 @@ import {
 } from "ckeditor5";
 import { useSession } from "next-auth/react";
 
-export default function SeoBox({ setDescription, description }) {
+export default function SeoBox({
+  setDescription,
+  description,
+  disabled = false,
+}) {
   const { data: session } = useSession();
   const [sessionToken, setSessionToken] = useState(null);
   const editorRef = useRef(null); // Use ref to store editor instance
@@ -50,6 +54,7 @@ export default function SeoBox({ setDescription, description }) {
   return (
     <div className="mt-4 mb-6">
       <CKEditor
+        disabled={disabled}
         editor={ClassicEditor}
         data={description}
         onInit={(editor) => {

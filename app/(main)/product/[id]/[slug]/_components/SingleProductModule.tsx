@@ -321,17 +321,23 @@ export default function SingleProductModule({
       </div>
       <div className="container justify-center mx-auto mt-3 grid grid-cols-12 gap-8 !p-8 lg:p-0">
         <div className="col-span-12 lg:col-span-4 border-0 rounded-lg relative">
-          <div className="w-10 pb-4 absolute opacity-0 lg:opacity-100 r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-20">
+          <div className="w-10 pb-4 absolute lg:opacity-100 -right-4 -top-4 md:r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-50 md:z-20">
             <div className="pt-3.5 mr-3">
               <span className="cursor-pointer" onClick={handleClickOpen}>
                 <Zoomin />
               </span>
             </div>
-            <div className="pt-5 mr-3 cursor-pointer" onClick={handleVideoOpen}>
-              <Link href="#">
-                <Play />
-              </Link>
-            </div>
+            {product?.videoAttachments.length !== 0 && (
+              <div
+                className="pt-5 mr-3 cursor-pointer"
+                onClick={handleVideoOpen}
+              >
+                <Link href="#">
+                  <Play />
+                </Link>
+              </div>
+            )}
+
             <div className="relative pt-5 mr-3 cursor-pointer">
               {favLoading && (
                 <div className="absolute -right-[4px] top-[13px]  bg-customGray ">
