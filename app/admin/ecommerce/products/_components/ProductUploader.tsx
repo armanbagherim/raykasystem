@@ -85,7 +85,7 @@ export default function ProductUploader({
                   />
                 </svg>
               </button>
-              {type === "image" ? (
+              {type == "image" ? (
                 <Image
                   key={index} // It's a good practice to provide a key when mapping over elements
                   width={70}

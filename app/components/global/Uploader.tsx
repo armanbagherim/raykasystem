@@ -1,39 +1,15 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { useDropzone } from "react-dropzone";
+import React, { useCallback, useState, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 import { toast } from "react-toastify";
-import { useSession } from "next-auth/react";
+import { useDropzone } from "react-dropzone";
 
-// Define the type for the file object in the selectedFiles state
-interface FileObject {
-  name: string;
-  size: number;
-  type: string;
-}
-
-// Define the type for the photo object in the setPhotos function
-interface Photo {
-  fileName: string;
-  id: string;
-}
-
-// Define the props for the Uploader component
-interface UploaderProps {
-  id?: string;
-  location: string;
-  refetch?: () => void;
-  setPhotos: React.Dispatch<React.SetStateAction<Photo[]>>;
-  text: string;
-  photos: any;
-  type: string;
-}
-
-const Uploader: React.FC<UploaderProps> = ({
+const Uploader = ({
   id,
   location,
   refetch,
@@ -42,77 +18,101 @@ const Uploader: React.FC<UploaderProps> = ({
   photos,
   type = "image",
 }) => {
-  console.log(photos);
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState<FileObject[]>([]);
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  const [uploading, setUploading] = useState(false); // State for uploading status
-  const [progress, setProgress] = useState(0); // State for upload progress
+  const [files, setFiles] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const statusRef = useRef();
+  const loadTotalRef = useRef();
 
   const onDrop = useCallback((acceptedFiles) => {
-    setSelectedFiles(acceptedFiles);
-    const urls = acceptedFiles.map((file) => URL.createObjectURL(file));
-    setPreviewUrls(urls);
+    setFiles(
+      acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      )
+    );
   }, []);
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: "*",
-    multiple: true,
-    minSize: 0,
-    maxSize: 5242880,
+    accept: type === "image" ? "image/*" : "video/*",
   });
-  console.log(previewUrls);
-  const uploadFilesSequentially = async () => {
-    setUploading(true); // Start uploading
-    for (const file of selectedFiles) {
+
+  const uploadFile = (file) => {
+    return new Promise((resolve, reject) => {
       const formData = new FormData();
       formData.append("file", file);
-      console.log(location);
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/${location}${
-            id ? `/${id}` : ""
-          }`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${session.token}`,
-            },
-            body: formData,
+
+      const xhr = new XMLHttpRequest();
+      xhr.open(
+        "POST",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${location}${id ? `/${id}` : ""}`
+      );
+      xhr.setRequestHeader("Authorization", `Bearer ${session.token}`);
+
+      xhr.upload.addEventListener("progress", (e) => {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          setProgress(percentComplete);
+          if (loadTotalRef.current) {
+            loadTotalRef.current.innerHTML = `${e.loaded} آپلود شده از ${e.total}`;
           }
-        );
-        let result = await response.json();
-        if (response.ok) {
-          toast.success("موفق");
-          if (refetch) refetch();
-          console.log(result);
-          setPhotos((prev) => [
-            ...prev,
-            {
-              fileName: result.result.fileName,
-              id: +result.result.id,
-            },
-          ]);
-        } else {
-          throw new Error("Upload failed");
+          if (statusRef.current) {
+            statusRef.current.innerHTML = `${Math.round(
+              percentComplete
+            )}% آپلود شد...`;
+          }
         }
+      });
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(JSON.parse(xhr.responseText));
+        } else {
+          reject(new Error("Upload failed"));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error("Upload failed"));
+
+      xhr.send(formData);
+    });
+  };
+
+  const uploadFiles = async () => {
+    setUploading(true);
+    setProgress(0);
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      try {
+        const result = await uploadFile(file);
+        toast.success(`${file.name} uploaded successfully`);
+        if (refetch) refetch();
+        setPhotos((prev) => [
+          ...prev,
+          {
+            fileName: result.result.fileName,
+            id: +result.result.id,
+          },
+        ]);
       } catch (error) {
-        toast.error(error.message);
+        toast.error(`Failed to upload ${file.name}`);
       }
     }
-    setSelectedFiles([]);
-    setPreviewUrls([]);
-    setUploading(false); // Finish uploading
-    setOpen(false); // Close the dialog after all files have been uploaded
+
+    setFiles([]);
+    setUploading(false);
+    setOpen(false);
   };
 
   useEffect(() => {
-    return () => {
-      previewUrls.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [previewUrls]);
+    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+  }, [files]);
 
   return (
     <>
@@ -123,38 +123,50 @@ const Uploader: React.FC<UploaderProps> = ({
         {text}
       </button>
 
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>{"آپلود فایل"}</DialogTitle>
         <DialogContent>
-          <div {...getRootProps()} className="dropzone">
+          <div
+            {...getRootProps()}
+            className="dropzone border border-dashed border-gray-200 p-4 mb-4"
+          >
             <input {...getInputProps()} />
-            <p className="p-8 border-2 border-dashed border-gray-400 rounded-3xl divide-dashed">
-              یا فایل هاتونو درگ کنید یا کلیک کنید
-            </p>
+            {isDragActive ? (
+              <p>فایل‌ها را اینجا رها کنید ...</p>
+            ) : (
+              <p>برای انتخاب فایل‌ها کلیک کنید یا آن‌ها را به اینجا بکشید</p>
+            )}
           </div>
-          <div className="flex">
-            {previewUrls.map((url, index) => (
-              <div key={index} className="mt-4">
+          <div className="flex gap-4">
+            {files.map((file) => (
+              <div key={file.name}>
                 {type === "image" ? (
                   <img
-                    src={url}
-                    alt={`Selected ${index}`}
-                    className=" h-auto"
+                    src={file.preview}
+                    alt={file.name}
+                    className="h-auto"
                     height={100}
                     width={100}
                   />
                 ) : (
-                  <video src={url} controls></video>
+                  <video className="" src={file.preview} controls></video>
                 )}
               </div>
             ))}
           </div>
+          {uploading && (
+            <div className="border p-4 border-gray-100 rounded-lg mt-4">
+              <LinearProgress
+                className="mt-4"
+                variant="determinate"
+                value={progress}
+              />
+              <p className="text-sm mt-2" ref={statusRef}></p>
+              <p className="text-sm mt-2" ref={loadTotalRef}></p>
+            </div>
+          )}
         </DialogContent>
-        <DialogActions className="flex w-full justify-between">
+        <DialogActions>
           <Button
             variant="outlined"
             color="error"
@@ -165,11 +177,11 @@ const Uploader: React.FC<UploaderProps> = ({
           <Button
             variant="outlined"
             color="success"
-            onClick={uploadFilesSequentially}
+            onClick={uploadFiles}
             autoFocus
-            disabled={uploading} // Disable button while uploading
+            disabled={uploading || files.length === 0}
           >
-            {uploading ? <CircularProgress size={24} /> : "آپلود"}
+            آپلود
           </Button>
         </DialogActions>
       </Dialog>

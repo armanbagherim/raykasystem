@@ -341,7 +341,7 @@ export default function Products({ params }) {
   };
 
   const removeVideo = (id) => {
-    setVideos(photos.filter((video) => video.id !== id));
+    setVideos(videos.filter((video) => video.id !== id));
   };
 
   const removeInventory = (id: number) => {
