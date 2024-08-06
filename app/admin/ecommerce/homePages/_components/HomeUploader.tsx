@@ -85,7 +85,6 @@ const HomeUploader: React.FC<UploaderProps> = ({
         throw new Error("Upload failed");
       }
     } catch (error) {
-      console.log(error);
       toast.error(error.message);
     } finally {
       setSelectedFile(null);

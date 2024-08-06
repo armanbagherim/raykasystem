@@ -26,7 +26,6 @@ const UserComments = async () => {
   const session = await getServerSession(authOptions);
 
   const data = await getData(session);
-  console.log(data);
   return (
     <>
       <UserCommentsModule data={data} />

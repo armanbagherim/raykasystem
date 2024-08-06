@@ -16,9 +16,7 @@ export default function SliderSection({
 
   // Define the callback function to be called by Uploader
 
-  useEffect(() => {
-    console.log(photo);
-  }, [photo]);
+  useEffect(() => {}, [photo]);
   return (
     <Box>
       {item.content.map((slide, slideIndex) => (

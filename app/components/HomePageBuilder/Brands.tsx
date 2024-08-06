@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function Brands({ data }) {
   return (
     <div className="container mx-auto px-4 mb-8 md:mb-14 px-8">
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start mb-8">
         <Title text="محبوب‌ترین برندها" color={"primary"} />
         <Link
           className="border-b border-b-primary text-primary text-sm ml-4 md:text-lg"

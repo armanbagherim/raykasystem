@@ -238,7 +238,6 @@ export default function SettingModule({
             : item.content,
       };
     });
-    console.log(cleanItems);
 
     try {
       const req = await fetcher({

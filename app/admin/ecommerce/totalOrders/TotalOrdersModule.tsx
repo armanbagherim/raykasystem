@@ -23,14 +23,12 @@ import StatusLabelChips from "@/app/components/global/StatusLabelChips";
 import ChangeToNull from "@/app/components/global/ChangeToNull";
 
 export default function TotalOrdersModule({ searchParams }) {
-  console.log(searchParams);
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(searchParams.phoneNumber);
   const [orderId, setOrderId] = useState(
     searchParams.orderId ? searchParams.orderId : null
   );
-  console.log(phoneNumber);
   let url = `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/admin/totalOrders?`;
   if (phoneNumber !== null && phoneNumber !== undefined) {
     url += `phoneNumber=${phoneNumber}`;
