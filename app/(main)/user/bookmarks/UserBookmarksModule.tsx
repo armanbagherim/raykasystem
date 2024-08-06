@@ -4,7 +4,6 @@ import Link from "next/link";
 import * as React from "react";
 
 export default function UserBookmarksModule({ data }) {
-  console.log(data);
   return (
     <div className="border-0 w-full rounded-xl mt-5">
       <h1 className="text-2xl peyda mb-4">محصولات نشان شده</h1>

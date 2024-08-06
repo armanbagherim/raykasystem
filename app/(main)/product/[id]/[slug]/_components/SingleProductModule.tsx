@@ -1,29 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
-  Cart,
   Backtitle,
   Zoomin,
-  Heartadd,
   Play,
   Goldstart,
   Category2,
-  Smallcat,
-  Toogle,
-  Infocircle,
-  Tickcircle,
-  Tickstarwhite,
-  Exclamationreport,
-  Like,
-  Unlike,
   BookmarkAdd,
   BookmarkRemove,
 } from "@/app/components/design/Icons";
-import ReactImageZoom from "react-image-zoom";
 
 import ProductCard from "@/app/components/design/Cards/ProductCard/ProductCard";
 import Slider from "@/app/components/design/Slider";
-import ImageZoom from "react-image-zooom";
 import Variants from "./variants";
 import Inventories from "./inventories";
 import LeftSide from "./LeftSide";
@@ -32,26 +20,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { setQty } from "@/store/features/cartSlice";
-import {
-  Link as Links,
-  Element,
-  Events,
-  animateScroll as scroll,
-  scrollSpy,
-} from "react-scroll";
-
+import { Link as Links, animateScroll as scroll } from "react-scroll";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import Comments from "./Comments";
 import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Typography from "@mui/material/Typography";
-import { Button, CircularProgress, Divider } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import ProductGallary from "@/app/components/ProductGallary";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import CountDown from "@/app/components/design/CountDown";
 export default function SingleProductModule({
   product,
@@ -61,31 +39,27 @@ export default function SingleProductModule({
   comments,
   favStatus,
 }) {
-  console.log(favStatus);
-
-  // const pathname = usePathname();
-  //
-  // useEffect(() => {
-  //   window.scroll(0, 0);
-  // }, [pathname]);
   const [open, setOpen] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const dispatch = useAppDispatch();
-  const [localInventories, setLocalInventories] = useState([]);
+  const [localInventories, setLocalInventories] = useState(
+    product?.inventories?.filter(
+      (inventory, index, self) =>
+        index === self.findIndex((t) => t.vendor.id === inventory.vendor.id)
+    )
+  );
   const [loading, setLoading] = useState(false);
   const [isBookmark, setIsBookmark] = useState(favStatus?.result);
   const [favLoading, setFavLoading] = useState(false);
-  // const qty = useAppSelector((state) =>
-  //   productQtyInCartSelector(state, inventory.id)
-  // );
+
   const router = useRouter();
   const handleVariantChange = (colorId: number) => {
     const filtered = product?.inventories?.filter(
       (inventory, index, self) => inventory.colorId === colorId
     );
 
-    setLocalInventories([...filtered]); // Ensure immutability
+    setLocalInventories([...filtered]);
   };
 
   useEffect(() => {}, [localInventories]);
@@ -96,7 +70,7 @@ export default function SingleProductModule({
         index === self.findIndex((t) => t.vendor.id === inventory.vendor.id)
     );
 
-    setLocalInventories(uniqueInventories); // Ensure immutability
+    setLocalInventories(uniqueInventories);
   }, [product?.inventories]);
 
   const addToCart = (inventoryId) => {
@@ -107,7 +81,6 @@ export default function SingleProductModule({
       "Content-Type": "application/json",
     };
 
-    // Conditionally add the Authorization header if session exists
     if (session) {
       headers.Authorization = `Bearer ${session?.token}`;
     }

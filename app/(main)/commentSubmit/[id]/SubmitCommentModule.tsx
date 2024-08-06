@@ -18,7 +18,7 @@ export default function SubmitCommentModule({
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(product);
+
   useEffect(() => {
     const defaultValues = possibleFactors.map((factor) => ({
       id: factor.id,

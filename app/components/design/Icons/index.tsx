@@ -898,25 +898,25 @@ export const Edit = () => {
       <path
         d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M16.04 3.02001L8.16 10.9C7.86 11.2 7.56 11.79 7.5 12.22L7.07 15.23C6.91 16.32 7.68 17.08 8.77 16.93L11.78 16.5C12.2 16.44 12.79 16.14 13.1 15.84L20.98 7.96001C22.34 6.60001 22.98 5.02001 20.98 3.02001C18.98 1.02001 17.4 1.66001 16.04 3.02001Z"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M14.91 4.1499C15.58 6.5399 17.45 8.4099 19.85 9.0899"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -1231,12 +1231,12 @@ export const Leftarrow = () => {
         <path
           d="M16.7644 13C16.6136 13 16.4628 13.0565 16.3438 13.1775L11.5261 18.0735C11.296 18.3074 11.296 18.6946 11.5261 18.9285L16.3438 23.8246C16.5739 24.0585 16.9549 24.0585 17.1851 23.8246C17.4152 23.5907 17.4152 23.2035 17.1851 22.9696L12.7881 18.501L17.1851 14.0324C17.4152 13.7985 17.4152 13.4114 17.1851 13.1775C17.0739 13.0565 16.9152 13 16.7644 13Z"
           fill="black"
-          fill-opacity="0.7"
+          fillOpacity="0.7"
         />
         <path
           d="M25.7498 18L11.9677 18C11.6319 18 11.3535 18.2267 11.3535 18.5C11.3535 18.7733 11.6319 19 11.9677 19L25.7498 19C26.0855 19 26.3639 18.7733 26.3639 18.5C26.3639 18.2267 26.0855 18 25.7498 18Z"
           fill="black"
-          fill-opacity="0.7"
+          fillOpacity="0.7"
         />
       </svg>
     </>
@@ -1886,34 +1886,34 @@ export const Cats = () => {
       <path
         d="M17.2915 34.5833H24.2082C31.1248 34.5833 34.5832 31.125 34.5832 24.2083V17.2916C34.5832 10.375 31.1248 6.91663 24.2082 6.91663H17.2915C10.3748 6.91663 6.9165 10.375 6.9165 17.2916V24.2083C6.9165 31.125 10.3748 34.5833 17.2915 34.5833Z"
         stroke="#fff"
-        stroke-width="2.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M58.7915 34.5833H65.7082C72.6248 34.5833 76.0832 31.125 76.0832 24.2083V17.2916C76.0832 10.375 72.6248 6.91663 65.7082 6.91663H58.7915C51.8748 6.91663 48.4165 10.375 48.4165 17.2916V24.2083C48.4165 31.125 51.8748 34.5833 58.7915 34.5833Z"
         stroke="#fff"
-        stroke-width="2.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M58.7915 76.0833H65.7082C72.6248 76.0833 76.0832 72.625 76.0832 65.7083V58.7916C76.0832 51.875 72.6248 48.4166 65.7082 48.4166H58.7915C51.8748 48.4166 48.4165 51.875 48.4165 58.7916V65.7083C48.4165 72.625 51.8748 76.0833 58.7915 76.0833Z"
         stroke="#fff"
-        stroke-width="2.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M17.2915 76.0833H24.2082C31.1248 76.0833 34.5832 72.625 34.5832 65.7083V58.7916C34.5832 51.875 31.1248 48.4166 24.2082 48.4166H17.2915C10.3748 48.4166 6.9165 51.875 6.9165 58.7916V65.7083C6.9165 72.625 10.3748 76.0833 17.2915 76.0833Z"
         stroke="#fff"
-        stroke-width="2.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -1931,33 +1931,33 @@ export const PopularCats = () => {
       <path
         d="M8.67 14H4C2.9 14 2 14.9 2 16V22H8.67V14Z"
         stroke="#fff"
-        stroke-width="0.8"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="0.8"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M13.33 10H10.66C9.56003 10 8.66003 10.9 8.66003 12V22H15.33V12C15.33 10.9 14.44 10 13.33 10Z"
         stroke="#fff"
-        stroke-width="0.8"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="0.8"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M20 17H15.33V22H22V19C22 17.9 21.1 17 20 17Z"
         stroke="#fff"
-        stroke-width="0.8"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="0.8"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M12.52 2.07007L13.05 3.13006C13.12 3.28006 13.31 3.42006 13.47 3.44006L14.43 3.60007C15.04 3.70007 15.19 4.15005 14.75 4.58005L14 5.33005C13.87 5.46005 13.8 5.70006 13.84 5.87006L14.05 6.79007C14.22 7.52007 13.83 7.80007 13.19 7.42007L12.29 6.89007C12.13 6.79007 11.86 6.79007 11.7 6.89007L10.8 7.42007C10.16 7.80007 9.76998 7.52007 9.93998 6.79007L10.15 5.87006C10.19 5.70006 10.12 5.45005 9.98999 5.33005L9.24999 4.59006C8.80999 4.15006 8.94999 3.71005 9.56999 3.61005L10.53 3.45007C10.69 3.42007 10.88 3.28007 10.95 3.14007L11.48 2.08005C11.77 1.50005 12.23 1.50007 12.52 2.07007Z"
         stroke="#fff"
-        stroke-width="0.8"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="0.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -1975,23 +1975,23 @@ export const PopularBrands = () => {
       <path
         d="M12 17V19.38C12 21.25 11.25 22 9.37 22H4.62C2.75 22 2 21.25 2 19.38V14.63C2 12.75 2.75 12 4.62 12H7V14.37C7 16.25 7.75 17 9.62 17H12Z"
         stroke="#fff"
-        stroke-width="1"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M17 12V14.37C17 16.25 16.25 17 14.37 17H9.62C7.75 17 7 16.25 7 14.37V9.62C7 7.75 7.75 7 9.62 7H12V9.37C12 11.25 12.75 12 14.62 12H17Z"
         stroke="#fff"
-        stroke-width="1"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M22 4.62V9.37C22 11.25 21.25 12 19.37 12H14.62C12.75 12 12 11.25 12 9.37V4.62C12 2.75 12.75 2 14.62 2H19.37C21.25 2 22 2.75 22 4.62Z"
         stroke="#fff"
-        stroke-width="1"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -2009,30 +2009,30 @@ export const AmazingOffers = () => {
       <path
         d="M19.5 12.5C19.5 11.12 20.62 10 22 10V9C22 5 21 4 17 4H7C3 4 2 5 2 9V9.5C3.38 9.5 4.5 10.62 4.5 12C4.5 13.38 3.38 14.5 2 14.5V15C2 19 3 20 7 20H17C21 20 22 19 22 15C20.62 15 19.5 13.88 19.5 12.5Z"
         stroke="#fff"
-        stroke-width="1"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M9 14.75L15 8.75"
         stroke="#fff"
-        stroke-width="1"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M14.9945 14.75H15.0035"
         stroke="#fff"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M8.99451 9.25H9.00349"
         stroke="#fff"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -2050,30 +2050,30 @@ export const Sliders = () => {
       <path
         d="M51.8748 76.0833H31.1248C22.479 76.0833 17.2915 69.8583 17.2915 62.25V20.75C17.2915 13.1416 22.479 6.91663 31.1248 6.91663H51.8748C60.5207 6.91663 65.7082 13.1416 65.7082 20.75V62.25C65.7082 69.8583 60.5207 76.0833 51.8748 76.0833Z"
         stroke="#fff"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M17.2915 55.3679H65.7082"
         stroke="#fff"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M6.9165 13.8334V69.1667"
         stroke="#fff"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M76.0835 13.8334V69.1667"
         stroke="#fff"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -2091,23 +2091,23 @@ export const Banner = () => {
       <path
         d="M31.1248 76.0833H51.8748C69.1665 76.0833 76.0832 69.1666 76.0832 51.875V31.125C76.0832 13.8333 69.1665 6.91663 51.8748 6.91663H31.1248C13.8332 6.91663 6.9165 13.8333 6.9165 31.125V51.875C6.9165 69.1666 13.8332 76.0833 31.1248 76.0833Z"
         stroke="#fff"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M31.1252 34.5833C34.9451 34.5833 38.0418 31.4866 38.0418 27.6667C38.0418 23.8467 34.9451 20.75 31.1252 20.75C27.3052 20.75 24.2085 23.8467 24.2085 27.6667C24.2085 31.4866 27.3052 34.5833 31.1252 34.5833Z"
         stroke="#fff"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M9.23389 65.5354L26.2835 54.0883C29.0155 52.2554 32.958 52.4629 35.4135 54.5725L36.5547 55.5754C39.2522 57.8925 43.6097 57.8925 46.3072 55.5754L60.6939 43.2291C63.3914 40.9121 67.7489 40.9121 70.4464 43.2291L76.0835 48.0708"
         stroke="#fff"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -2123,7 +2123,7 @@ export const SpecDiscount = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1256_8522)">
+      <g clipPath="url(#clip0_1256_8522)">
         <path
           d="M0 13C0 5.8203 5.8203 0 13 0H43.9656C48.8896 0 53.391 2.78203 55.5931 7.18622L61.5931 19.1862C65.915 27.8299 59.6295 38 49.9656 38H13C5.8203 38 0 32.1797 0 25V13Z"
           fill="#FF003D"
@@ -2135,30 +2135,30 @@ export const SpecDiscount = () => {
         <path
           d="M45.9917 27.3844L44.8517 26.3077C44.3867 25.8685 44.3867 25.146 44.8517 24.7069L45.9917 23.6302C46.1867 23.446 46.3442 23.0848 46.3442 22.8298V21.3068C46.3442 20.6835 46.8842 20.1735 47.5442 20.1735H49.1567C49.4267 20.1735 49.8092 20.0248 50.0042 19.8406L51.1442 18.7639C51.6092 18.3248 52.3742 18.3248 52.8392 18.7639L53.9792 19.8406C54.1742 20.0248 54.5567 20.1735 54.8267 20.1735H56.4392C57.0992 20.1735 57.6392 20.6835 57.6392 21.3068V22.8298C57.6392 23.0848 57.7967 23.446 57.9917 23.6302L59.1317 24.7069C59.5967 25.146 59.5967 25.8685 59.1317 26.3077L57.9917 27.3844C57.7967 27.5686 57.6392 27.9298 57.6392 28.1848V29.7077C57.6392 30.331 57.0992 30.8411 56.4392 30.8411H54.8267C54.5567 30.8411 54.1742 30.9898 53.9792 31.174L52.8392 32.2506C52.3742 32.6898 51.6092 32.6898 51.1442 32.2506L50.0042 31.174C49.8092 30.9898 49.4267 30.8411 49.1567 30.8411H47.5442C46.8842 30.8411 46.3442 30.331 46.3442 29.7077V28.1848C46.3442 27.9227 46.1867 27.5615 45.9917 27.3844Z"
           stroke="white"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M49.75 27.625L54.25 23.375"
           stroke="white"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M53.8709 27.2707H53.8776"
           stroke="white"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M50.1209 23.7292H50.1276"
           stroke="white"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </g>
       <defs>
@@ -2193,7 +2193,7 @@ export const EmptyComment = () => {
       <path
         d="M75 18H49C47.3431 18 46 19.3431 46 21C46 22.6569 47.3431 24 49 24H75C76.6569 24 78 22.6569 78 21C78 19.3431 76.6569 18 75 18Z"
         fill="#00C273"
-        fill-opacity="0.29"
+        fillOpacity="0.29"
       />
       <path
         d="M93 31H49C47.3431 31 46 32.3431 46 34C46 35.6569 47.3431 37 49 37H93C94.6569 37 96 35.6569 96 34C96 32.3431 94.6569 31 93 31Z"
@@ -2216,7 +2216,7 @@ export const EmptyComment = () => {
       <path
         d="M118 61H92C90.3431 61 89 62.3431 89 64C89 65.6569 90.3431 67 92 67H118C119.657 67 121 65.6569 121 64C121 62.3431 119.657 61 118 61Z"
         fill="#00C273"
-        fill-opacity="0.29"
+        fillOpacity="0.29"
       />
       <path
         d="M136 74H92C90.3431 74 89 75.3431 89 77C89 78.6569 90.3431 80 92 80H136C137.657 80 139 78.6569 139 77C139 75.3431 137.657 74 136 74Z"
@@ -2239,7 +2239,7 @@ export const EmptyComment = () => {
       <path
         d="M75 104H49C47.3431 104 46 105.343 46 107C46 108.657 47.3431 110 49 110H75C76.6569 110 78 108.657 78 107C78 105.343 76.6569 104 75 104Z"
         fill="#00C273"
-        fill-opacity="0.29"
+        fillOpacity="0.29"
       />
       <path
         d="M93 117H49C47.3431 117 46 118.343 46 120C46 121.657 47.3431 123 49 123H93C94.6569 123 96 121.657 96 120C96 118.343 94.6569 117 93 117Z"
@@ -2261,9 +2261,9 @@ export const EmptyComment = () => {
           width="157"
           height="47"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -2295,9 +2295,9 @@ export const EmptyComment = () => {
           width="157"
           height="47"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -2329,9 +2329,9 @@ export const EmptyComment = () => {
           width="157"
           height="47"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -2364,8 +2364,8 @@ export const EmptyComment = () => {
           y2="140"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#20AC73" stop-opacity="0.71" />
-          <stop offset="1" stop-color="#20AC73" stop-opacity="0.52" />
+          <stop stopColor="#20AC73" stopOpacity="0.71" />
+          <stop offset="1" stopColor="#20AC73" stopOpacity="0.52" />
         </linearGradient>
       </defs>
     </svg>
@@ -2643,7 +2643,7 @@ export const EmptyOrders = () => {
               clip-rule="evenodd"
               d="M619.075 491.21C582.665 527.614 526.298 531.721 485.376 503.615C480.146 499.958 475.168 495.851 470.526 491.21C468.136 488.829 465.884 486.371 463.762 483.783C459.517 478.615 455.799 473.104 452.752 467.409C447.385 457.791 443.736 447.585 441.743 437.036C435.315 403.952 444.927 368.342 470.526 342.755C496.187 317.091 531.803 307.542 564.892 313.908C575.435 315.962 585.651 319.61 595.27 324.916C600.973 328.03 606.409 331.748 611.586 335.992C614.166 338.106 616.625 340.366 619.007 342.755C623.656 347.396 627.825 352.366 631.413 357.602C659.532 398.51 655.417 454.875 619.075 491.21Z"
               fill="white"
-              fill-opacity="0.1"
+              fillOpacity="0.1"
             />
             <path
               id="Fill 23"
@@ -2686,7 +2686,7 @@ export const EmptyOrders = () => {
               clip-rule="evenodd"
               d="M583.811 333.896L455.7 462C450.875 453.353 447.595 444.178 445.811 434.694L556.503 324C565.981 325.853 575.163 329.126 583.811 333.896Z"
               fill="white"
-              fill-opacity="0.5"
+              fillOpacity="0.5"
             />
             <path
               id="Fill 35"
@@ -2694,7 +2694,7 @@ export const EmptyOrders = () => {
               clip-rule="evenodd"
               d="M625.811 364.345L487.309 495C482.349 491.735 477.628 488.06 473.226 483.907C470.96 481.769 468.816 479.576 466.811 477.26L606.999 345C609.454 346.899 611.785 348.921 614.044 351.059C618.447 355.212 622.407 359.659 625.811 364.345Z"
               fill="white"
-              fill-opacity="0.5"
+              fillOpacity="0.5"
             />
           </g>
         </g>
@@ -2708,9 +2708,9 @@ export const EmptyOrders = () => {
           y2="606"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#20AC73" />
-          <stop offset="0.35" stop-color="#199060" />
-          <stop offset="1" stop-color="#0C5C3C" />
+          <stop stopColor="#20AC73" />
+          <stop offset="0.35" stopColor="#199060" />
+          <stop offset="1" stopColor="#0C5C3C" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_48_5980"
@@ -2720,8 +2720,8 @@ export const EmptyOrders = () => {
           y2="537"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#005C37" />
-          <stop offset="1" stop-color="#014027" />
+          <stop stopColor="#005C37" />
+          <stop offset="1" stopColor="#014027" />
         </linearGradient>
       </defs>
     </svg>
@@ -2740,25 +2740,25 @@ export const BookmarkAdd = () => {
       <path
         d="M14.5 10.6499H9.5"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M12 8.20996V13.21"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M16.8199 2H7.17995C5.04995 2 3.31995 3.74 3.31995 5.86V19.95C3.31995 21.75 4.60995 22.51 6.18995 21.64L11.0699 18.93C11.5899 18.64 12.4299 18.64 12.9399 18.93L17.8199 21.64C19.3999 22.52 20.6899 21.76 20.6899 19.95V5.86C20.6799 3.74 18.9499 2 16.8199 2Z"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -2777,17 +2777,17 @@ export const BookmarkRemove = () => {
         d="M16.8199 2H7.17995C5.04995 2 3.31995 3.74 3.31995 5.86V19.95C3.31995 21.75 4.60995 22.51 6.18995 21.64L11.0699 18.93C11.5899 18.64 12.4299 18.64 12.9399 18.93L17.8199 21.64C19.3999 22.52 20.6899 21.76 20.6899 19.95V5.86C20.6799 3.74 18.9499 2 16.8199 2Z"
         fill="#292D32"
         stroke="#292D32"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
       <path
         d="M14.5 10.6499H9.5"
         stroke="white"
-        stroke-width="1.5"
-        stroke-miterlimit="10"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeMiterlimit="10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

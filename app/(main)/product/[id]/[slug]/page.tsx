@@ -16,7 +16,6 @@ const getProduct = async (slug: number) => {
     `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/products/${slug}`
   );
   const response = await res.json();
-  console.log(response);
 
   if (response.statusCode === 302) {
     permanentRedirect(encodeURI(response?.message));
@@ -117,7 +116,6 @@ const getComments = async (id: number) => {
 export default async function SingleProduct({ params, searchParams }) {
   const coo = cookies();
   const session = await getServerSession(authOptions);
-  console.log(session);
   const {
     result: { result: product },
   } = await getProduct(params.slug);
