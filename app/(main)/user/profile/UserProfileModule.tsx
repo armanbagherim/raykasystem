@@ -12,7 +12,6 @@ export default function UserProfileModule({ user }) {
   const router = useRouter();
 
   const [userDataLocal, setUserDataLocal] = useState(user);
-  console.log(userDataLocal);
   const pathname = usePathname();
 
   const updadeUser = async () => {

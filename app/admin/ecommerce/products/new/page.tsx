@@ -78,9 +78,6 @@ export default function Products() {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(videos);
-  }, [videos]);
   // Fetch Requests
   const {
     data: parentEntityTypes,

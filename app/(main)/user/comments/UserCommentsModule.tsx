@@ -3,7 +3,6 @@ import Link from "next/link";
 import * as React from "react";
 
 export default function UserCommentsModule({ data }) {
-  console.log(data);
   return (
     <div className="border-0 w-full rounded-xl mt-5">
       {data.result?.map((value) => (

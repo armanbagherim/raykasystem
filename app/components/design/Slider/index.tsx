@@ -24,6 +24,7 @@ export default function Slider({
     spaceBetween: 25,
     navigation: true,
     loop: true,
+    observer: true,
     autoplay: {
       delay: 2000,
     },

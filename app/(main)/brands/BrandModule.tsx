@@ -30,7 +30,7 @@ export default function BrandModule({ data }) {
           return (
             <Link key={key} href={`/brand/${value.slug}`}>
               <div className="flex flex-wrap flex-col items-center mb-4">
-                {value?.attachment?.fileName ? (
+                {value.attachment && value.attachment.fileName ? (
                   <Image
                     width={500}
                     height={500}

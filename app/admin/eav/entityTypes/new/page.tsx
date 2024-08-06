@@ -52,7 +52,8 @@ export default function Eav() {
         body: {
           name,
           slug,
-          parentEntityTypeId: ChangeToNull(parentEntityTypeId),
+          parentEntityTypeId:
+            parentEntityTypeId === "null" ? null : +parentEntityTypeId,
           entityModelId: 1,
           metaKeywords,
           description,

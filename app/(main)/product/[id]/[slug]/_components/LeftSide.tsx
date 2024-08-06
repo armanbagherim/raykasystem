@@ -11,6 +11,7 @@ import {
 } from "@/app/components/design/Icons";
 import Link from "next/link";
 import React from "react";
+
 enum InventoryStatusEnum {
   available = 1,
   unavailable = 2,
