@@ -89,27 +89,30 @@ export default function UserProfileModule({ user }) {
                 placeholder="موبایل"
               />
             </div>
-            <DatePicker
-              format="MM/DD/YYYY HH:mm:ss"
-              calendar={persian}
-              value={userDataLocal.birthDate}
-              onOpenPickNewDate={false}
-              locale={persian_fa}
-              inputClass="w-full  text-gray-700 bg-[#F8F8F8]  rounded-2xl py-4 border border-gray-200 px-4 mb-3 focus:outline-none"
-              containerClassName="w-full"
-              onClose={() =>
-                setUserDataLocal({
-                  ...userDataLocal,
-                  birthDate: null,
-                })
-              }
-              onFocusedDateChange={(dateFocused, dateClicked) => {
-                setUserDataLocal({
-                  ...userDataLocal,
-                  birthDate: dateClicked.toDate().toISOString(),
-                });
-              }}
-            ></DatePicker>
+            <div>
+              <label className="mb-4">تاریخ تولد</label>
+              <DatePicker
+                format="YYYY/MM/DD"
+                calendar={persian}
+                value={userDataLocal.birthDate}
+                onOpenPickNewDate={false}
+                locale={persian_fa}
+                inputClass="w-full text-gray-700 bg-[#F8F8F8]  rounded-2xl py-4 border border-gray-200 px-4 mb-3 focus:outline-none"
+                containerClassName="w-full"
+                onClose={() =>
+                  setUserDataLocal({
+                    ...userDataLocal,
+                    birthDate: null,
+                  })
+                }
+                onFocusedDateChange={(dateFocused, dateClicked) => {
+                  setUserDataLocal({
+                    ...userDataLocal,
+                    birthDate: dateClicked.toDate().toISOString(),
+                  });
+                }}
+              ></DatePicker>
+            </div>
           </div>
           <div className="text-left">
             <button

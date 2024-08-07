@@ -31,18 +31,38 @@ async function getEntity() {
   return res.json();
 }
 
+async function getNotif() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/headerNotifications`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  return res.json();
+}
+
 export default async function NavbarModule() {
   const { result: entity } = await getEntity();
-
+  const { result: notif } = await getNotif();
+  console.log(notif);
   const session = await getServerSession(authOptions);
 
   return (
     <div className="mb-8">
-      {/* <div className="text-center px-4 py-4 bg-[#696C70] text-white text-sm md:text-md">
-        با توجه به حجم بالای سفارشات دریافتی در کمپین اسنپ پی، به منظور اطمینان
-        از کیفیت و دقت در ارسال سفارشات، ممکن است تاخیرهایی در ارسال سفارشات رخ
-        دهد. از شکیبایی شما متشکریم.
-      </div> */}
+      {notif.message ? (
+        <div
+          style={{
+            background: notif.backgroundColor,
+            color: notif.textColor,
+          }}
+          className="text-center px-4 py-4 text-sm md:text-md"
+        >
+          {notif.message}
+        </div>
+      ) : (
+        ""
+      )}
 
       <div className="container mx-auto">
         <div className="items-center justify-between mb-10 px-6 md:px-0 flex pt-6 md:pt-0">
