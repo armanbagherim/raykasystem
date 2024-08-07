@@ -239,23 +239,26 @@ export default function Products() {
     );
   };
 
+  const removePhoto = (id) => {
+    setPhotos(photos.filter((photo) => photo.id !== id));
+  };
+
+  const removeVideo = (id) => {
+    setVideos(videos.filter((video) => video.id !== id));
+  };
+
   useEffect(() => {
-    // Map over tempInventories to conditionally modify each object
     const updatedInventories = tempInventories.map((inventory) => {
-      // Ensure inventory.id is a string before calling .startsWith()
       if (typeof inventory.id === "string") {
-        // Check if the inventory has an id with the 'new_' prefix
         if (inventory.id.startsWith("new_")) {
-          // Remove the id key from the object
           const { id, ...rest } = inventory;
-          return rest; // Return the object without the id key
+          return rest;
         }
       }
-      // If the inventory does not have an id with the 'new_' prefix, or if id is not a string, return it as is
       return inventory;
     });
 
-    // Update the state with the modified inventories
+    // Update the  with the modified inventories
     setRequestBody((prevState) => ({
       ...prevState,
       inventories: updatedInventories, // Use the updated inventories
@@ -560,6 +563,7 @@ export default function Products() {
       <aside className="w-full rounded-xl p-4 col-span-1 flex items-center justify-start flex-col">
         <ProductUploader
           location="v1/api/ecommerce/productphotos/image"
+          removePhoto={(e) => removePhoto(e)}
           setPhotos={setPhotos}
           photos={photos}
           text="آپلود تصویر"
@@ -568,17 +572,11 @@ export default function Products() {
         <ProductUploader
           location="v1/api/ecommerce/productVideos/upload"
           setPhotos={setVideos}
+          removePhoto={(e) => removeVideo(e)}
           photos={videos}
           type="video"
           text="آپلود ویدیو"
         />
-
-        {/* <button
-          onClick={saveProduct}
-          className="bg-blue-700 w-full mt-6 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
-        >
-          ساخت محصول
-        </button> */}
       </aside>
       <SaveBar
         action={saveProduct}

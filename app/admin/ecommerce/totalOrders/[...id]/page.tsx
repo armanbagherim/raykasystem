@@ -17,8 +17,11 @@ import {
   DialogTitle,
 } from "@mui/material";
 import SearchSelect from "@/app/components/global/SearchSelect";
+import SweetAlert2 from "react-sweetalert2";
 
 export default function TotalOrders({ params }) {
+  const [swalProps, setSwalProps] = useState({});
+
   const router = useRouter();
   const [openOrderStatus, setOpenOrderStatus] = useState(false);
   const [openOrderShipping, setOpenOrderShipping] = useState(false);
@@ -108,6 +111,38 @@ export default function TotalOrders({ params }) {
         toast.success("موفق");
         refetchData();
       }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleProccess = async () => {
+    try {
+      setSwalProps({
+        show: true,
+        title: "کد رهگیری پستی",
+        input: "text",
+        inputLabel: "کد رهگیری پستی",
+        inputPlaceholder: "کد رهگیری پستی",
+        showCancelButton: true,
+      });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleSwalConfirm = async (postReceipt) => {
+    try {
+      const req = await fetcher({
+        url: `/v1/api/ecommerce/admin/totalOrders/editReceiptPost/${params.id[0]}`,
+        method: "PATCH",
+        body: {
+          receipt: postReceipt.value,
+        },
+      });
+      toast.success("موفق");
+      refetchData();
+      setSwalProps({ show: false });
     } catch (error) {
       toast.error(error.message);
     }
@@ -244,7 +279,7 @@ export default function TotalOrders({ params }) {
       </Dialog>
       <div
         style={{ width: "100%", margin: "0 auto" }}
-        className="pdf flex gap-4 print bg-gray-200 p-2 rounded-lg !mb-8"
+        className="pdf flex flex-wrap gap-4 print bg-gray-200 p-2 rounded-lg !mb-8"
       >
         <FactorGenerator data={orderDetail?.result} />
         <Link
@@ -275,6 +310,14 @@ export default function TotalOrders({ params }) {
         >
           تغییر وضعیت ارسال
         </Button>
+        <Button onClick={(e) => handleProccess()} variant="contained">
+          تغییر رسید پستی
+        </Button>
+        <SweetAlert2
+          {...swalProps}
+          onConfirm={(postReceipt) => handleSwalConfirm(postReceipt)}
+          onCancel={() => setSwalProps({ show: false })}
+        />
       </div>
       <span className="no-print bg-gray-100 border border-gray-200 rounded-lg mr-4 p-3 block mb-4">
         کد رهگیری پست: {orderDetail?.result?.postReceipt}
