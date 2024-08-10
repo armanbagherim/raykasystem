@@ -7,7 +7,7 @@ const GoogleAnalytics = () => {
 
   return (
     <>
-      <RayChat rayToken={token} />
+      {/* <RayChat domain="" rayToken={token} /> */}
       <Script
         strategy="lazyOnload"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_MEASUREMENT_ID}`}

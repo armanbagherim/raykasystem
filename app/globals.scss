@@ -814,3 +814,31 @@ html {
 .MuiPaper-root * {
   font-family: IRANSansX !important;
 }
+
+.sliders .swiper-slide {
+  width: 260px !important;
+  margin-left: 20px;
+}
+
+@media (max-width: 767px) {
+  .sliders .swiper-slide {
+    width: 200px !important;
+    margin-left: 20px;
+  }
+}
+
+.mainSlide {
+  .swiper-slide {
+    width: 100% !important;
+  }
+}
+
+.swiper-wrapper {
+  display: flex !important;
+}
+
+.mainSlide {
+  .container.mx-auto {
+    padding: 0 0 !important;
+  }
+}
