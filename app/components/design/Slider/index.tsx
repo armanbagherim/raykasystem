@@ -19,11 +19,13 @@ export default function Slider({
   children,
   slideProps,
   slidesPerView, // Default to 4 if not provided
+  isFree = false,
 }: SliderProps) {
   const swiperOptions: SwiperOptions = {
     spaceBetween: 25,
     navigation: true,
     loop: true,
+    freeMode: isFree,
     observer: true,
     autoplay: {
       delay: 2000,
