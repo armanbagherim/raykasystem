@@ -10,9 +10,12 @@ import {
   Pofile,
 } from "../Icons";
 import Link from "next/link";
-import CartCount from "../CartCount";
+import dynamic from "next/dynamic";
 
 export default function BottomNavModule({ entities }) {
+  const CartCount = dynamic(() => import("../CartCount"), {
+    ssr: false,
+  });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [subMenuData, setSubMenuData] = useState([]);
   const [level, setLevel] = useState(1);
@@ -165,7 +168,10 @@ export default function BottomNavModule({ entities }) {
           </div>
           <Link href="/cart">
             <div className="flex flex-col text-center items-center relative">
-              <div className="absolute w-6 h-6 rounded-lg bg-primary text-white -right-2 -top-2 flex justify-center items-center">
+              <div
+                suppressHydrationWarning={true}
+                className="absolute w-6 h-6 rounded-lg bg-primary text-white -right-2 -top-2 flex justify-center items-center"
+              >
                 <CartCount />
               </div>
               <CartBottom />

@@ -9,10 +9,6 @@ import { ChevronLeft } from "../Icons";
 import SignOutButton from "../../SignOut";
 import dynamic from "next/dynamic";
 
-const CartCount = dynamic(() => import("../CartCount"), {
-  ssr: false,
-});
-
 const Megamenu = dynamic(
   () => import("@/app/components/design/Navbar/Megamenu"),
   {
@@ -46,7 +42,9 @@ export default async function NavbarModule() {
   const { result: entity } = await getEntity();
   const { result: notif } = await getNotif();
   const session = await getServerSession(authOptions);
-
+  const CartCount = dynamic(() => import("../CartCount"), {
+    ssr: false,
+  });
   return (
     <div className="mb-8">
       {notif.message ? (

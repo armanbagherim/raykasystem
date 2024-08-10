@@ -9,7 +9,7 @@ interface ISlider {
 
 export default function MainSlider({ data }) {
   return (
-    <div className="mb-8 md:mb-20">
+    <div className="mb-8 md:mb-20 mainSlide">
       <Slider slidesPerView={1}>
         {data.map((slider, index) => {
           return (
@@ -25,6 +25,7 @@ export default function MainSlider({ data }) {
                   width={500}
                   height={300}
                   quality={100}
+                  priority={true}
                   layout="responsive"
                   className="md:rounded-3xl"
                 />

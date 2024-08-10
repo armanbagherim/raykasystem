@@ -19,7 +19,9 @@ export default function CategorySlider({
 }: ICategorySlider) {
   return (
     <div
-      className={`container mx-auto ${amazing ? "" : "mb-8 md:mb-14"}  px-4`}
+      className={`container mx-auto ${
+        amazing ? "" : "mb-8 md:mb-14"
+      }  px-4 sliders`}
     >
       <div className="flex justify-between items-center mb-9 ">
         <Title text={name} color={amazing ? "white" : "primary"} />
@@ -33,7 +35,7 @@ export default function CategorySlider({
         </Link>
       </div>
       <div className="flex gap-5 px-4">
-        <Slider>
+        <Slider isFree>
           {data?.map((slide, key) => (
             <ProductCard key={key} data={slide ?? null} type="main" />
           ))}

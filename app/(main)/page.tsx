@@ -1,13 +1,5 @@
-import Image from "next/image";
-import Slider from "../components/design/Slider";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/authOptions";
-import ProductCard from "../components/design/Cards/ProductCard/ProductCard";
-import Title from "../components/design/Title";
-import Link from "next/link";
-import ProductListFilter from "../components/ProductListFilter";
-import BrandsSlider from "../components/design/Slider/BrandsSlider";
-import SplashScreen from "../components/design/SplashScreen";
 import AddToHomeScreen from "@/app/components/AddToHomeScreen/AddToHomeScreen";
 import MainSlider from "../components/HomePageBuilder/MainSlider";
 import CategorySlider from "../components/HomePageBuilder/CategorySlider";
@@ -132,54 +124,6 @@ export default async function Home() {
           );
         }
       })}
-
-      {/* <BannerGenerator />
-
-       */}
-      {/* 
-
-      <div className="container mx-auto mb-8 md:mb-20">
-        <div className="flex flex-col xl:flex-row lg:flex-row xl:flex-row gap-5">
-          <div className="flex-1">
-            <Link href="/brand/smeg">
-              <img
-                className="w-full h-full rounded-2xl"
-                src="/banners/right1.jpg"
-                width={0}
-                height={0}
-                sizes="100vw"
-              />
-            </Link>
-          </div>
-          <div className="flex-1">
-            <Link href="/brand/philips">
-              <img
-                className="w-full h-full rounded-2xl"
-                alt=""
-                width={0}
-                height={0}
-                sizes="100vw"
-                src="/banners/right2.jpg"
-              />
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div className="container mx-auto mb-8 md:mb-24 px-4">
-        <Link href="/brand/moser">
-          <img
-            className="w-full h-full"
-            alt=""
-            width={0}
-            height={0}
-            sizes="100vw"
-            src="/images/banner-big.png"
-          />
-        </Link>
-      </div>
-
-      */}
     </>
   );
 }

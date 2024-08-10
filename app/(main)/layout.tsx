@@ -27,16 +27,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fa-IR" dir="rtl">
-      <head>
+    <html suppressHydrationWarning lang="fa-IR" dir="rtl">
+      <head suppressHydrationWarning>
         <link
+          suppressHydrationWarning
           rel="apple-touch-startup-image"
           href="/apple-launch-1125x2436.png"
         ></link>
         <GoogleAnalytics />
       </head>
 
-      <body className="custom-scroll">
+      <body suppressHydrationWarning className="custom-scroll">
         <ThemeRegistry>
           <Providers>
             <Provider>
