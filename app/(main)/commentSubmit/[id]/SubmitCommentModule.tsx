@@ -109,7 +109,7 @@ export default function SubmitCommentModule({
           <div className="flex gap-3 col-span-2">
             <div>
               <Image
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${product?.result?.attachments[0]?.fileName}`}
+                src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${product?.result?.attachments[0]?.fileName}`}
                 width={80}
                 height={80}
               />

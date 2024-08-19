@@ -24,7 +24,7 @@ export default function Brands({ data }) {
             key={brand.id}
           >
             <Image
-              src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/brands/image/${brand?.attachment?.fileName}`}
+              src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/brands/${brand?.attachment?.fileName}`}
               width={115}
               loading="eager"
               height={115}

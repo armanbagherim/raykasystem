@@ -18,7 +18,7 @@ export default function Categories({ title, data }) {
             >
               {category?.attachment ? (
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes/image/${category?.attachment?.fileName}`}
+                  src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/entitytypes/${category?.attachment?.fileName}`}
                   alt={category?.name}
                   width={150}
                   priority

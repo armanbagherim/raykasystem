@@ -226,7 +226,7 @@ export default function SingleProductModule({
                   height={"50"}
                   alt={product?.title}
                   loading="eager"
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${product?.attachments[0]?.fileName}`}
+                  src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${product?.attachments[0]?.fileName}`}
                   width="50"
                 />
                 <span className="text-sm sm:text-lg">
@@ -374,10 +374,8 @@ export default function SingleProductModule({
                         alt={product?.title}
                         loading="eager"
                         src={`${
-                          process.env.NEXT_PUBLIC_BASE_URL
-                        }/v1/api/ecommerce/productphotos/image/${
-                          value?.fileName ?? null
-                        }`}
+                          process.env.NEXT_PUBLIC_IMAGE_BASE_URL
+                        }/products/${value?.fileName ?? null}`}
                         width="600"
                       />
                     </div>
@@ -430,6 +428,7 @@ export default function SingleProductModule({
               </Slider>
             </DialogContent>
           </Dialog>
+
           <div className="p-3 pt-0 mr-0 pb-6">
             {product?.attachments.length ? (
               <Slider slidesPerView={1}>
@@ -441,9 +440,7 @@ export default function SingleProductModule({
                     height={"500"}
                     alt={product?.title}
                     loading="eager"
-                    src={`${
-                      process.env.NEXT_PUBLIC_BASE_URL
-                    }/v1/api/ecommerce/productphotos/image/${
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${
                       value?.fileName ?? null
                     }`}
                     width="500"

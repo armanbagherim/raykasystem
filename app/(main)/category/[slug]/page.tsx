@@ -174,7 +174,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                     width={96}
                     height={96}
                     className="mx-auto mb-4 !w-[96px] !max-w-[unset] !h-[96px]"
-                    src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/entityTypes/image/${value?.attachment?.fileName}`}
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/entitytypes/${value?.attachment?.fileName}`}
                   />
                 ) : (
                   <Image

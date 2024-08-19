@@ -81,9 +81,7 @@ export default function Guarantees() {
         return row ? (
           <Image
             loading="eager"
-            src={`${
-              process.env.NEXT_PUBLIC_BASE_URL
-            }/v1/api/ecommerce/guarantees/image/${
+            src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/guarantees/${
               row.original.attachment?.fileName || ""
             }`}
             width={50}

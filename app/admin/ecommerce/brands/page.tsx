@@ -80,9 +80,7 @@ export default function Brands() {
         return row.original.attachment ? (
           <Image
             loading="eager"
-            src={`${
-              process.env.NEXT_PUBLIC_BASE_URL
-            }/v1/api/ecommerce/brands/image/${
+            src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/brands/${
               row.original.attachment?.fileName || ""
             }`}
             width={50}
