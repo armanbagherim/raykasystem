@@ -234,7 +234,7 @@ export default function CartItems({
                       width={115}
                       height={115}
                       className="w-16 h-16 rounded-lg"
-                      src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${item?.product?.attachments[0]?.fileName}`}
+                      src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${item?.product?.attachments[0]?.fileName}`}
                       alt=""
                     />
                   ) : (

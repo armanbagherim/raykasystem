@@ -85,7 +85,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
     keywords: brand?.metaKeywords,
     twitter: {
       images: brand.attachment
-        ? `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/brands/image/${brand?.attachment?.fileName}`
+        ? `${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/brands/${brand?.attachment?.fileName}`
         : null,
     },
   };
