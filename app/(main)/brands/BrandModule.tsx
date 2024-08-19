@@ -35,7 +35,7 @@ export default function BrandModule({ data }) {
                     width={500}
                     height={500}
                     className="w-14 md:w-24 grayscale hover:grayscale-0 transition-all border border-gray-200 rounded-2xl mb-2"
-                    src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/brands/image/${value.attachment.fileName}`}
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/brands/${value.attachment.fileName}`}
                     alt={value.name}
                   />
                 ) : (

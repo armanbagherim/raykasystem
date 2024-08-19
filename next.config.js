@@ -32,8 +32,9 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "minio-jahizan.chbk.run",
+        hostname: "image.jahizan.com",
       },
+      
     ],
   },
   typescript: {

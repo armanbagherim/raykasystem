@@ -68,10 +68,8 @@ export default function Products() {
           <Image
             key={row.id}
             loading="eager"
-            src={`${
-              process.env.NEXT_PUBLIC_BASE_URL
-            }/v1/api/ecommerce/productphotos/image/${
-              row.original.attachments[0]?.fileName || ""
+            src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${
+              row.original.product.attachments[0]?.fileName || ""
             }`}
             width={30}
             height={30}

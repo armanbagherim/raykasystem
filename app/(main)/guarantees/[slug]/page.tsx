@@ -33,7 +33,7 @@ export default async function Guarantees({ params }) {
             width={100}
             height={100}
             className="w-[100px] h-auto border border-gray-200 rounded-2xl ml-4"
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/guarantees/image/${guarantees?.result?.attachment?.fileName}`}
+            src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/guarantees/${guarantees?.result?.attachment?.fileName}`}
           />
           <h1 className="peyda text-[26px]">{guarantees?.result?.name}</h1>
         </div>

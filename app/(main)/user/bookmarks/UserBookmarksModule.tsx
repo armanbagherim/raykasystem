@@ -17,9 +17,7 @@ export default function UserBookmarksModule({ data }) {
               alt=""
               width={80}
               height={80}
-              src={`${
-                process.env.NEXT_PUBLIC_BASE_URL
-              }/v1/api/ecommerce/productphotos/image/${
+              src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${
                 value.product.result.attachments[0].fileName ?? null
               }`}
             />

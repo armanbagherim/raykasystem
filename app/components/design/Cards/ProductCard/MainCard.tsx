@@ -23,9 +23,7 @@ export default function MainCard({ data }) {
             alt={data?.title}
             className="mx-auto h-auto object-contain rounded-3xl w-full"
             priority
-            src={`${
-              process.env.NEXT_PUBLIC_BASE_URL
-            }/v1/api/ecommerce/productphotos/image/${
+            src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${
               data?.attachments[0]?.fileName ?? null
             }`}
           />

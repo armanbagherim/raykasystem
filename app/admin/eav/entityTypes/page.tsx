@@ -73,9 +73,7 @@ export default function Eav() {
         return row.original.attachment ? (
           <Image
             loading="eager"
-            src={`${
-              process.env.NEXT_PUBLIC_BASE_URL
-            }/v1/api/eav/admin/entityTypes/image/${
+            src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/entitytypes/${
               row.original.attachment?.fileName || ""
             }`}
             width={50}

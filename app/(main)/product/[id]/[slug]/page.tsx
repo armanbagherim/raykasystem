@@ -71,13 +71,13 @@ export async function generateMetadata({ params }): Promise<Metadata> {
     twitter: {
       images:
         product?.result?.result?.attachments.length > 1
-          ? `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${product?.result?.result?.attachments[0]?.fileName}`
+          ? `${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${product?.result?.result?.attachments[0]?.fileName}`
           : null,
     },
     openGraph: {
       images:
         product?.result?.result?.attachments.length > 1
-          ? `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${product?.result?.result?.attachments[0]?.fileName}`
+          ? `${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${product?.result?.result?.attachments[0]?.fileName}`
           : null,
     },
     other: {

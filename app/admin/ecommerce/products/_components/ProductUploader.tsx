@@ -96,7 +96,7 @@ export default function ProductUploader({
                   width={70}
                   height={70}
                   crossOrigin="anonymous"
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/productphotos/image/${value.fileName}`}
+                  src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${value.fileName}`}
                   alt=""
                   className="rounded-2xl"
                 />
