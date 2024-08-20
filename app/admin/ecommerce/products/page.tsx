@@ -65,11 +65,11 @@ export default function Products() {
       size: 100,
       Cell: ({ row }) => {
         return row?.original?.attachments?.length ? (
-          <Image
+          <img
             key={row.id}
             loading="eager"
             src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${
-              row.original.product.attachments[0]?.fileName || ""
+              row?.original?.attachments[0]?.fileName || ""
             }`}
             width={30}
             height={30}
