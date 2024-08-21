@@ -310,7 +310,11 @@ export default function TotalOrders({ params }) {
         >
           تغییر وضعیت ارسال
         </Button>
-        <Button onClick={(e) => handleProccess()} variant="contained">
+        <Button
+          className={"no-print mb-8"}
+          onClick={(e) => handleProccess()}
+          variant="contained"
+        >
           تغییر رسید پستی
         </Button>
         <SweetAlert2
