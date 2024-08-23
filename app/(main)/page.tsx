@@ -7,6 +7,7 @@ import Brands from "../components/HomePageBuilder/Brands";
 import BannerGenerator from "../components/HomePageBuilder/BannerGenerator";
 import * as _ from "lodash";
 import Categories from "../components/HomePageBuilder/Categories";
+import SelectedProducts from "../components/HomePageBuilder/SelectedProducts";
 
 async function getData(link) {
   const res = await fetch(link, {
@@ -105,7 +106,12 @@ export default async function Home() {
           return <Brands key={renderItem.priority} data={renderItem.data} />;
         } else if (renderItem.type == "category") {
           return (
-            <Categories
+            // <Categories
+            //   title={renderItem.title}
+            //   data={renderItem.data}
+            //   key={renderItem.priority}
+            // />
+            <SelectedProducts
               title={renderItem.title}
               data={renderItem.data}
               key={renderItem.priority}
@@ -120,6 +126,14 @@ export default async function Home() {
             <BannerGenerator
               key={renderItem.priority}
               data={renderItem.items}
+            />
+          );
+        } else if (renderItem.type == "selectedProducts") {
+          return (
+            <SelectedProducts
+              title={renderItem.title}
+              data={renderItem.data}
+              key={renderItem.priority}
             />
           );
         }
