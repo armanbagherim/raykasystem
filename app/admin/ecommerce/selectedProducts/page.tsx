@@ -22,7 +22,7 @@ export default function Eav() {
     setTitle({
       title: "دسته بندی ها",
       buttonTitle: "افزودن دسته بندی",
-      link: "/admin/eav/entityTypes/new",
+      link: "/admin/ecommerce/selectedProducts/new",
     });
   }, []);
 
@@ -41,7 +41,7 @@ export default function Eav() {
 
       if (result.isConfirmed) {
         const req = await fetcher({
-          url: `/v1/api/eav/admin/entityTypes/${id}`,
+          url: `/v1/api/ecommerce/admin/selectedProducts/${id}`,
           method: "DELETE",
         });
         toast.success("موفق");
@@ -58,7 +58,7 @@ export default function Eav() {
       size: 20,
     },
     {
-      accessorKey: "name",
+      accessorKey: "title",
       header: "نام ",
       minSize: 100, //min size enforced during resizing
       maxSize: 400, //max size enforced during resizing
@@ -73,7 +73,7 @@ export default function Eav() {
         return row.original.attachment ? (
           <Image
             loading="eager"
-            src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/entitytypes/${
+            src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/selectedproducts/${
               row.original.attachment?.fileName || ""
             }`}
             width={50}
@@ -91,6 +91,11 @@ export default function Eav() {
     },
 
     {
+      accessorKey: "priority",
+      header: "اولویت",
+    },
+
+    {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
@@ -99,27 +104,19 @@ export default function Eav() {
         <>
           <a href={`#`}>
             <Uploader
-              location={`v1/api/eav/admin/entityTypes/image`}
+              location={`v1/api/ecommerce/admin/selectedProducts/image`}
               id={row.id}
             />
           </a>
           <a
             className="ml-1 mr-1"
-            href={`/admin/eav/entityTypes/fields/${row.id}`}
+            href={`/admin/ecommerce/selectedProducts/products/${row.id}`}
           >
             <Button variant="outlined" color="success">
-              فیلد ها
+              محصولات
             </Button>
           </a>
-          <a
-            className="ml-1 mr-1"
-            href={`/admin/eav/entityTypes/factors/${row.id}`}
-          >
-            <Button variant="outlined" color="success">
-              فاکتور های کامنت
-            </Button>
-          </a>
-          <a href={`/admin/eav/entityTypes/edit/${row.id}`}>
+          <a href={`/admin/ecommerce/selectedProducts/edit/${row.id}`}>
             <IconButton aria-label="delete" color="primary">
               <ModeEditIcon />
             </IconButton>

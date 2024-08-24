@@ -13,17 +13,17 @@ import ChangeToNull from "@/app/components/global/ChangeToNull";
 import { setPriority } from "os";
 
 export default function Eav({ params }) {
-  const [title, setTitle] = useAtom(pageTitle);
+  const [titles, setTitles] = useAtom(pageTitle);
 
   useEffect(() => {
-    setTitle({
-      title: "ویرایش دسته",
+    setTitles({
+      title: "ویرایش دستچین",
       buttonTitle: "",
       link: "",
     });
   }, []);
 
-  const [name, setName] = useState();
+  const [title, setTitle] = useState();
   const [slug, setSlug] = useState();
   const [description, setDescription] = useState();
   const [metaDescription, setMetaDescription] = useState();
@@ -34,49 +34,40 @@ export default function Eav({ params }) {
   const router = useRouter();
 
   const {
-    data: entityType,
-    isLoading: entityTypeIsLoading,
+    data: selectedProduct,
+    isLoading: selectedProductsLoading,
     error: entityTypeError,
   } = useFetcher(
-    `/v1/api/eav/admin/entityTypes/${params.id}?sortOrder=ASC&entityModelId=1&ignoreChilds=true&ignorePaging=true`,
-    "GET"
-  );
-
-  const {
-    data: parentEntityTypes,
-    isLoading: parentEntityTypesIsLoading,
-    error: parentEntityTypesError,
-  } = useFetcher(
-    `/v1/api/eav/admin/entityTypes?sortOrder=ASC&entityModelId=1&ignoreChilds=true&ignorePaging=true`,
+    `/v1/api/ecommerce/admin/selectedProducts/${params.id}`,
     "GET"
   );
 
   useEffect(() => {
-    if (entityTypeIsLoading === false) {
-      setName(entityType.result.name);
-      setSlug(entityType.result.slug);
+    if (selectedProductsLoading === false) {
+      setTitle(selectedProduct.result.title);
+      setSlug(selectedProduct.result.slug);
       setDescription(
-        entityType.result.description ? entityType.result.description : ""
+        selectedProduct.result.description
+          ? selectedProduct.result.description
+          : ""
       );
-      setMetaDescription(entityType.result.metaDescription);
-      setMetaKeywords(entityType.result.metaKeywords);
-      setMetaTitle(entityType.result.metaTitle);
-      setParentEntityTypeId(entityType.result.parentEntityTypeId);
-      setPriority(entityType.result.priority);
+      setMetaDescription(selectedProduct.result.metaDescription);
+      setMetaKeywords(selectedProduct.result.metaKeywords);
+      setMetaTitle(selectedProduct.result.metaTitle);
+      setParentEntityTypeId(selectedProduct.result.parentEntityTypeId);
+      setPriority(selectedProduct.result.priority);
     }
-  }, [entityTypeIsLoading]);
+  }, [selectedProductsLoading]);
 
   const save = async () => {
     try {
       const req = await fetcher({
-        url: `/v1/api/eav/admin/entityTypes/${params.id}`,
+        url: `/v1/api/ecommerce/admin/selectedProducts/${params.id}`,
         method: "PUT",
         body: {
-          name,
+          title,
           slug,
-          parentEntityTypeId:
-            parentEntityTypeId === "null" ? null : +parentEntityTypeId,
-          entityModelId: 1,
+          selectedProductTypeId: 1,
           metaKeywords,
           metaDescription,
           description: ChangeToNull(description),
@@ -86,13 +77,13 @@ export default function Eav({ params }) {
       });
       toast.success("موفق");
       setTimeout(() => {
-        router.push("/admin/eav/entityTypes");
+        router.push("/admin/ecommerce/selectedProducts");
       }, 500);
     } catch (error) {
       toast.error(error.message);
     }
   };
-  if (entityTypeIsLoading) {
+  if (selectedProductsLoading) {
     return <Loading />;
   }
 
@@ -110,8 +101,8 @@ export default function Eav({ params }) {
           id="first_name"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <label
           htmlFor="first_name"
@@ -132,56 +123,7 @@ export default function Eav({ params }) {
         <label htmlFor="">توضیحات</label>
         <SeoBox setDescription={setDescription} description={description} />
       </div>
-      <label
-        htmlFor="countries_multiple"
-        className="block mb-2 text-sm font-medium text-gray-900 "
-      >
-        دسته بندی پدر
-      </label>
-      {parentEntityTypesIsLoading ? (
-        "در حال بارگزاری"
-      ) : (
-        <select
-          id="countries_multiple"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          onChange={(e) => setParentEntityTypeId(e.target.value)}
-        >
-          <option value={null}>بدون پدر</option>
-          {parentEntityTypes.result.map((value, key) => {
-            return (
-              <>
-                <option
-                  selected={
-                    entityType.result.parentEntityTypeId === value.id
-                      ? "selected"
-                      : ""
-                  }
-                  key={key}
-                  value={value.id}
-                >
-                  {value.name}
-                </option>
 
-                {value.subEntityTypes.map((sub, subKey) => {
-                  return (
-                    <option
-                      selected={
-                        entityType.result.parentEntityTypeId === sub.id
-                          ? "selected"
-                          : ""
-                      }
-                      key={subKey}
-                      value={sub.id}
-                    >
-                      -- {sub.name}
-                    </option>
-                  );
-                })}
-              </>
-            );
-          })}
-        </select>
-      )}
       <label
         htmlFor="first_name"
         className="block mb-2 text-sm font-medium text-gray-900 "

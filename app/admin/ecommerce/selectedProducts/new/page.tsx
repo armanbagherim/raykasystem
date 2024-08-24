@@ -15,48 +15,37 @@ const SeoBox = dynamic(
   { ssr: false }
 );
 export default function Eav() {
-  const [title, setTitle] = useAtom(pageTitle);
+  const [titles, setTitles] = useAtom(pageTitle);
 
   useEffect(() => {
-    setTitle({
+    setTitles({
       title: "افزودن دسته جدید",
       buttonTitle: "",
       link: "",
     });
   }, []);
 
-  const [name, setName] = useState();
+  const [title, setTitle] = useState();
   const [slug, setSlug] = useState();
   const [metaDescription, setMetaDescription] = useState();
   const [metaKeywords, setMetaKeywords] = useState();
   const [metaTitle, setMetaTitle] = useState();
-  const [parentEntityTypeId, setParentEntityTypeId] = useState();
   const [description, setDescription] = useState();
   const [priority, setPriority] = useState();
 
   const router = useRouter();
 
-  const {
-    data: parentEntityTypes,
-    isLoading: parentEntityTypesIsLoading,
-    error: parentEntityTypesError,
-  } = useFetcher(
-    `/v1/api/eav/admin/entityTypes?sortOrder=ASC&entityModelId=1&ignoreChilds=true&ignorePaging=true`,
-    "GET"
-  );
   const save = async () => {
     try {
       const req = await fetcher({
-        url: "/v1/api/eav/admin/entityTypes",
+        url: "/v1/api/ecommerce/admin/selectedProducts",
         method: "POST",
         body: {
-          name,
+          title,
           slug,
-          parentEntityTypeId:
-            parentEntityTypeId === "null" ? null : +parentEntityTypeId,
-          entityModelId: 1,
           metaKeywords,
           description,
+          selectedProductTypeId: 1,
           metaDescription,
           metaTitle,
           priority: priority === "null" ? null : +priority,
@@ -64,7 +53,7 @@ export default function Eav() {
       });
       toast.success("موفق");
       setTimeout(() => {
-        router.push("/admin/eav/entityTypes");
+        router.push("/admin/ecommerce/selectedProducts/new");
       }, 500);
     } catch (error) {
       toast.error(error.message);
@@ -85,7 +74,7 @@ export default function Eav() {
           id="first_name"
           className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
           required
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <label
           htmlFor="first_name"
@@ -105,42 +94,7 @@ export default function Eav() {
         <label htmlFor="">توضیحات</label>
         <SeoBox setDescription={setDescription} description={description} />
       </div>
-      <label
-        htmlFor="countries_multiple"
-        className="block mb-2 text-sm font-medium text-gray-900 "
-      >
-        دسته بندی پدر
-      </label>
-      {parentEntityTypesIsLoading ? (
-        "در حال بارگزاری"
-      ) : (
-        <select
-          id="countries_multiple"
-          className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-          onChange={(e) => setParentEntityTypeId(e.target.value)}
-        >
-          <option value={null}>بدون پدر</option>
-          {parentEntityTypes.result.map((value, key) => {
-            return (
-              <>
-                <option key={key} value={value.id}>
-                  {value.name}
-                </option>
 
-                {value.subEntityTypes.map((sub, subKey) => {
-                  return (
-                    <>
-                      <option key={subKey} value={sub.id}>
-                        -- {sub.name}
-                      </option>
-                    </>
-                  );
-                })}
-              </>
-            );
-          })}
-        </select>
-      )}
       <label
         htmlFor="first_name"
         className="block mb-2 text-sm font-medium text-gray-900 "
