@@ -30,6 +30,7 @@ import PopularCategories from "./_components/PopularCategories";
 import PopularBrandSection from "./_components/PopularBrandSection";
 import AmazingSection from "./_components/AamzingSection";
 import ProductSection from "./_components/ProductSection";
+import SelectedProducts from "./_components/SelectedProducts";
 
 const ELEMENT_TYPES = [
   { id: "slider", name: "اسلایدر", icon: <Sliders /> },
@@ -37,6 +38,7 @@ const ELEMENT_TYPES = [
   { id: "product", name: "محصولات", icon: <Cats /> },
   { id: "productCategory", name: "محصولات بر اساس دسته بندی", icon: <Cats /> },
   { id: "productBrand", name: "محصولات بر اساس برند", icon: <Cats /> },
+  { id: "selectedProduct", name: "دستچین ها", icon: <Cats /> },
   { id: "category", name: "دسته بندی های محبوب", icon: <PopularCats /> },
   { id: "brand", name: "برند های محبوب", icon: <PopularBrands /> },
   { id: "amazing", name: "تخفیفات شگفت انگیز", icon: <AmazingOffers /> },
@@ -210,6 +212,12 @@ export default function SettingModule({
     setItems(newItems);
   };
 
+  const handleSelectedProducts = (index, title) => {
+    const newItems = [...items];
+    newItems[index].content = { title };
+    setItems(newItems);
+  };
+
   const handlePopularBrands = (index, title) => {
     const newItems = [...items];
     newItems[index].content = { title };
@@ -238,7 +246,7 @@ export default function SettingModule({
             : item.content,
       };
     });
-
+    console.log(cleanItems);
     try {
       const req = await fetcher({
         url: "/v1/api/ecommerce/admin/homePages",
@@ -351,6 +359,14 @@ export default function SettingModule({
                                 item={item}
                               />
                             )}
+                            {item.type === "selectedProduct" && (
+                              <SelectedProducts
+                                handleSelectedProducts={handleSelectedProducts}
+                                index={index}
+                                item={item}
+                              />
+                            )}
+
                             {item.type === "brand" && (
                               <PopularBrandSection
                                 handlePopularBrands={handlePopularBrands}
