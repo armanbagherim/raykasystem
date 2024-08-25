@@ -38,7 +38,7 @@ const ELEMENT_TYPES = [
   { id: "product", name: "محصولات", icon: <Cats /> },
   { id: "productCategory", name: "محصولات بر اساس دسته بندی", icon: <Cats /> },
   { id: "productBrand", name: "محصولات بر اساس برند", icon: <Cats /> },
-  { id: "selectedProducts", name: "دستچین ها", icon: <Cats /> },
+  { id: "selectedProduct", name: "دستچین ها", icon: <Cats /> },
   { id: "category", name: "دسته بندی های محبوب", icon: <PopularCats /> },
   { id: "brand", name: "برند های محبوب", icon: <PopularBrands /> },
   { id: "amazing", name: "تخفیفات شگفت انگیز", icon: <AmazingOffers /> },
@@ -359,7 +359,7 @@ export default function SettingModule({
                                 item={item}
                               />
                             )}
-                            {item.type === "selectedProducts" && (
+                            {item.type === "selectedProduct" && (
                               <SelectedProducts
                                 handleSelectedProducts={handleSelectedProducts}
                                 index={index}

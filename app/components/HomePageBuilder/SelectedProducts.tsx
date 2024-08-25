@@ -1,25 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import BrandsSlider from "../design/Slider/BrandsSlider";
+import SelectedProductsSlider from "../design/Slider/SelectedProductsSlider";
 
 export default function SelectedProducts({ title, data }) {
   return (
-    <div className="container !px-4 md:!px-8 mx-auto mb-24">
-      <h4 className="text-md md:text-3xl mb-14 font-black text-center text-primary peyda">
-        {title}
-      </h4>
-      <BrandsSlider slidesPerView={12}>
+    <div className="container !px-4 md:!px-0 mx-auto mb-4 selecteds">
+      <SelectedProductsSlider slidesPerView={10}>
         {data.map((category) => {
           return (
             <Link
               key={category?.id}
-              href={`${process.env.WEBSITE_BASE_URL}/category/${category?.slug}`}
+              href={`${process.env.WEBSITE_BASE_URL}/selectedProducts/${category?.slug}`}
               className="flex flex-col justify-center items-center"
             >
               {category?.attachment ? (
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/entitytypes/${category?.attachment?.fileName}`}
+                  src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/selectedproducts/${category?.attachment?.fileName}`}
                   alt={category?.name}
                   width={150}
                   priority
@@ -39,12 +36,12 @@ export default function SelectedProducts({ title, data }) {
               )}
 
               <span className="text-xs md:text-sm text-gray-800 font-light">
-                {category?.name}
+                {category?.title}
               </span>
             </Link>
           );
         })}
-      </BrandsSlider>
+      </SelectedProductsSlider>
     </div>
   );
 }

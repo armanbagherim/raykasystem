@@ -73,7 +73,7 @@ export default async function Home() {
   return (
     <>
       <AddToHomeScreen />
-
+      {console.log(mergedList)}
       {mergedList.map((renderItem) => {
         if (
           renderItem.type == "product" ||
@@ -106,12 +106,7 @@ export default async function Home() {
           return <Brands key={renderItem.priority} data={renderItem.data} />;
         } else if (renderItem.type == "category") {
           return (
-            // <Categories
-            //   title={renderItem.title}
-            //   data={renderItem.data}
-            //   key={renderItem.priority}
-            // />
-            <SelectedProducts
+            <Categories
               title={renderItem.title}
               data={renderItem.data}
               key={renderItem.priority}
@@ -128,7 +123,7 @@ export default async function Home() {
               data={renderItem.items}
             />
           );
-        } else if (renderItem.type == "selectedProducts") {
+        } else if (renderItem.type == "selectedProduct") {
           return (
             <SelectedProducts
               title={renderItem.title}
