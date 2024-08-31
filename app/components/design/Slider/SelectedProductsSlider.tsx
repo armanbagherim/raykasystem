@@ -25,18 +25,20 @@ export default function SelectedProductsSlider({
     spaceBetween: 25,
     navigation: false,
     pagination: true,
-    freeMode: true,
     observer: true,
-    pagination: {
-      dynamicBullets: true,
-    },
+    rtl: true,
+    loop: true,
     autoplay: {
       delay: 2000,
     },
 
     breakpoints: {
+      200: {
+        slidesPerView: 2.5,
+        spaceBetween: 20,
+      },
       320: {
-        slidesPerView: 5.5,
+        slidesPerView: 3.5,
         spaceBetween: 20,
       },
       // Mobile
@@ -46,17 +48,17 @@ export default function SelectedProductsSlider({
       },
       // Tablet
       769: {
-        slidesPerView: 7.2,
+        slidesPerView: 8.2,
         spaceBetween: 10,
       },
       // Medium (md)
       1024: {
-        slidesPerView: 8.2,
+        slidesPerView: 9.2,
         spaceBetween: 10,
       },
       // Large (lg)
       1280: {
-        slidesPerView: 9.2,
+        slidesPerView: 12.2,
         spaceBetween: 10,
       },
       // Extra-large (xl) and 2xl
