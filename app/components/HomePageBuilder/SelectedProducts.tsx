@@ -20,7 +20,7 @@ export default function SelectedProducts({ title, data }) {
                   alt={category?.name}
                   width={150}
                   priority
-                  className="!h-[60px] !w-[60px] object-contain mb-4 border border-primary p-2 rounded-full"
+                  className="!h-[40px] !w-[40px] !md:h-[60px] !md:w-[60px] object-contain mb-4 border border-primary p-2 rounded-full"
                   height={150}
                   loading="eager"
                   layout="responsive"
@@ -35,7 +35,7 @@ export default function SelectedProducts({ title, data }) {
                 />
               )}
 
-              <span className="text-xs md:text-sm text-gray-800 font-light">
+              <span className="text-xs md:text-sm text-center text-gray-800 font-light">
                 {category?.title}
               </span>
             </Link>

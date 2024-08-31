@@ -816,8 +816,15 @@ html {
 }
 
 .selecteds .swiper-slide {
-  width: 160px !important;
+  width: 100px;
   margin-left: 20px;
+}
+
+@media (max-width: 768px) {
+  .selecteds .swiper-slide {
+    width: 85px;
+    margin-left: 20px;
+  }
 }
 
 .sliders .swiper-slide {

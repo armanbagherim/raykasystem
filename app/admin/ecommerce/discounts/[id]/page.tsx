@@ -47,7 +47,7 @@ export default function NewDiscount({ params }) {
     isLoading: hasPermissionIsLoading,
     error: hasPermissionError,
   } = useFetcher(
-    `/v1/api/core/user/permissions/isAccess/ecommerce.admin.discounts`,
+    `/v1/api/core/user/permissions/isAccess/ecommerce.admin.discounts.superedit`,
     "GET"
   );
   useEffect(() => {

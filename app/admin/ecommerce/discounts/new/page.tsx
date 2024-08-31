@@ -20,7 +20,7 @@ export default function NewDiscount() {
     isLoading: hasPermissionIsLoading,
     error: hasPermissionError,
   } = useFetcher(
-    `/v1/api/core/user/permissions/isAccess/ecommerce.admin.discounts`,
+    `/v1/api/core/user/permissions/isAccess/ecommerce.admin.discounts.superedit`,
     "GET"
   );
   const [title, setTitle] = useAtom(pageTitle);
