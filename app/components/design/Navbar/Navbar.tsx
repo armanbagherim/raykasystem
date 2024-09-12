@@ -186,17 +186,17 @@ export default async function NavbarModule() {
                 >
                   <path
                     d="M4.58333 9.16675C3.575 9.16675 2.75 9.99175 2.75 11.0001C2.75 12.0084 3.575 12.8334 4.58333 12.8334C5.59167 12.8334 6.41667 12.0084 6.41667 11.0001C6.41667 9.99175 5.59167 9.16675 4.58333 9.16675Z"
-                    stroke="#292D32"
+                    stroke="#fff"
                     strokeWidth="1.5"
                   />
                   <path
                     d="M17.4166 9.16675C16.4083 9.16675 15.5833 9.99175 15.5833 11.0001C15.5833 12.0084 16.4083 12.8334 17.4166 12.8334C18.4249 12.8334 19.2499 12.0084 19.2499 11.0001C19.2499 9.99175 18.4249 9.16675 17.4166 9.16675Z"
-                    stroke="#292D32"
+                    stroke="#fff"
                     strokeWidth="1.5"
                   />
                   <path
                     d="M11.0001 9.16675C9.99175 9.16675 9.16675 9.99175 9.16675 11.0001C9.16675 12.0084 9.99175 12.8334 11.0001 12.8334C12.0084 12.8334 12.8334 12.0084 12.8334 11.0001C12.8334 9.99175 12.0084 9.16675 11.0001 9.16675Z"
-                    stroke="#292D32"
+                    stroke="#fff"
                     strokeWidth="1.5"
                   />
                 </svg>
@@ -226,46 +226,21 @@ export default async function NavbarModule() {
             </ul>
           </nav>
 
-          <Link href={`/amazing`}>
+          <Link href={`https://jahizan.landin.ir/seller-registration/`}>
             <button className="flex border bg-primary text-white rounded-2xl py-4 px-8">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19.5 12.5C19.5 11.12 20.62 10 22 10V9C22 5 21 4 17 4H7C3 4 2 5 2 9V9.5C3.38 9.5 4.5 10.62 4.5 12C4.5 13.38 3.38 14.5 2 14.5V15C2 19 3 20 7 20H17C21 20 22 19 22 15C20.62 15 19.5 13.88 19.5 12.5Z"
-                  stroke="#FFF"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M9 14.75L15 8.75"
-                  stroke="#FFF"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M14.9945 14.75H15.0035"
-                  stroke="#FFF"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M8.99451 9.25H9.00349"
-                  stroke="#FFF"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M21.01 11.22V15.71C21.01 20.2 19.22 22 14.72 22H9.33002C8.75002 22 8.21998 21.97 7.72998 21.9" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.03998 15.52V11.22" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.03 12C13.86 12 15.21 10.5101 15.03 8.68005L14.36 2H9.69001L9.02003 8.68005C8.84003 10.5101 10.2 12 12.03 12Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.33 12C20.35 12 21.83 10.36 21.63 8.34998L21.35 5.59998C20.99 2.99998 19.99 2 17.37 2H14.32L15.02 9.01001C15.2 10.66 16.68 12 18.33 12Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.66998 12C7.31998 12 8.80996 10.66 8.96996 9.01001L9.19 6.80005L9.66998 2H6.61999C3.99999 2 3.00001 2.99998 2.64001 5.59998L2.35998 8.34998C2.15998 10.36 3.64998 12 5.66998 12Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 19C9 19.75 8.78998 20.4601 8.41998 21.0601C8.22998 21.3801 7.99998 21.67 7.72998 21.9C7.69998 21.94 7.67 21.97 7.63 22C6.93 22.63 6.01 23 5 23C3.78 23 2.68997 22.45 1.96997 21.59C1.94997 21.56 1.92002 21.54 1.90002 21.51C1.78002 21.37 1.67002 21.2201 1.58002 21.0601C1.21002 20.4601 1 19.75 1 19C1 17.74 1.58 16.61 2.5 15.88C2.67 15.74 2.84998 15.62 3.03998 15.52C3.61998 15.19 4.29 15 5 15C6 15 6.89998 15.36 7.59998 15.97C7.71998 16.06 7.82999 16.17 7.92999 16.28C8.58999 17 9 17.95 9 19Z" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.48999 18.98H3.51001" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5 17.52V20.51" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 
-              <span className="mr-2">تخفیفات ویژه</span>
+
+              <span className="mr-2">فروشنده شوید</span>
             </button>
           </Link>
         </div>
