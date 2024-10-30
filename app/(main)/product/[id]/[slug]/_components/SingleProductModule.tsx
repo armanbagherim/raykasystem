@@ -279,7 +279,7 @@ export default function SingleProductModule({
       <div className="container mx-auto">
         {product.inventories[0]?.firstPrice?.appliedDiscount ? (
           <div className="flex justify-between bg-primary items-center rounded-xl p-2 pr-4">
-            <h5 className="text-white peyda text-lg font-bold">
+            <h5 className="text-white peyda text-md font-bold">
               تخفیف شگفت انگیز
             </h5>
             <CountDown
@@ -292,56 +292,58 @@ export default function SingleProductModule({
           ""
         )}
       </div>
-      <div className="container justify-center mx-auto mt-3 grid grid-cols-12 gap-8 !p-8 lg:p-0">
-        <div className="col-span-12 lg:col-span-4 border-0 rounded-lg relative">
-          <div className="w-10 pb-4 absolute lg:opacity-100 -right-4 -top-4 md:r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-50 md:z-20">
-            <div className="pt-3.5 mr-3">
-              <span className="cursor-pointer" onClick={handleClickOpen}>
-                <Zoomin />
-              </span>
-            </div>
-            {product?.videoAttachments.length !== 0 && (
-              <div
-                className="pt-5 mr-3 cursor-pointer"
-                onClick={handleVideoOpen}
-              >
-                <Link href="#">
-                  <Play />
-                </Link>
+      <div className="container justify-center mx-auto grid grid-cols-12 gap-4 md:gap-4 !p-4 !md:p-8 lg:p-0">
+        <div className="col-span-12 lg:col-span-4 border-0 rounded-2xl relative bg-white py-4">
+          <div className="flex">
+            <div className="w-10 pb-4 absolute lg:opacity-100 -right-4 -top-4 md:r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-50 md:z-20">
+              <div className="pt-3.5 mr-3">
+                <span className="cursor-pointer" onClick={handleClickOpen}>
+                  <Zoomin />
+                </span>
               </div>
-            )}
-
-            <div className="relative pt-5 mr-3 cursor-pointer">
-              {favLoading && (
-                <div className="absolute -right-[4px] top-[13px]  bg-customGray ">
-                  <CircularProgress color="success" size="25px" />
+              {product?.videoAttachments.length !== 0 && (
+                <div
+                  className="pt-5 mr-3 cursor-pointer"
+                  onClick={handleVideoOpen}
+                >
+                  <Link href="#">
+                    <Play />
+                  </Link>
                 </div>
               )}
 
-              {isBookmark ? (
-                <span
-                  className="cursor-pointer"
-                  onClick={(e) => RemoveBookmark()}
-                >
-                  <BookmarkRemove />
-                </span>
-              ) : (
-                <span
-                  className="cursor-pointer"
-                  onClick={(e) => AddToBookmark()}
-                >
-                  {" "}
-                  <BookmarkAdd />
-                </span>
-              )}
-            </div>
-            {/* <div className="pt-5 mr-3">
+              <div className="relative pt-5 mr-3 cursor-pointer">
+                {favLoading && (
+                  <div className="absolute -right-[4px] top-[13px]  bg-customGray ">
+                    <CircularProgress color="success" size="25px" />
+                  </div>
+                )}
+
+                {isBookmark ? (
+                  <span
+                    className="cursor-pointer"
+                    onClick={(e) => RemoveBookmark()}
+                  >
+                    <BookmarkRemove />
+                  </span>
+                ) : (
+                  <span
+                    className="cursor-pointer"
+                    onClick={(e) => AddToBookmark()}
+                  >
+                    {" "}
+                    <BookmarkAdd />
+                  </span>
+                )}
+              </div>
+              {/* <div className="pt-5 mr-3">
               <Link href="#">
                 <Heartadd />
               </Link>
             </div>
             
              */}
+            </div>
           </div>
 
           <Dialog
@@ -429,7 +431,7 @@ export default function SingleProductModule({
             </DialogContent>
           </Dialog>
 
-          <div className="p-3 pt-0 mr-0 pb-6">
+          <div className="p-3 pt-0 mr-0 pb-0 md:pb-6">
             {product?.attachments.length ? (
               <Slider slidesPerView={1}>
                 {product?.attachments.map((value, key) => (
@@ -459,9 +461,9 @@ export default function SingleProductModule({
           </div>
         </div>
 
-        <div className="col-span-12 lg:col-span-5 rounded-lg">
+        <div className="col-span-12 lg:col-span-5 rounded-2xl bg-white p-5">
           <div className="flex justify-between items-center">
-            <h1 className="text-right peyda font-normal text-2xl text-slate-500">
+            <h1 className="text-right peyda text-2xl text-[#424242] font-bold">
               {product?.title}
             </h1>
           </div>
@@ -570,8 +572,8 @@ export default function SingleProductModule({
         product={localInventories}
       />
 
-      <div className="container mx-auto mt-5">
-        <div className="border border-[#e8e8e8] gap-10 rounded-3xl whitespace-nowrap overflow-x-auto sticky top-0 bg-white z-[8] !p-5 flex">
+      <div className="container mx-auto">
+        <div className=" gap-10 rounded-3xl whitespace-nowrap overflow-x-auto sticky top-0 bg-white z-[8] !p-5 flex">
           {product?.description ? (
             <Links
               activeClass="text-red-500 border-b border-b-red-500 pb-2 font-bold"
@@ -615,7 +617,7 @@ export default function SingleProductModule({
         {product?.description ? (
           <div
             id="review"
-            className="container mx-auto mt-5 border border-[#e8e8e8] rounded-3xl  !p-8 w-auto"
+            className="container mx-auto mt-5  rounded-3xl bg-white !p-8 w-auto"
           >
             <div className="flex gap-7">
               <div
@@ -627,20 +629,19 @@ export default function SingleProductModule({
           ""
         )}
 
-        <div
-          id="attributes"
-          className=" mt-8 gap-10 border border-[#e8e8e8] rounded-3xl"
-        >
+        <div id="attributes" className=" mt-4 gap-10 rounded-3xl bg-white">
           <div className="p-8">
-            <div>مشخصات کامل محصول</div>
-            <div className="mt-8 text-sm">
+            <div className="font-bold text-[#424242] text-sm">
+              مشخصات کامل محصول
+            </div>
+            <div className="mt-4 text-sm specialInfos">
               {product?.productAttributeValues.map((value, key) => {
                 return (
                   <div
-                    className="flex justify-between md:justify-normal pt-3 pb-3 border-b border-b-[#f0f0f1]"
+                    className="flex justify-between md:justify-normal pt-3 pb-3"
                     key={key}
                   >
-                    <div className="text-green-500 min-w-56">
+                    <div className="text-green-500 min-w-56 pr-4">
                       {value?.attribute?.name ?? ""}
                     </div>
                     <div className="mr-10 text-slate-600">
@@ -659,28 +660,27 @@ export default function SingleProductModule({
           product={product}
           session={session}
         />
-      </div>
+        <div className="relative container mx-auto mt-4 gap-10  rounded-3xl bg-white !p-8">
+          <div className="flex pb-5 relative">
+            <div className="absolute">
+              <Backtitle />
+            </div>
+            <div className="font-bold text-2xl items-center !p-3 text-primary">
+              محصولات مرتبط
+            </div>
+          </div>
 
-      <div className="relative container mx-auto mt-8 gap-10 border border-[#e8e8e8] rounded-3xl  !p-8">
-        <div className="flex pb-5 relative">
-          <div className="absolute">
-            <Backtitle />
-          </div>
-          <div className="font-bold text-2xl items-center !p-3 text-primary">
-            محصولات مرتبط
-          </div>
+          <Slider>
+            {related.map((value, key) => (
+              <ProductCard
+                key={key}
+                data={value ?? null}
+                type="main"
+                className="w-full sm:w-1/2 lg:w-1/3"
+              />
+            ))}
+          </Slider>
         </div>
-
-        <Slider>
-          {related.map((value, key) => (
-            <ProductCard
-              key={key}
-              data={value ?? null}
-              type="main"
-              className="w-full sm:w-1/2 lg:w-1/3"
-            />
-          ))}
-        </Slider>
       </div>
     </>
   );

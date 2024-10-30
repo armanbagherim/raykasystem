@@ -83,46 +83,23 @@ const Sellerpage = async ({ params, searchParams }) => {
   return (
     <>
       <div className="container justify-center mx-auto mt-10 mb-20">
-        <div className="text-3xl p-5 pr-4 md:pr-7">
-          {" "}
-          <h1 className="peyda text-[26px]">{searchParams.search}</h1>
+        <div className="text-3xl pb-0 px-4 flex justify-between items-center mb-4">
+          <h1 className="peyda text-[18px] font-bold">
+            {searchParams?.search == "" ? "همه محصولات" : searchParams?.search}
+          </h1>
+          <div className="col-span-1 items-center flex justify-end">
+            <div className="text-xs text-primary font-bold">
+              {products?.total} کالا
+            </div>
+          </div>
         </div>
         <div className="mt-7">
           <div className="grid grid-cols-12 h-full">
             <Sidebar colors={colors} range={range} />
-            <div className="col-span-12 md:col-span-9 p-0 sm:p-4">
+            <div className="col-span-12 md:col-span-9 p-0 sm:px-4">
               <div>
-                <div className="p-2 grid grid-cols-1 ">
-                  {/* <div className="flex gap-2 col-span-3 whitespace-nowrap overflow-y-scroll md:overflow-y-hidden">
-                    <span className="items-center flex">
-                      <Sorticon />
-                    </span>
-                    <span className="text-primary items-center flex">
-                      مرتب سازی بر اساس
-                    </span>
-                    <div className="flex gap-4 text-xs items-center font-normal text-slate-500 mr-5">
-                      <span>
-                        <a href="#">گران ترین</a>
-                      </span>
-                      <span className="bg-primary p-2 rounded-2xl text-white">
-                        <a href="#">ارزان ترین</a>
-                      </span>
-                      <span>
-                        <a href="#">پرفروش</a>
-                      </span>
-                      <span>
-                        <a href="#">محبوبیت</a>
-                      </span>
-                    </div>
-                  </div> */}
-                  <div className="col-span-1 items-center flex justify-end">
-                    <div className="text-xs text-slate-500">
-                      {products?.total} کالا
-                    </div>
-                  </div>
-                </div>
                 <div>
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-3 sm:gap-6 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-2 gap-2">
                     {products?.result?.map((value, key) => (
                       <ProductCard
                         key={key}

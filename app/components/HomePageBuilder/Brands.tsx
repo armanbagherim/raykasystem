@@ -28,7 +28,7 @@ export default function Brands({ data }) {
               width={115}
               loading="eager"
               height={115}
-              className="border border-[#dbdbdb] rounded-xl p-2"
+              className="border border-[#dbdbdb] rounded-xl p-2 bg-white"
               alt={brand?.name}
             />
           </Link>

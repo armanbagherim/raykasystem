@@ -122,7 +122,6 @@ export default function Eav({ params }) {
   };
 
   const handleSave = async () => {
-    console.log(requestBody);
     const req = await fetcher({
       url: `/v1/api/ecommerce/admin/selectedProductItems`,
       body: {

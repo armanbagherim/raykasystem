@@ -246,7 +246,6 @@ export default function SettingModule({
             : item.content,
       };
     });
-    console.log(cleanItems);
     try {
       const req = await fetcher({
         url: "/v1/api/ecommerce/admin/homePages",
