@@ -15,13 +15,13 @@ export default function MainCard({ data }) {
   const uniqueColorsArray = Array.from(uniqueColorsMap.values());
   return (
     <Link href={`/product/${data?.sku}/${data?.slug}`} className="flex h-full">
-      <div className="flex w-full flex-col border bg-white rounded-3xl justify-start h-auto relative">
+      <div className="flex w-full flex-col pt-4 bg-white rounded-3xl justify-start h-auto relative w-full">
         {data?.attachments[0]?.fileName ? (
           <Image
-            width={200}
-            height={200}
+            width={150}
+            height={150}
             alt={data?.title}
-            className="mx-auto h-auto object-contain rounded-3xl w-full"
+            className="mx-auto h-auto object-contain rounded-3xl "
             priority
             src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${
               data?.attachments[0]?.fileName ?? null
@@ -29,8 +29,8 @@ export default function MainCard({ data }) {
           />
         ) : (
           <Image
-            width={200}
-            height={200}
+            width={150}
+            height={150}
             className="w-full border border-gray-200 rounded-3xl mb-2"
             src="/images/no-photo.png"
             alt=""
@@ -39,7 +39,7 @@ export default function MainCard({ data }) {
 
         <div className="flex flex-col justify-between w-full h-full">
           <div className="p-2 sm:p-4">
-            <h3 className="mb-2 w-full h-auto whitespace-break-spaces mt-3 text-sm">
+            <h3 className="mb-2 w-full h-auto font-bold text-[#424242] whitespace-break-spaces mt-3 text-sm">
               {data?.title}
             </h3>
             {data.colorBased ? (
@@ -60,7 +60,7 @@ export default function MainCard({ data }) {
             {/* <div className="h-8"></div> */}
           </div>
 
-          <div className="p-2 sm:p-4 flex flex-col md:flex-row justify-end">
+          <div className="p-2 !pt-0 sm:p-4 flex flex-col md:flex-row justify-end">
             {data?.inventories[0]?.firstPrice?.appliedDiscount ? (
               // <CountDown
               //   dates={

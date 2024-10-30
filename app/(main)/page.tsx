@@ -73,7 +73,6 @@ export default async function Home() {
   return (
     <>
       <AddToHomeScreen />
-      {console.log(mergedList)}
       {mergedList.map((renderItem) => {
         if (
           renderItem.type == "product" ||
@@ -92,7 +91,7 @@ export default async function Home() {
           return (
             <div
               key={renderItem.priority}
-              className="bg-primary py-10 mb-8 md:mb-20 bg-[url('/images/pattern.png')]"
+              className="bg-primary py-10 mb-8 md:mb-10 bg-[url('/images/pattern.png')]"
             >
               <CategorySlider
                 amazing
@@ -114,7 +113,9 @@ export default async function Home() {
           );
         } else if (renderItem.type == "slider") {
           return (
-            <MainSlider key={renderItem.priority} data={renderItem.items} />
+            <div className="container mx-auto" key={renderItem.priority}>
+              <MainSlider data={renderItem.items} />
+            </div>
           );
         } else if (renderItem.type == "banner") {
           return (

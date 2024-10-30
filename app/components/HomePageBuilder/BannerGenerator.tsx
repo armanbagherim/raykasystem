@@ -4,7 +4,7 @@ import React from "react";
 
 export default function BannerGenerator({ data }) {
   return (
-    <div className="container mx-auto mb-20">
+    <div className="container mx-auto mb-12">
       <div
         className={`grid grid-cols-1 md:grid-cols-${data.length} gap-1 md:gap-5`}
       >

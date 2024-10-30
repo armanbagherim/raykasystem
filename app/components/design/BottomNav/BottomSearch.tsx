@@ -79,7 +79,7 @@ export default function BottomSearch() {
     <>
       <img
         onClick={(e) => setIsMenuOpen(true)}
-        className="relative md:absolute md:right-3 md:top-4"
+        className="relative md:absolute md:right-4 md:top-4 z-40"
         src="/icons/search.svg"
         alt=""
       />
