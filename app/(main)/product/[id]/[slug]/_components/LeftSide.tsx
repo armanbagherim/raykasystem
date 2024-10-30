@@ -18,10 +18,10 @@ enum InventoryStatusEnum {
 }
 export default function LeftSide({ product, status, addToCart }) {
   return (
-    <div className="col-span-12 lg:col-span-3  rounded-3xl bg-customGray">
-      <div className="px-4 py-8 mr-0 relative flex h-full flex-col justify-between ">
+    <div className="col-span-12 lg:col-span-3  rounded-2xl bg-white">
+      <div className="px-4 py-4 mr-0 relative flex h-full flex-col justify-between text-sm">
         <div>
-          <div className="text-primary">
+          <div className="text-gray-700 font-bold">
             {product[0] ? (
               <span>چرا از {product[0]?.vendor?.name} خرید کنم؟</span>
             ) : (
@@ -94,12 +94,12 @@ export default function LeftSide({ product, status, addToCart }) {
             )}
           </div>
         </div>
-        <div className="fixed md:static bottom-20 left-0 bg-white md:bg-transparent w-full flex justify-between px-4 md:px-0 items-center z-[15] border-t boerder-t-gray-300 md:flex-col md:justify-start md:items-start py-4 md:py-0 gap-4 md:gap-0">
+        <div className="fixed md:static bottom-20 left-0 bg-white md:bg-transparent w-full flex justify-between px-4 md:px-0 items-center z-[15] border-t boerder-t-gray-300 md:flex-col md:justify-start md:items-start py-2 md:py-0 gap-4 md:gap-0">
           {status === 1 ? (
             <>
               <div className="w-full">
-                <div className="md:mt-10 flex items-end">
-                  <div className="pb-0.5">
+                <div className="md:mt-4 flex items-end">
+                  <div className="pb-0.5 text-sm">
                     فروشنده:{" "}
                     <span className="font-bold text-primary">
                       {product[0]?.vendor?.name}
@@ -115,9 +115,6 @@ export default function LeftSide({ product, status, addToCart }) {
                     <div className="flex items-center my-auto gap-1 flex-col">
                       {product[0]?.firstPrice?.appliedDiscount ? (
                         <>
-                          <div className="w-full hidden md:block text-center animate-bounce bg-[#E2F0EB] text-primary text-sm rounded-ss-xl rounded-e-xl py-2 px-3 mb-1">
-                            قیمت
-                          </div>
                           <span className="mb-1 flex items-center w-full">
                             <span className="text-xs mr-2 bg-primary text-white rounded-full px-2 py-1">
                               {Number(

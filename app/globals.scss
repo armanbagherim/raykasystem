@@ -256,6 +256,7 @@ body {
   -webkit-font-feature-settings: "ss02";
   font-feature-settings: "ss02";
   font-kerning: none;
+  background-color: #f6f6f6 !important;
 }
 
 .iranSans {
@@ -817,25 +818,25 @@ html {
 
 .selecteds .swiper-slide {
   width: 100px;
-  margin-left: 20px;
+  margin-left: 10px !important;
 }
 
 @media (max-width: 768px) {
   .selecteds .swiper-slide {
     width: 85px;
-    margin-left: 20px;
+    margin-left: 10px !important;
   }
 }
 
 .sliders .swiper-slide {
-  width: 260px !important;
-  margin-left: 20px;
+  width: 220px !important;
+  margin-left: 10px !important;
 }
 
 @media (max-width: 767px) {
   .sliders .swiper-slide {
     width: 200px !important;
-    margin-left: 20px;
+    margin-left: 10px !important;
   }
 }
 
@@ -853,4 +854,9 @@ html {
   .container.mx-auto {
     padding: 0 0 !important;
   }
+}
+
+.specialInfos .flex:nth-child(even) {
+    background: #f7f7f7;
+    border-radius: 15px;
 }

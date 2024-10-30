@@ -55,10 +55,7 @@ export default function Comments({ comments, product, total, session }) {
   };
   return (
     <div>
-      <div
-        id="commentSection"
-        className=" mt-8 gap-10 border border-[#e8e8e8] rounded-3xl"
-      >
+      <div id="commentSection" className=" mt-4 gap-10 rounded-3xl bg-white">
         <div className="p-8">
           <div className="w-full">امتیاز و دیدگاه کاربران</div>
           <div className="mt-8 grid grid-cols-12">

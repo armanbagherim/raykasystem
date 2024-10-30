@@ -87,7 +87,7 @@ const Sellerpage = async ({ params, searchParams }) => {
         <div className="mt-7">
           <div className="grid grid-cols-12 h-full">
             <Sidebar range={range} />
-            <div className="col-span-12 md:col-span-9 p-0 sm:p-4">
+            <div className="col-span-12 md:col-span-9 p-0 sm:px-4">
               <div>
                 <div className="p-2 grid grid-cols-1 ">
                   {/* <div className="flex gap-2 col-span-3 whitespace-nowrap overflow-y-scroll md:overflow-y-hidden">
@@ -119,7 +119,7 @@ const Sellerpage = async ({ params, searchParams }) => {
                   </div>
                 </div>
                 <div>
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-2 gap-2">
                     {products?.result?.map((value, key) => (
                       <ProductCard
                         key={key}

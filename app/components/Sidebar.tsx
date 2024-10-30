@@ -338,7 +338,7 @@ const Sidebar = ({
           isOpen ? "block" : "hidden"
         }`}
       >
-        <div className="relative h-[90%] md:h-full overflow-y-scroll px-4 md:px-0 mb-3 md:overflow-y-hidden">
+        <div className="relative h-[90%] md:h-full overflow-y-scroll px-4 md:px-0 mb-3 md:overflow-y-hidden  rounded-2xl pt-4">
           <div
             className="mb-6 flex justify-between items-center md:hidden"
             onClick={(e) => setIsOpen(false)}
@@ -350,19 +350,28 @@ const Sidebar = ({
           {brands?.length > 0 ? (
             <Accordion
               defaultExpanded
-              className="bg-[#F8F8F8] border border-[#E7E7E7] !shadow-none mb-3 !rounded-2xl no-before py-0"
+              className="bg-[#F8F8F8] !border-b !border-b-gray-200 !shadow-none mb-3 !my-0 no-before !py-0 !mb-2"
             >
               <AccordionSummary
-                expandIcon={<PlusSmall />}
+                expandIcon={<GridArrowDownwardIcon fontSize="small" />}
                 aria-controls="panel1-content"
                 id="panel1-header"
+                className="!min-h-[46px] !border-b !border-b-gray-200 !py-0 !my-0"
+                sx={{
+                  "& .MuiAccordionSummary-content": {
+                    margin: "0 !important",
+                  },
+                }}
               >
                 <Typography>برند</Typography>
               </AccordionSummary>
               <AccordionDetails className="bg-white border-0">
                 <div className=" overflow-y-auto max-h-52 font-normal text-md custom-scroll">
                   {brands.map((value, key) => (
-                    <div key={key} className="p-2 grid grid-cols-2">
+                    <div
+                      key={key}
+                      className="p-2 grid grid-cols-2 text-sm font-medium"
+                    >
                       <label
                         htmlFor={value.name + value.id}
                         className="col-span-1"
@@ -385,15 +394,19 @@ const Sidebar = ({
                 </div>
               </AccordionDetails>
             </Accordion>
-          ) : (
-            ""
-          )}
+          ) : null}
 
-          <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] !shadow-none mb-3 !rounded-2xl no-before py-0">
+          <Accordion className="bg-[#F8F8F8] !border-b !border-b-gray-200 !shadow-none mb-3 !my-0 no-before !py-0 !mb-2">
             <AccordionSummary
-              expandIcon={<GridArrowDownwardIcon />}
+              expandIcon={<GridArrowDownwardIcon fontSize="small" />}
               aria-controls="panel1-content"
               id="panel1-header"
+              className="!min-h-[46px] !border !border-b !border-b-gray-200 !py-0 !my-0"
+              sx={{
+                "& .MuiAccordionSummary-content": {
+                  margin: "0 !important",
+                },
+              }}
             >
               <Typography>قیمت</Typography>
             </AccordionSummary>
@@ -432,12 +445,18 @@ const Sidebar = ({
             ? attributes.map((value, key) => (
                 <Accordion
                   key={key}
-                  className="bg-[#F8F8F8] border border-[#E7E7E7] !shadow-none mb-3 !rounded-2xl no-before py-0"
+                  className="bg-[#F8F8F8] !border-b !border-b-gray-200 !shadow-none mb-3 !my-0 no-before !py-0 !mb-2"
                 >
                   <AccordionSummary
-                    expandIcon={<GridArrowDownwardIcon />}
+                    expandIcon={<GridArrowDownwardIcon fontSize="small" />}
                     aria-controls="panel1-content"
                     id="panel1-header"
+                    className="!min-h-[46px] !border !border-b !border-b-gray-200 !py-0 !my-0"
+                    sx={{
+                      "& .MuiAccordionSummary-content": {
+                        margin: "0 !important",
+                      },
+                    }}
                   >
                     <Typography>{value.name}</Typography>
                   </AccordionSummary>
@@ -470,11 +489,17 @@ const Sidebar = ({
               ))
             : ""}
           {colors?.length > 0 ? (
-            <Accordion className="bg-[#F8F8F8] border border-[#E7E7E7] !shadow-none mb-3 !rounded-2xl no-before py-0">
+            <Accordion className="bg-[#F8F8F8] !border-b !border-b-gray-200 !shadow-none mb-3 !my-0 no-before !py-0 !mb-2">
               <AccordionSummary
-                expandIcon={<GridArrowDownwardIcon />}
+                expandIcon={<GridArrowDownwardIcon fontSize="small" />}
                 aria-controls="panel1-content"
                 id="panel1-header"
+                className="!min-h-[46px] !border !border-b !border-b-gray-200 !py-0 !my-0"
+                sx={{
+                  "& .MuiAccordionSummary-content": {
+                    margin: "0 !important",
+                  },
+                }}
               >
                 <Typography>رنگ</Typography>
               </AccordionSummary>
@@ -517,12 +542,18 @@ const Sidebar = ({
           )}
           <Accordion
             defaultExpanded
-            className="bg-[#F8F8F8] border border-[#E7E7E7] !shadow-none mb-3 !rounded-2xl no-before py-0"
+            className="bg-[#F8F8F8] !border-b !border-b-gray-200 !shadow-none mb-3 !my-0 no-before !py-0 !mb-2"
           >
             <AccordionSummary
-              expandIcon={<GridArrowDownwardIcon />}
+              expandIcon={<GridArrowDownwardIcon fontSize="small" />}
               aria-controls="panel1-content"
               id="panel1-header"
+              className="!min-h-[46px] !border !border-b !border-b-gray-200 !py-0 !my-0"
+              sx={{
+                "& .MuiAccordionSummary-content": {
+                  margin: "0 !important",
+                },
+              }}
             >
               <Typography>دیگر فیلتر ها</Typography>
             </AccordionSummary>

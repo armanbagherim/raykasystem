@@ -81,7 +81,7 @@ const Megamenu = ({ items }) => {
                     );
                     setGroupName(value.name);
                   }}
-                  className="px-3 py-2 text-md cursor-pointer border-l hover:border-l-primary hover:border-l-4 hover:bg-gray-200 rounded-r-xl hover:text-black"
+                  className="px-3 py-2 text-sm font-bold cursor-pointer border-l hover:border-l-primary hover:border-l-4 hover:bg-gray-200 rounded-r-xl hover:text-black"
                 >
                   {value.name}
                 </p>

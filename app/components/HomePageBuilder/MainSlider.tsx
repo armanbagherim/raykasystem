@@ -8,9 +8,8 @@ interface ISlider {
 }
 
 export default function MainSlider({ data }) {
-  console.log(data);
   return (
-    <div className="mb-8 md:mb-20 mainSlide">
+    <div className="mb-8 md:mb-8 mainSlide">
       <Slider slidesPerView={1}>
         {data.map((slider, index) => {
           return (

@@ -128,32 +128,28 @@ export default function SignInForm({ session }) {
 
         <div className="mb-10 md:mb-0">
           <div className="h-full md:flex lg:flex xl:flex 2xl:flex shadow-none md:shadow-shadowCustom border-none md:border justify-center border border-[#F1F1F1] rounded-[25px]">
-            <div className="flex-1 flex justify-center items-center py-2 md:py-40 lg:py-40 xl:py-40 2xl:py-40">
-              <div className="text-center  w-full px-4 md:px-16">
-                <h4 className="text-2xl mb-2">ورود یا ثبت نام</h4>
-                <p className="mb-10">
-                  ورود به خانواده <span className="text-primary">21000</span>{" "}
-                  نفری جهیزان
+            <div className="flex-1 flex justify-center items-center py-2 md:py-40 lg:py-40 xl:py-40 2xl:py-40 bg-white">
+              <div className="text-center w-full px-4 md:px-16">
+                <h4 className="text-3xl mb-2 peyda font-bold">
+                  ورود یا ثبت نام
+                </h4>
+                <p className="mb-10 text-sm">
+                  ورود به خانواده{" "}
+                  <span className="text-primary font-bold">35000</span> نفری
+                  جهیزان
                 </p>
                 <form onSubmit={onSubmit}>
                   {state == "phone" && (
                     <div className="text-right md:m-0 lg:m-0 xl:m-0 2xl:m-0">
-                      <h4 className="opacity-70 text-xs mb-3">شماره موبایل</h4>
+                      <h4 className="text-xs mb-3 font-bold">شماره موبایل</h4>
                       <input
-                        className="bg-[#F8F8F8] border border-gray-300 text-left rounded-2xl py-4 w-full md:w-full lg:w-full xl:full px-6 outline-none mb-8"
+                        autoFocus
+                        className="bg-[#f6f6f6] tracking-[4px] text-center rounded-2xl py-4 w-full md:w-full lg:w-full xl:full px-6 outline-none mb-4"
                         type="tel"
                         label="Phone Number"
                         pattern="/^(\{?(09)([1-3]){2}-([0-9]){7,7}\}?)$/"
                         onChange={(e) => setPhoneNumber(e.target.value)}
                       />
-
-                      <p className="rule opacity-70 text-sm mb-4">
-                        با ورود به جهیزان تمامی{" "}
-                        <Link className="text-[#2D9CDB]" href="/rules">
-                          قوانین
-                        </Link>{" "}
-                        و مقررات وبسایت جهیزان را میپذیرید
-                      </p>
                     </div>
                   )}
                   {state == "verify" && (
@@ -164,7 +160,7 @@ export default function SignInForm({ session }) {
                             <div className="w-full">
                               <h4 className="opacity-70 text-xs mb-3">نام</h4>
                               <input
-                                className="bg-[#F8F8F8]  border border-gray-300 text-right rounded-2xl py-4 px-6 w-full outline-none mb-8"
+                                className="bg-[#f6f6f6]  border border-gray-300 text-right rounded-2xl py-4 px-6 w-full outline-none mb-4"
                                 type="text"
                                 label="Phone Number"
                                 onChange={(e) => setFirstName(e.target.value)}
@@ -175,7 +171,7 @@ export default function SignInForm({ session }) {
                                 نام خانوادگی
                               </h4>
                               <input
-                                className="bg-[#F8F8F8] border border-gray-300 text-right rounded-2xl py-4 px-6 w-full outline-none mb-8"
+                                className="bg-[#f6f6f6] border border-gray-300 text-right rounded-2xl py-4 px-6 w-full outline-none mb-4"
                                 type="text"
                                 label="Phone Number"
                                 onChange={(e) => setLastName(e.target.value)}
@@ -237,7 +233,7 @@ export default function SignInForm({ session }) {
                       <div dir="ltr">
                         <VerificationInput
                           onChange={(e) => setVerifyCode(e)}
-                          autoFocus="true"
+                          autoFocus
                           placeholder="_"
                           inputProps={{
                             type: "tel",
@@ -245,7 +241,7 @@ export default function SignInForm({ session }) {
                           length={6}
                           classNames={{
                             container:
-                              "bg-[#F8F8F8] border border-gray-300 text-left rounded-2xl py-3 px-6 mb-4 w-full outline-none",
+                              "bg-[#f6f6f6] border border-gray-300 text-left rounded-2xl py-3 px-6 mb-4 w-full outline-none",
                             character:
                               "border-0 bg-transparent p-0 text-lg  outline-none",
                             characterInactive: "character--inactive",
@@ -257,7 +253,7 @@ export default function SignInForm({ session }) {
                     </div>
                   )}
                   <button
-                    className="bg-primary justify-center w-full text-white py-4 px-6 outline-0 rounded-2xl text-center flex items-center"
+                    className="bg-primary justify-center w-full text-white py-4 px-6 outline-0 rounded-2xl text-center flex items-center mb-4"
                     onClick={onSubmit}
                   >
                     <span>{state == "phone" ? "دریافت کد تایید" : "ورود"}</span>
@@ -284,6 +280,13 @@ export default function SignInForm({ session }) {
                       <span className="sr-only">Loading...</span>
                     </span>
                   </button>
+                  <p className="rule text-sm mb-4 text-right">
+                    با ورود به جهیزان تمامی{" "}
+                    <Link className="text-[#2D9CDB]" href="/rules">
+                      قوانین
+                    </Link>{" "}
+                    و مقررات وبسایت جهیزان را میپذیرید
+                  </p>
                 </form>
               </div>
             </div>
