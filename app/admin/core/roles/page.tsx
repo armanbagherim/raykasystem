@@ -54,12 +54,6 @@ export default function Roles() {
 
   const columns = [
     {
-      accessorKey: "id",
-      header: "شناسه نقش",
-      size: 10,
-      maxSize: 10,
-    },
-    {
       accessorKey: "roleName",
       header: "نام نقش",
       minSize: 100, //min size enforced during resizing

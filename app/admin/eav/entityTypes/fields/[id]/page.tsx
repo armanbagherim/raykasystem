@@ -58,12 +58,6 @@ export default function Eav({ params }) {
   };
   const columns = [
     {
-      accessorKey: "id",
-      header: "شناسه",
-      size: 10,
-      maxSize: 10,
-    },
-    {
       accessorKey: "name",
       header: "نام ",
       minSize: 100, //min size enforced during resizing

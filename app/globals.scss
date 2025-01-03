@@ -812,7 +812,7 @@ html {
 .MuiButton-root,
 .MuiFormControl-root *,
 .base-Popper-root *,
-.MuiPaper-root * {
+.MuiPaper-root *, .MuiTooltip-tooltip {
   font-family: IRANSansX !important;
 }
 
@@ -859,4 +859,22 @@ html {
 .specialInfos .flex:nth-child(even) {
     background: #f7f7f7;
     border-radius: 15px;
+}
+
+
+.MuiPaper-rounded {
+  border: 0 !important;
+  border-radius: 15px !important;
+}
+
+.MuiButton-root {
+  font-size: 13px !important;
+  padding: 10px 30px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 0 0 !important;
+  font-weight: 900 !important;
+}
+
+.MuiInputBase-root fieldset {
+  border-radius: 10px !important;
 }

@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation"; // Corrected import for useRouter
 import React, { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
+import { Dashboard } from "@/app/components/design/Icons";
+import IconLoader from "@/app/components/design/IconLoader";
 
 const SideMenu = () => {
   const { data: session } = useSession();
@@ -74,28 +76,25 @@ const SideMenu = () => {
 
       <aside
         id="logo-sidebar"
-        className={`fixed top-0 xs:pt-14 right-0 z-40 w-72 h-screen transition-transform ${
+        className={`fixed top-0 xs:pt-14 right-0 z-40 w-72 h-screen transition-transform py-10  ${
           !menuOpen
             ? "-translate-x-full sm:translate-x-0 translate-x-full"
             : "transform-none"
         } `}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 bg-[#20ac73] flex justify-between flex-col h-full overflow-y-auto custom-scroll">
+        <div className="h-full px-3 py-8 bg-white border border-[#e5e5e5] !rounded-l-3xl flex justify-between flex-col overflow-y-auto custom-scroll">
           <div>
-            <div className="flex bg-white justify-between items-center rounded-xl p-4 mb-5 border-b">
-              <a
-                href="https://flowbite.com/"
-                className="flex items-center ps-2.5"
-              >
+            <div className="flex bg-blue-700 justify-between items-center rounded-xl px-4 py-2 mb-5 border-b">
+              <a className="flex items-center p-2 bg-white rounded-full">
                 <img
                   src="/images/logo-admin.png"
-                  className="h-6 me-3 sm:h-7"
+                  className="h-6 w-6 mx-auto sm:h-7 sm:w-7 grayscale"
                   alt="پنل مدیریت"
                 />
               </a>
               <a href="/">
-                <span className="self-center text-md font-normal whitespace-nowrap">
+                <span className="self-center text-md font-normal text-white  whitespace-nowrap">
                   مشاهده سایت
                 </span>
               </a>
@@ -106,17 +105,18 @@ const SideMenu = () => {
                 <li key={key}>
                   <button
                     type="button"
-                    className={`flex items-center w-full p-2 text-base transition duration-75 rounded-lg group ${
+                    className={`flex items-center w-full p-2 text-base transition duration-200 rounded-lg group ${
                       isActive(menu.url)
                         ? "text-blue-500 bg-gray-700"
                         : "text-gray-900"
                     }`}
-                    aria-controls="dropdown-example"
-                    data-collapse-toggle="dropdown-example"
-                    aria-expanded="true"
+                    aria-controls={`dropdown-example-${menu.id}`}
+                    data-collapse-toggle={`dropdown-example-${menu.id}`}
+                    aria-expanded={subMenuVisibility[menu.id] || false}
                     onClick={() => toggleSubMenu(menu.id)}
                   >
-                    <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap text-white">
+                    {menu.icon && <IconLoader iconName={menu.icon} />}
+                    <span className="flex-1 ms-3 mr-2 text-left rtl:text-right whitespace-nowrap text-[#262626]">
                       {menu.title}
                     </span>
                     <svg
@@ -127,7 +127,7 @@ const SideMenu = () => {
                       viewBox="0 0 10 6"
                     >
                       <path
-                        stroke="white"
+                        stroke="#262626"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
@@ -136,18 +136,18 @@ const SideMenu = () => {
                     </svg>
                   </button>
                   <ul
-                    className={`py-2 space-y-2 ${
-                      subMenuVisibility[menu.id] ? "" : "hidden"
+                    className={`py-2 space-y-2 overflow-hidden transition-all duration-300 ease-in-out ${
+                      subMenuVisibility[menu.id] ? "max-h-screen" : "max-h-0"
                     }`}
                   >
                     {menu.subMenus.map((submenu, key) => (
                       <li key={key}>
                         <Link href={submenu.url}>
                           <p
-                            className={`flex items-center w-full px-4 py-3  text-white transition duration-75 rounded-xl pl-11 group ${
+                            className={`flex items-center w-full px-4 py-3 text-white transition duration-300 rounded-xl pl-11 group ${
                               isActive(submenu.url)
-                                ? "!text-[#20ac73] bg-white"
-                                : "!text-white"
+                                ? "!text-[#20ac73] mr-2 bg-white"
+                                : "!text-black"
                             }`}
                           >
                             {submenu.title}

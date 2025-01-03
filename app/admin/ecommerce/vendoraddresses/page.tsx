@@ -22,12 +22,6 @@ export default function VendorAddress() {
 
   const columns = [
     {
-      accessorKey: "id",
-      header: "شناسه",
-      size: 10,
-      maxSize: 10,
-    },
-    {
       accessorKey: "name",
       header: "نام ",
       minSize: 100,

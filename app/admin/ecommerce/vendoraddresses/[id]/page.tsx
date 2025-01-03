@@ -51,11 +51,6 @@ export default function VendorAddress({ params }) {
   };
   const columns = [
     {
-      accessorKey: "id",
-      header: "شناسه",
-      size: 20,
-    },
-    {
       accessorKey: "address.name",
       header: "نام آدرس ",
       minSize: 100, //min size enforced during resizing

@@ -41,12 +41,6 @@ export default function Transactions() {
 
   const columns = [
     {
-      accessorKey: "id",
-      header: "شناسه تراکنش",
-      size: 10,
-      maxSize: 10,
-    },
-    {
       accessorKey: "CAt",
       header: "تاریخ ثبت ",
       minSize: 100,

@@ -302,67 +302,88 @@ export default function Products() {
     }
   };
   return (
-    <div className="grid grid-cols-4 gap-4">
-      <div className="flex gap-4 col-span-3 flex-wrap">
-        <div className="flex-1">
-          <TextField
-            onChange={(e) =>
-              setRequestBody({
-                ...requestBody,
-                title: ChangeToNull(e.target.value),
-              })
-            }
-            required
-            id="standard-basic"
-            label="نام محصول"
-            fullWidth
-            variant="outlined"
-          />
-        </div>
-        <div className="flex-1">
-          <TextField
-            onChange={(e) =>
-              setRequestBody({
-                ...requestBody,
-                slug: ChangeToNull(e.target.value),
-              })
-            }
-            fullWidth
-            required
-            id="standard-basic"
-            label="لینک محصول"
-            variant="outlined"
-          />
-        </div>
-      </div>
-      <div className="flex gap-4 col-span-3 flex-wrap">
-        <SelectSearch
-          loadingState={brandsIsLoading}
-          data={brands?.result}
-          label="برند"
-          onChange={(e) => setRequestBody({ ...requestBody, brandId: e.id })}
+    <div className=" gap-4">
+      <aside className="w-full mb-4 rounded-xl gap-4 pt-0 flex items-center justify-start flex-row">
+        <ProductUploader
+          location="v1/api/ecommerce/productphotos/image"
+          removePhoto={(e) => removePhoto(e)}
+          setPhotos={setPhotos}
+          photos={photos}
+          text="آپلود تصویر"
+          type="image"
+          isFull
         />
-        <SelectSearch
-          loadingState={publishStatusesIsLoading}
-          data={publishStatuses?.result}
-          label="وضعیت انتشار"
-          onChange={(e) =>
-            setRequestBody({ ...requestBody, publishStatusId: e.id })
-          }
+        <ProductUploader
+          location="v1/api/ecommerce/productVideos/upload"
+          setPhotos={setVideos}
+          removePhoto={(e) => removeVideo(e)}
+          photos={videos}
+          type="video"
+          text="آپلود ویدیو"
+          isFull
         />
-        <TextField
-          value={requestBody.weight}
-          label="وزن"
-          onChange={(e) =>
-            setRequestBody({ ...requestBody, weight: +e.target.value })
-          }
-        />
-        <div className="flex w-full items-center gap-8">
+      </aside>
+      <hr className="mb-8" />
+      <div className=" flex gap-4 flex-col">
+        <div className="flex gap-4 flex-wrap">
           <div className="flex-1">
-            {parentEntityTypesIsLoading ? (
-              "loading"
-            ) : (
+            <TextField
+              onChange={(e) =>
+                setRequestBody({
+                  ...requestBody,
+                  title: ChangeToNull(e.target.value),
+                })
+              }
+              required
+              id="standard-basic"
+              label="نام محصول"
+              fullWidth
+              variant="outlined"
+            />
+          </div>
+          <div className="flex-1">
+            <TextField
+              onChange={(e) =>
+                setRequestBody({
+                  ...requestBody,
+                  slug: ChangeToNull(e.target.value),
+                })
+              }
+              fullWidth
+              required
+              id="standard-basic"
+              label="لینک محصول"
+              variant="outlined"
+            />
+          </div>
+        </div>
+        <div className="flex gap-4 col-span-3 flex-wrap">
+          <SelectSearch
+            loadingState={brandsIsLoading}
+            data={brands?.result}
+            label="برند"
+            onChange={(e) => setRequestBody({ ...requestBody, brandId: e.id })}
+          />
+          <SelectSearch
+            loadingState={publishStatusesIsLoading}
+            data={publishStatuses?.result}
+            label="وضعیت انتشار"
+            onChange={(e) =>
+              setRequestBody({ ...requestBody, publishStatusId: e.id })
+            }
+          />
+          <TextField
+            value={requestBody.weight}
+            label="وزن"
+            onChange={(e) =>
+              setRequestBody({ ...requestBody, weight: +e.target.value })
+            }
+          />
+          <div className="flex w-full items-center gap-4">
+            <div className="flex-1">
               <NestedSelect
+                selected={entityTypeId}
+                parentEntityTypesIsLoading={parentEntityTypesIsLoading}
                 data={parentEntityTypes?.result}
                 onChange={(e) => {
                   setEntityTypeId(ChangeToNull(e.target.value));
@@ -372,212 +393,205 @@ export default function Products() {
                   });
                 }}
               />
-            )}
+            </div>
+            <div className="flex-1 border border-[#c4c4c4] p-2 rounded-xl">
+              <label className="inline-flex items-center cursor-pointer">
+                <span className="ml-3 text-sm font-medium text-gray-900 ">
+                  فروش بر اساس رنگ؟
+                </span>
+                <Switch
+                  checked={requestBody.colorBased}
+                  onChange={(e) =>
+                    setRequestBody({
+                      ...requestBody,
+                      colorBased: !requestBody.colorBased,
+                    })
+                  }
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+              </label>
+            </div>
           </div>
-          <div className="flex-1">
-            <label className="inline-flex items-center cursor-pointer">
-              <span className="ml-3 text-sm font-medium text-gray-900 ">
-                فروش بر اساس رنگ؟
-              </span>
-              <Switch
-                checked={requestBody.colorBased}
-                onChange={(e) =>
-                  setRequestBody({
-                    ...requestBody,
-                    colorBased: !requestBody.colorBased,
-                  })
-                }
-                inputProps={{ "aria-label": "controlled" }}
-              />
-            </label>
-          </div>
-        </div>
-
-        <div className="flex-shrink-0 flex-grow-0 mb-6 w-full">
-          <>
-            <div className="flex flex-wrap">
-              <div className="w-full">
-                <ul
-                  className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
-                  role="tablist"
-                >
-                  <Tab
-                    activeTab={openTab}
-                    tabName="ویژگی ها"
-                    tabId={1}
-                    setActiveTab={setOpenTab}
-                  />
-                  <Tab
-                    activeTab={openTab}
-                    tabName="موجودی ها"
-                    tabId={2}
-                    setActiveTab={setOpenTab}
-                  />
-                  <Tab
-                    activeTab={openTab}
-                    tabName="موتور های جست و جو"
-                    tabId={3}
-                    setActiveTab={setOpenTab}
-                  />
-                </ul>
-                <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 border border-gray-200 rounded">
-                  <div className="px-4 py-5 flex-auto">
-                    <div className="tab-content tab-space">
-                      <div
-                        className={openTab === 1 ? "block" : "hidden"}
-                        id="link1"
-                      >
-                        {entityTypeId
-                          ? attributes?.map((value, index) => {
-                              const isValueBased =
-                                value.attributeType.valueBased;
-                              const label = value.name;
-                              const options = isValueBased
-                                ? value.attributeValues
-                                : [];
-                              const valueType = isValueBased
-                                ? "select"
-                                : "text";
-
-                              {
-                                return (
-                                  <GenericInput
-                                    key={index}
-                                    type={valueType}
-                                    value={value.val}
-                                    onChange={(e) =>
-                                      handleAttributeChange(value.id, e)
-                                    }
-                                    options={options}
-                                    label={label}
-                                  />
-                                );
-                              }
-                            })
-                          : "در حال بارگزاری"}
-                      </div>
-                      <div
-                        className={openTab === 2 ? "block" : "hidden"}
-                        id="link2"
-                      >
-                        <button
-                          className="!mb-6 text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal text-white bg-[#20ac73] w-full block"
-                          onClick={(e) => {
-                            handleClickOpen(null);
-                          }}
+          <hr className="my-6 w-full" />
+          <div className="flex-shrink-0 flex-grow-0 mb-6 w-full">
+            <>
+              <div className="flex flex-wrap">
+                <div className="w-full">
+                  <ul
+                    className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
+                    role="tablist"
+                  >
+                    <Tab
+                      activeTab={openTab}
+                      tabName="ویژگی ها"
+                      tabId={1}
+                      setActiveTab={setOpenTab}
+                    />
+                    <Tab
+                      activeTab={openTab}
+                      tabName="موجودی ها"
+                      tabId={2}
+                      setActiveTab={setOpenTab}
+                    />
+                    <Tab
+                      activeTab={openTab}
+                      tabName="موتور های جست و جو"
+                      tabId={3}
+                      setActiveTab={setOpenTab}
+                    />
+                  </ul>
+                  <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 border border-gray-200 rounded-2xl">
+                    <div className="px-4 py-5 flex-auto">
+                      <div className="tab-content tab-space">
+                        <div
+                          className={openTab === 1 ? "block" : "hidden"}
+                          id="link1"
                         >
-                          افزودن موجودی جدید
-                        </button>
-                        <DataGridLite
-                          handleClickOpen={handleClickOpen}
-                          data={tempInventories}
-                          removeInventory={removeInventory}
-                          key={tempInventories}
-                        />
-                        <InventoriesDialouge
-                          vendorId={vendorId}
-                          colors={colors}
-                          colorsIsLoading={colorsIsLoading}
-                          handleClose={handleClose}
-                          setVendorId={setVendorId}
-                          guaranteeMonthIsLoading={guaranteeMonthIsLoading}
-                          vendorAddresses={vendorAddresses}
-                          userVendors={userVendors}
-                          userVendorsIsLoading={userVendorsIsLoading}
-                          guarantees={guarantees}
-                          guaranteesIsLoading={guaranteesIsLoading}
-                          handleInventoryCreate={handleInventoryCreate}
-                          proviences={proviences}
-                          proviencesIsLoading={proviencesIsLoading}
-                          setOpen={setOpen}
-                          guaranteeMonth={guaranteeMonth}
-                          open={open}
-                          product={tempInventories}
-                          activeSpace={activeSpace}
-                          setActiveSpace={setActiveSpace}
-                        />
-                      </div>
-                      <div
-                        className={openTab === 3 ? "block" : "hidden"}
-                        id="link3"
-                      >
-                        <div className="mb-8">
-                          <TextField
-                            onChange={(e) =>
-                              setRequestBody({
-                                ...requestBody,
-                                metaKeywords: ChangeToNull(e.target.value),
+                          {entityTypeId ? (
+                            attributes?.length === 0 ? (
+                              <div className="text-center">
+                                <h4 className="text-center font-bold text-red-400">
+                                  برای این دسته بندی، هیچ ویژگی تعریف نشده است
+                                </h4>
+                              </div>
+                            ) : (
+                              attributes?.map((value, index) => {
+                                const isValueBased =
+                                  value.attributeType.valueBased;
+                                const label = value.name;
+                                const options = isValueBased
+                                  ? value.attributeValues
+                                  : [];
+                                const valueType = isValueBased
+                                  ? "select"
+                                  : "text";
+
+                                {
+                                  return (
+                                    <GenericInput
+                                      key={index}
+                                      type={valueType}
+                                      value={value.val}
+                                      onChange={(e) =>
+                                        handleAttributeChange(value.id, e)
+                                      }
+                                      options={options}
+                                      label={label}
+                                      required={value?.required}
+                                    />
+                                  );
+                                }
                               })
-                            }
-                            fullWidth
-                            required
-                            id="standard-basic"
-                            label="کلمات کلیدی"
-                            variant="outlined"
+                            )
+                          ) : (
+                            "در حال بارگزاری"
+                          )}
+                        </div>
+                        <div
+                          className={openTab === 2 ? "block" : "hidden"}
+                          id="link2"
+                        >
+                          <button
+                            className="!mb-6 text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal text-white bg-[#20ac73] w-full block"
+                            onClick={(e) => {
+                              handleClickOpen(null);
+                            }}
+                          >
+                            افزودن موجودی جدید
+                          </button>
+                          <DataGridLite
+                            handleClickOpen={handleClickOpen}
+                            data={tempInventories}
+                            removeInventory={removeInventory}
+                            key={tempInventories}
+                          />
+                          <InventoriesDialouge
+                            vendorId={vendorId}
+                            colors={colors}
+                            colorsIsLoading={colorsIsLoading}
+                            handleClose={handleClose}
+                            setVendorId={setVendorId}
+                            guaranteeMonthIsLoading={guaranteeMonthIsLoading}
+                            vendorAddresses={vendorAddresses}
+                            userVendors={userVendors}
+                            userVendorsIsLoading={userVendorsIsLoading}
+                            guarantees={guarantees}
+                            guaranteesIsLoading={guaranteesIsLoading}
+                            handleInventoryCreate={handleInventoryCreate}
+                            proviences={proviences}
+                            proviencesIsLoading={proviencesIsLoading}
+                            setOpen={setOpen}
+                            guaranteeMonth={guaranteeMonth}
+                            open={open}
+                            product={tempInventories}
+                            activeSpace={activeSpace}
+                            setActiveSpace={setActiveSpace}
                           />
                         </div>
-                        <div className="mb-8">
-                          <TextField
-                            onChange={(e) =>
-                              setRequestBody({
-                                ...requestBody,
-                                metaDescription: ChangeToNull(e.target.value),
-                              })
-                            }
-                            fullWidth
-                            required
-                            id="standard-basic"
-                            label="توضیحات متا"
-                            variant="outlined"
+                        <div
+                          className={openTab === 3 ? "block" : "hidden"}
+                          id="link3"
+                        >
+                          <div className="mb-8">
+                            <TextField
+                              onChange={(e) =>
+                                setRequestBody({
+                                  ...requestBody,
+                                  metaKeywords: ChangeToNull(e.target.value),
+                                })
+                              }
+                              fullWidth
+                              required
+                              id="standard-basic"
+                              label="کلمات کلیدی"
+                              variant="outlined"
+                            />
+                          </div>
+                          <div className="mb-8">
+                            <TextField
+                              onChange={(e) =>
+                                setRequestBody({
+                                  ...requestBody,
+                                  metaDescription: ChangeToNull(e.target.value),
+                                })
+                              }
+                              fullWidth
+                              required
+                              id="standard-basic"
+                              label="توضیحات متا"
+                              variant="outlined"
+                            />
+                          </div>
+                          <div className="mb-8">
+                            <TextField
+                              onChange={(e) =>
+                                setRequestBody({
+                                  ...requestBody,
+                                  metaTitle: ChangeToNull(e.target.value),
+                                })
+                              }
+                              fullWidth
+                              required
+                              id="standard-basic"
+                              label="عنوان سئو"
+                              variant="outlined"
+                            />
+                          </div>
+                          <SeoBox
+                            setDescription={setDescription}
+                            description={description}
                           />
                         </div>
-                        <div className="mb-8">
-                          <TextField
-                            onChange={(e) =>
-                              setRequestBody({
-                                ...requestBody,
-                                metaTitle: ChangeToNull(e.target.value),
-                              })
-                            }
-                            fullWidth
-                            required
-                            id="standard-basic"
-                            label="عنوان سئو"
-                            variant="outlined"
-                          />
-                        </div>
-                        <SeoBox
-                          setDescription={setDescription}
-                          description={description}
-                        />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </>
+            </>
+          </div>
         </div>
       </div>
 
-      <aside className="w-full rounded-xl p-4 col-span-1 flex items-center justify-start flex-col">
-        <ProductUploader
-          location="v1/api/ecommerce/productphotos/image"
-          removePhoto={(e) => removePhoto(e)}
-          setPhotos={setPhotos}
-          photos={photos}
-          text="آپلود تصویر"
-          type="image"
-        />
-        <ProductUploader
-          location="v1/api/ecommerce/productVideos/upload"
-          setPhotos={setVideos}
-          removePhoto={(e) => removeVideo(e)}
-          photos={videos}
-          type="video"
-          text="آپلود ویدیو"
-        />
-      </aside>
       <SaveBar
         action={saveProduct}
         backUrl="/admin/ecommerce/products"

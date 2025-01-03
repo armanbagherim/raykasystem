@@ -9,6 +9,7 @@ const GenericInput = ({
   label,
   defaultValue,
   disabled = false,
+  required,
 }) => {
   if (type === "select") {
     return (
@@ -29,10 +30,10 @@ const GenericInput = ({
       <div className="flex-1 mb-4">
         <TextField
           onChange={(e) => onChange(e.target.value)}
-          required
+          required={required}
           disabled={disabled}
           className=""
-          size="small"
+          size="medium"
           id="outlined-basic"
           label={label}
           variant="outlined"

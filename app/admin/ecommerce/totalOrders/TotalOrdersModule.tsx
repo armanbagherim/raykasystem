@@ -77,12 +77,6 @@ export default function TotalOrdersModule({ searchParams }) {
 
   const columns = [
     {
-      accessorKey: "id",
-      header: "شناسه",
-      size: 10,
-      maxSize: 10,
-    },
-    {
       accessorKey: "transactionId",
       header: "شماره تراکنش",
       size: 10,

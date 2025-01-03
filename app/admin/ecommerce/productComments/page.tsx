@@ -120,13 +120,6 @@ export default function Orders() {
 
   const columns = [
     {
-      accessorKey: "id",
-      header: "شناسه نظر",
-      minSize: 5,
-      size: 5,
-      maxSize: 5,
-    },
-    {
       accessorKey: "product.title",
       header: "محصول",
       minSize: 5,

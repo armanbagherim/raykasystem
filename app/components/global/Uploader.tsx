@@ -8,7 +8,8 @@ import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
 import { toast } from "react-toastify";
 import { useDropzone } from "react-dropzone";
-
+import { IconButton, Tooltip } from "@mui/material";
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 const Uploader = ({
   id,
   location,
@@ -17,6 +18,7 @@ const Uploader = ({
   text = "آپلود تصویر",
   photos,
   type = "image",
+  isFull,
 }) => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
@@ -116,12 +118,23 @@ const Uploader = ({
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        className="bg-primary text-white px-6 py-3 rounded-lg"
-      >
-        {text}
-      </button>
+      {isFull ? (
+        <Button
+          fullWidth={isFull}
+          onClick={() => setOpen(true)}
+          className="bg-primary text-white px-6 py-3 rounded-lg"
+        >
+          {text}
+        </Button>
+      ) : (
+        <Tooltip className="IranSans" arrow placement="top" title="آپلود تصویر">
+          <IconButton>
+            <a onClick={() => setOpen(true)}>
+              <FileUploadOutlinedIcon />
+            </a>
+          </IconButton>
+        </Tooltip>
+      )}
 
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>{"آپلود فایل"}</DialogTitle>

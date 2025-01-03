@@ -70,12 +70,6 @@ export default function Eav({ params }) {
 
   const columns = [
     {
-      accessorKey: "product.id",
-      header: "شناسه",
-      size: 10,
-      maxSize: 10,
-    },
-    {
       accessorKey: "product.title",
       header: "نام ",
       minSize: 100, //min size enforced during resizing

@@ -15,11 +15,6 @@ const OrderDataTable = ({ data = [], decreaseDetail, deleteDetail }) => {
   //should be memoized or stable
   const columns = [
     {
-      accessorKey: "id",
-      header: "شناسه",
-      size: 30,
-    },
-    {
       accessorKey: "image",
       header: "تصویر ",
       size: 30,
