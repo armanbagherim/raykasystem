@@ -16,7 +16,15 @@ import Swal from "sweetalert2";
 import SubjectIcon from "@mui/icons-material/Subject";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
-export function columns(isOpen, setIsOpen, triggered, setTriggered, formik) {
+export function columns(
+  isOpen,
+  setIsOpen,
+  triggered,
+  setTriggered,
+  formik,
+  setIsEdit,
+  setFieldsProperties
+) {
   const getData = async (id: string) => {
     const res = await fetcher({
       url: `/api/services/app/BankAccounts/GetBankAccountForEdit?Id=${id}`,
@@ -96,14 +104,26 @@ export function columns(isOpen, setIsOpen, triggered, setTriggered, formik) {
             id={row.id}
           />
 
-          <Tooltip className="IranSans" arrow placement="top" title="فیلد ها">
+          <Tooltip
+            onClick={(e) => {
+              setFieldsProperties({
+                active: true,
+                loading: false,
+                id: row.original.id,
+              });
+            }}
+            className="IranSans"
+            arrow
+            placement="top"
+            title="فیلد ها"
+          >
             <IconButton>
-              <Link
+              {/* <Link
                 className="ml-1 mr-1"
                 href={`/admin/eav/entityTypes/fields/${row.id}`}
-              >
-                <SubjectIcon />
-              </Link>
+              >                
+              </Link> */}
+              <SubjectIcon />
             </IconButton>
           </Tooltip>
 
@@ -123,11 +143,26 @@ export function columns(isOpen, setIsOpen, triggered, setTriggered, formik) {
             </IconButton>
           </Tooltip>
 
-          <Link href={`/admin/eav/entityTypes/edit/${row.id}`}>
-            <IconButton aria-label="delete" color="primary">
-              <ModeEditIcon />
-            </IconButton>
-          </Link>
+          <IconButton
+            onClick={(e) => {
+              setIsOpen(true);
+              setIsEdit({ active: true, id: row.original.id });
+              formik.setValues({
+                ...formik.values,
+                name: row.original.name,
+                priority: row.original.priority,
+                metaDescription: row.original.metaDescription,
+                description: row.original.description,
+                slug: row.original.slug,
+                metaKeywords: row.original.metaKeywords,
+                parentEntityTypeId: row.original.parentEntityTypeId,
+              });
+            }}
+            aria-label="delete"
+            color="primary"
+          >
+            <ModeEditIcon />
+          </IconButton>
 
           <IconButton
             onClick={(e) => deleteEavType(row.id)}

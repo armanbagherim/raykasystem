@@ -6,6 +6,7 @@ import Modal from "@/app/components/global/Modal";
 import Input from "@/app/components/global/Input";
 import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import dynamic from "next/dynamic";
+import { convertValue } from "@/app/components/utils/ConvertType";
 
 const SeoBox = dynamic(
   () => import("@/app/admin/ecommerce/products/_components/SeoBox"),
@@ -40,7 +41,7 @@ const DataHandler = ({
       isOpen={isOpen}
       handleAccept={formik.handleSubmit}
     >
-      <form onSubmit={formik.handleSubmit}>
+      <form className="pt-4" onSubmit={formik.handleSubmit}>
         <div className="flex gap-4 mb-4">
           <Input
             onChange={formik.handleChange}
@@ -119,7 +120,13 @@ const DataHandler = ({
             }
           />
           <Input
-            onChange={formik.handleChange}
+            onChange={(e) =>
+              formik.setFieldValue(
+                "priority",
+                convertValue(e.target.value, "number")
+              )
+            }
+            type="number"
             variant="outlined"
             value={formik.values.priority}
             label="اولویت"
@@ -174,6 +181,20 @@ const DataHandler = ({
                   }}
                 />
               )}
+              value={
+                parentEntityTypes?.result
+                  .flatMap((value) => [
+                    { id: value.id, name: value.name, isParent: true },
+                    ...value.subEntityTypes.map((sub) => ({
+                      id: sub.id,
+                      name: `${sub.name}`,
+                      isParent: false,
+                    })),
+                  ])
+                  .find(
+                    (option) => option.id === formik.values.parentEntityTypeId
+                  ) || null
+              } // اصلاح شده
               renderOption={(props, option) => (
                 <li {...props} key={option.id}>
                   {option.name}
