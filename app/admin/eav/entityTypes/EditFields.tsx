@@ -78,7 +78,12 @@ const EditFields = ({
         </div>
         <div className="flex gap-4 mb-4">
           <Input
-            onChange={formik.handleChange}
+            onChange={(e) =>
+              formik.setFieldValue(
+                "minLength",
+                convertValue(e.target.value, "number")
+              )
+            }
             variant="outlined"
             value={formik.values.minLength}
             label="حداقل طول کارکتر"
@@ -91,7 +96,12 @@ const EditFields = ({
             helperText={formik?.touched?.minLength && formik?.errors?.minLength}
           />
           <Input
-            onChange={formik.handleChange}
+            onChange={(e) =>
+              formik.setFieldValue(
+                "maxLength",
+                convertValue(e.target.value, "number")
+              )
+            }
             variant="outlined"
             value={formik.values.maxLength}
             label="حداکثر طول کارکتر"

@@ -878,3 +878,7 @@ html {
 .MuiInputBase-root fieldset {
   border-radius: 10px !important;
 }
+
+div:where(.swal2-container) {
+  z-index: 9999999999 !important;
+}

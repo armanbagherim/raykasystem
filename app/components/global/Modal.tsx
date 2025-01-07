@@ -19,6 +19,7 @@ interface IModal {
   maxSize?: string;
   isFull?: boolean;
   closeText?: string;
+  onClick?: () => void;
 }
 
 const Modal = (props: IModal) => {
@@ -32,6 +33,7 @@ const Modal = (props: IModal) => {
     maxSize = "xs",
     isFull = false,
     closeText = "انصراف",
+    onClick = null,
   } = props;
   const theme = useTheme();
   const fullScreen = isFull
@@ -52,7 +54,17 @@ const Modal = (props: IModal) => {
           className="bg-blue-700 text-white !font-bold !text-sm !mb-8"
           id="responsive-dialog-title"
         >
-          {title}
+          <div className="flex items-center justify-between">
+            <span>{title}</span>
+            {onClick && (
+              <button
+                className="bg-white text-blue-800 px-5 py-3 rounded-lg"
+                onClick={onClick}
+              >
+                افزودن
+              </button>
+            )}
+          </div>
         </DialogTitle>
         <DialogContent>
           {loading ? (

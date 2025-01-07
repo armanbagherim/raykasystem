@@ -12,6 +12,7 @@ import { ConvertToNull } from "@/app/components/utils/ConvertToNull";
 import { toast } from "react-toastify";
 import FieldsHandler from "./FieldsHandler";
 import EditFields from "./EditFields";
+import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 
 export default function EavTypesModule() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -97,31 +98,32 @@ export default function EavTypesModule() {
     // validationSchema: formSchema,
     onSubmit: async (values, { resetForm }) => {
       const dataBody = ConvertToNull(values);
+
       console.log(values);
-      // console.log(dataBody);
+      // console.log(finalData);
+      console.log(isEditEav);
+      try {
+        let result = await fetcher({
+          url: `/v1/api/eav/admin/attributes${
+            isEditEav && isEditEav.id ? `/${isEditEav.id}` : ""
+          }`,
+          method: isEditEav && isEditEav.id ? "PUT" : "POST",
+          body: dataBody,
+        });
+        console.log(dataBody);
+        console.log(result);
 
-      // try {
-      //   let result = await fetcher({
-      //     url: `/v1/api/eav/admin/entityTypes${
-      //       isEdit ? `/${isEdit.id}` : null
-      //     }`,
-      //     method: isEdit ? "PUT" : "POST",
-      //     body: dataBody,
-      //   });
-      //   console.log(dataBody);
-      //   console.log(result);
-
-      //   toast.success("موفق");
-      //   setLoading(false);
-      //   setIsOpen(false);
-      //   setTriggered(!triggered);
-      //   setIsEdit({ active: false, id: null });
-      //   resetForm();
-      // } catch (error) {
-      //   console.log(error.message);
-      //   setLoading(false);
-      //   toast.error(error.message);
-      // }
+        toast.success("موفق");
+        setLoading(false);
+        setIsOpen(false);
+        setTriggered(!triggered);
+        setIsEditEav({ active: false, id: null, open: false });
+        resetForm();
+      } catch (error) {
+        console.log(error.message);
+        setLoading(false);
+        toast.error(error.message);
+      }
     },
   });
 
@@ -147,6 +149,8 @@ export default function EavTypesModule() {
         eavEditData={isEditEav}
         setIsEditEav={setIsEditEav}
         isEdit={fieldsProperties}
+        triggered={triggered}
+        setTriggered={setTriggered}
       />
 
       <EditFields

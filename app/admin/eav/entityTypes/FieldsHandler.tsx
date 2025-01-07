@@ -31,23 +31,15 @@ const FieldsHandler = ({
   eavEditData,
   setIsEditEav,
   isEdit,
+  triggered,
+  setTriggered,
 }) => {
   const getData = async (id) => {
     const data = await fetcher({
       url: `/v1/api/eav/admin/attributes/${id}`,
       method: "GET",
     });
-    console.log(formik);
-    formik.setValues({
-      ...formik.values,
-      name: data.result.name,
-      required: data.result.required === null ? false : data.result.required,
-      attributeTypeId: +data.result.attributeTypeId,
-      entityTypeId: +isEdit.id,
-      minLength: data.result.min ? +data.result.min : null,
-      maxLength: data.result.max ? +data.result.max : null,
-    });
-    console.log("testttttttttttttttttttt", formik.values);
+
     return data;
   };
 
@@ -55,7 +47,6 @@ const FieldsHandler = ({
   const [operatorsOpen, setOperatorsOpen] = useState(false);
   const [citiesOpen, setCitiesOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
-  const [triggered, setTriggered] = useState(false);
 
   const deleteGuarantee = async (id) => {
     try {
@@ -137,18 +128,34 @@ const FieldsHandler = ({
           ) : (
             ""
           )}
-          {/* <a onClick={(e) => deleteGuarantee(row.id)}>
-            <IconButton aria-label="delete" color="error">
-              <DeleteIcon />
-            </IconButton>
-          </a> */}
+
+          <IconButton
+            onClick={(e) => deleteGuarantee(row.id)}
+            aria-label="delete"
+            color="error"
+          >
+            <DeleteIcon />
+          </IconButton>
+
           {/* isOpen.id */}
           <IconButton
-            onClick={(e) => {
+            onClick={async (e) => {
               console.log(row.original.id);
-              const data = getData(row.original.id);
-
-              console.log("in onClick", data);
+              const data = await getData(row.original.id);
+              formik.setValues({
+                ...formik.values,
+                name: data.result.name,
+                required:
+                  data.result.required === null ? false : data.result.required,
+                attributeTypeId: +data.result.attributeTypeId,
+                entityTypeId: +isEdit.id,
+                minLength: data.result.minLength
+                  ? +data.result.minLength
+                  : null,
+                maxLength: data.result.maxLength
+                  ? +data.result.maxLength
+                  : null,
+              });
               setIsEditEav({ open: true, id: row.original.id });
             }}
             aria-label="delete"
@@ -171,6 +178,14 @@ const FieldsHandler = ({
       maxSize="md"
       isOpen={isOpen.active}
       handleAccept={formik.handleSubmit}
+      onClick={(e) => {
+        setIsEditEav({ open: true, id: null });
+        formik.setValues({
+          ...formik.values,
+
+          entityTypeId: +isEdit.id,
+        });
+      }}
     >
       {" "}
       <LightDataGrid
