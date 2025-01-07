@@ -20,7 +20,7 @@ const SeoBox = dynamic(
   { ssr: false }
 );
 
-const FieldsHandler = ({
+const FieldValueHandler = ({
   isOpen,
   setIsOpen,
   loading,
@@ -33,7 +33,6 @@ const FieldsHandler = ({
   isEdit,
   triggered,
   setTriggered,
-  setIsEditFieldValues,
 }) => {
   const getData = async (id) => {
     const data = await fetcher({
@@ -76,43 +75,13 @@ const FieldsHandler = ({
   };
   const columns = [
     {
-      accessorKey: "name",
+      accessorKey: "value",
       header: "نام ",
       minSize: 100, //min size enforced during resizing
       maxSize: 200, //max size enforced during resizing
       size: 200, //medium column
     },
-    {
-      accessorKey: "minLength",
-      header: "حداقل طول کاراکتر ",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 200, //max size enforced during resizing
-      size: 200, //medium column
-    },
-    {
-      accessorKey: "maxLength",
-      header: "حداکثر طول کاراکتر ",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 200, //max size enforced during resizing
-      size: 200, //medium column
-    },
-    {
-      accessorKey: "required",
-      header: "نوع",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 200, //max size enforced during resizing
-      size: 200, //medium column
-      Cell({ row }) {
-        return !row.original.required ? "غیراجباری" : "اجباری";
-      },
-    },
-    {
-      accessorKey: "attributeType.name",
-      header: "نوع فیلد",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 200, //max size enforced during resizing
-      size: 200, //medium column
-    },
+
     {
       accessorKey: "Actions",
       header: "عملیات",
@@ -120,59 +89,18 @@ const FieldsHandler = ({
 
       Cell: ({ row }) => (
         <>
-          {row?.original?.attributeType?.valueBased == true ? (
-            <Button
-              onClick={() => {
-                console.log("called", row.original.id);
-                setIsEditFieldValues({
-                  open: true,
-                  active: true,
-                  id: row.original.id,
-                });
-              }}
-              type="button"
-              variant="outlined"
-            >
-              مقادیر
-            </Button>
-          ) : (
-            ""
-          )}
-
-          <IconButton
-            onClick={(e) => deleteGuarantee(row.id)}
-            aria-label="delete"
-            color="error"
+          {/* <a
+            href={`/admin/eav/entityTypes/fields/${params.id}/values/edit/${row.id}`}
           >
-            <DeleteIcon />
-          </IconButton>
-
-          {/* isOpen.id */}
-          <IconButton
-            onClick={async (e) => {
-              console.log(row.original.id);
-              const data = await getData(row.original.id);
-              formik.setValues({
-                ...formik.values,
-                name: data.result.name,
-                required:
-                  data.result.required === null ? false : data.result.required,
-                attributeTypeId: +data.result.attributeTypeId,
-                entityTypeId: +isEdit.id,
-                minLength: data.result.minLength
-                  ? +data.result.minLength
-                  : null,
-                maxLength: data.result.maxLength
-                  ? +data.result.maxLength
-                  : null,
-              });
-              setIsEditEav({ open: true, id: row.original.id });
-            }}
-            aria-label="delete"
-            color="primary"
-          >
-            <ModeEditIcon />
-          </IconButton>
+            <IconButton aria-label="edit" color="primary">
+              <ModeEditIcon />
+            </IconButton>
+          </a> */}
+          <a onClick={(e) => deleteValue(row.id)}>
+            <IconButton aria-label="delete" color="error">
+              <DeleteIcon />
+            </IconButton>
+          </a>
         </>
       ),
     },
@@ -180,7 +108,7 @@ const FieldsHandler = ({
   return (
     <Modal
       loading={loading}
-      title="فیلد ها"
+      title="مقدار فیلد ها"
       handleClose={() => {
         formik.resetForm();
         setIsOpen({ active: false, loading: false });
@@ -197,9 +125,8 @@ const FieldsHandler = ({
         });
       }}
     >
-      {" "}
       <LightDataGrid
-        url={`/v1/api/eav/admin/attributes?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false&entityTypeId=${isOpen.id}`}
+        url={`/v1/api/eav/admin/attributeValues?sortOrder=ASC&orderBy=id&ignorePaging=false&attributeId=${isOpen.id}`}
         columns={columns}
         triggered={triggered}
       />
@@ -207,4 +134,4 @@ const FieldsHandler = ({
   );
 };
 
-export default FieldsHandler;
+export default FieldValueHandler;

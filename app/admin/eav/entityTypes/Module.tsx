@@ -12,7 +12,7 @@ import { ConvertToNull } from "@/app/components/utils/ConvertToNull";
 import { toast } from "react-toastify";
 import FieldsHandler from "./FieldsHandler";
 import EditFields from "./EditFields";
-import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
+import FieldValueHandler from "./FieldValueHandler";
 
 export default function EavTypesModule() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -25,10 +25,17 @@ export default function EavTypesModule() {
     id: null,
     active: false,
   });
+
   const [fieldsProperties, setFieldsProperties] = useState({
     active: false,
     loading: false,
     id: null,
+  });
+
+  const [isEditFieldValues, setIsEditFieldValues] = useState({
+    open: false,
+    id: null,
+    active: false,
   });
   const { data: parentEntityTypes, isLoading: parentEntityTypesIsLoading } =
     useFetcher(
@@ -151,6 +158,7 @@ export default function EavTypesModule() {
         isEdit={fieldsProperties}
         triggered={triggered}
         setTriggered={setTriggered}
+        setIsEditFieldValues={setIsEditFieldValues}
       />
 
       <EditFields
@@ -160,6 +168,21 @@ export default function EavTypesModule() {
         formik={fieldData}
         parentEntityTypes={parentEntityTypes}
         parentEntityTypesIsLoading={parentEntityTypesIsLoading}
+      />
+
+      <FieldValueHandler
+        isOpen={isEditFieldValues}
+        loading={fieldsProperties.loading}
+        setIsOpen={setIsEditFieldValues}
+        formik={fieldData}
+        parentEntityTypes={parentEntityTypes}
+        parentEntityTypesIsLoading={parentEntityTypesIsLoading}
+        isEditEav={isEditEav}
+        eavEditData={isEditEav}
+        setIsEditEav={setIsEditEav}
+        isEdit={fieldsProperties}
+        triggered={triggered}
+        setTriggered={setTriggered}
       />
 
       <LightDataGrid
