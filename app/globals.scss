@@ -882,3 +882,19 @@ html {
 div:where(.swal2-container) {
   z-index: 9999999999 !important;
 }
+
+
+
+div:where(.swal2-container) div:where(.swal2-popup) {
+  border-radius: 25px !important;
+}
+
+button.swal2-confirm.swal2-styled.swal2-default-outline {
+    border-radius: 15px !important;
+    padding: 15px 50px !important;
+}
+
+button.swal2-cancel.swal2-styled.swal2-default-outline {
+    border-radius: 15px !important;
+    padding: 15px 50px !important;
+}

@@ -20,6 +20,7 @@ const DataHandler = ({
   formik,
   parentEntityTypes,
   parentEntityTypesIsLoading,
+  setIsEdit,
 }) => {
   const [value, setValue] = React.useState("1");
   const [operatorsOpen, setOperatorsOpen] = useState(false);
@@ -36,6 +37,7 @@ const DataHandler = ({
       handleClose={() => {
         formik.resetForm();
         setIsOpen(false);
+        setIsEdit({ active: false, id: null });
       }}
       maxSize="sm"
       isOpen={isOpen}

@@ -22,24 +22,31 @@ const SeoBox = dynamic(
 
 const FieldValueHandler = ({
   isOpen,
-  setIsOpen,
   loading,
+  setIsOpen,
   formik,
-  parentEntityTypes,
-  parentEntityTypesIsLoading,
-  isEditEav,
-  eavEditData,
-  setIsEditEav,
+  setIsEditFieldValues,
   isEdit,
   triggered,
   setTriggered,
+  isEditFieldValues,
 }) => {
   const getData = async (id) => {
+    console.log(id);
     const data = await fetcher({
-      url: `/v1/api/eav/admin/attributes/${id}`,
+      url: `/v1/api/eav/admin/attributeValues/${id}`,
       method: "GET",
     });
 
+    setIsEditFieldValues({
+      open: true,
+      id: id,
+    });
+    formik.setValues({
+      ...formik.values,
+      value: data.result.value,
+      attributeId: +isEditFieldValues.id,
+    });
     return data;
   };
 
@@ -48,7 +55,7 @@ const FieldValueHandler = ({
   const [citiesOpen, setCitiesOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
 
-  const deleteGuarantee = async (id) => {
+  const deleteValue = async (id) => {
     try {
       const result = await Swal.fire({
         title: "مطمئن هستید؟",
@@ -63,7 +70,7 @@ const FieldValueHandler = ({
 
       if (result.isConfirmed) {
         const req = await fetcher({
-          url: `/v1/api/eav/admin/attributes/${id}`,
+          url: `/v1/api/eav/admin/attributeValues/${id}`,
           method: "DELETE",
         });
         toast.success("موفق");
@@ -89,13 +96,14 @@ const FieldValueHandler = ({
 
       Cell: ({ row }) => (
         <>
-          {/* <a
-            href={`/admin/eav/entityTypes/fields/${params.id}/values/edit/${row.id}`}
+          <IconButton
+            onClick={(e) => getData(row.original.id)}
+            aria-label="edit"
+            color="primary"
           >
-            <IconButton aria-label="edit" color="primary">
-              <ModeEditIcon />
-            </IconButton>
-          </a> */}
+            <ModeEditIcon />
+          </IconButton>
+
           <a onClick={(e) => deleteValue(row.id)}>
             <IconButton aria-label="delete" color="error">
               <DeleteIcon />
@@ -117,11 +125,11 @@ const FieldValueHandler = ({
       isOpen={isOpen.active}
       handleAccept={formik.handleSubmit}
       onClick={(e) => {
-        setIsEditEav({ open: true, id: null });
+        setIsEditFieldValues({ open: true, id: null });
         formik.setValues({
           ...formik.values,
 
-          entityTypeId: +isEdit.id,
+          attributeId: +isEditFieldValues.id,
         });
       }}
     >

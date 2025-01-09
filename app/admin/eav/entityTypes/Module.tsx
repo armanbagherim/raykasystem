@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import FieldsHandler from "./FieldsHandler";
 import EditFields from "./EditFields";
 import FieldValueHandler from "./FieldValueHandler";
+import EditFieldValues from "./EditFieldValues";
 
 export default function EavTypesModule() {
   const [title, setTitle] = useAtom(pageTitle);
@@ -71,9 +72,9 @@ export default function EavTypesModule() {
       try {
         let result = await fetcher({
           url: `/v1/api/eav/admin/entityTypes${
-            isEdit ? `/${isEdit.id}` : null
+            isEdit.active ? `/${isEdit.id}` : ""
           }`,
-          method: isEdit ? "PUT" : "POST",
+          method: isEdit.active ? "PUT" : "POST",
           body: dataBody,
         });
         console.log(dataBody);
@@ -134,6 +135,45 @@ export default function EavTypesModule() {
     },
   });
 
+  const fieldValues = useFormik({
+    initialValues: {
+      value: null,
+      attributeId: null,
+    },
+    // validationSchema: formSchema,
+    onSubmit: async (values, { resetForm }) => {
+      const dataBody = ConvertToNull(values);
+
+      console.log(values);
+      // console.log(finalData);
+      console.log(isEditFieldValues);
+      try {
+        let result = await fetcher({
+          url: `/v1/api/eav/admin/attributeValues${
+            isEditFieldValues && isEditFieldValues.id
+              ? `/${isEditFieldValues.id}`
+              : ""
+          }`,
+          method: isEditFieldValues && isEditFieldValues.id ? "PUT" : "POST",
+          body: dataBody,
+        });
+        console.log(dataBody);
+        console.log(result);
+
+        toast.success("موفق");
+        setLoading(false);
+        setIsOpen(false);
+        setTriggered(!triggered);
+        setIsEditFieldValues({ active: false, id: null, open: false });
+        resetForm();
+      } catch (error) {
+        console.log(error.message);
+        setLoading(false);
+        toast.error(error.message);
+      }
+    },
+  });
+
   return (
     <div>
       <DataHandler
@@ -143,8 +183,8 @@ export default function EavTypesModule() {
         formik={eavData}
         parentEntityTypes={parentEntityTypes}
         parentEntityTypesIsLoading={parentEntityTypesIsLoading}
+        setIsEdit={setIsEdit}
       />
-
       <FieldsHandler
         isOpen={fieldsProperties}
         loading={fieldsProperties.loading}
@@ -160,7 +200,6 @@ export default function EavTypesModule() {
         setTriggered={setTriggered}
         setIsEditFieldValues={setIsEditFieldValues}
       />
-
       <EditFields
         eavEditData={isEditEav}
         loading={loading}
@@ -170,21 +209,24 @@ export default function EavTypesModule() {
         parentEntityTypesIsLoading={parentEntityTypesIsLoading}
       />
 
+      <EditFieldValues
+        eavEditData={isEditFieldValues}
+        loading={loading}
+        setIsOpen={setIsEditFieldValues}
+        formik={fieldValues}
+      />
+
       <FieldValueHandler
         isOpen={isEditFieldValues}
         loading={fieldsProperties.loading}
         setIsOpen={setIsEditFieldValues}
-        formik={fieldData}
-        parentEntityTypes={parentEntityTypes}
-        parentEntityTypesIsLoading={parentEntityTypesIsLoading}
-        isEditEav={isEditEav}
-        eavEditData={isEditEav}
-        setIsEditEav={setIsEditEav}
+        formik={fieldValues}
+        isEditFieldValues={isEditFieldValues}
+        setIsEditFieldValues={setIsEditFieldValues}
         isEdit={fieldsProperties}
         triggered={triggered}
         setTriggered={setTriggered}
       />
-
       <LightDataGrid
         triggered={triggered}
         url={"/v1/api/eav/admin/entityTypes"}

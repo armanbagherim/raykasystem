@@ -100,8 +100,11 @@ export function columns(
       Cell: ({ row }) => (
         <>
           <Uploader
+          
             location={`v1/api/eav/admin/entityTypes/image`}
             id={row.id}
+            triggered={triggered}
+            setTriggered={setTriggered}
           />
 
           <Tooltip

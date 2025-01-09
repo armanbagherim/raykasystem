@@ -78,23 +78,17 @@ const FieldsHandler = ({
     {
       accessorKey: "name",
       header: "نام ",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 200, //max size enforced during resizing
-      size: 200, //medium column
+      size: 120,
     },
     {
       accessorKey: "minLength",
       header: "حداقل طول کاراکتر ",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 200, //max size enforced during resizing
-      size: 200, //medium column
+      size: 120,
     },
     {
       accessorKey: "maxLength",
       header: "حداکثر طول کاراکتر ",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 200, //max size enforced during resizing
-      size: 200, //medium column
+      size: 120,
     },
     {
       accessorKey: "required",
@@ -188,6 +182,7 @@ const FieldsHandler = ({
       maxSize="md"
       isOpen={isOpen.active}
       handleAccept={formik.handleSubmit}
+      hasAccept={false}
       onClick={(e) => {
         setIsEditEav({ open: true, id: null });
         formik.setValues({

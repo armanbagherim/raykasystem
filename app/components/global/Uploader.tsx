@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { useDropzone } from "react-dropzone";
 import { IconButton, Tooltip } from "@mui/material";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+
 const Uploader = ({
   id,
   location,
@@ -19,6 +20,8 @@ const Uploader = ({
   photos,
   type = "image",
   isFull,
+  triggered,
+  setTriggered,
 }) => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
@@ -29,19 +32,51 @@ const Uploader = ({
   const statusRef = useRef();
   const loadTotalRef = useRef();
 
-  const onDrop = useCallback((acceptedFiles) => {
-    setFiles(
-      acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      )
-    );
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      acceptedFiles.forEach((file) => {
+        console.log(`File: ${file.name}, Type: ${file.type}`);
+      });
+
+      const validFiles = acceptedFiles.filter((file) => {
+        const isValidImage =
+          type === "image" && /^image\/(jpeg|png|gif|webp)$/.test(file.type);
+        const isValidVideo =
+          type === "video" && /^video\/(mp4|avi|mov)$/.test(file.type);
+        return isValidImage || isValidVideo;
+      });
+
+      if (validFiles.length === 0) {
+        toast.error("No valid files were uploaded.");
+        return;
+      }
+
+      setFiles(
+        validFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+    },
+    [type]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: type === "image" ? "image/*" : "video/*",
+    accept:
+      type === "image"
+        ? {
+            "image/jpeg": [],
+            "image/png": [],
+            "image/gif": [],
+            "image/webp": [],
+          }
+        : {
+            "video/mp4": [],
+            "video/avi": [],
+            "video/mov": [],
+          },
   });
 
   const uploadFile = (file) => {
@@ -73,6 +108,9 @@ const Uploader = ({
 
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
+          if (triggered) {
+            setTriggered(!triggered);
+          }
           resolve(JSON.parse(xhr.responseText));
         } else {
           reject(new Error("Upload failed"));
@@ -94,6 +132,9 @@ const Uploader = ({
       try {
         const result = await uploadFile(file);
         toast.success(`${file.name} uploaded successfully`);
+        if (triggered) {
+          setTriggered(!triggered);
+        }
         if (refetch) refetch();
         setPhotos((prev) => [
           ...prev,

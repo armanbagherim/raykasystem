@@ -20,6 +20,7 @@ interface IModal {
   isFull?: boolean;
   closeText?: string;
   onClick?: () => void;
+  hasAccept?: boolean;
 }
 
 const Modal = (props: IModal) => {
@@ -34,6 +35,7 @@ const Modal = (props: IModal) => {
     isFull = false,
     closeText = "انصراف",
     onClick = null,
+    hasAccept = true,
   } = props;
   const theme = useTheme();
   const fullScreen = isFull
@@ -85,14 +87,16 @@ const Modal = (props: IModal) => {
             >
               {closeText}
             </Button>
-            <Button
-              color="success"
-              variant="contained"
-              onClick={handleAccept}
-              autoFocus
-            >
-              ثبت
-            </Button>
+            {hasAccept && (
+              <Button
+                color="success"
+                variant="contained"
+                onClick={handleAccept}
+                autoFocus
+              >
+                ثبت
+              </Button>
+            )}
           </div>
         </DialogActions>
       </Dialog>
