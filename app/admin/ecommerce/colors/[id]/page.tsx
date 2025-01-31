@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "../../../../components/global/loading";
 import { toast } from "react-toastify";
@@ -9,7 +9,8 @@ import { pageTitle } from "../../../layout";
 import { HexColorPicker } from "react-colorful";
 import SaveBar from "@/app/components/global/SaveBar";
 
-export default function Colors({ params }) {
+export default function Colors() {
+  const params = useParams();
   const [title, setTitle] = useAtom(pageTitle);
   const {
     data: colorData,

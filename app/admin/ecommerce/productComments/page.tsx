@@ -3,7 +3,6 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import Swal from "sweetalert2";
-
 import { toast } from "react-toastify";
 import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
 import {
@@ -24,6 +23,7 @@ import Link from "next/link";
 import { pageTitle } from "@/app/admin/layout";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import { maxHeaderSize } from "http";
+
 export default function Orders() {
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
@@ -72,7 +72,6 @@ export default function Orders() {
         const reply = result.value;
         const url = `/v1/api/ecommerce/admin/productComments/confirmComment/${commentId}`;
 
-        // Assuming you have a function to make POST requests, replace it with your actual function
         await fetcher({
           url,
           body: {
@@ -87,6 +86,7 @@ export default function Orders() {
       console.error("Failed to confirm comment:", error);
     }
   };
+
   const rejectComment = async (commentId) => {
     try {
       const result = await Swal.fire({
@@ -97,10 +97,8 @@ export default function Orders() {
       });
 
       if (result.isConfirmed) {
-        const reply = result.value;
         const url = `/v1/api/ecommerce/admin/productComments/rejectComment/${commentId}`;
 
-        // Assuming you have a function to make POST requests, replace it with your actual function
         await fetcher({
           url,
           method: "PATCH",
@@ -118,14 +116,15 @@ export default function Orders() {
     setTriggered(!triggered);
   };
 
+  const showFullDescription = (description) => {
+    Swal.fire({
+      title: "متن کامل نظر",
+      text: description,
+      confirmButtonText: "بستن",
+    });
+  };
+
   const columns = [
-    {
-      accessorKey: "id",
-      header: "شناسه نظر",
-      minSize: 5,
-      size: 5,
-      maxSize: 5,
-    },
     {
       accessorKey: "product.title",
       header: "محصول",
@@ -146,6 +145,27 @@ export default function Orders() {
       minSize: 5,
       size: 5,
       maxSize: 5,
+      Cell: ({ row }) => {
+        const description = row.original.description;
+        const truncatedDescription =
+          description?.length > 50
+            ? `${description.slice(0, 50)}...`
+            : description;
+
+        return (
+          <div className="flex items-center">
+            {description?.length > 50 && (
+              <IconButton
+                onClick={() => showFullDescription(description)}
+                size="small"
+              >
+                <RemoveRedEyeIcon fontSize="small" />
+              </IconButton>
+            )}
+            <span>{truncatedDescription}</span>
+          </div>
+        );
+      },
     },
     {
       accessorKey: "id",
@@ -161,7 +181,6 @@ export default function Orders() {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-
       Cell: ({ row }) =>
         reportProps.vendorId == 2 ? (
           <>
@@ -185,29 +204,28 @@ export default function Orders() {
         ),
     },
   ];
+
   let url = `/v1/api/ecommerce/admin/productComments`;
   if (reportProps.vendorId !== null) {
     url += `?commentStatusId=${reportProps.vendorId}`;
   }
+
   return (
     <>
       <div className="flex gap-4 flex-col md:flex-row mb-8">
-        <>
-          {" "}
-          <div className="flex-1">
-            <SearchSelect
-              loadingState={vendorsIsLoading}
-              data={vendors?.result}
-              label="وضعیت"
-              nullable={true}
-              defaultValue={reportProps.vendorId}
-              onChange={(e) => {
-                setReportProps({ ...reportProps, vendorId: e.id });
-                setTriggered(!triggered);
-              }}
-            />
-          </div>
-        </>
+        <div className="flex-1">
+          <SearchSelect
+            loadingState={vendorsIsLoading}
+            data={vendors?.result}
+            label="وضعیت"
+            nullable={true}
+            defaultValue={reportProps.vendorId}
+            onChange={(e) => {
+              setReportProps({ ...reportProps, vendorId: e.id });
+              setTriggered(!triggered);
+            }}
+          />
+        </div>
         <button
           onClick={handleGetResult}
           className="h-full bg-primary p-4 rounded-xl text-white"

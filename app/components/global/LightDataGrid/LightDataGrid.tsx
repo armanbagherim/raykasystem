@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -136,4 +136,8 @@ const LightDataGrid = ({ url, columns, triggered }) => {
   return <MaterialReactTable table={table} />;
 };
 
-export default LightDataGrid;
+const customComparator = (prevProps, nextProps) => {
+  return nextProps.triggered === prevProps.triggered;
+};
+
+export default React.memo(LightDataGrid, customComparator);

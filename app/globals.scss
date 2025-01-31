@@ -812,7 +812,7 @@ html {
 .MuiButton-root,
 .MuiFormControl-root *,
 .base-Popper-root *,
-.MuiPaper-root * {
+.MuiPaper-root *, .MuiTooltip-tooltip {
   font-family: IRANSansX !important;
 }
 
@@ -828,17 +828,18 @@ html {
   }
 }
 
-.sliders .swiper-slide {
-  width: 220px !important;
-  margin-left: 10px !important;
-}
+// .sliders .swiper-slide {
+//   width: 220px !important;
+//   margin-left: 10px !important;
+// }
 
-@media (max-width: 767px) {
-  .sliders .swiper-slide {
-    width: 200px !important;
-    margin-left: 10px !important;
-  }
-}
+
+// @media (max-width: 767px) {
+//   .sliders .swiper-slide {
+//     width: 200px !important;
+//     margin-left: 10px !important;
+//   }
+// }
 
 .mainSlide {
   .swiper-slide {
@@ -859,4 +860,42 @@ html {
 .specialInfos .flex:nth-child(even) {
     background: #f7f7f7;
     border-radius: 15px;
+}
+
+
+.MuiPaper-rounded {
+  border: 0 !important;
+  border-radius: 15px !important;
+}
+
+.MuiButton-root {
+  font-size: 13px !important;
+  padding: 10px 30px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 0 0 !important;
+  font-weight: 900 !important;
+}
+
+.MuiInputBase-root fieldset {
+  border-radius: 10px !important;
+}
+
+div:where(.swal2-container) {
+  z-index: 9999999999 !important;
+}
+
+
+
+div:where(.swal2-container) div:where(.swal2-popup) {
+  border-radius: 25px !important;
+}
+
+button.swal2-confirm.swal2-styled.swal2-default-outline {
+    border-radius: 15px !important;
+    padding: 15px 50px !important;
+}
+
+button.swal2-cancel.swal2-styled.swal2-default-outline {
+    border-radius: 15px !important;
+    padding: 15px 50px !important;
 }

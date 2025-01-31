@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useFetcher, fetcher } from "@/app/components/global/fetcher";
 import Loading from "./../../../../components/global/loading";
@@ -8,7 +8,8 @@ import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 import SaveBar from "@/app/components/global/SaveBar";
 
-export default function Page({ params }) {
+export default function Page() {
+  const params = useParams();
   const [title, setTitle] = useAtom(pageTitle);
 
   useEffect(() => {

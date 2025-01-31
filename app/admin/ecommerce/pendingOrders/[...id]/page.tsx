@@ -5,9 +5,10 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import OrderDataTable from "./Datatable";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
-export default function PendingOrders({ params }) {
+export default function PendingOrders() {
+  const params = useParams();
   const router = useRouter();
   const [orderDetail, setOrderDetail] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

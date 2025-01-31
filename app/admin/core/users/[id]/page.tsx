@@ -1,7 +1,7 @@
 "use client";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "@/app/components/global/loading";
-import { redirect, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify"; // Import toast from react-toastify
 import { useAtom } from "jotai";
@@ -26,9 +26,9 @@ interface PageProps {
   params: { id: string };
 }
 
-export default function Users({ params }: PageProps): JSX.Element {
+export default function Users() {
   const [title, setTitle] = useAtom(pageTitle);
-
+  const params = useParams();
   useEffect(() => {
     setTitle({
       title: "ویرایش کاربر",

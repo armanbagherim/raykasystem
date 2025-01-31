@@ -188,7 +188,7 @@ export default function Orders({ searchParams }) {
           </IconButton>
 
           <IconButton>
-            <Link href={`/admin/ecommerce/totalOrders/${row.id}`}>
+            <Link href={`/admin/ecommerce/cancellOrders/${row.id}`}>
               <RemoveRedEyeIcon />
             </Link>
           </IconButton>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 export default function BrandModule({ data }) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(null);
 
   const filteredBrands = data.result.filter((brand) => {
     return brand.name.toLowerCase().includes(searchTerm.toLowerCase());

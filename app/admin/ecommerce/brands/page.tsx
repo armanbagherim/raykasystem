@@ -54,11 +54,6 @@ export default function Brands() {
 
   const columns = [
     {
-      accessorKey: "id",
-      header: "شناسه",
-      size: 20,
-    },
-    {
       accessorKey: "name",
       header: "نام ",
       minSize: 100, //min size enforced during resizing

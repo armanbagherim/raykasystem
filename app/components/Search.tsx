@@ -12,7 +12,7 @@ function debounce(func, timeout = 300) {
   };
 }
 export default function Search() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const searchContainerRef = useRef(null); // Step 1: Create a ref for the search container
   const [products, setProducts] = useState([]);

@@ -20,8 +20,10 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import ServerSelect from "@/app/components/global/ServerSelect";
+import { useParams } from "next/navigation";
 
-export default function Eav({ params }) {
+export default function Eav() {
+  const params = useParams();
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -69,12 +71,6 @@ export default function Eav({ params }) {
   };
 
   const columns = [
-    {
-      accessorKey: "product.id",
-      header: "شناسه",
-      size: 10,
-      maxSize: 10,
-    },
     {
       accessorKey: "product.title",
       header: "نام ",

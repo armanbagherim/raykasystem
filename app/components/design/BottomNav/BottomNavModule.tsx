@@ -155,10 +155,10 @@ export default function BottomNavModule({ entities }) {
       </div>
       <div className="fixed z-[10] bottom-0 left-0 right-0 bg-[#FAFAFA] w-full h-20 px-8 block md:hidden lg:hidden xl:hidden border-t">
         <div className="flex items-center justify-between h-full">
-          <a href="/" className="flex flex-col text-center items-center">
+          <Link href="/" className="flex flex-col text-center items-center">
             <Home />
             <span className="text-xs mt-2">صفحه اصلی</span>
-          </a>
+          </Link>
           <div
             className="flex flex-col text-center items-center"
             onClick={(e) => setIsMenuOpen(true)}
@@ -178,10 +178,10 @@ export default function BottomNavModule({ entities }) {
               <span className="text-xs mt-2">سبد خرید</span>
             </div>
           </Link>
-          <a href="/user" className="flex flex-col text-center items-center">
+          <Link href="/user" className="flex flex-col text-center items-center">
             <Pofile />
             <span className="text-xs mt-2">پروفایل</span>
-          </a>
+          </Link>
         </div>
       </div>
     </>

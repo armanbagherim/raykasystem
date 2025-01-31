@@ -24,38 +24,32 @@ export default function Users() {
 
   const columns = [
     {
-      accessorKey: "id",
-      header: "شناسه",
-      size: 10,
-      maxSize: 10,
-    },
-    {
       accessorKey: "firstname",
       header: "نام ",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 100, //max size enforced during resizing
-      size: 100, //medium column
+      minSize: 100,
+      maxSize: 100,
+      size: 100,
     },
     {
       accessorKey: "lastname",
       header: "نام خانوادگی",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 400, //max size enforced during resizing
-      size: 180, //medium column
+      minSize: 100,
+      maxSize: 400,
+      size: 180,
     },
     {
       accessorKey: "phoneNumber",
       header: "شماره موبایل",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 400, //max size enforced during resizing
-      size: 180, //medium column
+      minSize: 100,
+      maxSize: 400,
+      size: 180,
     },
     {
       accessorKey: "createdAt",
       header: "تاریخ ایجاد کاربر",
-      minSize: 100, //min size enforced during resizing
-      maxSize: 400, //max size enforced during resizing
-      size: 180, //medium column
+      minSize: 100,
+      maxSize: 400,
+      size: 180,
       Cell({ row }) {
         return ChangeFormatDate(row.original.updatedAt);
       },

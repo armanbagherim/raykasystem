@@ -12,8 +12,10 @@ import { Button, IconButton } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
+import { useParams } from "next/navigation";
 
-export default function Eav({ params }) {
+export default function Eav() {
+  const params = useParams();
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
   useEffect(() => {
@@ -51,12 +53,6 @@ export default function Eav({ params }) {
   };
 
   const columns = [
-    {
-      accessorKey: "id",
-      header: "شناسه",
-      size: 10,
-      maxSize: 10,
-    },
     {
       accessorKey: "value",
       header: "نام ",

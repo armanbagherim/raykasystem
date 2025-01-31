@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import OrderDataTable from "./Datatable";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import FactorGenerator from "./FactorGenerator";
 import Swal from "sweetalert2";
 import {
@@ -18,7 +18,8 @@ import {
 } from "@mui/material";
 import SearchSelect from "@/app/components/global/SearchSelect";
 
-export default function TotalOrders({ params }) {
+export default function TotalOrders() {
+  const params = useParams();
   const router = useRouter();
   const [openOrderStatus, setOpenOrderStatus] = useState(false);
   const [openOrderShipping, setOpenOrderShipping] = useState(false);
@@ -49,14 +50,11 @@ export default function TotalOrders({ params }) {
     isLoading: orderDetailIsLoading,
     error: orderDetailError,
     refetch: refetchData,
-  } = useFetcher(
-    `/v1/api/ecommerce/admin/totalOrders/${params.id[0]}?sortOrder=DESC`,
-    "GET"
-  );
+  } = useFetcher(`/v1/api/ecommerce/admin/cancellOrders/${params.id}`, "GET");
   const handleChangeOrderStatus = async () => {
     try {
       const req = await fetcher({
-        url: `/v1/api/ecommerce/admin/totalOrders/changeOrderStatus/${params.id[0]}`,
+        url: `/v1/api/ecommerce/admin/totalOrders/changeOrderStatus/${params.id}`,
         body: {
           orderStatusId,
         },
@@ -72,7 +70,7 @@ export default function TotalOrders({ params }) {
   const handleChangeShipingMethod = async () => {
     try {
       const req = await fetcher({
-        url: `/v1/api/ecommerce/admin/totalOrders/changeShipmentWay/${params.id[0]}`,
+        url: `/v1/api/ecommerce/admin/totalOrders/changeShipmentWay/${params.id}`,
         body: {
           shipmentWayId: orderShipmentId,
         },

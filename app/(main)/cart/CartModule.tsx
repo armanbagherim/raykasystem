@@ -487,12 +487,12 @@ const CartModule = ({ cartItems, session, cookies }) => {
                 <h4 className="text-3xl font-bold my-8">
                   چیزی در سبد شما پیدا نشد
                 </h4>
-                <a
+                <Link
                   className="inline-block border border-primary text-primary rounded-2xl py-4 px-8 hover:text-white hover:bg-primary transition-all"
                   href="/search"
                 >
                   همه محصولات
-                </a>
+                </Link>
               </div>
             ) : (
               <>

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import Loading from "../../../../components/global/loading";
 import { toast } from "react-toastify";
@@ -11,7 +11,8 @@ import SaveBar from "@/app/components/global/SaveBar";
 import ChangeToNull from "@/app/components/global/ChangeToNull";
 import SeoBox from "../../products/_components/SeoBox";
 
-export default function Brands({ params }) {
+export default function Brands() {
+  const params = useParams();
   const [title, setTitle] = useAtom(pageTitle);
 
   const {

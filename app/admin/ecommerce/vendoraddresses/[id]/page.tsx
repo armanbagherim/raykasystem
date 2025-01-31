@@ -11,8 +11,10 @@ import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import Swal from "sweetalert2";
+import { useParams } from "next/navigation";
 
-export default function VendorAddress({ params }) {
+export default function VendorAddress() {
+  const params = useParams();
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
 
@@ -50,11 +52,6 @@ export default function VendorAddress({ params }) {
     }
   };
   const columns = [
-    {
-      accessorKey: "id",
-      header: "شناسه",
-      size: 20,
-    },
     {
       accessorKey: "address.name",
       header: "نام آدرس ",
