@@ -72,6 +72,7 @@ export default async function SettingPage() {
   const brands = await getBrands(session);
 
   const { result: HomePageData } = await getHomePageData(session);
+
   return (
     <SettingModule
       TypeSorts={TypeSorts}

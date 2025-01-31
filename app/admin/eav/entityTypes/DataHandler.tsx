@@ -162,7 +162,6 @@ const DataHandler = ({
                   "parentEntityTypeId",
                   newValue ? newValue.id : null
                 );
-                console.log(newValue);
               }}
               renderInput={(params) => (
                 <TextField

@@ -242,7 +242,7 @@ export default function SingleProductModule({
                 >
                   بستن
                 </Link>
-                <a
+                <Link
                   className="bg-primary block w-full flex-1 !p-3 text-center text-white rounded-xl"
                   href="/cart"
                   onClick={(e) => {
@@ -269,7 +269,7 @@ export default function SingleProductModule({
                   ) : (
                     " سبد خرید"
                   )}
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -417,14 +417,30 @@ export default function SingleProductModule({
             <DialogContent dividers className="flex items-center">
               <Slider slidesPerView={1}>
                 {product?.videoAttachments.map((value, key) => (
-                  <div key={key} className="text-center mb-8">
+                  <div
+                    key={key}
+                    className="text-center mb-8"
+                    itemScope
+                    itemType="https://schema.org/VideoObject"
+                  >
                     <video
                       className="w-2/3 h-auto mx-auto"
                       controls
                       src={`https://image.jahizan.com/productvideos/${
                         value?.fileName ?? null
                       }`}
+                      itemProp="contentUrl"
                     ></video>
+                    <meta itemProp="name" content={product?.title ?? null} />
+                    <meta
+                      itemProp="description"
+                      content={product?.metaDescription ?? null}
+                    />
+                    <meta
+                      itemProp="thumbnailUrl"
+                      content={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${product?.attachments[0]?.fileName}`}
+                    />
+                    <meta itemProp="uploadDate" content={product?.createdAt} />
                   </div>
                 ))}
               </Slider>

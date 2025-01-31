@@ -24,12 +24,14 @@ interface IPageTitle {
   title: string;
   link: string | null;
   buttonTitle: void;
+  onClick: void;
 }
 
 export const pageTitle = atom({
   title: "داشبورد",
   link: null,
   buttonTitle: null,
+  onClick: null,
 });
 
 export default function RootLayout({

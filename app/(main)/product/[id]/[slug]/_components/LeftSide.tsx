@@ -22,11 +22,7 @@ export default function LeftSide({ product, status, addToCart }) {
       <div className="px-4 py-4 mr-0 relative flex h-full flex-col justify-between text-sm">
         <div>
           <div className="text-gray-700 font-bold">
-            {product[0] ? (
-              <span>چرا از {product[0]?.vendor?.name} خرید کنم؟</span>
-            ) : (
-              <span>محصول فروشنده ای ندارد</span>
-            )}
+            <span>چرا از جهیزان خرید کنم؟</span>
           </div>
           <div className="mt-5">
             <div className="flex gap-1 mb-4">
@@ -38,7 +34,7 @@ export default function LeftSide({ product, status, addToCart }) {
                   {product[0] ? (
                     <Link href={`/guarantees/${product[0]?.guarantee?.slug}`}>
                       <span>
-                        {product[0]?.guarantee?.name}{" "}
+                        {product[0]?.guarantee?.name}
                         {product[0]?.guaranteeMonth?.name}
                       </span>
                     </Link>
@@ -53,7 +49,7 @@ export default function LeftSide({ product, status, addToCart }) {
                 <Exclamationitalic />
               </div>
               <div>
-                امکان خرید در{" "}
+                امکان خرید در
                 <span className="font-bold text-primary">4 قسط</span>
               </div>
             </div>

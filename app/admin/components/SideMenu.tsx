@@ -93,11 +93,11 @@ const SideMenu = () => {
                   alt="پنل مدیریت"
                 />
               </a>
-              <a href="/">
+              <Link href="/">
                 <span className="self-center text-md font-normal text-white  whitespace-nowrap">
                   مشاهده سایت
                 </span>
-              </a>
+              </Link>
             </div>
             {menusIsLoading && <MenuLoader />}
             <ul className="space-y-2 font-medium pb-8">

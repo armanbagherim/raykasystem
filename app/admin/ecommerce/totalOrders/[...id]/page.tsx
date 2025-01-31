@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import OrderDataTable from "./Datatable";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import FactorGenerator from "./FactorGenerator";
 import Swal from "sweetalert2";
 import {
@@ -19,7 +19,8 @@ import {
 import SearchSelect from "@/app/components/global/SearchSelect";
 import SweetAlert2 from "react-sweetalert2";
 
-export default function TotalOrders({ params }) {
+export default function TotalOrders() {
+  const params = useParams();
   const [swalProps, setSwalProps] = useState({});
 
   const router = useRouter();

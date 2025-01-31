@@ -5,12 +5,13 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import OrderDataTable from "./Datatable";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Button } from "@mui/material";
 import SweetAlert2 from "react-sweetalert2";
 import FactorGenerator from "../../totalOrders/[...id]/FactorGenerator";
 
-export default function PostageOrders({ params }) {
+export default function PostageOrders() {
+  const params = useParams();
   const router = useRouter();
   const [swalProps, setSwalProps] = useState({});
 

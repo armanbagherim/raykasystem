@@ -11,8 +11,10 @@ import Image from "next/image";
 import Uploader from "@/app/components/global/Uploader";
 import Swal from "sweetalert2";
 import { pageTitle } from "@/app/admin/layout";
+import { useParams } from "next/navigation";
 
-export default function Guarantees({ params }) {
+export default function Guarantees() {
+  const params = useParams();
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
 

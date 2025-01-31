@@ -48,7 +48,8 @@ export default function EavTypesModule() {
     setTitle({
       title: "دسته بندی ها",
       buttonTitle: "افزودن",
-      link: () => setIsOpen(true),
+      link: null,
+      onClick: (e) => setIsOpen(true),
     });
   }, []);
 
@@ -67,8 +68,6 @@ export default function EavTypesModule() {
     onSubmit: async (values, { resetForm }) => {
       const dataBody = ConvertToNull(values);
 
-      console.log(dataBody);
-
       try {
         let result = await fetcher({
           url: `/v1/api/eav/admin/entityTypes${
@@ -77,8 +76,6 @@ export default function EavTypesModule() {
           method: isEdit.active ? "PUT" : "POST",
           body: dataBody,
         });
-        console.log(dataBody);
-        console.log(result);
 
         toast.success("موفق");
         setLoading(false);
@@ -87,7 +84,6 @@ export default function EavTypesModule() {
         setIsEdit({ active: false, id: null });
         resetForm();
       } catch (error) {
-        console.log(error.message);
         setLoading(false);
         toast.error(error.message);
       }
@@ -107,9 +103,6 @@ export default function EavTypesModule() {
     onSubmit: async (values, { resetForm }) => {
       const dataBody = ConvertToNull(values);
 
-      console.log(values);
-      // console.log(finalData);
-      console.log(isEditEav);
       try {
         let result = await fetcher({
           url: `/v1/api/eav/admin/attributes${
@@ -118,8 +111,6 @@ export default function EavTypesModule() {
           method: isEditEav && isEditEav.id ? "PUT" : "POST",
           body: dataBody,
         });
-        console.log(dataBody);
-        console.log(result);
 
         toast.success("موفق");
         setLoading(false);
@@ -128,7 +119,6 @@ export default function EavTypesModule() {
         setIsEditEav({ active: false, id: null, open: false });
         resetForm();
       } catch (error) {
-        console.log(error.message);
         setLoading(false);
         toast.error(error.message);
       }
@@ -144,9 +134,6 @@ export default function EavTypesModule() {
     onSubmit: async (values, { resetForm }) => {
       const dataBody = ConvertToNull(values);
 
-      console.log(values);
-      // console.log(finalData);
-      console.log(isEditFieldValues);
       try {
         let result = await fetcher({
           url: `/v1/api/eav/admin/attributeValues${
@@ -157,8 +144,6 @@ export default function EavTypesModule() {
           method: isEditFieldValues && isEditFieldValues.id ? "PUT" : "POST",
           body: dataBody,
         });
-        console.log(dataBody);
-        console.log(result);
 
         toast.success("موفق");
         setLoading(false);
@@ -167,7 +152,6 @@ export default function EavTypesModule() {
         setIsEditFieldValues({ active: false, id: null, open: false });
         resetForm();
       } catch (error) {
-        console.log(error.message);
         setLoading(false);
         toast.error(error.message);
       }

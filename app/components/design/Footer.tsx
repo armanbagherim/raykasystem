@@ -23,9 +23,9 @@ export default function Footer() {
     >
       <div className="relative">
         <div>
-          <h1 className="peyda text-primary text-lg mb-2 font-bold">
+          <p className="peyda text-primary text-lg mb-2 font-bold">
             فروشگاه اینترنتی جهیزان
-          </h1>
+          </p>
           <p
             className={`${
               !showMore ? "line-clamp-6 textGradiant " : ""

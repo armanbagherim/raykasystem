@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import SelectSearch from "@/app/components/global/SearchSelect";
 import { toast } from "react-toastify";
@@ -52,7 +52,8 @@ interface RequestBody {
   inventories: Inventory[];
 }
 
-export default function Products({ params }) {
+export default function Products() {
+  const params = useParams();
   const { id } = params;
   const [open, setOpen] = useState(false);
   const router = useRouter();

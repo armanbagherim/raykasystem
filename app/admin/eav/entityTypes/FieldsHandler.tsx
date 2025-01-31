@@ -117,7 +117,6 @@ const FieldsHandler = ({
           {row?.original?.attributeType?.valueBased == true ? (
             <Button
               onClick={() => {
-                console.log("called", row.original.id);
                 setIsEditFieldValues({
                   open: true,
                   active: true,
@@ -144,7 +143,6 @@ const FieldsHandler = ({
           {/* isOpen.id */}
           <IconButton
             onClick={async (e) => {
-              console.log(row.original.id);
               const data = await getData(row.original.id);
               formik.setValues({
                 ...formik.values,

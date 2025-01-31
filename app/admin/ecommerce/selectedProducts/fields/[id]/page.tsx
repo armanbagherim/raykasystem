@@ -11,8 +11,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { useParams } from "next/navigation";
 
-export default function Eav({ params }) {
+export default function Eav() {
+  const params = useParams();
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
 

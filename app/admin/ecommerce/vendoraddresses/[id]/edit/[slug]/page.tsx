@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { fetcher, useFetcher } from "@/app/components/global/fetcher";
 import { toast } from "react-toastify";
 import { useAtom } from "jotai";
@@ -12,8 +12,9 @@ import Loading from "@/app/components/global/loading";
 import SearchSelect from "@/app/components/global/SearchSelect";
 import { TextField } from "@mui/material";
 
-export default function VendorAddress({ params }) {
+export default function VendorAddress() {
   const [title, setTitle] = useAtom(pageTitle);
+  const params = useParams();
   const [coordinates, setCoordinates] = useState({
     latitude: null,
     longitude: null,

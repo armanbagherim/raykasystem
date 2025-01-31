@@ -5,7 +5,7 @@ import { ChevronLeft, Close, Menu } from "../Icons";
 import Link from "next/link";
 
 export default function BottomSearch() {
-  const [searchTerm, setSearchTerm] = useState();
+  const [searchTerm, setSearchTerm] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const searchContainerRef = useRef(null); // Step 1: Create a ref for the search container
   const [products, setProducts] = useState([]);

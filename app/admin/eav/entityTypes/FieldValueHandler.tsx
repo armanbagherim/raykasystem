@@ -32,7 +32,6 @@ const FieldValueHandler = ({
   isEditFieldValues,
 }) => {
   const getData = async (id) => {
-    console.log(id);
     const data = await fetcher({
       url: `/v1/api/eav/admin/attributeValues/${id}`,
       method: "GET",

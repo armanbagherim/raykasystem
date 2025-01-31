@@ -38,9 +38,8 @@ const Modal = (props: IModal) => {
     hasAccept = true,
   } = props;
   const theme = useTheme();
-  const fullScreen = isFull
-    ? isFull
-    : useMediaQuery(theme.breakpoints.down("md"));
+  const mediaQuery = useMediaQuery(theme.breakpoints.down("md"));
+  const fullScreen = isFull || mediaQuery;
 
   return (
     <>

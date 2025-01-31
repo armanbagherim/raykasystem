@@ -153,7 +153,7 @@ export default async function NavbarModule() {
                 </ul>
               </div>
             </div>
-            <a href="/cart">
+            <Link href="/cart">
               <button className="border rounded-2xl px-3 py-4 relative bg-white">
                 <span className="w-6 h-6 rounded-lg absolute bg-primary text-white -right-2 -top-2 flex justify-center items-center">
                   <span>
@@ -162,7 +162,7 @@ export default async function NavbarModule() {
                 </span>
                 <img src="/icons/cart.svg" alt="" />
               </button>
-            </a>
+            </Link>
           </div>
         </div>
 

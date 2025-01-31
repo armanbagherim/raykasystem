@@ -1,18 +1,16 @@
 "use client";
-import React, { Key, ReactNode } from "react";
-import {
-  Swiper,
-  SwiperSlide,
-  SwiperOptions,
-  SwiperSlideProps,
-} from "swiper/react";
+import React, { Key, ReactNode, useState, useEffect } from "react";
+import { Swiper, SwiperSlide, SwiperSlideProps } from "swiper/react";
+
+import type { SwiperOptions } from "swiper/types";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 
-import { EffectFade, Navigation, FreeMode } from "swiper/modules";
+import { EffectFade, Navigation, FreeMode, Autoplay } from "swiper/modules";
 import SwiperNavigations from "./SwiperNavigation";
+import { LinearProgress } from "@mui/material";
 
 interface SliderProps {
   children: ReactNode[];
@@ -29,60 +27,78 @@ export default function Slider({
   isFree = false,
   hasSpace = true,
 }: SliderProps) {
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+
   const swiperOptions: SwiperOptions = {
-    spaceBetween: 25,
+    spaceBetween: hasSpace ? 25 : 0, // Adjust spaceBetween based on hasSpace prop
     navigation: true,
     loop: true,
-    freeMode: isFree,
+    longSwipes: false,
+    freeMode: false,
     observer: true,
     autoplay: {
-      delay: 2000,
+      delay: 3000,
     },
     breakpoints: {
       320: {
         slidesPerView: slidesPerView ? slidesPerView : 1.5,
         spaceBetween: 20,
       },
-      // Mobile
       640: {
         slidesPerView: slidesPerView ? slidesPerView : 2.5,
         spaceBetween: 10,
       },
-      // Tablet
       769: {
         slidesPerView: slidesPerView ? slidesPerView : 2.2,
         spaceBetween: 10,
       },
-      // Medium (md)
       1024: {
         slidesPerView: slidesPerView ? slidesPerView : 3.2,
         spaceBetween: 10,
       },
-      // Large (lg)
       1280: {
-        slidesPerView: slidesPerView ? slidesPerView : 4.2,
+        slidesPerView: slidesPerView ? slidesPerView : 4.5,
         spaceBetween: 10,
       },
-      // Extra-large (xl) and 2xl
       1536: {
         slidesPerView: slidesPerView ? slidesPerView : 5,
         spaceBetween: 20,
       },
     },
+    onInit: (swiper) => {
+      setIsLoading(false); // Set loading to false after Swiper is initialized
+    },
   };
 
+  // Simulate a delay for loading (optional)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false); // Set loading to false after a delay
+    }, 1000); // Adjust the delay as needed
+
+    return () => clearTimeout(timer); // Cleanup timer
+  }, []);
+
   return (
-    <Swiper
-      className={`mx-auto relative ${!hasSpace ? "" : "mb-8"}`}
-      {...swiperOptions}
-      modules={[EffectFade, Navigation, FreeMode]}
-    >
-      {children.map((child: ReactNode, index: Key) => (
-        <SwiperSlide key={index} {...slideProps}>
-          {child}
-        </SwiperSlide>
-      ))}
-      <SwiperNavigations />
-    </Swiper>
+    <>
+      {isLoading ? (
+        // Loading placeholder
+        <LinearProgress color="success" />
+      ) : (
+        // Swiper component
+        <Swiper
+          className={`mx-auto relative ${!hasSpace ? "" : "mb-8"}`}
+          {...swiperOptions}
+          modules={[EffectFade, Navigation, FreeMode, Autoplay]}
+        >
+          {children.map((child: ReactNode, index: Key) => (
+            <SwiperSlide key={index} {...slideProps}>
+              {child}
+            </SwiperSlide>
+          ))}
+          <SwiperNavigations />
+        </Swiper>
+      )}
+    </>
   );
 }

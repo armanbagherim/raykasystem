@@ -12,7 +12,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import SaveBar from "@/app/components/global/SaveBar";
 import Swal from "sweetalert2";
-export default function DiscountConditions({ params }) {
+import { useParams } from "next/navigation";
+export default function DiscountConditions() {
+  const params = useParams();
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
 

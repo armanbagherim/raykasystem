@@ -9,12 +9,13 @@ import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Loading from "@/app/components/global/loading";
 import { useAtom } from "jotai";
 import { pageTitle } from "../../../layout";
 
-export default function NewDiscount({ params }) {
+export default function NewDiscount() {
+  const params = useParams();
   const router = useRouter();
   const [title, setTitle] = useAtom(pageTitle);
 
