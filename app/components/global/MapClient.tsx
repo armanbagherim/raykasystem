@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback, memo } from "react";
-import "@neshan-maps-platform/mapbox-gl-react/dist/style.css";
+// import "@neshan-maps-platform/mapbox-gl-react/dist/style.css";
 import mapboxgl from "@neshan-maps-platform/mapbox-gl";
 import Image from "next/image";
 
