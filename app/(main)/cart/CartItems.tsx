@@ -221,7 +221,7 @@ export default function CartItems({
           </div>
         </div>
       ) : (
-        <div className="flex items-start flex-col justify-start border rounded-2xl px-4 relative mb-4">
+        <div className="flex items-start flex-col justify-start border rounded-2xl px-3 relative mb-4 bg-white py-2">
           <div className="flex items-center md:w-full md:flex-1">
             <div className="text-right px-2 py-2 ">
               <div>
@@ -233,7 +233,7 @@ export default function CartItems({
                     <Image
                       width={115}
                       height={115}
-                      className="w-16 h-16 rounded-lg"
+                      className="w-16 h-16 rounded-xl"
                       src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${item?.product?.attachments[0]?.fileName}`}
                       alt=""
                     />
@@ -241,7 +241,7 @@ export default function CartItems({
                     <Image
                       width={115}
                       height={115}
-                      className="w-16 h-16 rounded-lg"
+                      className="w-16 h-16 rounded-xl"
                       src="/images/no-photo.png"
                       alt=""
                     />

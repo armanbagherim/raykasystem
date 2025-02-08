@@ -24,16 +24,16 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import MapComponent from "@/app/components/global/Map";
-import MapComponentClient from "@/app/components/global/MapClient";
-import { fetcher, useFetcher } from "@/app/components/global/fetcher";
+import { fetcher } from "@/app/components/global/fetcher";
 import { toast } from "react-toastify";
 import CartItems from "./CartItems";
-import { idID } from "@mui/material/locale";
 import { useRouter } from "next/navigation";
 import MapClient from "@/app/components/global/MapClient";
 import SearchSelect from "@/app/components/global/SearchSelect";
 import { Delete } from "@mui/icons-material";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
 
 const CartModule = ({ cartItems, session, cookies }) => {
   const router = useRouter();
@@ -41,13 +41,10 @@ const CartModule = ({ cartItems, session, cookies }) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [cordinates, setcordinates] = useState();
+  const [selectAddressOpen, setSelectAddressOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [calculates, setCalculates] = useState();
   const [name, setName] = useState();
-  const [slug, setSlug] = useState();
-  const [description, setDescription] = useState();
   const [provinceId, setprovinceId] = useState(1);
   const [neighborhoodId, setneighborhoodId] = useState(1);
   const [cities, setCities] = useState([]);
@@ -72,6 +69,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
     latitude: null,
     longitude: null,
   });
+  const [activeAddress, setActiveAddress] = useState(null);
   const addressInitialized = useRef(false);
   const addressFetched = useRef(false);
   const priceInitialized = useRef(false);
@@ -82,7 +80,9 @@ const CartModule = ({ cartItems, session, cookies }) => {
       setLevel(2);
     }
   };
+  const [activeStep, setActiveStep] = useState(0);
 
+  const steps = ["سبد خرید", "انتخاب آدرس", "پرداخت"];
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -116,6 +116,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
           setAddresses(data?.result ?? []);
           if (data?.result?.length > 0) {
             setAddressId(data?.result[0]?.id);
+            setActiveAddress(data?.result[0]);
           }
           addressFetched.current = true;
         });
@@ -316,9 +317,20 @@ const CartModule = ({ cartItems, session, cookies }) => {
 
   return (
     <>
+      <div className="mb-8">
+        {localCart?.result?.length === 0 ? null : (
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        )}
+      </div>
       <div className="container justify-center mx-auto">
         <div
-          className={`grid gap-4 grid-cols-1 md:grid-cols-${
+          className={`grid gap-0 grid-cols-1 justify-center md:gap-4 mx-4 md:mx-0 md:grid-cols-${
             localCart?.result?.length > 0 ? "3" : "0"
           }`}
         >
@@ -496,514 +508,581 @@ const CartModule = ({ cartItems, session, cookies }) => {
               </div>
             ) : (
               <>
-                <div className=" divide-gray-200 px-4 md:px-0">
-                  {localCart?.result.map((value, index) => (
-                    <CartItems
-                      key={index}
-                      localCart={localCart}
-                      setLocalCart={setLocalCart}
-                      cook={cookies.value}
-                      item={value}
-                      priceCalculate={priceCalculate}
-                      session={session}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-          {localCart?.result?.length > 0 && (
-            <div className="col-span-1 shadow-md border border-customGray bg-white text-xs rounded-3xl mt-8 p-4 pb-10">
-              <div className="text-sm mt-4">
-                <div className="flex gap-4 mb-4">
-                  <div className="flex-1">
-                    <div className="mb-2">نام</div>
-                    <input
-                      className="bg-[#F8F8F8] w-full text-gray-700 rounded rounded-2xl py-4 px-4 mb-3 focus:outline-none"
-                      type="text"
-                      value={session?.result?.firstname ?? ""}
-                      disabled
-                    />
+                {activeStep === 0 && (
+                  <div className=" divide-gray-200 md:px-0">
+                    {localCart?.result.map((value, index) => (
+                      <CartItems
+                        key={index}
+                        localCart={localCart}
+                        setLocalCart={setLocalCart}
+                        cook={cookies.value}
+                        item={value}
+                        priceCalculate={priceCalculate}
+                        session={session}
+                      />
+                    ))}
                   </div>
-                  <div className="flex-1">
-                    <div className="mb-2">نام خانوادگی</div>
-                    <input
-                      className="bg-[#F8F8F8] w-full text-gray-700 rounded rounded-2xl py-4 px-4 mb-3 focus:outline-none"
-                      type="text"
-                      value={session?.result?.lastname ?? ""}
-                      disabled
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2">
-                  <div className="col-span-1">انتخاب آدرس</div>
-                  {session?.token ? (
-                    <button
-                      variant="outlined"
-                      onClick={handleClickOpen}
-                      className="col-span-1 flex gap-2 justify-end outline-none"
-                    >
-                      <span>
-                        <PlusSmall />
-                      </span>
-                      <span>افزودن آدرس</span>
-                    </button>
-                  ) : (
-                    <Link href={`/login?redirect_back_url=/cart`}>
+                )}
+                {activeStep == 1 && (
+                  <div className="">
+                    <div className="col-span-1">
+                      <div className="flex items-center justify-between mb-4">
+                        <span>انتخاب آدرس</span>
+                        {session?.token ? (
+                          <button
+                            variant="outlined"
+                            onClick={handleClickOpen}
+                            className="col-span-1 flex gap-2 justify-end outline-none"
+                          >
+                            <span>
+                              <PlusSmall />
+                            </span>
+                            <span>افزودن آدرس</span>
+                          </button>
+                        ) : (
+                          <Link href={`/login?redirect_back_url=/cart`}>
+                            <button
+                              variant="outlined"
+                              className="col-span-1 flex gap-2 justify-end outline-none w-full"
+                            >
+                              <span>ورود برای افزودن آدرس</span>
+                            </button>
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex bg-white rounded-2xl p-6 justify-between mb-4 items-center mx-2  md:mx-0">
+                      <div>
+                        <div className="text-primary font-bold">
+                          {activeAddress?.name}
+                        </div>
+                        <div className="flex flex-1 gap-1 flex-wrap">
+                          <span>خیابان {activeAddress?.street}</span>
+                          <span>پلاک {activeAddress?.plaque}</span>
+                          <span>طبقه {activeAddress?.floorNumber}</span>
+                        </div>
+                      </div>
                       <button
-                        variant="outlined"
-                        className="col-span-1 flex gap-2 justify-end outline-none w-full"
+                        className="font-medium flex-5 text-md text-[#0272c8]"
+                        onClick={(e) => setSelectAddressOpen(true)}
                       >
-                        <span>ورود برای افزودن آدرس</span>
+                        تغییر آدرس
                       </button>
-                    </Link>
-                  )}
+                    </div>
 
-                  <Dialog
-                    fullScreen={fullScreen}
-                    open={open}
-                    maxWidth="xl"
-                    onClose={handleClose}
-                    aria-labelledby="responsive-dialog-title"
-                  >
-                    {" "}
-                    <DialogTitle id="responsive-dialog-title">
-                      ثبت آدرس جدید
-                    </DialogTitle>
-                    <DialogContent className="w-full md:w-[600px]">
-                      <DialogContentText>
-                        <div>
-                          {level === 1 ? (
-                            <MapClient
-                              height={400}
-                              defaultLocation={{
-                                lat: coordinates?.latitude ?? 35.65326,
-                                lng: coordinates?.longitude ?? 51.35471,
-                              }}
-                              onLocationChange={(location) => {
-                                setCoordinates({
-                                  latitude: location.lat.toString(),
-                                  longitude: location.lng.toString(),
-                                });
-                              }}
-                            />
-                          ) : (
-                            <div className="">
-                              <div className="mb-8">
-                                <TextField
-                                  type="text"
-                                  id="first_name"
-                                  className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                  required
-                                  label="نام آدرس: مثال خانه"
-                                  value={name}
-                                  fullWidth
-                                  variant="standard"
-                                  onChange={(e) => {
-                                    setName(e.target.value);
+                    <Dialog
+                      open={selectAddressOpen}
+                      keepMounted
+                      onClose={(e) => setSelectAddressOpen(false)}
+                      aria-describedby="alert-dialog-slide-description"
+                    >
+                      <DialogContent>
+                        <div className="flex flex-col space-y-2">
+                          {session?.result && addresses?.length ? (
+                            addresses?.map((value, key) => {
+                              return (
+                                <div
+                                  onClick={(e) => {
+                                    setAddressId(value.id);
+                                    const active = addresses.filter(
+                                      (address) => address.id === value.id
+                                    );
+                                    // console.log();
+                                    setActiveAddress(active[0]);
+                                    setSelectAddressOpen(false);
                                   }}
-                                />
-                              </div>
-                              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                                <div className="">
-                                  {provinces && (
-                                    <SearchSelect
-                                      onChange={(e) => {
-                                        if (e !== null) {
-                                          setprovinceId(e.id);
-                                        } else {
-                                          setprovinceId(1);
-                                        }
-                                      }}
-                                      data={provinces}
-                                      value={provinceId}
-                                      defaultValue={provinceId}
-                                      isDiff={true}
-                                      diffName="name"
-                                      label="استان"
-                                    />
-                                  )}
+                                  key={key}
+                                  value={value.id}
+                                  className="flex flex-col gap-2 cursor-pointer border border-1 hover:border-primary rounded-3xl p-4"
+                                >
+                                  <span className="text-primary font-bold mb-2">
+                                    {value.name}
+                                  </span>
+                                  <span className="">{value.street}</span>
                                 </div>
-                                <div className="">
-                                  {cities && (
-                                    <SearchSelect
-                                      onChange={(e) => {
-                                        if (e !== null) {
-                                          setCityId(e.id);
-                                        } else {
-                                          setCityId(cities[0].id);
-                                        }
-                                      }}
-                                      data={cities}
-                                      value={cityId}
-                                      defaultValue={cityId}
-                                      isDiff={true}
-                                      diffName="name"
-                                      label="شهر"
-                                    />
-                                  )}
-                                </div>
-                                {neghberhoods && (
-                                  <SearchSelect
-                                    nullable={true}
-                                    onChange={(e) => {
-                                      if (e !== null) {
-                                        setneighborhoodId(e.id);
-                                      } else {
-                                        setneighborhoodId(neghberhoods[0].id);
-                                      }
-                                    }}
-                                    data={neghberhoods}
-                                    value={neighborhoodId}
-                                    defaultValue={neighborhoodId}
-                                    label="محله"
-                                  />
-                                )}
-                              </div>
-                              <div className="flex gap-4 mb-6">
-                                <div className="w-full flex-1">
-                                  <TextField
-                                    type="text"
-                                    variant="standard"
-                                    id="first_name"
-                                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                    required
-                                    label="آدرس"
-                                    fullWidth
-                                    value={street}
-                                    onChange={(e) => {
-                                      setStreet(e.target.value);
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                              <div className="flex gap-4">
-                                <div className="flex-1">
-                                  <TextField
-                                    type="text"
-                                    variant="standard"
-                                    id="first_name"
-                                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                    required
-                                    label="پلاک"
-                                    value={plaque}
-                                    onChange={(e) => {
-                                      setPlaque(e.target.value);
-                                    }}
-                                  />
-                                </div>
-                                <div className="flex-1">
-                                  <TextField
-                                    type="text"
-                                    variant="standard"
-                                    id="first_name"
-                                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                    required
-                                    label="طبقه"
-                                    value={floorNumber}
-                                    onChange={(e) => {
-                                      setFloorNumber(e.target.value);
-                                    }}
-                                  />
-                                </div>
-                                <div className="flex-1">
-                                  <TextField
-                                    type="text"
-                                    variant="standard"
-                                    id="first_name"
-                                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                    required
-                                    label="کد پستی"
-                                    value={postalCode}
-                                    onChange={(e) => {
-                                      setPostalCode(e.target.value);
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            </div>
+                              );
+                            })
+                          ) : (
+                            <div>آدرسی جهت نمایش پیدا نشد</div>
                           )}
                         </div>
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions className="!pt-4 border-t border-t-gray-300 !justify-between">
-                      <Button
-                        autoFocus
-                        onClick={(e) =>
-                          level === 1 ? handleClose() : setLevel(1)
-                        }
-                      >
-                        {level === 1 ? "انصراف" : "مرحله قبل"}
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        color="success"
-                        onClick={level === 1 ? checkLocation : save}
-                        autoFocus
-                        disabled={
-                          coordinates.latitude === "35.65326" &&
-                          coordinates.longitude === "51.354710000000004"
-                            ? true
-                            : false
-                        } // Disable button while isLoading
-                      >
-                        {isLoading ? (
-                          <CircularProgress size={24} />
-                        ) : level === 1 ? (
-                          "مرحله بعدی"
-                        ) : (
-                          "ذخیره"
-                        )}
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                  <div className="inline-block col-span-2 rounded-2xl relative w-full mt-4 bg-customGray">
-                    <div className="">
-                      <div className="pointer-events-none justify-center mx-auto w-10 absolute inset-y-0 left-0 flex items-center text-gray-700">
-                        <svg
-                          className="fill-current h-4 w-4"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                      </div>
+                      </DialogContent>
+                    </Dialog>
 
-                      <select
-                        onChange={(e) => setAddressId(e.target.value)}
-                        className="appearance-none text-sm h-[63px] w-full rounded-2xl bg-customGray hover:border-gray-500 pr-4 shadow focus:outline-none focus:shadow-outline"
-                      >
-                        {session?.result && addresses?.length ? (
-                          addresses?.map((value, key) => {
-                            return (
-                              <option key={key} value={value.id}>
-                                {value.name} | {value.street}
-                              </option>
-                            );
-                          })
-                        ) : (
-                          <option>آدرسی جهت نمایش پیدا نشد</option>
-                        )}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-4 relative mb-4">
-                  <input
-                    className="text-sm bg-customGray p-4 w-full rounded-xl outline-none"
-                    type="text"
-                    placeholder="کد تخفیف"
-                    value={copunValue ?? null}
-                    onChange={(e) =>
-                      setCopunValue(
-                        e.target.value !== "" ? e.target.value : null
-                      )
-                    }
-                  />
-                  <div className="absolute left-2 top-2">
-                    {copunValue !== null && (
-                      <button
-                        className="outline-none text-red-900"
-                        onClick={() => {
-                          setCopunValue(null);
-                        }}
-                      >
-                        <Delete fontSize="medium" />
-                      </button>
-                    )}
-                    <button
-                      onClick={(e) => checkCopun()}
-                      className="bg-primary  hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-white"
+                    <Dialog
+                      fullScreen={fullScreen}
+                      open={open}
+                      maxWidth="xl"
+                      onClose={handleClose}
+                      aria-labelledby="responsive-dialog-title"
                     >
-                      بررسی کد
-                    </button>
-                  </div>
-                </div>
-                <TextareaAutosize
-                  className="text-sm bg-customGray p-4 w-full rounded-xl outline-none"
-                  type="text"
-                  minRows={3}
-                  placeholder="یادداشت سفارش"
-                  value={noteDescription ?? null}
-                  onChange={(e) =>
-                    setNoteDescription(
-                      e.target.value !== "" ? e.target.value : null
-                    )
-                  }
-                ></TextareaAutosize>
-                <div className="mt-5 text-sm">روش پرداخت</div>
-                {calculateErrors !== "" ? (
-                  <div
-                    class="p-4 mb-4 mt-2 text-sm text-red-800 rounded-xl bg-red-50  "
-                    role="alert"
-                  >
-                    <span class="font-medium">{calculateErrors}</span>
-                  </div>
-                ) : (
-                  ""
-                )}
-                <div className=" mt-3 gap-2">
-                  {!calculate?.paymentOptions ? (
-                    <>
-                      <div className="flex-1 w-full h-2.5 bg-gray-300  mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
-                      <div className="flex-1 w-full h-2.5 bg-gray-300  mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
-                      <div className="flex-1 w-full h-2.5 bg-gray-300  mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
-                    </>
-                  ) : (
-                    calculate.paymentOptions.map((paymentOption, key) => {
-                      return paymentOption.payments.map((payment, pKey) => (
-                        <div
-                          key={pKey}
-                          className="flex-1 w-full whitespace-nowrap text-sm bg-customGray p-4 rounded-xl mb-2"
-                        >
-                          <div className="flex justify-between items-center my-auto h-full">
-                            <div>
-                              <div className="font-bold text-md">
-                                <label htmlFor={`${payment.id}-radio`}>
-                                  <div className="flex">
-                                    <span>
-                                      <div className="bg-white ml-2 rounded-md">
-                                        <img
-                                          className="w-10 h-auto"
-                                          src={payment.imageUrl}
-                                          alt=""
-                                        />
-                                      </div>
-                                    </span>
-                                    <div className="">
-                                      <div>
-                                        {payment?.titleMessage ?? payment.name}
-                                      </div>
-                                      <div className="whitespace-break-spaces font-medium my-2">
-                                        {payment?.description}
-                                      </div>
-                                      <p className="text-primary">
-                                        {Number(
-                                          paymentOption.totalPrice
-                                        ).toLocaleString()}{" "}
-                                        <span>ءتء</span>
-                                      </p>
-                                    </div>
+                      {" "}
+                      <DialogTitle id="responsive-dialog-title">
+                        ثبت آدرس جدید
+                      </DialogTitle>
+                      <DialogContent className="w-full md:w-[600px]">
+                        <DialogContentText>
+                          <div>
+                            {level === 1 ? (
+                              <MapClient
+                                height={400}
+                                defaultLocation={{
+                                  lat: coordinates?.latitude ?? 35.65326,
+                                  lng: coordinates?.longitude ?? 51.35471,
+                                }}
+                                onLocationChange={(location) => {
+                                  setCoordinates({
+                                    latitude: location.lat.toString(),
+                                    longitude: location.lng.toString(),
+                                  });
+                                }}
+                              />
+                            ) : (
+                              <div className="">
+                                <div className="mb-8">
+                                  <TextField
+                                    type="text"
+                                    id="first_name"
+                                    className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                    required
+                                    label="نام آدرس: مثال خانه"
+                                    value={name}
+                                    fullWidth
+                                    variant="standard"
+                                    onChange={(e) => {
+                                      setName(e.target.value);
+                                    }}
+                                  />
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                  <div className="">
+                                    {provinces && (
+                                      <SearchSelect
+                                        onChange={(e) => {
+                                          if (e !== null) {
+                                            setprovinceId(e.id);
+                                          } else {
+                                            setprovinceId(1);
+                                          }
+                                        }}
+                                        data={provinces}
+                                        value={provinceId}
+                                        defaultValue={provinceId}
+                                        isDiff={true}
+                                        diffName="name"
+                                        label="استان"
+                                      />
+                                    )}
                                   </div>
-                                </label>
+                                  <div className="">
+                                    {cities && (
+                                      <SearchSelect
+                                        onChange={(e) => {
+                                          if (e !== null) {
+                                            setCityId(e.id);
+                                          } else {
+                                            setCityId(cities[0].id);
+                                          }
+                                        }}
+                                        data={cities}
+                                        value={cityId}
+                                        defaultValue={cityId}
+                                        isDiff={true}
+                                        diffName="name"
+                                        label="شهر"
+                                      />
+                                    )}
+                                  </div>
+                                  {neghberhoods && (
+                                    <SearchSelect
+                                      nullable={true}
+                                      onChange={(e) => {
+                                        if (e !== null) {
+                                          setneighborhoodId(e.id);
+                                        } else {
+                                          setneighborhoodId(neghberhoods[0].id);
+                                        }
+                                      }}
+                                      data={neghberhoods}
+                                      value={neighborhoodId}
+                                      defaultValue={neighborhoodId}
+                                      label="محله"
+                                    />
+                                  )}
+                                </div>
+                                <div className="flex gap-4 mb-6">
+                                  <div className="w-full flex-1">
+                                    <TextField
+                                      type="text"
+                                      variant="standard"
+                                      id="first_name"
+                                      className="bg-gray-50 border mb-10 border-gray-300 text-gray-900 mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                      required
+                                      label="آدرس"
+                                      fullWidth
+                                      value={street}
+                                      onChange={(e) => {
+                                        setStreet(e.target.value);
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="flex gap-4">
+                                  <div className="flex-1">
+                                    <TextField
+                                      type="text"
+                                      variant="standard"
+                                      id="first_name"
+                                      className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                      required
+                                      label="پلاک"
+                                      value={plaque}
+                                      onChange={(e) => {
+                                        setPlaque(e.target.value);
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="flex-1">
+                                    <TextField
+                                      type="text"
+                                      variant="standard"
+                                      id="first_name"
+                                      className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                      required
+                                      label="طبقه"
+                                      value={floorNumber}
+                                      onChange={(e) => {
+                                        setFloorNumber(e.target.value);
+                                      }}
+                                    />
+                                  </div>
+                                  <div className="flex-1">
+                                    <TextField
+                                      type="text"
+                                      variant="standard"
+                                      id="first_name"
+                                      className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                      required
+                                      label="کد پستی"
+                                      value={postalCode}
+                                      onChange={(e) => {
+                                        setPostalCode(e.target.value);
+                                      }}
+                                    />
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                            <input
-                              id={`${payment.id}-radio`}
-                              type="radio"
-                              value={payment.id}
-                              name="paymentMethod"
-                              onChange={(e) => setPaymentMethod(payment.id)}
-                              checked={payment.id === paymentMethod}
-                            />
+                            )}
                           </div>
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions className="!pt-4 border-t border-t-gray-300 !justify-between">
+                        <Button
+                          autoFocus
+                          onClick={(e) =>
+                            level === 1 ? handleClose() : setLevel(1)
+                          }
+                        >
+                          {level === 1 ? "انصراف" : "مرحله قبل"}
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="success"
+                          onClick={level === 1 ? checkLocation : save}
+                          autoFocus
+                          disabled={
+                            coordinates.latitude === "35.65326" &&
+                            coordinates.longitude === "51.354710000000004"
+                              ? true
+                              : false
+                          } // Disable button while isLoading
+                        >
+                          {isLoading ? (
+                            <CircularProgress size={24} />
+                          ) : level === 1 ? (
+                            "مرحله بعدی"
+                          ) : (
+                            "ذخیره"
+                          )}
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </div>
+                )}
+                {activeStep == 2 && (
+                  <>
+                    <div className="text-sm mt-4">
+                      <TextareaAutosize
+                        className="text-sm bg-white p-4 w-full rounded-xl outline-none"
+                        type="text"
+                        minRows={3}
+                        placeholder="یادداشت سفارش"
+                        value={noteDescription ?? null}
+                        onChange={(e) =>
+                          setNoteDescription(
+                            e.target.value !== "" ? e.target.value : null
+                          )
+                        }
+                      ></TextareaAutosize>
+                      <div className="mt-5 text-sm">روش پرداخت</div>
+                      {calculateErrors !== "" ? (
+                        <div
+                          class="p-4 mb-4 mt-2 text-sm text-red-800 rounded-xl bg-red-50  "
+                          role="alert"
+                        >
+                          <span class="font-medium">{calculateErrors}</span>
                         </div>
-                      ));
-                    })
-                  )}
-                </div>
-
-                <div className="mt-4 text-sm p-2">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="flex-1">جمع محصولات</span>
-
-                    <span className="flex-1 text-left font-bold text-primary">
-                      {isLoading ? (
-                        <div className="flex-1 h-4 bg-gray-300  mb-2.5 rounded-2xl animate-pulse w-full"></div>
-                      ) : (
-                        <span>
-                          {Number(
-                            defaultPayment?.totalProductPrice
-                          ).toLocaleString()}{" "}
-                          ءتء
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="flex-1">سود شما از این خرید</span>
-
-                    <span className="flex-1 text-left font-bold text-primary">
-                      {isLoading ? (
-                        <div className="flex-1 h-4 bg-gray-300  mb-2.5 rounded-2xl animate-pulse w-full"></div>
-                      ) : (
-                        <span>
-                          {Number(
-                            defaultPayment?.totalDiscount
-                          ).toLocaleString()}{" "}
-                          ءتء
-                        </span>
-                      )}
-                    </span>
-                  </div>
-
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="flex-1">روش ارسال</span>
-
-                    <span className="flex-1 text-left font-bold text-primary">
-                      {calculate?.paymentOptions ? (
-                        <>
-                          <span className="text-primary">
-                            {calculate.paymentOptions[0]?.shipmentTypeName}
-                          </span>
-                        </>
                       ) : (
                         ""
                       )}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="flex-1">هزینه ارسال</span>
+                      <div className=" mt-3 gap-2 grid grid-cols-2">
+                        {!calculate?.paymentOptions ? (
+                          <>
+                            <div className="flex-1 w-full h-2.5 bg-gray-300  mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
+                            <div className="flex-1 w-full h-2.5 bg-gray-300  mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
+                            <div className="flex-1 w-full h-2.5 bg-gray-300  mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
+                          </>
+                        ) : (
+                          calculate.paymentOptions.map((paymentOption, key) => {
+                            return paymentOption.payments.map(
+                              (payment, pKey) => (
+                                <div
+                                  key={pKey}
+                                  className="flex-1 w-full whitespace-nowrap text-sm bg-white p-4 rounded-xl mb-2"
+                                >
+                                  <div className="flex justify-between items-center my-auto h-full">
+                                    <div>
+                                      <div className="font-bold text-md">
+                                        <label htmlFor={`${payment.id}-radio`}>
+                                          <div className="flex">
+                                            <span>
+                                              <div className="bg-white ml-2 rounded-md">
+                                                <img
+                                                  className="w-10 h-auto"
+                                                  src={payment.imageUrl}
+                                                  alt=""
+                                                />
+                                              </div>
+                                            </span>
+                                            <div className="">
+                                              <div>
+                                                {payment?.titleMessage ??
+                                                  payment.name}
+                                              </div>
+                                              <div className="whitespace-break-spaces font-medium my-2">
+                                                {payment?.description}
+                                              </div>
+                                              <p className="text-primary">
+                                                {Number(
+                                                  paymentOption.totalPrice
+                                                ).toLocaleString()}{" "}
+                                                <span>ءتء</span>
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <input
+                                      id={`${payment.id}-radio`}
+                                      type="radio"
+                                      value={payment.id}
+                                      name="paymentMethod"
+                                      onChange={(e) =>
+                                        setPaymentMethod(payment.id)
+                                      }
+                                      checked={payment.id === paymentMethod}
+                                    />
+                                  </div>
+                                </div>
+                              )
+                            );
+                          })
+                        )}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+          </div>
 
-                    <span className="flex-1 text-left font-bold text-primary">
-                      {isLoading ? (
-                        <div className="flex-1 text-left font-bold text-primary h-5 bg-gray-300  w-24 mb-2.5 rounded-2xl animate-pulse w-full"></div>
-                      ) : (
-                        <span>
-                          {Number(
-                            defaultPayment?.totalShipmentPrice
-                          ).toLocaleString()}{" "}
-                          ءتء
-                        </span>
+          {localCart?.result?.length > 0 && (
+            <div className="col-span-1 shadow-md border border-customGray bg-white text-xs rounded-3xl mt-0 p-4 pb-4">
+              {activeStep == 2 && (
+                <>
+                  <div className="mt-4 relative mb-4">
+                    <input
+                      className="text-sm bg-[#f2f2f2] p-4 w-full rounded-2xl outline-none mb-4"
+                      type="text"
+                      placeholder="کد تخفیف"
+                      value={copunValue ?? null}
+                      onChange={(e) =>
+                        setCopunValue(
+                          e.target.value !== "" ? e.target.value : null
+                        )
+                      }
+                    />
+                    <div className="absolute left-2 top-2">
+                      {copunValue !== null && (
+                        <button
+                          className="outline-none text-red-900"
+                          onClick={() => {
+                            setCopunValue(null);
+                          }}
+                        >
+                          <Delete fontSize="medium" />
+                        </button>
                       )}
-                    </span>
+                      <button
+                        onClick={(e) => checkCopun()}
+                        className="bg-primary  hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-white"
+                      >
+                        بررسی کد
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="flex-1">مبلغ نهایی</span>
+                </>
+              )}
+              <div className="text-sm p-2">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="flex-1">جمع محصولات</span>
 
-                    <span className="flex-1 text-left font-bold text-primary">
-                      {isLoading ? (
-                        <div className="flex-1 h-4 bg-gray-300  mb-2.5 rounded-2xl animate-pulse w-full"></div>
-                      ) : (
-                        <span>
-                          {Number(defaultPayment?.totalPrice).toLocaleString()}{" "}
-                          ءتء
-                        </span>
-                      )}
-                    </span>
-                  </div>
+                  <span className="flex-1 text-left font-bold text-primary">
+                    {isLoading ? (
+                      <div className="flex-1 h-3 bg-gray-300  mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                    ) : (
+                      <span>
+                        {Number(
+                          defaultPayment?.totalProductPrice
+                        ).toLocaleString()}{" "}
+                        ءتء
+                      </span>
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="flex-1">سود شما از این خرید</span>
+
+                  <span className="flex-1 text-left font-bold text-primary">
+                    {isLoading ? (
+                      <div className="flex-1 h-3 bg-gray-300  mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                    ) : (
+                      <span>
+                        {Number(defaultPayment?.totalDiscount).toLocaleString()}{" "}
+                        ءتء
+                      </span>
+                    )}
+                  </span>
+                </div>
+
+                {activeStep !== 0 && (
+                  <>
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="flex-1">روش ارسال</span>
+
+                      <span className="flex-1 text-left font-bold text-primary">
+                        {isLoading ? (
+                          <div className="flex-1 h-3 bg-gray-300  mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                        ) : (
+                          <span className="text-primary">
+                            {calculate.paymentOptions[0]?.shipmentTypeName}
+                          </span>
+                        )}
+
+                        {/* {calculate?.paymentOptions ? <></> : ""} */}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="flex-1">هزینه ارسال</span>
+
+                      <span className="flex-1 text-left font-bold text-primary">
+                        {isLoading ? (
+                          <div className="flex-1 text-left font-bold text-primary h-3 bg-gray-300  w-24 mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                        ) : (
+                          <span>
+                            {Number(
+                              defaultPayment?.totalShipmentPrice
+                            ).toLocaleString()}{" "}
+                            ءتء
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  </>
+                )}
+                <div className="flex justify-between items-center mb-4">
+                  <span className="flex-1">مبلغ نهایی</span>
+
+                  <span className="flex-1 text-left font-bold text-primary">
+                    {isLoading ? (
+                      <div className="flex-1 h-3 bg-gray-300  mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                    ) : (
+                      <span>
+                        {Number(defaultPayment?.totalPrice).toLocaleString()}{" "}
+                        ءتء
+                      </span>
+                    )}
+                  </span>
                 </div>
               </div>
-              <div className="mt-4 text-lg text-center">
-                {session?.result ? (
+
+              <div className="flex gap-4 text-md font-bold">
+                {activeStep !== 0 && (
                   <button
-                    onClick={submitPayment}
-                    disabled={
-                      calculate?.stocks?.length === 0 ||
-                      calculateErrors !== "" ||
-                      isLoading !== false ||
-                      loading !== false
-                    }
-                    className={`bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
+                    onClick={() => setActiveStep((prev) => prev - 1)}
+                    className={`bg-[#d8d8d8] p-3 w-full rounded-2xl text-black py-4 hover:bg-[#c0c0c0] disabled:opacity-25 disabled:pointer-events-none`}
                   >
-                    پرداخت سفارش
+                    مرحله قبل
                   </button>
-                ) : (
-                  <Link href={`/login?redirect_back_url=/cart`}>
-                    <button className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700">
-                      برای پرداخت سفارش وارد شوید
+                )}
+                {activeStep == 2 &&
+                  (session?.result ? (
+                    <button
+                      onClick={submitPayment}
+                      disabled={
+                        calculate?.stocks?.length === 0 ||
+                        calculateErrors !== "" ||
+                        isLoading !== false ||
+                        loading !== false
+                      }
+                      className={`bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
+                    >
+                      پرداخت سفارش
                     </button>
-                  </Link>
+                  ) : (
+                    <Link href={`/login?redirect_back_url=/cart`}>
+                      <button className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700">
+                        برای پرداخت سفارش وارد شوید
+                      </button>
+                    </Link>
+                  ))}
+
+                {activeStep == 0 &&
+                  (session?.result ? (
+                    <button
+                      onClick={() => setActiveStep(1)}
+                      className={`bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
+                    >
+                      وارد کردن آدرس
+                    </button>
+                  ) : (
+                    <Link
+                      className="bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none text-center"
+                      href={`/login?redirect_back_url=/cart`}
+                    >
+                      <button onClick={() => setActiveStep(1)}>
+                        ورود یا ثبت نام
+                      </button>
+                    </Link>
+                  ))}
+                {activeStep == 1 && (
+                  <button
+                    onClick={() => setActiveStep(2)}
+                    className={`bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
+                  >
+                    پرداخت
+                  </button>
                 )}
               </div>
             </div>
