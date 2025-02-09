@@ -146,6 +146,9 @@ export async function generateMetadata({ params }): Promise<Metadata> {
     title: `${entity?.metaTitle ?? entity?.name} | جهیزان`,
     description: entity?.metaDescription,
     keywords: entity?.metaKeywords,
+    alternates: {
+      canonical: `${process.env.WEBSITE_BASE_URL}/category/${params?.slug}`,
+    },
   };
 }
 

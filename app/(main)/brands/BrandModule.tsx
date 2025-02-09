@@ -4,12 +4,12 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 export default function BrandModule({ data }) {
-  const [searchTerm, setSearchTerm] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredBrands = data.result.filter((brand) => {
-    return brand.name.toLowerCase().includes(searchTerm.toLowerCase());
+    return brand.name.toLowerCase().includes(searchTerm?.toLowerCase());
   });
-
+  console.log(data);
   return (
     <div className="container mx-auto">
       <div className="!px-4 md:px-0">
