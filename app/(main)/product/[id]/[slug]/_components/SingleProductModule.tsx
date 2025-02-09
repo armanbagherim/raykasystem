@@ -451,8 +451,16 @@ export default function SingleProductModule({
             {product?.attachments.length ? (
               <Slider slidesPerView={1}>
                 {product?.attachments.map((value, key) => (
-                  <img
-                    src="https://image.jahizan.com/products/b24a7fc5-45d1-4da7-970d-7027de7153fc.jpg"
+                  <Image
+                    onClick={handleClickOpen}
+                    key={key}
+                    className="w-full"
+                    height={"500"}
+                    alt={product?.title}
+                    loading="eager"
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${
+                      value?.fileName ?? null
+                    }`}
                     width="500"
                   />
                 ))}
