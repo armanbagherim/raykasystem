@@ -88,6 +88,9 @@ export async function generateMetadata({ params }): Promise<Metadata> {
         ? `${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/brands/${brand?.attachment?.fileName}`
         : null,
     },
+    alternates: {
+      canonical: `${process.env.WEBSITE_BASE_URL}/brands/${params?.slug}`,
+    },
   };
 }
 

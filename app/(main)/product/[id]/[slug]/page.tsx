@@ -80,6 +80,9 @@ export async function generateMetadata({ params }): Promise<Metadata> {
           ? `${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${product?.result?.result?.attachments[0]?.fileName}`
           : null,
     },
+    alternates: {
+      canonical: `${process.env.WEBSITE_BASE_URL}/product/${product.result?.result?.sku}/${product.result?.result?.slug}`,
+    },
     other: {
       product_id: product?.result?.result?.id,
       product_name:
