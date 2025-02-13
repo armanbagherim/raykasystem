@@ -45,7 +45,7 @@ export default function BottomNavModule({ entities }) {
   return (
     <>
       <div
-        className={`w-full h-full bg-white fixed top-0 left-0 z-10 pt-5 px-6 pb-40 overflow-y-auto ${
+        className={`w-full h-full bg-white fixed top-0 left-0 z-[90] pt-5 px-6 pb-40 overflow-y-auto ${
           isMenuOpen ? "block animate-open-menu" : "hidden animate-close-menu"
         }`}
       >

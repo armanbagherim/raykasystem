@@ -295,7 +295,7 @@ export default function SingleProductModule({
       <div className="container justify-center mx-auto grid grid-cols-12 gap-4 md:gap-4 !p-4 !md:p-8 lg:p-0">
         <div className="col-span-12 lg:col-span-4 border-0 rounded-2xl relative bg-white py-4">
           <div className="flex">
-            <div className="w-10 pb-4 absolute lg:opacity-100 -right-4 -top-4 md:r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-50 md:z-20">
+            <div className="w-10 pb-4 absolute lg:opacity-100 -right-4 -top-4 md:r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-30 md:z-20">
               <div className="pt-3.5 mr-3">
                 <span className="cursor-pointer" onClick={handleClickOpen}>
                   <Zoomin />

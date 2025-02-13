@@ -9,7 +9,7 @@ export default function Inventories({ product, addToCart, inventoryStatusId }) {
   return (
     product.length > 1 && (
       <div className="container mx-auto">
-        <div className="  gap-10 bg-white rounded-3xl !p-5">
+        <div className="  gap-10 bg-white rounded-3xl !p-5 mb-4">
           {product[0] !== "" ? (
             <>
               <div>

@@ -61,7 +61,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
   const [loading, setLoading] = useState(false);
   const [addressId, setAddressId] = useState(null);
   const [addresses, setAddresses] = useState([]);
-  const [calculateErrors, setCalculateErrors] = useState("");
+  const [calculateErrors, setCalculateErrors] = useState(null);
   const [copunValue, setCopunValue] = useState(null);
   const [noteDescription, setNoteDescription] = useState(null);
   const [postalCode, setPostalCode] = useState();
@@ -151,7 +151,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
             setCalculate(data.result);
             setDefaultPayment(data.result.paymentOptions[0]);
             setIsLoading(false);
-            setCalculateErrors("");
+            setCalculateErrors(null);
           }
         });
     } catch (error) {}
@@ -825,17 +825,8 @@ const CartModule = ({ cartItems, session, cookies }) => {
                         }
                       ></TextareaAutosize>
                       <div className="mt-5 text-sm">روش پرداخت</div>
-                      {calculateErrors !== "" ? (
-                        <div
-                          class="p-4 mb-4 mt-2 text-sm text-red-800 rounded-xl bg-red-50  "
-                          role="alert"
-                        >
-                          <span class="font-medium">{calculateErrors}</span>
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                      <div className=" mt-3 gap-2 grid grid-cols-2">
+
+                      <div className=" mt-3 gap-2 grid grid-cols-1 md:grid-cols-2">
                         {!calculate?.paymentOptions ? (
                           <>
                             <div className="flex-1 w-full h-2.5 bg-gray-300  mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
@@ -945,6 +936,19 @@ const CartModule = ({ cartItems, session, cookies }) => {
                 </>
               )}
               <div className="text-sm p-2">
+                {console.log(calculateErrors)}
+                {activeStep == 1 ? (
+                  calculateErrors ? (
+                    <div
+                      className="p-4 mb-4 mt-2 text-sm text-red-800 rounded-xl bg-red-50  "
+                      role="alert"
+                    >
+                      <span className="font-medium">{calculateErrors}</span>
+                    </div>
+                  ) : (
+                    ""
+                  )
+                ) : null}
                 <div className="flex justify-between items-center mb-4">
                   <span className="flex-1">جمع محصولات</span>
 
@@ -1042,7 +1046,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                       onClick={submitPayment}
                       disabled={
                         calculate?.stocks?.length === 0 ||
-                        calculateErrors !== "" ||
+                        calculateErrors ||
                         isLoading !== false ||
                         loading !== false
                       }
@@ -1076,14 +1080,22 @@ const CartModule = ({ cartItems, session, cookies }) => {
                       </button>
                     </Link>
                   ))}
-                {activeStep == 1 && (
-                  <button
-                    onClick={() => setActiveStep(2)}
-                    className={`bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
-                  >
-                    پرداخت
-                  </button>
-                )}
+                {activeStep == 1 &&
+                  (!calculateErrors ? (
+                    <button
+                      onClick={() => setActiveStep(2)}
+                      className={`bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
+                    >
+                      پرداخت
+                    </button>
+                  ) : (
+                    <button
+                      disabled
+                      className={`bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
+                    >
+                      پرداخت
+                    </button>
+                  ))}
               </div>
             </div>
           )}
