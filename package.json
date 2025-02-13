@@ -40,6 +40,7 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "formik": "^2.4.6",
     "html2canvas": "^1.4.1",
+    "jodit-react": "^5.2.6",
     "jotai": "^2.10.4",
     "jspdf": "^2.5.2",
     "lodash": "^4.17.21",
@@ -53,6 +54,7 @@
     "ol": "^10.3.1",
     "ol-geocoder": "^4.3.3",
     "q-flat": "^1.0.7",
+    "quill": "^2.0.3",
     "raychat-react": "^2.0.0",
     "react": "19.0.0",
     "react-advance-jalaali-datepicker": "^1.6.0",
@@ -81,6 +83,7 @@
     "stylis": "^4.3.4",
     "stylis-plugin-rtl": "^2.1.1",
     "swiper": "^11.1.15",
+    "tinymce": "^7.6.1",
     "yup": "^1.6.1"
   },
   "devDependencies": {

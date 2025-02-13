@@ -50,7 +50,7 @@ const Maps: React.FC<MapProps> = ({
         minZoom: 2,
         maxZoom: 21,
         trackResize: true,
-        mapKey: "web.17a0c7f735234ae7acfa9eac73c9ca2e",
+        mapKey: "web.0d81d4fa8d194f419aeb4cf313fd6a48",
         poi: false,
         traffic: false,
         mapTypeControllerOptions: {
