@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   title: "جهیزان | خرید اقساطی جهیزیه",
   description:
     "جهیزان | خرید اقساطی و نقدی تمامی لوازم جهیزیه با به صرفه ترین قیمت نسبت بازار جهیزیه",
+  alternates: {
+    canonical: "https://jahizan.com/",
+  },
 };
 
 export default function RootLayout({
