@@ -73,7 +73,7 @@ export default function SingleProductModule({
     setLocalInventories(uniqueInventories);
   }, [product?.inventories]);
 
-  const addToCart = (inventoryId) => {
+  const addToCart = async (inventoryId) => {
     const id = toast.loading("در حال افزودن موجودی");
     const method = "POST";
     const headers = {
@@ -97,48 +97,78 @@ export default function SingleProductModule({
     };
 
     try {
-      fetch(
+      const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks`,
         requestConfig
-      ).then((res) => {
-        if (!res.ok) {
+      );
+
+      if (!response.ok) {
+        // Parse the response body to extract the error message
+        const errorData = await response.json();
+        const errorMessage = errorData?.message || "An error occurred";
+
+        // Show error toast
+        toast.update(id, {
+          render: errorMessage,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+          closeButton: true,
+        });
+      } else {
+        // If the first fetch is successful, make the second fetch
+        const countResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
+          {
+            method: "GET",
+            headers: {
+              "x-session-id": cook.value,
+            },
+          }
+        );
+
+        if (!countResponse.ok) {
+          // Handle error for the second fetch
+          const countErrorData = await countResponse.json();
+          const countErrorMessage =
+            countErrorData?.message || "Failed to fetch stock count";
+
           toast.update(id, {
-            render: "این محصول موجودی ندارد",
+            render: countErrorMessage,
             type: "error",
             isLoading: false,
             autoClose: 3000,
             closeButton: true,
           });
         } else {
-          fetch(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
-            {
-              method: "GET",
-              headers: {
-                "x-session-id": cook.value,
-              },
-            }
-          )
-            .then((res) => res.json())
-            .then((data) => {
-              dispatch(
-                setQty({
-                  qty: data.result,
-                })
-              );
-              setShowModal(true);
-              toast.update(id, {
-                render: "اضافه شد",
-                type: "success",
-                isLoading: false,
-                autoClose: 3000,
-                closeButton: true,
-              });
-            });
+          const countData = await countResponse.json();
+          dispatch(
+            setQty({
+              qty: countData.result,
+            })
+          );
+          setShowModal(true);
+
+          // Show success toast
+          toast.update(id, {
+            render: "اضافه شد",
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+            closeButton: true,
+          });
         }
-      });
+      }
     } catch (error) {
-      throw Error("bye");
+      // Handle unexpected errors
+      console.error("An unexpected error occurred:", error);
+      toast.update(id, {
+        render: "An unexpected error occurred",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
+      });
     }
   };
   const handleClickOpen = () => {
@@ -295,7 +325,7 @@ export default function SingleProductModule({
       <div className="container justify-center mx-auto grid grid-cols-12 gap-4 md:gap-4 !p-4 !md:p-8 lg:p-0">
         <div className="col-span-12 lg:col-span-4 border-0 rounded-2xl relative bg-white py-4">
           <div className="flex">
-            <div className="w-10 pb-4 absolute lg:opacity-100 -right-4 -top-4 md:r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-30 md:z-20">
+            <div className="w-10 pb-4 absolute lg:opacity-100 -right-4 -top-4 md:r-0 t-0 mt-4 mr-3 rounded-3xl bg-customGray z-[5] md:z-20">
               <div className="pt-3.5 mr-3">
                 <span className="cursor-pointer" onClick={handleClickOpen}>
                   <Zoomin />
