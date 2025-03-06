@@ -21,20 +21,17 @@ export function columns(
   setIsOpen,
   triggered,
   setTriggered,
-  formik,
+  eavData,
   setIsEdit,
   setFieldsProperties
 ) {
   const getData = async (id: string) => {
     const res = await fetcher({
-      url: `/api/services/app/BankAccounts/GetBankAccountForEdit?Id=${id}`,
+      url: `/v1/api/eav/admin/entityTypes/${id}`,
       method: "GET",
     });
 
-    if (res.isSuccessful) {
-      return res.result.result;
-    } else {
-    }
+    return res.result;
   };
 
   const deleteEavType = async (id) => {
@@ -100,7 +97,6 @@ export function columns(
       Cell: ({ row }) => (
         <>
           <Uploader
-          
             location={`v1/api/eav/admin/entityTypes/image`}
             id={row.id}
             triggered={triggered}
@@ -147,18 +143,20 @@ export function columns(
           </Tooltip>
 
           <IconButton
-            onClick={(e) => {
+            onClick={async (e) => {
+              const datas = await getData(row.original.id);
+              console.log(datas);
               setIsOpen(true);
               setIsEdit({ active: true, id: row.original.id });
-              formik.setValues({
-                ...formik.values,
-                name: row.original.name,
-                priority: row.original.priority,
-                metaDescription: row.original.metaDescription,
-                description: row.original.description,
-                slug: row.original.slug,
-                metaKeywords: row.original.metaKeywords,
-                parentEntityTypeId: row.original.parentEntityTypeId,
+              eavData.setValues({
+                ...eavData.values,
+                name: datas.name,
+                priority: datas.priority,
+                metaDescription: datas.metaDescription,
+                description: datas.description,
+                slug: datas.slug,
+                metaKeywords: datas.metaKeywords,
+                parentEntityTypeId: datas.parentEntityTypeId,
               });
             }}
             aria-label="delete"

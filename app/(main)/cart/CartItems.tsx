@@ -19,17 +19,17 @@ export default function CartItems({
   const dispatch = useAppDispatch();
 
   const [itemCount, setItemCount] = useState(item.qty);
-  const addToCart = (inventoryId) => {
+  const addToCart = async (inventoryId) => {
     const id = toast.loading("در حال افزودن");
-    //do something else
+
     try {
-      fetch(
+      const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks`,
         {
           method: "PUT",
           headers: {
             "x-session-id": cook,
-            Authorization: `  Bearer ${session?.token}`,
+            Authorization: `Bearer ${session?.token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -37,172 +37,200 @@ export default function CartItems({
             qty: itemCount + 1,
           }),
         }
-      ).then((res) => {
-        if (!res.ok) {
-          toast.update(id, {
-            render: "این محصول موجودی ندارد",
-            type: "error",
-            isLoading: false,
-            autoClose: 3000,
-            closeButton: true,
-          });
-          //   throw Error(res.errors);
-        } else {
-          fetch(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
-            {
-              method: "GET",
-              headers: {
-                "x-session-id": cook,
-              },
-            }
-          )
-            .then((res) => res.json())
-            .then((data) => {
-              dispatch(
-                setQty({
-                  qty: data.result,
-                })
-              );
-              toast.update(id, {
-                render: "اضافه شد",
-                type: "success",
-                isLoading: false,
-                autoClose: 3000,
-                closeButton: true,
-              });
-              setItemCount(itemCount + 1);
-              priceCalculate();
-            });
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json(); // Parse error message
+        toast.update(id, {
+          render: errorData?.message || "این محصول موجودی ندارد",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+          closeButton: true,
+        });
+        return;
+      }
+
+      const countResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
+        {
+          method: "GET",
+          headers: {
+            "x-session-id": cook,
+          },
         }
+      );
+
+      const countData = await countResponse.json();
+      dispatch(
+        setQty({
+          qty: countData.result,
+        })
+      );
+
+      toast.update(id, {
+        render: "اضافه شد",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
       });
+
+      setItemCount(itemCount + 1);
+      priceCalculate();
     } catch (error) {
-      throw Error(error);
+      toast.update(id, {
+        render: `خطا: ${error.message}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
+      });
     }
   };
-  const decreaseCart = (inventoryId) => {
+
+  const decreaseCart = async (inventoryId) => {
     const id = toast.loading("در حال کاهش موجودی");
-    //do something else
+
     try {
-      fetch(
+      const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks`,
         {
           method: "PUT",
           headers: {
             "x-session-id": cook,
             "Content-Type": "application/json",
-            Authorization: `  Bearer ${session?.token}`,
+            Authorization: `Bearer ${session?.token}`,
           },
           body: JSON.stringify({
             inventoryId: +inventoryId,
             qty: itemCount - 1,
           }),
         }
-      ).then((res) => {
-        if (!res.ok) {
-          toast.update(id, {
-            render: "این محصول موجودی ندارد",
-            type: "error",
-            isLoading: false,
-            autoClose: 3000,
-            closeButton: true,
-          });
-          //   throw Error(res.errors);
-        } else {
-          fetch(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
-            {
-              method: "GET",
-              headers: {
-                "x-session-id": cook,
-              },
-            }
-          )
-            .then((res) => res.json())
-            .then((data) => {
-              dispatch(
-                setQty({
-                  qty: data.result,
-                })
-              );
-              toast.update(id, {
-                render: "1 موجودی کم شد",
-                type: "success",
-                isLoading: false,
-                autoClose: 3000,
-                closeButton: true,
-              });
-              setItemCount(itemCount - 1);
-              priceCalculate();
-            });
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json(); // Get error response
+        toast.update(id, {
+          render: errorData?.message || "این محصول موجودی ندارد",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+          closeButton: true,
+        });
+        return;
+      }
+
+      const countResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
+        {
+          method: "GET",
+          headers: {
+            "x-session-id": cook,
+          },
         }
+      );
+
+      const countData = await countResponse.json();
+      dispatch(
+        setQty({
+          qty: countData.result,
+        })
+      );
+
+      toast.update(id, {
+        render: "1 موجودی کم شد",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
       });
+
+      setItemCount(itemCount - 1);
+      priceCalculate();
     } catch (error) {
-      throw Error(error);
+      toast.update(id, {
+        render: `خطا: ${error.message}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
+      });
     }
   };
-  const deleteItem = (inventoryId) => {
+
+  const deleteItem = async (inventoryId) => {
     const id = toast.loading("در حال حذف");
-    //do something else
+
     try {
-      fetch(
+      const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/${inventoryId}`,
         {
           method: "DELETE",
-          Authorization: `  Bearer ${session?.token}`,
           headers: {
             "x-session-id": cook,
             "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.token}`,
           },
         }
-      ).then((res) => {
-        if (!res.ok) {
-          toast.update(id, {
-            render: "این محصول موجودی ندارد",
-            type: "error",
-            isLoading: false,
-            autoClose: 3000,
-            closeButton: true,
-          });
-          //   throw Error(res.errors);
-        } else {
-          fetch(
-            `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
-            {
-              method: "GET",
-              headers: {
-                "x-session-id": cook,
-              },
-            }
-          )
-            .then((res) => res.json())
-            .then((data) => {
-              dispatch(
-                setQty({
-                  qty: data.result,
-                })
-              );
-              toast.update(id, {
-                render: "محصول با موفقیت از سبد حذف شد",
-                type: "success",
-                isLoading: false,
-                autoClose: 3000,
-                closeButton: true,
-              });
-              const newData = localCart.result.filter(
-                (item) => +item.id !== +inventoryId
-              );
+      );
 
-              setLocalCart((prevState) => ({
-                ...prevState,
-                result: newData,
-              }));
-              priceCalculate();
-            });
+      if (!response.ok) {
+        const errorData = await response.json(); // Get actual error response
+        toast.update(id, {
+          render: errorData?.message || "خطا در حذف محصول",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+          closeButton: true,
+        });
+        return;
+      }
+
+      // Fetch updated cart count
+      const countResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/stocks/count`,
+        {
+          method: "GET",
+          headers: {
+            "x-session-id": cook,
+          },
         }
+      );
+
+      const countData = await countResponse.json();
+      dispatch(
+        setQty({
+          qty: countData.result,
+        })
+      );
+
+      // Remove item from local cart state
+      const newData = localCart.result.filter(
+        (item) => +item.id !== +inventoryId
+      );
+      setLocalCart((prevState) => ({
+        ...prevState,
+        result: newData,
+      }));
+
+      toast.update(id, {
+        render: "محصول با موفقیت از سبد حذف شد",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
       });
+
+      priceCalculate();
     } catch (error) {
-      throw Error(error);
+      toast.update(id, {
+        render: `خطا: ${error.message}`,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+        closeButton: true,
+      });
     }
   };
 

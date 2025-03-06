@@ -210,7 +210,7 @@ const DataHandler = ({
             />
           </FormControl>
         </div>
-
+        {console.log(formik.values)}
         <div>
           <SeoBox
             setDescription={(value) =>

@@ -100,10 +100,19 @@ export default function Footer() {
                 ۰۲۱۵۵۳۴۳۸۱۹
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link className="flex gap-[10px]" href="tel:09102421305">
                 <TelephoneNumberIcon />
                 ۰۹۱۰۲۴۲۱۳۰۵
+              </Link>
+            </li> */}
+            <li>
+              <Link
+                className="flex gap-[10px]"
+                href="https://wa.me/message/5A2VRRDWH4WRM1"
+              >
+                <TelephoneNumberIcon />
+                پشتیبانی واتساپ
               </Link>
             </li>
             <li>

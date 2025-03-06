@@ -40,6 +40,7 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "formik": "^2.4.6",
     "html2canvas": "^1.4.1",
+    "jodit": "^4.5.16",
     "jodit-react": "^5.2.6",
     "jotai": "^2.10.4",
     "jspdf": "^2.5.2",

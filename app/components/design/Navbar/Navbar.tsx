@@ -47,7 +47,7 @@ export default async function NavbarModule() {
   });
   return (
     <div className="mb-4">
-      {notif.message ? (
+      {notif?.message ? (
         <div
           style={{
             background: notif.backgroundColor,
@@ -55,7 +55,7 @@ export default async function NavbarModule() {
           }}
           className="text-center px-4 py-4 text-sm md:text-md"
         >
-          {notif.message}
+          {notif?.message}
         </div>
       ) : (
         ""

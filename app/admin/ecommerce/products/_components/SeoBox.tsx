@@ -14,8 +14,8 @@ export default function SeoBox({
   // Jodit configuration
   const config = useMemo(
     () => ({
-      readonly: disabled, // Disable the editor if the `disabled` prop is true
-      placeholder: "Type or paste your content here!",
+      readonly: disabled,
+      placeholder: "متن خود را اینجا تایپ یا جایگذاری کنید!",
       toolbarAdaptive: false,
       toolbarButtonSize: "medium",
       buttons: [
@@ -30,6 +30,7 @@ export default function SeoBox({
         "font",
         "fontsize",
         "brush",
+        "paragraph",
         "|",
         "align",
         "outdent",
@@ -47,12 +48,12 @@ export default function SeoBox({
         "fullsize",
       ],
     }),
-    [disabled] // Rebuild config when `disabled` changes
+    [disabled]
   );
 
   // Handle editor content change
   const handleBlur = (newContent) => {
-    setDescription(newContent); // Pass content to the parent component
+    setDescription(newContent);
   };
 
   return (
@@ -62,9 +63,9 @@ export default function SeoBox({
           ref={editor}
           value={description}
           config={config}
-          tabIndex={1} // tabIndex of textarea
-          onBlur={handleBlur} // Update content on blur
-          onChange={() => {}} // Optional: Use if you need real-time updates
+          tabIndex={1}
+          onBlur={handleBlur}
+          onChange={() => {}}
         />
       </div>
     </div>
