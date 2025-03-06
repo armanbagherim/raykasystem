@@ -29,7 +29,7 @@ export default async function sitemap({ id }) {
   const products = await getProducts(id);
 
   return products.result.map((product) => ({
-    url: `${process.env.WEBSITE_BASE_URL}/product/${product.slug}`,
+    url: `${process.env.WEBSITE_BASE_URL}/brand/${product.slug}`,
     lastModified: product.updatedAt ?? product.createdAt,
     changeFrequency: "daily",
     priority: 1,
