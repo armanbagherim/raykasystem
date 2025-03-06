@@ -89,7 +89,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
         : null,
     },
     alternates: {
-      canonical: `${process.env.WEBSITE_BASE_URL}/brands/${params?.slug}`,
+      canonical: `${process.env.WEBSITE_BASE_URL}/brand/${params?.slug}`,
     },
   };
 }

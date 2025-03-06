@@ -2,6 +2,7 @@ User-agent: *
 Disallow: /admin
 Disallow: /cart
 Disallow: /user
+Disallow: /*?*
 Allow: /
 
 Sitemap: https://jahizan.com/sitemap.xml
