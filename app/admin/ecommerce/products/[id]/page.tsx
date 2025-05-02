@@ -410,9 +410,8 @@ export default function Products() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
       <div
-        className={`w-full h-screen bg-gray-200/20 backdrop-blur-sm rounded-lg z-50 flex items-center justify-center absolute right-0 top-0 ${
-          loading ? "visible" : "hidden"
-        }`}
+        className={`w-full h-screen bg-gray-200/20 backdrop-blur-sm rounded-lg z-50 flex items-center justify-center absolute right-0 top-0 ${loading ? "visible" : "hidden"
+          }`}
       >
         <div role="status">
           <svg
@@ -585,33 +584,33 @@ export default function Products() {
                       >
                         {entityTypeId
                           ? attributes?.map((value, index) => {
-                              const isValueBased =
-                                value.attributeType.valueBased;
-                              const label = value.name;
-                              const options = isValueBased
-                                ? value.attributeValues
-                                : [];
-                              const valueType = isValueBased
-                                ? "select"
-                                : "text";
+                            const isValueBased =
+                              value.attributeType.valueBased;
+                            const label = value.name;
+                            const options = isValueBased
+                              ? value.attributeValues
+                              : [];
+                            const valueType = isValueBased
+                              ? "select"
+                              : "text";
 
-                              {
-                                return (
-                                  <GenericInput
-                                    key={index}
-                                    disabled={!hasPermission?.result}
-                                    type={valueType}
-                                    defaultValue={defaultValueChecker(value)}
-                                    value={value.val}
-                                    onChange={(e) => {
-                                      handleAttributeChange(value.id, e);
-                                    }}
-                                    options={options}
-                                    label={label}
-                                  />
-                                );
-                              }
-                            })
+                            {
+                              return (
+                                <GenericInput
+                                  key={index}
+                                  disabled={!hasPermission?.result}
+                                  type={valueType}
+                                  defaultValue={defaultValueChecker(value)}
+                                  value={value.val}
+                                  onChange={(e) => {
+                                    handleAttributeChange(value.id, e);
+                                  }}
+                                  options={options}
+                                  label={label}
+                                />
+                              );
+                            }
+                          })
                           : "در حال بارگزاری"}
                       </div>
                       <div
@@ -744,15 +743,10 @@ export default function Products() {
           text="آپلود ویدیو"
         />
 
-        {/* <button
-          onClick={saveProduct}
-          className="bg-blue-700 w-full mt-6 text-white px-6 hover:bg-transparent hover:border hover:border-blue-700 hover:text-blue-700 transition-all py-3 border border-transparent rounded-xl"
-        >
-          ساخت محصول
-        </button> */}
       </aside>
       <SaveBar
         action={saveProduct}
+        // action={(e) => console.log(requestBody)}
         backUrl="/admin/ecommerce/products"
       ></SaveBar>
     </div>

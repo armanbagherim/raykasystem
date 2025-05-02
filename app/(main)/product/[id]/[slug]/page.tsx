@@ -60,8 +60,18 @@ async function favoriteStatus(productId, session) {
   return res.json();
 }
 
+async function getLinked(product) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/client/linkedEntityTypeBrands?brandSlug=${product.brand.slug}&entityTypeSlug=${product.entityType.slug}`,
+    {
+      cache: "no-store",
+    }
+  );
+  return res.json();
+}
+
 export async function generateMetadata({ params }): Promise<Metadata> {
-  const slug = params.slug;
+  const { slug } = await params;
 
   const product = await getProduct(slug);
   return {
@@ -89,19 +99,19 @@ export async function generateMetadata({ params }): Promise<Metadata> {
         product?.result?.result?.metaTitle ?? product?.result?.result?.title,
       product_price:
         product?.result?.result?.inventoryStatusId ==
-        InventoryStatusEnum.available
+          InventoryStatusEnum.available
           ? product?.result?.result?.inventories[0]?.firstPrice.appliedDiscount
-              ?.newPrice ||
-            product?.result?.result?.inventories[0]?.firstPrice.price
+            ?.newPrice ||
+          product?.result?.result?.inventories[0]?.firstPrice.price
           : "0",
       product_old_price:
         product?.result?.result?.inventoryStatusId ==
-        InventoryStatusEnum.available
+          InventoryStatusEnum.available
           ? product?.result?.result?.inventories[0]?.firstPrice?.price
           : "0",
       availability:
         product?.result?.result?.inventoryStatusId ==
-        InventoryStatusEnum.available
+          InventoryStatusEnum.available
           ? "instock"
           : "outofstock",
       guarantee: product?.result?.result?.inventories[0]?.guarantee?.name,
@@ -123,6 +133,9 @@ export default async function SingleProduct({ params, searchParams }) {
     result: { result: product },
   } = await getProduct(params.slug);
   const { result: related } = await getRelated(product.entityTypeId);
+  const linkeds = await getLinked(product);
+  console.log(linkeds)
+  console.log(product)
   const comments = await getComments(product?.id);
   let favStatus;
   if (session) {
@@ -137,6 +150,7 @@ export default async function SingleProduct({ params, searchParams }) {
       session={session}
       comments={comments}
       favStatus={favStatus}
+      linked={linkeds}
     />
   );
 }
