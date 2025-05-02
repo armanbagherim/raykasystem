@@ -84,9 +84,8 @@ export default function BottomSearch() {
         alt=""
       />
       <div
-        className={`w-full overflow-x-scroll h-full bg-white fixed top-0 left-0 z-10 pt-5 px-6 pb-48 overflow-y-auto ${
-          isMenuOpen ? "block animate-open-menu" : "hidden animate-close-menu"
-        }`}
+        className={`w-full overflow-x-scroll h-full bg-white fixed z-[9999] top-0 left-0 pt-5 px-6 pb-48 overflow-y-auto ${isMenuOpen ? "block animate-open-menu" : "hidden animate-close-menu"
+          }`}
       >
         <div className="mb-2 flex justify-between items-center">
           <span onClick={(e) => setIsMenuOpen(false)}>

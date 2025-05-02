@@ -67,16 +67,16 @@ const Uploader = ({
     accept:
       type === "image"
         ? {
-            "image/jpeg": [],
-            "image/png": [],
-            "image/gif": [],
-            "image/webp": [],
-          }
+          "image/jpeg": [],
+          "image/png": [],
+          "image/gif": [],
+          "image/webp": [],
+        }
         : {
-            "video/mp4": [],
-            "video/avi": [],
-            "video/mov": [],
-          },
+          "video/mp4": [],
+          "video/avi": [],
+          "video/mov": [],
+        },
   });
 
   const uploadFile = (file) => {

@@ -38,6 +38,7 @@ export default function SingleProductModule({
   session,
   comments,
   favStatus,
+  linked
 }) {
   const [open, setOpen] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
@@ -62,7 +63,7 @@ export default function SingleProductModule({
     setLocalInventories([...filtered]);
   };
 
-  useEffect(() => {}, [localInventories]);
+  useEffect(() => { }, [localInventories]);
 
   useEffect(() => {
     const uniqueInventories = product?.inventories?.filter(
@@ -405,9 +406,8 @@ export default function SingleProductModule({
                         height={"600"}
                         alt={product?.title}
                         loading="eager"
-                        src={`${
-                          process.env.NEXT_PUBLIC_IMAGE_BASE_URL
-                        }/products/${value?.fileName ?? null}`}
+                        src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL
+                          }/products/${value?.fileName ?? null}`}
                         width="600"
                       />
                     </div>
@@ -456,9 +456,8 @@ export default function SingleProductModule({
                     <video
                       className="w-2/3 h-auto mx-auto"
                       controls
-                      src={`https://image.jahizan.com/productvideos/${
-                        value?.fileName ?? null
-                      }`}
+                      src={`https://image.jahizan.com/productvideos/${value?.fileName ?? null
+                        }`}
                       itemProp="contentUrl"
                     ></video>
                     <meta itemProp="name" content={product?.title ?? null} />
@@ -488,9 +487,8 @@ export default function SingleProductModule({
                     height={"500"}
                     alt={product?.title}
                     loading="eager"
-                    src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${
-                      value?.fileName ?? null
-                    }`}
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${value?.fileName ?? null
+                      }`}
                     width="500"
                   />
                 ))}
@@ -513,10 +511,12 @@ export default function SingleProductModule({
               {product?.title}
             </h1>
           </div>
+          {linked.statusCode !== 404 && <Link href={`/${linked.result.entityType.slug}/${linked.result.brand.slug}`} className="text-right text-primary pb-2 border-b-primary border-b font-normal text-sm mt-2">
+            {linked.result.entityType.name} {linked.result.brand.name}
+          </Link>}
 
-          <div className="text-right font-normal text-sm mt-2 text-slate-400">
-            {product?.slug?.replace(/-/g, " ")}
-          </div>
+
+
           <div>
             <div className="flex gap-4 justify-center mx-auto">
               <div className="mt-5 w-60 bg-customGray rounded-2xl">
