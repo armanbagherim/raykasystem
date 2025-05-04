@@ -35,7 +35,7 @@ export default function page() {
           </svg>
           <div>
             <p className="text-primary font-bold text-lg">۰۲۱۵۵۳۴۳۸۱۹</p>
-            {/* <p className="text-primary font-bold text-lg">۰۹۱۰۲۴۲۱۳۰۵</p> */}
+            {/* <p className="text-primary font-bold text-lg">021-۰۹۱۰۲۴۲۱۳۰۵</p> */}
           </div>
         </div>
         <div className="col-span-1 flex flex-col items-center text-center mb-6 md:mb-0 gap-4 justify-center">

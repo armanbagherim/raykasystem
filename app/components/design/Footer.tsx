@@ -94,12 +94,12 @@ export default function Footer() {
             مرکز تماس
           </text>
           <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
-            <li>
+            {/* <li>
               <Link className="flex gap-[10px]" href="tel:02155343819">
                 <TelephoneNumberIcon />
                 ۰۲۱۵۵۳۴۳۸۱۹
               </Link>
-            </li>
+            </li> */}
             {/* <li>
               <Link className="flex gap-[10px]" href="tel:09102421305">
                 <TelephoneNumberIcon />
