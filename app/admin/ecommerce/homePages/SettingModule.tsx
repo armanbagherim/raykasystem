@@ -81,6 +81,7 @@ const SortableItem = ({
   EntityTypes,
   TypeSorts,
   brands,
+  setItems,
 }) => {
   const {
     attributes,
@@ -100,9 +101,7 @@ const SortableItem = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={`${
-        isDragging ? "bg-green-300" : "bg-gray-400"
-      } user-select-none !rounded-2xl !shadow-none mb-4`}
+      className={`${isDragging ? "bg-green-300" : "bg-gray-400"} user-select-none !rounded-2xl !shadow-none mb-4`}
     >
       <Accordion className="!rounded-2xl">
         <AccordionSummary
@@ -134,6 +133,7 @@ const SortableItem = ({
               handleSliderImageChange={handleSliderImageChange}
               item={item}
               index={index}
+              setItems={setItems}
             />
           )}
           {item.type === "banner" && (
@@ -212,7 +212,19 @@ export default function SettingModule({
   HomePageData,
   brands,
 }) {
-  const [items, setItems] = useState(HomePageData);
+  const [items, setItems] = useState(
+    HomePageData.map((item, index) => ({
+      ...item,
+      priority: item.priority ?? index,
+      content:
+        item.type === "slider"
+          ? item.content.map((slide, slideIndex) => ({
+            ...slide,
+            priority: slide.priority ?? slideIndex,
+          }))
+          : item.content,
+    }))
+  );
   const [open, setOpen] = useState(false);
   const [bannerColumnsOpen, setBannerColumnsOpen] = useState(false);
   const [newElementType, setNewElementType] = useState("");
@@ -233,7 +245,10 @@ export default function SettingModule({
     if (active.id !== over.id) {
       const oldIndex = items.findIndex((item) => item.priority === active.id);
       const newIndex = items.findIndex((item) => item.priority === over.id);
-      const newItems = arrayMove(items, oldIndex, newIndex);
+      const newItems = arrayMove(items, oldIndex, newIndex).map((item, i) => ({
+        ...item,
+        priority: i,
+      }));
       setItems(newItems);
     }
   };
@@ -261,13 +276,13 @@ export default function SettingModule({
           priority: items.length,
           content:
             type === "slider"
-              ? [{ imageAttachmentId: "", alt: "", link: "" }]
+              ? [{ imageAttachmentId: "", mobileImageAttachmentId: "", alt: "", link: "", priority: 0 }]
               : type === "banner"
-              ? Array.from({ length: bannerColumns }, () => ({
+                ? Array.from({ length: bannerColumns }, () => ({
                   image: "",
                   link: "",
                 }))
-              : { sortBy: "", title: "" },
+                : { sortBy: "", title: "" },
         },
       ]);
     }
@@ -305,19 +320,30 @@ export default function SettingModule({
       mobileImageAttachmentId,
       alt,
       link,
+      priority: newItems[index].content[slideIndex].priority,
     };
     setItems(newItems);
   };
 
   const handleAddSlide = (index) => {
     const newItems = [...items];
-    newItems[index].content.push({ imageAttachmentId: "", alt: "", link: "" });
+    newItems[index].content.push({
+      imageAttachmentId: "",
+      mobileImageAttachmentId: "",
+      alt: "",
+      link: "",
+      priority: newItems[index].content.length,
+    });
     setItems(newItems);
   };
 
   const handleDeleteSlide = (index, slideIndex) => {
     const newItems = [...items];
     newItems[index].content.splice(slideIndex, 1);
+    newItems[index].content = newItems[index].content.map((slide, i) => ({
+      ...slide,
+      priority: i,
+    }));
     setItems(newItems);
   };
 
@@ -389,15 +415,13 @@ export default function SettingModule({
 
   const handleSave = async () => {
     setLoading(true);
-    const cleanItems = items.map((item, index) => {
-      return {
-        type: item.type,
-        name: item.name,
-        id: item.id,
-        priority: index,
-        content: item.content,
-      };
-    });
+    const cleanItems = items.map((item, index) => ({
+      type: item.type,
+      name: item.name,
+      id: item.id,
+      priority: index,
+      content: item.content,
+    }));
     try {
       const req = await fetcher({
         url: "/v1/api/ecommerce/admin/homePages",
@@ -427,7 +451,7 @@ export default function SettingModule({
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
-          modifiers={[restrictToVerticalAxis]} // Lock to vertical axis
+          modifiers={[restrictToVerticalAxis]}
         >
           <SortableContext items={items.map((item) => item.priority)}>
             <div className="bg-gray-200 p-4 w-full rounded-2xl">
@@ -454,6 +478,7 @@ export default function SettingModule({
                   EntityTypes={EntityTypes}
                   TypeSorts={TypeSorts}
                   brands={brands}
+                  setItems={setItems}
                 />
               ))}
             </div>

@@ -12,6 +12,7 @@ const GoogleAnalytics = () => {
         strategy="lazyOnload"
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_MEASUREMENT_ID}`}
       />
+      <Script src="/goftino.js" />
       <Script id="" strategy="lazyOnload">
         {`
               window.dataLayer = window.dataLayer || [];
@@ -27,6 +28,9 @@ const GoogleAnalytics = () => {
               })(window,document,'script','dataLayer','GTM-K5KHML4D');
           `}
       </Script>
+
+
+
     </>
   );
 };

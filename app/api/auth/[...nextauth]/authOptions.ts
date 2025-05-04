@@ -23,6 +23,7 @@ export const authOptions = {
         let res;
 
         if (phoneNumber && !verifyCode) {
+          console.log('inLogin')
           try {
             res = await fetch(
               `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/user/login`,

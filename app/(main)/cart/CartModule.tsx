@@ -54,7 +54,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
   const [calculateErrors, setCalculateErrors] = useState(null);
   const [copunValue, setCopunValue] = useState(null);
   const [noteDescription, setNoteDescription] = useState(null);
-
+  const [acceptRules, setAcceptRules] = useState(false);
   const [coordinates, setCoordinates] = useState({
     latitude: null,
     longitude: null,
@@ -619,7 +619,20 @@ const CartModule = ({ cartItems, session, cookies }) => {
                   </span>
                 </div>
               </div>
-
+              {activeStep == 2 &&
+                <div className="mb-4 flex items-center justify-start bg-gray-100 p-3 rounded-lg gap-2">
+                  <input
+                    type="checkbox"
+                    id="acceptRules"
+                    checked={acceptRules}
+                    onChange={(e) => setAcceptRules(e.target.checked)}
+                    className="w-4 h-4 cursor-pointer"
+                  />
+                  <label htmlFor="acceptRules" className="text-sm cursor-pointer">
+                    <Link className="text-primary font-bold" href="/pages/rules">قوانین و مقررات</Link> وبسایت را می‌پذیرم
+                  </label>
+                </div>
+              }
               <div className="flex gap-4 text-md font-bold">
                 {activeStep !== 0 && (
                   <button
@@ -631,18 +644,21 @@ const CartModule = ({ cartItems, session, cookies }) => {
                 )}
                 {activeStep == 2 &&
                   (session?.result ? (
-                    <button
-                      onClick={submitPayment}
-                      disabled={
-                        calculate?.stocks?.length === 0 ||
-                        calculateErrors ||
-                        isLoading !== false ||
-                        loading !== false
-                      }
-                      className={`bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
-                    >
-                      پرداخت سفارش
-                    </button>
+                    <>
+                      <button
+                        onClick={submitPayment}
+                        disabled={
+                          calculate?.stocks?.length === 0 ||
+                          calculateErrors ||
+                          isLoading !== false ||
+                          loading !== false ||
+                          !acceptRules
+                        }
+                        className={`bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
+                      >
+                        پرداخت سفارش
+                      </button>
+                    </>
                   ) : (
                     <Link href={`/login?redirect_back_url=/cart`}>
                       <button className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700">
@@ -671,12 +687,15 @@ const CartModule = ({ cartItems, session, cookies }) => {
                   ))}
                 {activeStep == 1 &&
                   (!calculateErrors ? (
-                    <button
-                      onClick={() => setActiveStep(2)}
-                      className={`bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
-                    >
-                      پرداخت
-                    </button>
+                    <>
+                      <button
+                        onClick={() => setActiveStep(2)}
+                        className={`bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
+                      >
+                        پرداخت
+                      </button>
+                    </>
+
                   ) : (
                     <button
                       disabled

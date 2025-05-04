@@ -5,10 +5,9 @@ import mapboxgl from "@neshan-maps-platform/mapbox-gl";
 import Image from "next/image";
 import {
   TextField,
-  MenuItem,
-  Popper,
-  Paper,
-  ClickAwayListener,
+  InputAdornment,
+  CircularProgress,
+  Button,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -60,6 +59,7 @@ const Maps: React.FC<MapProps> = ({
   const markerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isProgrammaticMove = useRef(false);
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [currentLocation, setCurrentLocation] = useState<LocationState>({
     lat: null,
@@ -77,17 +77,14 @@ const Maps: React.FC<MapProps> = ({
         mapType: mapboxgl.Map.mapTypes.neshanVector,
         container: mapContainerRef.current,
         zoom: 12,
-        pitch: 0,
         center: [defaultLocation.lng, defaultLocation.lat],
-        minZoom: 2,
-        maxZoom: 21,
-        trackResize: true,
         mapKey: "web.0d81d4fa8d194f419aeb4cf313fd6a48",
         poi: false,
         traffic: false,
-        mapTypeControllerOptions: {
-          show: false,
-        },
+        trackResize: true,
+        mapTypeControllerOptions: { show: false },
+        minZoom: 2,
+        maxZoom: 21,
       }) as unknown as mapboxgl.Map;
     }
 
@@ -147,31 +144,45 @@ const Maps: React.FC<MapProps> = ({
     }
   };
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
     if (!searchQuery.trim()) return;
 
     setIsSearching(true);
-    try {
-      const response = await fetch(
-        `https://api.neshan.org/v1/search?term=${encodeURIComponent(
-          searchQuery
-        )}&lat=${currentLocation.lat || DEFAULT_LOCATION.lat}&lng=${currentLocation.lng || DEFAULT_LOCATION.lng
-        }`,
-        {
-          headers: {
-            "Api-Key": "service.8cc8247dd8a4495bb5d7fdadbc278ed2",
-          },
-        }
-      );
 
-      const data: SearchResponse = await response.json();
-      setSearchResults(data.items);
-      setIsSearchOpen(true);
-    } catch (error) {
-      console.error("Search error:", error);
-    } finally {
-      setIsSearching(false);
-    }
+    searchTimeoutRef.current = setTimeout(async () => {
+      try {
+        const response = await fetch(
+          `https://api.neshan.org/v1/search?term=${encodeURIComponent(
+            searchQuery
+          )}&lat=${currentLocation.lat || DEFAULT_LOCATION.lat}&lng=${currentLocation.lng || DEFAULT_LOCATION.lng}`,
+          {
+            headers: {
+              "Api-Key": "service.8cc8247dd8a4495bb5d7fdadbc278ed2",
+            },
+          }
+        );
+
+        const data: SearchResponse = await response.json();
+
+        if (Array.isArray(data.items)) {
+          setSearchResults(data.items);
+          setIsSearchOpen(true);
+        } else {
+          setSearchResults([]);
+          setIsSearchOpen(false);
+        }
+      } catch (error) {
+        console.error("Search error:", error);
+        setSearchResults([]);
+        setIsSearchOpen(false);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 1000);
   };
 
   const handleResultClick = (result: SearchResult) => {
@@ -205,20 +216,8 @@ const Maps: React.FC<MapProps> = ({
 
   return (
     <div style={{ height: `${height}px`, width: "100%", position: "relative" }}>
-      {/* Search Bar */}
-      <div
-        style={{
-          position: "absolute",
-          top: "10px",
-          left: "10px",
-          right: "10px",
-          zIndex: 9999999999,
-          display: "flex",
-          backgroundColor: "white",
-          borderRadius: "4px",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-        }}
-      >
+      {/* Search Input */}
+      <div className="absolute top-3 left-3 right-3 z-[10000] bg-white rounded-md shadow-md flex">
         <TextField
           fullWidth
           variant="outlined"
@@ -226,73 +225,50 @@ const Maps: React.FC<MapProps> = ({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           inputRef={searchInputRef}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              paddingRight: 0,
-            },
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Button
+                  onClick={handleSearch}
+                  variant="contained"
+                  color="primary"
+                  className="min-w-[40px] h-[40px] flex items-center justify-center"
+                >
+                  {isSearching ? (
+                    <CircularProgress size={20} color="inherit" />
+                  ) : (
+                    <SearchIcon />
+                  )}
+                </Button>
+              </InputAdornment>
+            ),
           }}
         />
-        <button
-          onClick={handleSearch}
-          style={{
-            padding: "0 16px",
-            border: "none",
-            background: "transparent",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <SearchIcon color="action" />
-        </button>
       </div>
 
-      {/* Search Results Dropdown */}
-      <Popper
-        open={isSearchOpen && searchResults.length > 0}
-        anchorEl={searchInputRef.current}
-        placement="bottom-start"
-        style={{
-          zIndex: 99999999999999,
-          width: searchInputRef.current?.clientWidth,
-          marginTop: "8px",
-          overflowY: "auto",
-          maxHeight: "300px",
-          borderRadius: "4px",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-          backgroundColor: "white",
-          border: "1px solid #ccc",
-        }}
-      >
-        <ClickAwayListener onClickAway={() => setIsSearchOpen(false)}>
-          <Paper elevation={3}>
-            {isSearching ? (
-              <div style={{ padding: "16px", textAlign: "center" }}>
-                در حال جستجو...
-              </div>
-            ) : (
-              searchResults.map((result, index) => (
-                <MenuItem
-                  key={index}
-                  onClick={() => handleResultClick(result)}
-                  sx={{
-                    whiteSpace: "normal",
-                    borderBottom: "1px solid #eee",
-                    padding: "8px 16px",
-                  }}
-                >
-                  <div>
-                    <div style={{ fontWeight: "bold" }}>{result.title}</div>
-                    <div style={{ fontSize: "0.8rem", color: "#666" }}>
-                      {result.address}
-                    </div>
-                  </div>
-                </MenuItem>
-              ))
-            )}
-          </Paper>
-        </ClickAwayListener>
-      </Popper>
+      {/* Tailwind Search Results */}
+      {isSearchOpen && searchResults.length > 0 && (
+        <div
+          className="absolute top-[70px] left-3 right-3 z-[99999999999999] bg-white border border-gray-300 rounded-md shadow-lg max-h-[300px] overflow-y-auto"
+          dir="rtl"
+        >
+          {searchResults.map((result, index) => (
+            <div
+              key={index}
+              onClick={() => handleResultClick(result)}
+              className="cursor-pointer px-4 py-3 border-b border-gray-100 hover:bg-gray-100 transition"
+            >
+              <div className="font-bold text-sm">{result.title}</div>
+              <div className="text-xs text-gray-600 mt-1">{result.address}</div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Map Container */}
       <div
@@ -302,11 +278,14 @@ const Maps: React.FC<MapProps> = ({
         <div
           ref={markerRef}
           className="marker"
-          style={{
-            pointerEvents: "none",
-          }}
+          style={{ pointerEvents: "none" }}
         >
-          <Image alt="" width={100} height={100} src={"/assets/map/img_pin.png"} />
+          <Image
+            alt=""
+            width={100}
+            height={100}
+            src={"/assets/map/img_pin.png"}
+          />
         </div>
       </div>
     </div>

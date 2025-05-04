@@ -143,8 +143,8 @@ export default function InventoriesDialouge({
               typeof value === "object" && value !== null && value.target
                 ? +value.target.value
                 : value !== null
-                ? value.id
-                : null,
+                  ? value.id
+                  : null,
             [label]:
               typeof value === "object" && value !== null && value.target
                 ? value.target.value
@@ -283,27 +283,28 @@ export default function InventoriesDialouge({
             />
             <div className="flex justify-between mt-4">
               <div className="text-sm font-medium">
-                {Number(
-                  localTempInventory?.firstPrice || null
-                ).toLocaleString()}{" "}
-                ءتء
+                قیمت پایه: {Number(localTempInventory?.firstPrice || 0).toLocaleString()} تومان
               </div>
               <div className="text-sm font-medium">
-                {" "}
-                کمیسیون{" "}
-                {comissionAmount &&
-                comissionAmount.length > 0 &&
-                comissionAmount[0]?.amount
+                کمیسیون: {comissionAmount && comissionAmount.length > 0 && comissionAmount[0]?.amount
                   ? Number(
-                      ((localTempInventory?.firstPrice || null) *
-                        comissionAmount[0].amount) /
-                        100
-                    ).toLocaleString()
-                  : ""}{" "}
-                تومان
+                    ((localTempInventory?.firstPrice || 0) *
+                      comissionAmount[0].amount) /
+                    100
+                  ).toLocaleString()
+                  : "0"} تومان ({comissionAmount && comissionAmount.length > 0 ? comissionAmount[0]?.amount : "0"}%)
               </div>
             </div>
+            <div className="text-sm font-bold mt-2 text-green-600">
+              قیمت نهایی پس از کسر کمیسیون: {comissionAmount && comissionAmount.length > 0 && comissionAmount[0]?.amount
+                ? Number(
+                  (localTempInventory?.firstPrice || 0) *
+                  (1 - comissionAmount[0].amount / 100)
+                ).toLocaleString()
+                : Number(localTempInventory?.firstPrice || 0).toLocaleString()} تومان
+            </div>
           </div>
+
           <div className="flex-1 bg-gray-100 p-2">
             <TextField
               autoComplete="off"
@@ -317,25 +318,25 @@ export default function InventoriesDialouge({
             />
             <div className="flex justify-between mt-2">
               <div className="text-sm font-medium">
-                {Number(
-                  localTempInventory?.secondaryPrice || null
-                ).toLocaleString()}{" "}
-                ءتء
+                قیمت پایه: {Number(localTempInventory?.secondaryPrice || 0).toLocaleString()} تومان
               </div>
               <div className="text-sm font-medium">
-                {" "}
-                کمیسیون{" "}
-                {comissionAmount &&
-                comissionAmount.length > 0 &&
-                comissionAmount[0]?.amount
+                کمیسیون: {comissionAmount && comissionAmount.length > 0 && comissionAmount[1]?.amount
                   ? Number(
-                      ((localTempInventory?.secondaryPrice || null) *
-                        comissionAmount[1]?.amount) /
-                        100
-                    ).toLocaleString()
-                  : ""}{" "}
-                تومان{" "}
+                    ((localTempInventory?.secondaryPrice || 0) *
+                      comissionAmount[1]?.amount) /
+                    100
+                  ).toLocaleString()
+                  : "0"} تومان ({comissionAmount && comissionAmount.length > 1 ? comissionAmount[1]?.amount : "0"}%)
               </div>
+            </div>
+            <div className="text-sm font-bold mt-2 text-green-600">
+              قیمت نهایی پس از کسر کمیسیون: {comissionAmount && comissionAmount.length > 1 && comissionAmount[1]?.amount
+                ? Number(
+                  (localTempInventory?.secondaryPrice || 0) *
+                  (1 - comissionAmount[1].amount / 100)
+                ).toLocaleString()
+                : Number(localTempInventory?.secondaryPrice || 0).toLocaleString()} تومان
             </div>
           </div>
         </div>

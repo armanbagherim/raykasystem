@@ -105,11 +105,10 @@ export default function SignInForm({ session }) {
         firstName: firstName,
         lastName,
         redirect: false,
-        callbackUrl: `${
-          pathname.get("redirect_back_url")
+        callbackUrl: `${pathname.get("redirect_back_url")
             ? pathname.get("redirect_back_url")
             : "/"
-        }`,
+          }`,
       });
       if (result.status === 401) {
         toast.error(result.error);
@@ -282,7 +281,7 @@ export default function SignInForm({ session }) {
                   </button>
                   <p className="rule text-sm mb-4 text-right">
                     با ورود به جهیزان تمامی{" "}
-                    <Link className="text-[#2D9CDB]" href="/rules">
+                    <Link className="text-[#2D9CDB]" href="/pages/rules">
                       قوانین
                     </Link>{" "}
                     و مقررات وبسایت جهیزان را میپذیرید
