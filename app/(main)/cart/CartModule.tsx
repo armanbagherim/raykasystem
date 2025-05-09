@@ -16,6 +16,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  ranno,
   DialogContentText,
   DialogTitle,
   TextareaAutosize,
@@ -43,8 +44,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [selectAddressOpen, setSelectAddressOpen] = useState(false);
-  AddressModule
   const [calculate, setCalculate] = useState([]);
   const [defaultPayment, setDefaultPayment] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState(1);
@@ -176,9 +175,10 @@ const CartModule = ({ cartItems, session, cookies }) => {
           if (data.statusCode === 400) {
             setCalculateErrors(data.errors);
             setLoading(false);
+          } else {
+            router.push(data.result.redirectUrl);
+            setLoading(false);
           }
-          router.push(data.result.redirectUrl);
-          setLoading(false);
         });
     } catch (error) {
       setLoading(false);
@@ -216,7 +216,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
     priceCalculate();
   }, [addressId]);
 
-
   const save = async () => {
     setIsLoading(true);
     try {
@@ -231,7 +230,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
           cityId: +cityId,
           neighborhoodId: neighborhoodId ? neighborhoodId : null,
           street,
-          alley,
           plaque,
           floorNumber,
           postalCode,
@@ -249,7 +247,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
   };
 
   const handleClose = () => {
-
     setOpen(false);
   };
 
@@ -281,7 +278,6 @@ const CartModule = ({ cartItems, session, cookies }) => {
             {localCart?.result?.length === 0 ? (
               <div className="text-center">
                 <EmptyCarts />
-
                 <h4 className="text-3xl font-bold my-8">
                   چیزی در سبد شما پیدا نشد
                 </h4>
@@ -309,11 +305,11 @@ const CartModule = ({ cartItems, session, cookies }) => {
                     ))}
                   </div>
                 )}
-                {activeStep == 1 && (
-                  <div className="">
+                {activeStep === 1 && (
+                  <div className="bg-white shadow-md border border-customGray rounded-3xl p-6 pb-4 md:mb-0 mb-4">
                     <div className="col-span-1">
                       <div className="flex items-center justify-between mb-4">
-                        <span>انتخاب آدرس</span>
+                        <span className="font-bold">انتخاب آدرس</span>
                         {session?.token ? (
                           <button
                             variant="outlined"
@@ -337,68 +333,44 @@ const CartModule = ({ cartItems, session, cookies }) => {
                         )}
                       </div>
                     </div>
-                    <div className="flex bg-white rounded-2xl p-6 justify-between mb-4 items-center mx-2  md:mx-0">
-                      <div>
-                        <div className="text-primary font-bold">
-                          {activeAddress?.name}
-                        </div>
-                        <div className="flex flex-1 gap-1 flex-wrap">
-                          <span>خیابان {activeAddress?.street}</span>
-                          <span>پلاک {activeAddress?.plaque}</span>
-                          <span>طبقه {activeAddress?.floorNumber}</span>
-                        </div>
-                      </div>
-                      <button
-                        className="font-medium flex-5 text-md text-[#0272c8]"
-                        onClick={(e) => setSelectAddressOpen(true)}
-                      >
-                        تغییر آدرس
-                      </button>
+                    <div className="grid grid-cols-3 gap-4 space-y-2 mx-2 md:mx-0">
+                      {session?.result && addresses?.length ? (
+                        addresses?.map((value, key) => (
+                          <div
+                            key={key}
+                            onClick={() => {
+                              setAddressId(value.id);
+                              setActiveAddress(value);
+                            }}
+                            className={`flex flex-col gap-2 cursor-pointer border rounded-3xl py-3 px-4 ${addressId === value.id
+                              ? "border-primary bg-primary/10"
+                              : "border-gray-200 hover:border-primary"
+                              }`}
+                          >
+                            <span className="text-primary font-bold">
+                              {value.name}
+                            </span>
+                            <div className="flex flex-wrap gap-1 text-sm">
+                              <span>خیابان {value.street}</span>
+                              <span>پلاک {value.plaque}</span>
+                              <span>طبقه {value.floorNumber}</span>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div>آدرسی جهت نمایش پیدا نشد</div>
+                      )}
                     </div>
-
-                    <Dialog
-                      open={selectAddressOpen}
-                      keepMounted
-                      onClose={(e) => setSelectAddressOpen(false)}
-                      aria-describedby="alert-dialog-slide-description"
-                    >
-                      <DialogContent>
-                        <div className="flex flex-col space-y-2">
-                          {session?.result && addresses?.length ? (
-                            addresses?.map((value, key) => {
-                              return (
-                                <div
-                                  onClick={(e) => {
-                                    setAddressId(value.id);
-                                    const active = addresses.filter(
-                                      (address) => address.id === value.id
-                                    );
-                                    // console.log();
-                                    setActiveAddress(active[0]);
-                                    setSelectAddressOpen(false);
-                                  }}
-                                  key={key}
-                                  value={value.id}
-                                  className="flex flex-col gap-2 cursor-pointer border border-1 hover:border-primary rounded-3xl p-4"
-                                >
-                                  <span className="text-primary font-bold mb-2">
-                                    {value.name}
-                                  </span>
-                                  <span className="">{value.street}</span>
-                                </div>
-                              );
-                            })
-                          ) : (
-                            <div>آدرسی جهت نمایش پیدا نشد</div>
-                          )}
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-
-                    <AddressModule getAddress={getAddress} open={open} handleClose={handleClose} coordinates={coordinates} setCoordinates={setCoordinates} />
+                    <AddressModule
+                      getAddress={getAddress}
+                      open={open}
+                      handleClose={handleClose}
+                      coordinates={coordinates}
+                      setCoordinates={setCoordinates}
+                    />
                   </div>
                 )}
-                {activeStep == 2 && (
+                {activeStep === 2 && (
                   <>
                     <div className="text-sm mt-4">
                       <TextareaAutosize
@@ -414,13 +386,12 @@ const CartModule = ({ cartItems, session, cookies }) => {
                         }
                       ></TextareaAutosize>
                       <div className="mt-5 text-sm">روش پرداخت</div>
-
                       <div className=" mt-3 gap-2 grid grid-cols-1 md:grid-cols-2">
                         {!calculate?.paymentOptions ? (
                           <>
-                            <div className="flex-1 w-full h-2.5 bg-gray-300  mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
-                            <div className="flex-1 w-full h-2.5 bg-gray-300  mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
-                            <div className="flex-1 w-full h-2.5 bg-gray-300  mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
+                            <div className="flex-1 w-full h-2.5 bg-gray-300 mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
+                            <div className="flex-1 w-full h-2.5 bg-gray-300 mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
+                            <div className="flex-1 w-full h-2.5 bg-gray-300 mb-2.5 rounded-2xl animate-pulse h-[58px]"></div>
                           </>
                         ) : (
                           calculate.paymentOptions.map((paymentOption, key) => {
@@ -486,10 +457,9 @@ const CartModule = ({ cartItems, session, cookies }) => {
               </>
             )}
           </div>
-
           {localCart?.result?.length > 0 && (
             <div className="col-span-1 shadow-md border border-customGray bg-white text-xs rounded-3xl mt-0 p-4 pb-4">
-              {activeStep == 2 && (
+              {activeStep === 2 && (
                 <>
                   <div className="mt-4 relative mb-4">
                     <input
@@ -516,7 +486,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                       )}
                       <button
                         onClick={(e) => checkCopun()}
-                        className="bg-primary  hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-white"
+                        className="bg-primary hover:bg-green-700 p-2 pl-3 pr-3 rounded-xl text-white"
                       >
                         بررسی کد
                       </button>
@@ -526,10 +496,10 @@ const CartModule = ({ cartItems, session, cookies }) => {
               )}
               <div className="text-sm p-2">
                 {console.log(calculateErrors)}
-                {activeStep == 1 ? (
+                {activeStep === 1 ? (
                   calculateErrors ? (
                     <div
-                      className="p-4 mb-4 mt-2 text-sm text-red-800 rounded-xl bg-red-50  "
+                      className="p-4 mb-4 mt-2 text-sm text-red-800 rounded-xl bg-red-50"
                       role="alert"
                     >
                       <span className="font-medium">{calculateErrors}</span>
@@ -540,10 +510,9 @@ const CartModule = ({ cartItems, session, cookies }) => {
                 ) : null}
                 <div className="flex justify-between items-center mb-4">
                   <span className="flex-1">جمع محصولات</span>
-
                   <span className="flex-1 text-left font-bold text-primary">
                     {isLoading ? (
-                      <div className="flex-1 h-3 bg-gray-300  mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                      <div className="flex-1 h-3 bg-gray-300 mb-2.5 rounded-2xl animate-pulse w-full"></div>
                     ) : (
                       <span>
                         {Number(
@@ -556,10 +525,9 @@ const CartModule = ({ cartItems, session, cookies }) => {
                 </div>
                 <div className="flex justify-between items-center mb-4">
                   <span className="flex-1">سود شما از این خرید</span>
-
                   <span className="flex-1 text-left font-bold text-primary">
                     {isLoading ? (
-                      <div className="flex-1 h-3 bg-gray-300  mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                      <div className="flex-1 h-3 bg-gray-300 mb-2.5 rounded-2xl animate-pulse w-full"></div>
                     ) : (
                       <span>
                         {Number(defaultPayment?.totalDiscount).toLocaleString()}{" "}
@@ -568,30 +536,25 @@ const CartModule = ({ cartItems, session, cookies }) => {
                     )}
                   </span>
                 </div>
-
                 {activeStep !== 0 && (
                   <>
                     <div className="flex justify-between items-center mb-4">
                       <span className="flex-1">روش ارسال</span>
-
                       <span className="flex-1 text-left font-bold text-primary">
                         {isLoading ? (
-                          <div className="flex-1 h-3 bg-gray-300  mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                          <div className="flex-1 h-3 bg-gray-300 mb-2.5 rounded-2xl animate-pulse w-full"></div>
                         ) : (
                           <span className="text-primary">
                             {calculate.paymentOptions[0]?.shipmentTypeName}
                           </span>
                         )}
-
-                        {/* {calculate?.paymentOptions ? <></> : ""} */}
                       </span>
                     </div>
                     <div className="flex justify-between items-center mb-4">
                       <span className="flex-1">هزینه ارسال</span>
-
                       <span className="flex-1 text-left font-bold text-primary">
                         {isLoading ? (
-                          <div className="flex-1 text-left font-bold text-primary h-3 bg-gray-300  w-24 mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                          <div className="flex-1 text-left font-bold text-primary h-3 bg-gray-300 w-24 mb-2.5 rounded-2xl animate-pulse w-full"></div>
                         ) : (
                           <span>
                             {Number(
@@ -606,10 +569,9 @@ const CartModule = ({ cartItems, session, cookies }) => {
                 )}
                 <div className="flex justify-between items-center mb-4">
                   <span className="flex-1">مبلغ نهایی</span>
-
                   <span className="flex-1 text-left font-bold text-primary">
                     {isLoading ? (
-                      <div className="flex-1 h-3 bg-gray-300  mb-2.5 rounded-2xl animate-pulse w-full"></div>
+                      <div className="flex-1 h-3 bg-gray-300 mb-2.5 rounded-2xl animate-pulse w-full"></div>
                     ) : (
                       <span>
                         {Number(defaultPayment?.totalPrice).toLocaleString()}{" "}
@@ -619,7 +581,7 @@ const CartModule = ({ cartItems, session, cookies }) => {
                   </span>
                 </div>
               </div>
-              {activeStep == 2 &&
+              {activeStep === 2 && (
                 <div className="mb-4 flex items-center justify-start bg-gray-100 p-3 rounded-lg gap-2">
                   <input
                     type="checkbox"
@@ -629,36 +591,37 @@ const CartModule = ({ cartItems, session, cookies }) => {
                     className="w-4 h-4 cursor-pointer"
                   />
                   <label htmlFor="acceptRules" className="text-sm cursor-pointer">
-                    <Link className="text-primary font-bold" href="/pages/rules">قوانین و مقررات</Link> وبسایت را می‌پذیرم
+                    <Link className="text-primary font-bold" href="/pages/rules">
+                      قوانین و مقررات
+                    </Link>{" "}
+                    وبسایت را می‌پذیرم
                   </label>
                 </div>
-              }
+              )}
               <div className="flex gap-4 text-md font-bold">
                 {activeStep !== 0 && (
                   <button
                     onClick={() => setActiveStep((prev) => prev - 1)}
-                    className={`bg-[#d8d8d8] p-3 w-full rounded-2xl text-black py-4 hover:bg-[#c0c0c0] disabled:opacity-25 disabled:pointer-events-none`}
+                    className="bg-[#d8d8d8] p-3 w-full rounded-2xl text-black py-4 hover:bg-[#c0c0c0] disabled:opacity-25 disabled:pointer-events-none"
                   >
                     مرحله قبل
                   </button>
                 )}
-                {activeStep == 2 &&
+                {activeStep === 2 &&
                   (session?.result ? (
-                    <>
-                      <button
-                        onClick={submitPayment}
-                        disabled={
-                          calculate?.stocks?.length === 0 ||
-                          calculateErrors ||
-                          isLoading !== false ||
-                          loading !== false ||
-                          !acceptRules
-                        }
-                        className={`bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
-                      >
-                        پرداخت سفارش
-                      </button>
-                    </>
+                    <button
+                      onClick={submitPayment}
+                      disabled={
+                        calculate?.stocks?.length === 0 ||
+                        calculateErrors ||
+                        isLoading !== false ||
+                        loading !== false ||
+                        !acceptRules
+                      }
+                      className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none"
+                    >
+                      پرداخت سفارش
+                    </button>
                   ) : (
                     <Link href={`/login?redirect_back_url=/cart`}>
                       <button className="bg-primary p-3 w-full rounded-2xl text-white hover:bg-green-700">
@@ -666,12 +629,11 @@ const CartModule = ({ cartItems, session, cookies }) => {
                       </button>
                     </Link>
                   ))}
-
-                {activeStep == 0 &&
+                {activeStep === 0 &&
                   (session?.result ? (
                     <button
                       onClick={() => setActiveStep(1)}
-                      className={`bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
+                      className="bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none"
                     >
                       وارد کردن آدرس
                     </button>
@@ -685,21 +647,18 @@ const CartModule = ({ cartItems, session, cookies }) => {
                       </button>
                     </Link>
                   ))}
-                {activeStep == 1 &&
+                {activeStep === 1 &&
                   (!calculateErrors ? (
-                    <>
-                      <button
-                        onClick={() => setActiveStep(2)}
-                        className={`bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
-                      >
-                        پرداخت
-                      </button>
-                    </>
-
+                    <button
+                      onClick={() => setActiveStep(2)}
+                      className="bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none"
+                    >
+                      پرداخت
+                    </button>
                   ) : (
                     <button
                       disabled
-                      className={`bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none`}
+                      className="bg-primary p-3 w-full rounded-2xl text-white py-4 hover:bg-green-700 disabled:opacity-25 disabled:pointer-events-none"
                     >
                       پرداخت
                     </button>

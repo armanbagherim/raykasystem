@@ -29,12 +29,13 @@ export default function AddressModule({ handleClose, open, coordinates, setCoord
         cityId: 1,
         neighborhoodId: 1,
         street: '',
-        alley: '',
         plaque: '',
         floorNumber: '',
         postalCode: '',
         coordinates: coordinates?.latitude && coordinates?.longitude ? coordinates : defaultCoordinates
     });
+
+    const shouldShowMap = address.provinceId === 8 && address.cityId === 215;
 
     useEffect(() => {
         if (!open) {
@@ -46,13 +47,12 @@ export default function AddressModule({ handleClose, open, coordinates, setCoord
                 cityId: 1,
                 neighborhoodId: 1,
                 street: '',
-                alley: '',
                 plaque: '',
                 floorNumber: '',
                 postalCode: '',
                 coordinates: defaultCoordinates
             });
-            setCoordinates(defaultCoordinates);
+            setCoordinates(null); // Reset coordinates when dialog closes
         }
     }, [open]);
 
@@ -63,7 +63,7 @@ export default function AddressModule({ handleClose, open, coordinates, setCoord
 
         const isTehran = address.provinceId === 8 && address.cityId === 215;
         if (isTehran) {
-            if (!coordinates.latitude || !coordinates.longitude || coordinates.latitude === "35.65326" && coordinates.longitude === "51.35471") {
+            if (!coordinates?.latitude || !coordinates?.longitude) {
                 newErrors.coordinates = "موقعیت مکانی برای تهران الزامی است.";
             }
         }
@@ -185,15 +185,17 @@ export default function AddressModule({ handleClose, open, coordinates, setCoord
     }, [address.cityId]);
 
     useEffect(() => {
-        setAddress(prev => ({
-            ...prev,
-            coordinates: coordinates || defaultCoordinates
-        }));
+        // Only update address coordinates if they have been manually set
+        if (coordinates?.latitude && coordinates?.longitude) {
+            setAddress(prev => ({
+                ...prev,
+                coordinates: coordinates
+            }));
 
-        // Call Neshan API when coordinates change and we're in Tehran
-        if (coordinates.latitude && coordinates.longitude &&
-            address.provinceId === 8 && address.cityId === 215) {
-            getAddressFromCoordinates(coordinates.latitude, coordinates.longitude);
+            // Call Neshan API when coordinates change and we're in Tehran
+            if (address.provinceId === 8 && address.cityId === 215) {
+                getAddressFromCoordinates(coordinates.latitude, coordinates.longitude);
+            }
         }
     }, [coordinates]);
 
@@ -222,8 +224,6 @@ export default function AddressModule({ handleClose, open, coordinates, setCoord
             [field]: value
         }));
     };
-
-    const shouldShowMap = address.provinceId === 8 && address.cityId === 215;
 
     // Function to convert Persian digits to English
     const convertToEnglishDigits = (str) => {
@@ -294,8 +294,8 @@ export default function AddressModule({ handleClose, open, coordinates, setCoord
                                     <MapClient
                                         height={400}
                                         defaultLocation={{
-                                            lat: coordinates?.latitude ?? 35.65326,
-                                            lng: coordinates?.longitude ?? 51.35471,
+                                            lat: coordinates?.latitude ? parseFloat(coordinates.latitude) : 35.65326,
+                                            lng: coordinates?.longitude ? parseFloat(coordinates.longitude) : 51.35471,
                                         }}
                                         onLocationChange={(location) => {
                                             setCoordinates({
@@ -304,6 +304,9 @@ export default function AddressModule({ handleClose, open, coordinates, setCoord
                                             });
                                         }}
                                     />
+                                )}
+                                {errors.coordinates && (
+                                    <p className="text-red-500 text-sm mt-2">{errors.coordinates}</p>
                                 )}
                             </>
                         ) : (
@@ -408,23 +411,6 @@ export default function AddressModule({ handleClose, open, coordinates, setCoord
                                         />
                                     </div>
                                 </div>
-
-                                {/* Add Alley Field */}
-                                <div className="mb-6">
-                                    <TextField
-                                        type="text"
-                                        variant="outlined"
-                                        id="alley"
-                                        className="bg-gray-50 border mb-10 border-gray-300 text-gray-900  mb-10 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                        label="کوچه"
-                                        value={address.alley}
-                                        onChange={(e) => {
-                                            handleAddressChange('alley', e.target.value);
-                                        }}
-                                        error={!!errors.alley}
-                                        helperText={errors.alley}
-                                    />
-                                </div>
                             </div>
                         )}
                     </div>
@@ -445,8 +431,7 @@ export default function AddressModule({ handleClose, open, coordinates, setCoord
                     onClick={level === 1 ? checkLocation : save}
                     autoFocus
                     disabled={
-                        (coordinates.latitude === "35.65326" &&
-                            coordinates.longitude === "51.354710000000004") &&
+                        !coordinates?.latitude && !coordinates?.longitude &&
                         (address.provinceId === 8 && address.cityId === 215)
                     }
                 >
