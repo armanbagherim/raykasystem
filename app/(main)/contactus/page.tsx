@@ -3,7 +3,7 @@ import React from "react";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "تماس با ما | جهیزان",
+    title: "تماس با ما | رایکا سیستم",
   };
 }
 export default function page() {

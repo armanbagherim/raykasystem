@@ -144,7 +144,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
     const { result: seo } = await getLinked(categorySlug, brandSlug);
     console.log('LOG OF PARAMS', seo)
     return {
-        title: `${seo?.metaTitle ?? seo?.name} | جهیزان`,
+        title: `${seo?.metaTitle ?? seo?.name} | رایکا سیستم`,
         description: seo?.metaDescription,
         keywords: seo?.metaKeywords,
         alternates: {

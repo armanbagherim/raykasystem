@@ -69,8 +69,8 @@ async function getProducts(searchParams) {
 export async function generateMetadata({ searchParams }): Promise<Metadata> {
   return {
     title: searchParams.search
-      ? `جهیزان | نتایج جست و جو برای ${searchParams.search}`
-      : "جهیزان | جست و جو",
+      ? `رایکا سیستم | نتایج جست و جو برای ${searchParams.search}`
+      : "رایکا سیستم | جست و جو",
   };
 }
 

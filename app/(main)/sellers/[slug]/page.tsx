@@ -67,7 +67,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   const { result: entity } = await getEntity(params);
 
   return {
-    title: `محصولات فروشگاه ${entity?.name} | جهیزان`,
+    title: `محصولات فروشگاه ${entity?.name} | رایکا سیستم`,
   };
 }
 

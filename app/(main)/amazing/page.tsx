@@ -68,7 +68,7 @@ async function getProducts(searchParams) {
 
 export async function generateMetadata({ searchParams }): Promise<Metadata> {
   return {
-    title: "تخفیفات شگفت انگیز | جهیزان",
+    title: "تخفیفات شگفت انگیز | رایکا سیستم",
   };
 }
 

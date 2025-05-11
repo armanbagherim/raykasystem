@@ -22,7 +22,7 @@ export default function LeftSide({ product, status, addToCart }) {
       <div className="px-4 py-4 mr-0 relative flex h-full flex-col justify-between text-sm">
         <div>
           <div className="text-gray-700 font-bold">
-            <span>چرا از جهیزان خرید کنم؟</span>
+            <span>چرا از رایکا سیستم خرید کنم؟</span>
           </div>
           <div className="mt-5">
             <div className="flex gap-1 mb-4">

@@ -23,7 +23,7 @@ const config: Config = {
         },
       },
       colors: {
-        primary: "#20AC73",
+        primary: "#ED2A2F",
         customGray: "#F8F8F8",
       },
       backgroundImage: {

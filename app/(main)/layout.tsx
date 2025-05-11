@@ -16,9 +16,9 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   manifest: "/manifest.json",
-  title: "جهیزان | خرید اقساطی جهیزیه",
+  title: "رایکا سیستم | خرید اقساطی لوازم الکترونیکی",
   description:
-    "جهیزان | خرید اقساطی و نقدی تمامی لوازم جهیزیه با به صرفه ترین قیمت نسبت بازار جهیزیه",
+    "رایکا سیستم | خرید اقساطی و نقدی تمامی لوازم لوازم الکترونیکی با به صرفه ترین قیمت نسبت بازار لوازم الکترونیکی",
   alternates: {
     canonical: "https://jahizan.com/",
   },

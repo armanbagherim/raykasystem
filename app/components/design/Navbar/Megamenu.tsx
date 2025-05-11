@@ -7,11 +7,11 @@ const Megamenu = ({ items }) => {
   const [groupName, setGroupName] = useState();
 
   useEffect(() => {
-    setActiveSubEntities(items[0].subEntityTypes);
-    setGroupName(items[0].name);
+    setActiveSubEntities(items[0]?.subEntityTypes);
+    setGroupName(items[0]?.name);
   }, []);
 
-  const subs = activeSubEntities.length ? activeSubEntities : [];
+  const subs = activeSubEntities?.length ? activeSubEntities : [];
 
   const itemsWithSubEntities = subs.filter(
     (item) => item.subEntityTypes && item.subEntityTypes.length > 0

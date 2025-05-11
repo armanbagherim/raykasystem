@@ -106,7 +106,7 @@ export default function HomePage() {
               Tutorial
             </a>
             <h1 className="text-gray-900 text-3xl md:text-2xl font-extrabold mb-4">
-              به پنل مدیریت جهیزان خوش آمدید
+              به پنل مدیریت رایکا سیستم خوش آمدید
             </h1>
             <p className="text-lg font-normal text-gray-500  mb-6">
               در این پنل می توانید به مدیریت محصولات، تخفیفات، حمل و نقل،

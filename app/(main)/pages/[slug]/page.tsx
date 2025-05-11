@@ -19,7 +19,7 @@ async function getPage(params) {
 export async function generateMetadata({ params }): Promise<Metadata> {
   const product = await getPage(params);
   return {
-    title: `${product.result.metaTitle ?? product.result.title} | جهیزان`,
+    title: `${product.result.metaTitle ?? product.result.title} | رایکا سیستم`,
     description: product?.result?.metaDescription,
     keywords: product?.result?.metaKeywords,
   };

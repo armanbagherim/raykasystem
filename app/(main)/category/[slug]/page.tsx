@@ -143,7 +143,7 @@ async function getProducts(searchParams, entity) {
 export async function generateMetadata({ params }): Promise<Metadata> {
   const { result: entity } = await getEntity(params);
   return {
-    title: `${entity?.metaTitle ?? entity?.name} | جهیزان`,
+    title: `${entity?.metaTitle ?? entity?.name} | رایکا سیستم`,
     description: entity?.metaDescription,
     keywords: entity?.metaKeywords,
     alternates: {

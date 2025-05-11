@@ -46,7 +46,7 @@ const PrintPage = ({ data }) => {
           printArea ? "print:visible print:h-full" : ""
         }`}
       >
-        <p className="iranSans mb-4">جهیزان</p>
+        <p className="iranSans mb-4">رایکا سیستم</p>
         <table dir="rtl" className={"iranSans "} width={"100%"} border={0}>
           <tbody>
             <td>
@@ -67,7 +67,7 @@ const PrintPage = ({ data }) => {
             <tr>
               <td className={"iranSans "}>فروشنده</td>
               <td>
-                <span> فروشنده: جهیزان </span>
+                <span> فروشنده: رایکا سیستم </span>
 
                 <span>
                   میدان شوش، خیابان صابونیان، مجتمع الماس، طبقه سوم، پلاک 796

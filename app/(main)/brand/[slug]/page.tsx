@@ -80,7 +80,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   const { result: brand } = await getBrand(params);
 
   return {
-    title: `جهیزان | ${brand.metaTitle ? brand.metaTitle : brand?.name}`,
+    title: `رایکا سیستم | ${brand.metaTitle ? brand.metaTitle : brand?.name}`,
     description: brand?.metaDescription,
     keywords: brand?.metaKeywords,
     twitter: {

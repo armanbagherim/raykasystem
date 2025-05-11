@@ -3,7 +3,7 @@ import BrandModule from "./BrandModule";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `برند ها | جهیزان`,
+    title: `برند ها | رایکا سیستم`,
     alternates: {
       canonical: `${process.env.WEBSITE_BASE_URL}/brands`,
     },

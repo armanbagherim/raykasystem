@@ -13,7 +13,7 @@ const Breadcrumb = ({ product }) => {
         </div>
         <Link href="/">
           <div className="whitespace-nowrap text-right text-black-70 font-Peyda font-medium mx-2">
-            فروشگاه جهیزان
+            فروشگاه رایکا سیستم
           </div>
         </Link>
         /

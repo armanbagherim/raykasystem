@@ -135,7 +135,7 @@ export default function SignInForm({ session }) {
                 <p className="mb-10 text-sm">
                   ورود به خانواده{" "}
                   <span className="text-primary font-bold">35000</span> نفری
-                  جهیزان
+                  رایکا سیستم
                 </p>
                 <form onSubmit={onSubmit}>
                   {state == "phone" && (
@@ -280,11 +280,11 @@ export default function SignInForm({ session }) {
                     </span>
                   </button>
                   <p className="rule text-sm mb-4 text-right">
-                    با ورود به جهیزان تمامی{" "}
+                    با ورود به رایکا سیستم تمامی{" "}
                     <Link className="text-[#2D9CDB]" href="/pages/rules">
                       قوانین
                     </Link>{" "}
-                    و مقررات وبسایت جهیزان را میپذیرید
+                    و مقررات وبسایت رایکا سیستم را میپذیرید
                   </p>
                 </form>
               </div>
@@ -292,14 +292,14 @@ export default function SignInForm({ session }) {
             <div className="flex-1 pr-3 pl-3 lg:p-0">
               <div className="wrapper hidden md:block  flex flex-col justify-between md:rounded-e-[25px] lg:rounded-e-[25px] xl:rounded-e-[25px] 2xl:rounded-e-[25px] h-full text-white bg-gradiant-login px-8 py-11">
                 <div>
-                  <h1 className="text-2xl mb-5">به جهیزان خوش آمدید :)</h1>
+                  <h1 className="text-2xl mb-5">به رایکا سیستم خوش آمدید :)</h1>
                   <p className="text-lg mb-9">
-                    جهیزان بزرگترین وارد کننده لوازم آشپزخانه در کشور و ارائه
+                    رایکا سیستم بزرگترین وارد کننده لوازم آشپزخانه در کشور و ارائه
                     دهنده لوازم آشپزخانه اورجینال سعی ثابت نموده است که کیفیت
                     آشپزخانه شما برای ما اهمیت بسیار زیادی دارد.
                   </p>
                   <h5 className="text-2xl mb-5">
-                    ثبت نام در جهیزان چه مزایایی دارد؟
+                    ثبت نام در رایکا سیستم چه مزایایی دارد؟
                   </h5>
                   <ul className="mb-10">
                     <li className="text-base mb-4">

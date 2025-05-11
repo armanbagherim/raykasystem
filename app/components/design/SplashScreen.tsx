@@ -20,7 +20,7 @@ export default function SplashScreen() {
       <div>
         <ClientLoading />
         <h4 className="w-full text-center text-3xl font-bold text-primary">
-          جهیزان
+          رایکا سیستم
         </h4>
       </div>
     </div>
