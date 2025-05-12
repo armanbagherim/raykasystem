@@ -410,8 +410,9 @@ export default function Products() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
       <div
-        className={`w-full h-screen bg-gray-200/20 backdrop-blur-sm rounded-lg z-50 flex items-center justify-center absolute right-0 top-0 ${loading ? "visible" : "hidden"
-          }`}
+        className={`w-full h-screen bg-gray-200/20 backdrop-blur-sm rounded-lg z-50 flex items-center justify-center absolute right-0 top-0 ${
+          loading ? "visible" : "hidden"
+        }`}
       >
         <div role="status">
           <svg
@@ -584,33 +585,33 @@ export default function Products() {
                       >
                         {entityTypeId
                           ? attributes?.map((value, index) => {
-                            const isValueBased =
-                              value.attributeType.valueBased;
-                            const label = value.name;
-                            const options = isValueBased
-                              ? value.attributeValues
-                              : [];
-                            const valueType = isValueBased
-                              ? "select"
-                              : "text";
+                              const isValueBased =
+                                value.attributeType.valueBased;
+                              const label = value.name;
+                              const options = isValueBased
+                                ? value.attributeValues
+                                : [];
+                              const valueType = isValueBased
+                                ? "select"
+                                : "text";
 
-                            {
-                              return (
-                                <GenericInput
-                                  key={index}
-                                  disabled={!hasPermission?.result}
-                                  type={valueType}
-                                  defaultValue={defaultValueChecker(value)}
-                                  value={value.val}
-                                  onChange={(e) => {
-                                    handleAttributeChange(value.id, e);
-                                  }}
-                                  options={options}
-                                  label={label}
-                                />
-                              );
-                            }
-                          })
+                              {
+                                return (
+                                  <GenericInput
+                                    key={index}
+                                    disabled={!hasPermission?.result}
+                                    type={valueType}
+                                    defaultValue={defaultValueChecker(value)}
+                                    value={value.val}
+                                    onChange={(e) => {
+                                      handleAttributeChange(value.id, e);
+                                    }}
+                                    options={options}
+                                    label={label}
+                                  />
+                                );
+                              }
+                            })
                           : "در حال بارگزاری"}
                       </div>
                       <div
@@ -618,7 +619,7 @@ export default function Products() {
                         id="link2"
                       >
                         <button
-                          className="!mb-6 text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal text-white bg-[#20ac73] w-full block"
+                          className="!mb-6 text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal text-white bg-[#5C1891] w-full block"
                           onClick={(e) => {
                             handleClickOpen(null);
                           }}
@@ -742,7 +743,6 @@ export default function Products() {
           type="video"
           text="آپلود ویدیو"
         />
-
       </aside>
       <SaveBar
         action={saveProduct}

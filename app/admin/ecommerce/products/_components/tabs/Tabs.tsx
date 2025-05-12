@@ -6,8 +6,8 @@ const Tab = ({ activeTab, tabName, tabId, setActiveTab }) => (
       className={
         "text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal " +
         (activeTab === tabId
-          ? "text-white bg-[#20ac73]"
-          : "text-[#20ac73] bg-white")
+          ? "text-white bg-[#5C1891]"
+          : "text-[#5C1891] bg-white")
       }
       onClick={(e) => {
         e.preventDefault();

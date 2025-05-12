@@ -19,6 +19,7 @@ export default function MainSlider({ data }) {
                   media="(max-width: 768px)"
                   srcSet={slider.mobileImageUrl}
                 />
+                {console.log(slider.imageUrl)}
                 <Image
                   src={slider.imageUrl}
                   alt={slider.alt}

@@ -34,6 +34,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "image.jahizan.com",
       },
+      {
+        protocol: "https",
+        hostname: "service.raykasystem.com",
+      },
+      {
+        protocol: "https",
+        hostname: "image.raykasystem.com",
+      },
       
     ],
   },

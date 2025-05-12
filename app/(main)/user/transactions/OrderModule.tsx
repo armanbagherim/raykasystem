@@ -340,7 +340,7 @@ export default function OrderModule({ data }) {
               y2="606"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#20AC73" />
+              <stop stop-color="#5C1891" />
               <stop offset="0.35" stop-color="#199060" />
               <stop offset="1" stop-color="#0C5C3C" />
             </linearGradient>

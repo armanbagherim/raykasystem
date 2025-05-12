@@ -26,19 +26,47 @@ export default function Footer() {
           <p className="peyda text-primary text-lg mb-2 font-bold">
             فروشگاه اینترنتی رایکا سیستم
           </p>
-          <p className={`${!showMore ? "line-clamp-6 textGradiant" : ""} text-sm md:text-base`}>
-            <strong>رایکا سیستم</strong> یکی از فروشگاه‌های تخصصی فروش <strong>قطعات کامپیوتر</strong> و خدمات اسمبل سیستم در ایران است. این فروشگاه با ارائه محصولات متنوع شامل <strong>پردازنده (CPU)</strong>، <strong>رم (RAM)</strong>، <strong>کارت گرافیک (GPU)</strong>، <strong>مادربرد</strong>، <strong>هارد اینترنال و اکسترنال</strong>، <strong>SSD</strong>، <strong>پاور</strong>، <strong>کیس گیمینگ</strong> و دیگر تجهیزات، توانسته به انتخاب اول بسیاری از کاربران تبدیل شود.
-
-            رایکا سیستم امکان خرید برندهای معتبری مانند <strong>Intel، AMD، ASUS، Gigabyte، MSI، Corsair، G.SKILL، Kingston، Western Digital، Seagate، Crucial</strong> و سایر برندهای مطرح جهانی را فراهم کرده است. شما می‌توانید با خیال راحت برای <strong>خرید سی پی یو اینتل</strong>، <strong>خرید کارت گرافیک ASUS</strong>، <strong>خرید رم DDR4 Corsair</strong> یا <strong>خرید هارد اکسترنال WD</strong> از خدمات این فروشگاه استفاده کنید.
-
-            تیم فنی رایکا سیستم با ارائه خدمات <strong>اسمبل حرفه‌ای سیستم</strong> شامل نصب و تست قطعات، کابل‌کشی استاندارد، و بهینه‌سازی سیستم برای گیمینگ، طراحی یا کارهای مهندسی، تجربه‌ای مطمئن برای کاربران فراهم می‌کند. همچنین امکان دریافت مشاوره رایگان برای انتخاب قطعات متناسب با بودجه و کاربرد شما نیز وجود دارد.
-
-            این فروشگاه با تضمین <strong>اصالت کالا</strong>، <strong>گارانتی معتبر</strong>، <strong>ارسال سریع</strong> و <strong>پشتیبانی تخصصی</strong>، تلاش می‌کند تا رضایت کامل مشتریان را جلب کند. اگر به دنبال <strong>خرید سیستم گیمینگ</strong>، <strong>خرید قطعات کامپیوتر با قیمت مناسب</strong> یا اسمبل سیستم حرفه‌ای هستید، رایکا سیستم گزینه‌ای هوشمندانه برای شماست.
+          <p
+            className={`${
+              !showMore ? "line-clamp-6 textGradiant" : ""
+            } text-sm md:text-base`}
+          >
+            <strong>رایکا سیستم</strong> یکی از فروشگاه‌های تخصصی فروش{" "}
+            <strong>قطعات کامپیوتر</strong> و خدمات اسمبل سیستم در ایران است.
+            این فروشگاه با ارائه محصولات متنوع شامل{" "}
+            <strong>پردازنده (CPU)</strong>، <strong>رم (RAM)</strong>،{" "}
+            <strong>کارت گرافیک (GPU)</strong>، <strong>مادربرد</strong>،{" "}
+            <strong>هارد اینترنال و اکسترنال</strong>، <strong>SSD</strong>،{" "}
+            <strong>پاور</strong>، <strong>کیس گیمینگ</strong> و دیگر تجهیزات،
+            توانسته به انتخاب اول بسیاری از کاربران تبدیل شود. رایکا سیستم امکان
+            خرید برندهای معتبری مانند{" "}
+            <strong>
+              Intel، AMD، ASUS، Gigabyte، MSI، Corsair، G.SKILL، Kingston،
+              Western Digital، Seagate، Crucial
+            </strong>{" "}
+            و سایر برندهای مطرح جهانی را فراهم کرده است. شما می‌توانید با خیال
+            راحت برای <strong>خرید سی پی یو اینتل</strong>،{" "}
+            <strong>خرید کارت گرافیک ASUS</strong>،{" "}
+            <strong>خرید رم DDR4 Corsair</strong> یا{" "}
+            <strong>خرید هارد اکسترنال WD</strong> از خدمات این فروشگاه استفاده
+            کنید. تیم فنی رایکا سیستم با ارائه خدمات{" "}
+            <strong>اسمبل حرفه‌ای سیستم</strong> شامل نصب و تست قطعات، کابل‌کشی
+            استاندارد، و بهینه‌سازی سیستم برای گیمینگ، طراحی یا کارهای مهندسی،
+            تجربه‌ای مطمئن برای کاربران فراهم می‌کند. همچنین امکان دریافت مشاوره
+            رایگان برای انتخاب قطعات متناسب با بودجه و کاربرد شما نیز وجود دارد.
+            این فروشگاه با تضمین <strong>اصالت کالا</strong>،{" "}
+            <strong>گارانتی معتبر</strong>، <strong>ارسال سریع</strong> و{" "}
+            <strong>پشتیبانی تخصصی</strong>، تلاش می‌کند تا رضایت کامل مشتریان
+            را جلب کند. اگر به دنبال <strong>خرید سیستم گیمینگ</strong>،{" "}
+            <strong>خرید قطعات کامپیوتر با قیمت مناسب</strong> یا اسمبل سیستم
+            حرفه‌ای هستید، رایکا سیستم گزینه‌ای هوشمندانه برای شماست.
           </p>
         </div>
         <button
           onClick={() => setShowMore(!showMore)}
-          className={`text-[12px] flex gap-1 items-center absolute rounded-[12px] bg-black py-2 px-4 hover:bg-gray-700 text-white font-bold right-[calc(50%-70px)] ${showMore ? "bottom-[-50px]" : "bottom-[-12px]"}`}
+          className={`text-[12px] flex gap-1 items-center absolute rounded-[12px] bg-black py-2 px-4 hover:bg-gray-700 text-white font-bold right-[calc(50%-70px)] ${
+            showMore ? "bottom-[-50px]" : "bottom-[-12px]"
+          }`}
         >
           مشاهده همه
           <DownArrow />
@@ -47,7 +75,7 @@ export default function Footer() {
 
       <div className="grid-cols-2 gap-6  md:grid-cols-4 grid mt-[40px] md:mt-[86px]">
         <div>
-          <text className="text-[#20AC73] text-[12px] md:text-xl font-bold">
+          <text className="text-[#5C1891] text-[12px] md:text-xl font-bold">
             خدمات مشتریان
           </text>
           <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
@@ -66,7 +94,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className="">
-          <text className="text-[#20AC73]  text-[12px] md:text-xl font-bold">
+          <text className="text-[#5C1891]  text-[12px] md:text-xl font-bold">
             مرکز تماس
           </text>
           <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
@@ -103,7 +131,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className="">
-          <text className="text-[#20AC73]  text-[12px] md:text-xl font-bold">
+          <text className="text-[#5C1891]  text-[12px] md:text-xl font-bold">
             شعبه شوش
           </text>
           <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 ext-[10px] text-[10px] md:text-sm">
@@ -117,7 +145,7 @@ export default function Footer() {
           </ul>
         </div>
         <div>
-          <text className="text-[#20AC73]  text-[12px] md:text-xl font-bold">
+          <text className="text-[#5C1891]  text-[12px] md:text-xl font-bold">
             شبکه های اجتماعی
           </text>
           <ul className="flex flex-row gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">

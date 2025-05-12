@@ -47,7 +47,7 @@ export default function RootLayout({
               <Navbar />
               <ToastContainer />
               <BottomNav />
-              <NextTopLoader showSpinner={false} color="#20ac73" />
+              <NextTopLoader showSpinner={false} color="#5C1891" />
               {children}
               <Footer />
             </Provider>

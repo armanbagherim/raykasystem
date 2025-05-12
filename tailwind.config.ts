@@ -23,7 +23,7 @@ const config: Config = {
         },
       },
       colors: {
-        primary: "#ED2A2F",
+        primary: "#5C1891",
         customGray: "#F8F8F8",
       },
       backgroundImage: {
@@ -31,7 +31,7 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         "gradiant-login":
-          "linear-gradient(135deg, #06784A 0.44%, #20AC73 55.77%, #20AC69 112.26%);",
+          "linear-gradient(135deg, #06784A 0.44%, #5C1891 55.77%, #20AC69 112.26%);",
       },
       boxShadow: {
         shadowCustom: "box-shadow: 0px 3px 8px 1px #F8F8F8",

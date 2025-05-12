@@ -492,7 +492,7 @@ export default function Products() {
                           id="link2"
                         >
                           <button
-                            className="!mb-6 text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal text-white bg-[#20ac73] w-full block"
+                            className="!mb-6 text-sm uppercase px-5 py-3 border border-gray-200 rounded-lg block leading-normal text-white bg-[#5C1891] w-full block"
                             onClick={(e) => {
                               handleClickOpen(null);
                             }}

@@ -15,7 +15,6 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-
 import { CSS } from "@dnd-kit/utilities";
 import {
   Button,
@@ -90,7 +89,7 @@ const SortableItem = ({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: item.priority });
+  } = useSortable({ id: item.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -101,7 +100,9 @@ const SortableItem = ({
     <div
       ref={setNodeRef}
       style={style}
-      className={`${isDragging ? "bg-green-300" : "bg-gray-400"} user-select-none !rounded-2xl !shadow-none mb-4`}
+      className={`${
+        isDragging ? "bg-green-300" : "bg-gray-400"
+      } user-select-none !rounded-2xl !shadow-none mb-4`}
     >
       <Accordion className="!rounded-2xl">
         <AccordionSummary
@@ -215,13 +216,15 @@ export default function SettingModule({
   const [items, setItems] = useState(
     HomePageData.map((item, index) => ({
       ...item,
+      id: (item.priority ?? index) + 1, // تنظیم id برابر با priority + 1
       priority: item.priority ?? index,
       content:
         item.type === "slider"
           ? item.content.map((slide, slideIndex) => ({
-            ...slide,
-            priority: slide.priority ?? slideIndex,
-          }))
+              ...slide,
+              id: (slide.priority ?? slideIndex) + 1, // تنظیم id برابر با priority + 1 برای اسلایدها
+              priority: slide.priority ?? slideIndex,
+            }))
           : item.content,
     }))
   );
@@ -243,10 +246,11 @@ export default function SettingModule({
     if (!over) return;
 
     if (active.id !== over.id) {
-      const oldIndex = items.findIndex((item) => item.priority === active.id);
-      const newIndex = items.findIndex((item) => item.priority === over.id);
+      const oldIndex = items.findIndex((item) => item.id === active.id);
+      const newIndex = items.findIndex((item) => item.id === over.id);
       const newItems = arrayMove(items, oldIndex, newIndex).map((item, i) => ({
         ...item,
+        id: i + 1, // به‌روزرسانی id برابر با priority + 1
         priority: i,
       }));
       setItems(newItems);
@@ -268,21 +272,27 @@ export default function SettingModule({
       setBannerColumnsOpen(true);
     } else {
       setOpen(false);
+      const newPriority = items.length;
       setItems([
         ...items,
         {
           type,
           name: ELEMENT_TYPES.find((t) => t.id === type).name,
-          priority: items.length,
+          id: newPriority + 1, // تنظیم id برابر با priority + 1
+          priority: newPriority,
           content:
             type === "slider"
-              ? [{ imageAttachmentId: "", mobileImageAttachmentId: "", alt: "", link: "", priority: 0 }]
-              : type === "banner"
-                ? Array.from({ length: bannerColumns }, () => ({
-                  image: "",
-                  link: "",
-                }))
-                : { sortBy: "", title: "" },
+              ? [
+                  {
+                    imageAttachmentId: "",
+                    mobileImageAttachmentId: "",
+                    alt: "",
+                    link: "",
+                    id: 1,
+                    priority: 0,
+                  },
+                ]
+              : { sortBy: "", title: "" },
         },
       ]);
     }
@@ -292,12 +302,14 @@ export default function SettingModule({
     setBannerColumns(columns);
     setOpen(false);
     setBannerColumnsOpen(false);
+    const newPriority = items.length;
     setItems([
       ...items,
       {
         type: "banner",
         name: ELEMENT_TYPES.find((t) => t.id === "banner").name,
-        priority: items.length,
+        id: newPriority + 1, // تنظیم id برابر با priority + 1
+        priority: newPriority,
         content: Array.from({ length: columns }, () => ({
           image: "",
           link: "",
@@ -320,6 +332,7 @@ export default function SettingModule({
       mobileImageAttachmentId,
       alt,
       link,
+      id: newItems[index].content[slideIndex].id,
       priority: newItems[index].content[slideIndex].priority,
     };
     setItems(newItems);
@@ -327,12 +340,14 @@ export default function SettingModule({
 
   const handleAddSlide = (index) => {
     const newItems = [...items];
+    const newSlidePriority = newItems[index].content.length;
     newItems[index].content.push({
       imageAttachmentId: "",
       mobileImageAttachmentId: "",
       alt: "",
       link: "",
-      priority: newItems[index].content.length,
+      id: newSlidePriority + 1, // تنظیم id برابر با priority + 1
+      priority: newSlidePriority,
     });
     setItems(newItems);
   };
@@ -342,6 +357,7 @@ export default function SettingModule({
     newItems[index].content.splice(slideIndex, 1);
     newItems[index].content = newItems[index].content.map((slide, i) => ({
       ...slide,
+      id: i + 1, // به‌روزرسانی id برابر با priority + 1
       priority: i,
     }));
     setItems(newItems);
@@ -410,7 +426,13 @@ export default function SettingModule({
   const handleRemoveItem = (index) => {
     const newItems = [...items];
     newItems.splice(index, 1);
-    setItems(newItems);
+    // به‌روزرسانی id و priority برای آیتم‌های باقی‌مانده
+    const updatedItems = newItems.map((item, i) => ({
+      ...item,
+      id: i + 1, // تنظیم id برابر با priority + 1
+      priority: i,
+    }));
+    setItems(updatedItems);
   };
 
   const handleSave = async () => {
@@ -418,8 +440,8 @@ export default function SettingModule({
     const cleanItems = items.map((item, index) => ({
       type: item.type,
       name: item.name,
-      id: item.id,
-      priority: index,
+      id: item.id, // استفاده از id که برابر با priority + 1 است
+      priority: item.priority,
       content: item.content,
     }));
     try {
@@ -453,12 +475,12 @@ export default function SettingModule({
           onDragEnd={handleDragEnd}
           modifiers={[restrictToVerticalAxis]}
         >
-          <SortableContext items={items.map((item) => item.priority)}>
+          <SortableContext items={items.map((item) => item.id)}>
             <div className="bg-gray-200 p-4 w-full rounded-2xl">
               {items.map((item, index) => (
                 <SortableItem
-                  key={item.priority}
-                  id={item.priority}
+                  key={item.id}
+                  id={item.id}
                   item={item}
                   index={index}
                   handleRemoveItem={handleRemoveItem}

@@ -146,7 +146,7 @@ const SideMenu = () => {
                           <p
                             className={`flex items-center w-full px-4 py-3 text-white transition duration-300 rounded-xl pl-11 group ${
                               isActive(submenu.url)
-                                ? "!text-[#20ac73] mr-2 bg-white"
+                                ? "!text-[#5C1891] mr-2 bg-white"
                                 : "!text-black"
                             }`}
                           >
