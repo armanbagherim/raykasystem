@@ -5,4 +5,4 @@ Disallow: /user
 Disallow: /*?*
 Allow: /
 
-Sitemap: https://jahizan.com/sitemap.xml
+Sitemap: https://raykasystem.com/sitemap.xml

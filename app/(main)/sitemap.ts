@@ -66,7 +66,7 @@ export default async function sitemap() {
     },
 
     {
-      url: `https://blog.jahizan.com`,
+      url: `/blog`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,

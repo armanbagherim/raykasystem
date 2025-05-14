@@ -98,46 +98,28 @@ export default function Footer() {
             مرکز تماس
           </text>
           <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
-            {/* <li>
-              <Link className="flex gap-[10px]" href="tel:02155343819">
-                <TelephoneNumberIcon />
-                ۰۲۱۵۵۳۴۳۸۱۹
-              </Link>
-            </li> */}
-            {/* <li>
-              <Link className="flex gap-[10px]" href="tel:09102421305">
-                <TelephoneNumberIcon />
-                ۰۹۱۰۲۴۲۱۳۰۵
-              </Link>
-            </li> */}
             <li>
-              <Link
-                className="flex gap-[10px]"
-                href="https://wa.me/message/5A2VRRDWH4WRM1"
-              >
+              <Link className="flex gap-[10px]" href="tel:02188227209">
                 <TelephoneNumberIcon />
-                پشتیبانی واتساپ
+                02188227209
               </Link>
             </li>
             <li>
-              <Link
-                className="flex gap-[10px]"
-                href="https://t.me/Jahizan_admin"
-              >
+              <Link className="flex gap-[10px]" href="tel:02186097665">
                 <TelephoneNumberIcon />
-                پشتیبانی تلگرام
+                02186097665
               </Link>
             </li>
           </ul>
         </div>
         <div className="">
           <text className="text-[#5C1891]  text-[12px] md:text-xl font-bold">
-            شعبه شوش
+            دفتر مرکزی
           </text>
           <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 ext-[10px] text-[10px] md:text-sm">
             <li className="flex gap-3">
               <LocationIcon />
-              تهران میدان شوش خیابان صابونیان مجتمع الماس طبقه سوم پلاک ۷۹۶
+              تهران، مجتمع تجاری نور
             </li>
             <li className="flex gap-3 text-[#0272c8] font-bold">
               ساعت پاسخگویی ۱۰ الی ۱۷
@@ -145,7 +127,7 @@ export default function Footer() {
           </ul>
         </div>
         <div>
-          <text className="text-[#5C1891]  text-[12px] md:text-xl font-bold">
+          {/* <text className="text-[#5C1891]  text-[12px] md:text-xl font-bold">
             شبکه های اجتماعی
           </text>
           <ul className="flex flex-row gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
@@ -164,7 +146,7 @@ export default function Footer() {
                 <Aparat />
               </Link>
             </li>
-          </ul>
+          </ul> */}
           <a
             referrerPolicy="origin"
             target="_blank"
