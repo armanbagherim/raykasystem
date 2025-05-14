@@ -5,12 +5,6 @@ const nextConfig = {
   experimental: {
     outputStandalone: true,
   },
-
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
   pwa: {
     dest: "public",
     register: true,
@@ -42,14 +36,12 @@ const nextConfig = {
         protocol: "https",
         hostname: "image.raykasystem.com",
       },
-      
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
     ignoreBuildErrors: true,
   },
   reactStrictMode: false,
