@@ -210,7 +210,7 @@ export default async function NavbarModule() {
               <li className="flex ml-3 items-center">
                 <img src="/icons/news.svg" alt="" />
                 <span className="mx-3 text-sm">
-                  <a href="https://blog.jahizan.com">اخبار و مقالات</a>
+                  <a href="/blog">اخبار و مقالات</a>
                 </span>
               </li>
               {/* <li className="flex ml-3 items-center">

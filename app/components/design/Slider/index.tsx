@@ -10,7 +10,7 @@ import "swiper/css/navigation";
 
 import { EffectFade, Navigation, FreeMode, Autoplay } from "swiper/modules";
 import SwiperNavigations from "./SwiperNavigation";
-import { LinearProgress } from "@mui/material";
+import { CircularProgress, LinearProgress, Skeleton } from "@mui/material";
 
 interface SliderProps {
   children: ReactNode[];
@@ -83,7 +83,14 @@ export default function Slider({
     <>
       {isLoading ? (
         // Loading placeholder
-        <LinearProgress color="success" />
+        <div className="flex justify-center items-center">
+          <Skeleton
+            variant="rounded"
+            animation="wave"
+            width={"100%"}
+            height={400}
+          />
+        </div>
       ) : (
         // Swiper component
         <Swiper

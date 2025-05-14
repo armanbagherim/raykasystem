@@ -10,14 +10,14 @@ export default function page() {
   return (
     <div className="container mx-auto">
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4777990659666!2d51.43115480353828!3d35.6545594997812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f91ff66b538d31b%3A0x2ee3bd1ddde81336!2sJahizan!5e0!3m2!1sen!2sde!4v1715970302504!5m2!1sen!2sde"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1619.8914380072638!2d51.405903708598345!3d35.70696030950233!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e011237847dcd%3A0xcfed7552490962f5!2sNoor-e%20Tehran%20Shopping%20Center!5e0!3m2!1sen!2s!4v1747202883506!5m2!1sen!2s"
         width="100%"
         height="450"
         allowfullscreen=""
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
       ></iframe>
-      <div className="grid grid-cols-1 md:grid-cols-3 p-16 bg-white relative -top-14 mx-10 shadow-lg rounded-3xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 p-16 bg-white relative -top-14 mx-10 shadow-lg rounded-3xl">
         <div className="col-span-1 flex flex-col items-center text-center mb-6 md:mb-0 gap-4 justify-center">
           <svg
             width="34"
@@ -34,7 +34,8 @@ export default function page() {
             />
           </svg>
           <div>
-            <p className="text-primary font-bold text-lg">۰۲۱۵۵۳۴۳۸۱۹</p>
+            <p className="text-primary font-bold text-lg">02188227209</p>
+            <p className="text-primary font-bold text-lg">02186097665</p>
             {/* <p className="text-primary font-bold text-lg">021-۰۹۱۰۲۴۲۱۳۰۵</p> */}
           </div>
         </div>
@@ -66,49 +67,9 @@ export default function page() {
 
           <div>
             <p className="text-primary font-bold text-lg">
-              تهران میدان شوش خیابان صابونیان مجتمع الماس طبقه سوم پلاک ۷۹۶
+              تهران، مجتمع تجاری نور تهران
             </p>
-            <p>info@jahizan.com</p>
-          </div>
-        </div>
-        <div className="col-span-1 flex flex-col items-center text-center mb-6 md:mb-0 gap-4 justify-center">
-          <svg
-            width="34"
-            height="34"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-              stroke="#292D32"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M12 15.5C13.933 15.5 15.5 13.933 15.5 12C15.5 10.067 13.933 8.5 12 8.5C10.067 8.5 8.5 10.067 8.5 12C8.5 13.933 10.067 15.5 12 15.5Z"
-              stroke="#292D32"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M17.6361 7H17.6477"
-              stroke="#292D32"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-
-          <div>
-            <p className="text-primary font-bold text-lg">
-              <Link href="https://instagram.com/jahizancom">اینستاگرام</Link>
-            </p>
-            <p className="text-primary font-bold text-lg">
-              <Link href="https://t.me/jahizancom">تلگرام</Link>
-            </p>
+            <p>info@raykasystem.com</p>
           </div>
         </div>
       </div>

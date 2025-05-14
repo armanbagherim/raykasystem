@@ -105,10 +105,11 @@ export default function SignInForm({ session }) {
         firstName: firstName,
         lastName,
         redirect: false,
-        callbackUrl: `${pathname.get("redirect_back_url")
+        callbackUrl: `${
+          pathname.get("redirect_back_url")
             ? pathname.get("redirect_back_url")
             : "/"
-          }`,
+        }`,
       });
       if (result.status === 401) {
         toast.error(result.error);
@@ -294,9 +295,8 @@ export default function SignInForm({ session }) {
                 <div>
                   <h1 className="text-2xl mb-5">به رایکا سیستم خوش آمدید :)</h1>
                   <p className="text-lg mb-9">
-                    رایکا سیستم بزرگترین وارد کننده لوازم آشپزخانه در کشور و ارائه
-                    دهنده لوازم آشپزخانه اورجینال سعی ثابت نموده است که کیفیت
-                    آشپزخانه شما برای ما اهمیت بسیار زیادی دارد.
+                    رایکا سیستم بزرگ ترین فروشنده لوازم الکترونیکی با تنوع بالای
+                    محصولات از تمامی برند های مطرح جهان در سبد کالایی کامل.
                   </p>
                   <h5 className="text-2xl mb-5">
                     ثبت نام در رایکا سیستم چه مزایایی دارد؟
@@ -309,7 +309,7 @@ export default function SignInForm({ session }) {
                       امکان شارژ کیف پول و خرید گروهی محصولات
                     </li>
                     <li className="text-base mb-4">
-                      خرید لوازم لوازم آشپزخانه اورجینال
+                      خرید لوازم لوازم الکترونیکی اورجینال
                     </li>
                     <li className="text-base mb-4">
                       ایجاد لیست محصولات مورد علاقه
@@ -321,7 +321,7 @@ export default function SignInForm({ session }) {
                 </div>
                 <div className="flex border-t pt-5 items-center justify-between">
                   <span>در ثبت نام مشکلی دارید؟ تماس با پشتیبانی</span>
-                  <span>021-55343819</span>
+                  <span>021-88227209</span>
                 </div>
               </div>
             </div>
