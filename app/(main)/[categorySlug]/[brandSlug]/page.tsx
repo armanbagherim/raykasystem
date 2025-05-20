@@ -60,7 +60,7 @@ async function getColors(entity) {
 
 async function getAttributes(entity) {
     const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/attributes?sortOrder=DESC&orderBy=id&ignorePaging=false&entityTypeId=${entity}&attributeTypeId=3`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/eav/admin/attributes?sortOrder=DESC&orderBy=id&ignorePaging=true&entityTypeId=${entity}&attributeTypeId=3`,
         {
             cache: "no-store",
         }

@@ -25,7 +25,7 @@ async function getBrand(params) {
 }
 async function getColors() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/colors?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=false`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/v1/api/ecommerce/colors?sortOrder=DESC&offset=0&limit=10&orderBy=id&ignorePaging=true`,
     {
       cache: "no-store",
     }
