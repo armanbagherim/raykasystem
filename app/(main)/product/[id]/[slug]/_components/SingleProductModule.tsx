@@ -584,7 +584,7 @@ export default function SingleProductModule({
                         <div className="text-sm">
                           {value?.attribute?.name ?? ""}
                         </div>
-                        <div className="text-green-500 text-sm font-bold">
+                        <div className="text-primary text-sm font-bold">
                           {value?.val ?? "-"}
                         </div>
                       </span>
@@ -687,7 +687,7 @@ export default function SingleProductModule({
                     className="flex justify-between md:justify-normal pt-3 pb-3"
                     key={key}
                   >
-                    <div className="text-green-500 min-w-56 pr-4">
+                    <div className="text-primary min-w-56 pr-4">
                       {value?.attribute?.name ?? ""}
                     </div>
                     <div className="mr-10 text-slate-600">
