@@ -27,9 +27,8 @@ export default function Footer() {
             فروشگاه اینترنتی رایکا سیستم
           </p>
           <p
-            className={`${
-              !showMore ? "line-clamp-6 textGradiant" : ""
-            } text-sm md:text-base`}
+            className={`${!showMore ? "line-clamp-6 textGradiant" : ""
+              } text-sm md:text-base`}
           >
             <strong>رایکا سیستم</strong> یکی از فروشگاه‌های تخصصی فروش{" "}
             <strong>قطعات کامپیوتر</strong> و خدمات اسمبل سیستم در ایران است.
@@ -64,9 +63,8 @@ export default function Footer() {
         </div>
         <button
           onClick={() => setShowMore(!showMore)}
-          className={`text-[12px] flex gap-1 items-center absolute rounded-[12px] bg-black py-2 px-4 hover:bg-gray-700 text-white font-bold right-[calc(50%-70px)] ${
-            showMore ? "bottom-[-50px]" : "bottom-[-12px]"
-          }`}
+          className={`text-[12px] flex gap-1 items-center absolute rounded-[12px] bg-black py-2 px-4 hover:bg-gray-700 text-white font-bold right-[calc(50%-70px)] ${showMore ? "bottom-[-50px]" : "bottom-[-12px]"
+            }`}
         >
           مشاهده همه
           <DownArrow />
@@ -98,6 +96,12 @@ export default function Footer() {
             مرکز تماس
           </text>
           <ul className="flex flex-col gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
+            <li>
+              <Link className="flex gap-[10px]" href="tel:02188949940">
+                <TelephoneNumberIcon />
+                02188949940
+              </Link>
+            </li>
             <li>
               <Link className="flex gap-[10px]" href="tel:02188227209">
                 <TelephoneNumberIcon />
