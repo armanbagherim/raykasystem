@@ -8,13 +8,34 @@ import { toast } from "react-toastify";
 import Image from "next/image";
 import Uploader from "@/app/components/global/Uploader";
 import LightDataGrid from "@/app/components/global/LightDataGrid/LightDataGrid";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import Swal from "sweetalert2";
+
 export default function Products() {
   const [title, setTitle] = useAtom(pageTitle);
   const [triggered, setTriggered] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [baseUrl, setBaseUrl] = useState("/v1/api/ecommerce/admin/products");
+
+  const {
+    data: parentEntityTypes,
+    isLoading: parentEntityTypesIsLoading,
+    error: parentEntityTypesError,
+  } = useFetcher(
+    `/v1/api/eav/admin/entityTypes?sortOrder=ASC&entityModelId=1&ignoreChilds=false&ignorePaging=true`,
+    "GET"
+  );
+  const {
+    data: brands,
+    isLoading: brandsIsLoading,
+    error: brandsError,
+  } = useFetcher(
+    `/v1/api/ecommerce/brands?sortOrder=ASC&offset=0&limit=0&orderBy=id&ignorePaging=true`,
+    "GET"
+  );
 
   useEffect(() => {
     setTitle({
@@ -50,6 +71,21 @@ export default function Products() {
     }
   };
 
+  const handleApplyFilter = () => {
+    let queryParams = [];
+    if (selectedCategory) {
+      queryParams.push(`entityTypeId=${selectedCategory}`);
+    }
+    if (selectedBrand) {
+      queryParams.push(`brandId=${selectedBrand}`);
+    }
+    const newUrl = queryParams.length > 0
+      ? `/v1/api/ecommerce/admin/products?${queryParams.join("&")}`
+      : "/v1/api/ecommerce/admin/products";
+    setBaseUrl(newUrl);
+    setTriggered(!triggered); // Trigger data refetch
+  };
+
   const columns = [
     {
       accessorKey: "id",
@@ -68,9 +104,7 @@ export default function Products() {
           <img
             key={row.id}
             loading="eager"
-            src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${
-              row?.original?.attachments[0]?.fileName || ""
-            }`}
+            src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/products/${row?.original?.attachments[0]?.fileName || ""}`}
             width={30}
             height={30}
             alt=""
@@ -108,18 +142,15 @@ export default function Products() {
       maxSize: 400,
       size: 180,
     },
-
     {
       accessorKey: "slug",
       header: "لینک",
       size: 400,
     },
-
     {
       accessorKey: "Actions",
       header: "عملیات",
       size: 200,
-
       Cell: ({ row }) => (
         <>
           <a href={`/admin/ecommerce/products/${row.id}`}>
@@ -139,8 +170,51 @@ export default function Products() {
 
   return (
     <div>
+      <div className="flex gap-4 mb-4">
+        <FormControl sx={{ minWidth: 200 }}>
+          <InputLabel>دسته‌بندی</InputLabel>
+          <Select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            label="دسته‌بندی"
+          >
+            <MenuItem value="">
+              <em>همه دسته‌بندی‌ها</em>
+            </MenuItem>
+            {parentEntityTypes?.result?.map((category) => (
+              <MenuItem key={category.id} value={category.id}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ minWidth: 200 }}>
+          <InputLabel>برند</InputLabel>
+          <Select
+            value={selectedBrand}
+            onChange={(e) => setSelectedBrand(e.target.value)}
+            label="برند"
+          >
+            <MenuItem value="">
+              <em>همه برندها</em>
+            </MenuItem>
+            {brands?.result?.map((brand) => (
+              <MenuItem key={brand.id} value={brand.id}>
+                {brand.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleApplyFilter}
+        >
+          اعمال فیلتر
+        </Button>
+      </div>
       <LightDataGrid
-        url={"/v1/api/ecommerce/admin/products"}
+        url={baseUrl}
         columns={columns}
         triggered={triggered}
       />
