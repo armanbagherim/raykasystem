@@ -675,27 +675,25 @@ export default function SingleProductModule({
           ""
         )}
 
-        <div id="attributes" className=" mt-4 gap-10 rounded-3xl bg-white">
-          <div className="p-8">
-            <div className="font-bold text-[#424242] text-sm">
+        <div className="w-full bg-white rounded-3xl mt-5">
+          <div className="p-4 sm:p-6 lg:p-8">
+            <h2 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-800 mb-4 sm:mb-6">
               مشخصات کامل محصول
-            </div>
-            <div className="mt-4 text-sm specialInfos">
-              {product?.productAttributeValues.map((value, key) => {
-                return (
-                  <div
-                    className="flex justify-between md:justify-normal pt-3 pb-3"
-                    key={key}
-                  >
-                    <div className="text-primary min-w-56 pr-4">
-                      {value?.attribute?.name ?? ""}
-                    </div>
-                    <div className="mr-10 text-slate-600">
-                      {value?.val ?? "-"}
-                    </div>
-                  </div>
-                );
-              })}
+            </h2>
+            <div className="flex flex-wrap gap-2 sm:gap-4 lg:gap-4">
+              {product?.productAttributeValues.map((value, key) => (
+                <div
+                  key={key}
+                  className="flex flex-col items-start gap-4 justify-start p-2 sm:p-3 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200 min-w-[200px] sm:min-w-[250px] flex-1"
+                >
+                  <span className="text-xs sm:text-sm lg:text-base font-medium text-blue-700">
+                    {value?.attribute?.name ?? "مشخصه"}
+                  </span>
+                  <span className="text-xs sm:text-sm lg:text-base text-gray-600">
+                    {value?.val ?? "-"}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

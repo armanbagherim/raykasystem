@@ -92,9 +92,8 @@ export default async function NavbarModule() {
                 </button>
               </Link>
               <div
-                className={`bg-white border border-gray-200 -mt-2 shadow-md p-4 w-[130%] absolute z-[70] rounded-2xl hidden ${
-                  session?.result ? `group-hover:block` : ""
-                }  -right-8 left-0`}
+                className={`bg-white border border-gray-200 -mt-2 shadow-md p-4 w-[130%] absolute z-[70] rounded-2xl hidden ${session?.result ? `group-hover:block` : ""
+                  }  -right-8 left-0`}
               >
                 <span className="mb-4 block peyda border-b border-b-gray-200 pb-4">
                   {session?.result
@@ -226,7 +225,7 @@ export default async function NavbarModule() {
             </ul>
           </nav>
 
-          <Link href={`https://seller.jahizan.com/`}>
+          <Link href={`https://seller.raykasystem.com/`}>
             <button className="flex bg-white text-primary rounded-2xl py-4 text-sm px-4">
               <svg
                 width="20"

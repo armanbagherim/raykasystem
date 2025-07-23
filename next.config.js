@@ -22,11 +22,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "service.jahizan.com",
+        hostname: "service.raykasystem.com",
       },
       {
         protocol: "https",
-        hostname: "image.jahizan.com",
+        hostname: "image.raykasystem.com",
       },
       {
         protocol: "https",

@@ -69,7 +69,7 @@ function SortablePhoto({ photo, type }: { photo: Photo; type: string }) {
           height={100}
           controls
           className="rounded-xl"
-          src={`https://image.jahizan.com/productvideos/${photo.fileName}`}
+          src={`https://image.raykasystem.com/productvideos/${photo.fileName}`}
         />
       )}
     </div>
@@ -145,7 +145,7 @@ export default function ProductUploader({
                   crossOrigin="anonymous"
                   className="rounded-2xl"
                   controls
-                  src={`https://image.jahizan.com/productvideos/${value.fileName}`}
+                  src={`https://image.raykasystem.com/productvideos/${value.fileName}`}
                 ></video>
               )}
             </div>

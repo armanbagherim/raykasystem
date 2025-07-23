@@ -136,17 +136,17 @@ export default function Footer() {
           </text>
           <ul className="flex flex-row gap-2 md:gap-[19px] mt-4 md:mt-6 text-black/70 text-[10px] md:text-sm">
             <li>
-              <Link href="https://t.me/jahizancom">
+              <Link href="https://t.me/raykasystemcom">
                 <Telegram />
               </Link>
             </li>
             <li>
-              <Link href="https://instagram.com/jahizancom">
+              <Link href="https://instagram.com/raykasystemcom">
                 <Instagram />
               </Link>
             </li>
             <li>
-              <Link href="https://aparat.com/jahizan">
+              <Link href="https://aparat.com/raykasystem">
                 <Aparat />
               </Link>
             </li>

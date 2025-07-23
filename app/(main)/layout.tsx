@@ -16,11 +16,11 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   manifest: "/manifest.json",
-  title: "رایکا سیستم | خرید اقساطی لوازم الکترونیکی",
+  title: "رایکا سیستم | خرید لپ تاپ | خرید کارت گرافیک | خرید رم | خرید کامپیوتر",
   description:
     "رایکا سیستم | خرید اقساطی و نقدی تمامی لوازم لوازم الکترونیکی با به صرفه ترین قیمت نسبت بازار لوازم الکترونیکی",
   alternates: {
-    canonical: "https://jahizan.com/",
+    canonical: "https://raykasystem.com/",
   },
 };
 
