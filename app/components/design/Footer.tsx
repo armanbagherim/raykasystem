@@ -151,18 +151,8 @@ export default function Footer() {
               </Link>
             </li>
           </ul> */}
-          <a
-            referrerPolicy="origin"
-            target="_blank"
-            href="https://trustseal.enamad.ir/?id=281567&Code=gMGXdvTIZekiTfqO9Ocg"
-          >
-            <img
-              referrerPolicy="origin"
-              src="https://trustseal.enamad.ir/logo.aspx?id=281567&Code=gMGXdvTIZekiTfqO9Ocg"
-              alt=""
-              className="cursor-pointer"
-              code="gMGXdvTIZekiTfqO9Ocg"
-            />
+          <a referrerpolicy='origin' target='_blank' href='https://trustseal.enamad.ir/?id=625712&Code=xcjlSnNlrggnztGjuObRpsX6i2uGBPSM'>
+            <img referrerpolicy='origin' src='https://trustseal.enamad.ir/logo.aspx?id=625712&Code=xcjlSnNlrggnztGjuObRpsX6i2uGBPSM' alt='' code='xcjlSnNlrggnztGjuObRpsX6i2uGBPSM' />
           </a>
         </div>
       </div>
